@@ -1,9 +1,9 @@
 [package]
 name = "fmtron"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
-    "Anton Filippov <a.filippov@protonmail.com>",
-    "Rafael Bachmann <rafael.bachmann.93@gmail.com",
+  "Anton Filippov <a.filippov@protonmail.com>",
+  "Rafael Bachmann <rafael.bachmann.93@gmail.com",
 ]
 description = "A simple tool for autoformatting RON files."
 homepage = "https://github.com/Ristarg/ronfmt"
@@ -16,6 +16,7 @@ edition = "2024"
 
 [dependencies]
 clap = { version = "4.5.53", features = ["derive"] }
+clap-stdin = "0.8.0"
 itertools = "0.14.0"
 pest = "2.8"
 pest_derive = "2.8"

@@ -14,7 +14,8 @@ The tool is in prealpha state. Bugs may occur, leading to loss of data. The tool
 `fmtron file_to_format.ron`
 
 - On use, the tool will create a backup file called `<source_file_name>.bak` in the same directory. Only the latest backup is kept. Add `*.bak` to your `.gitignore` if you would like to keep your repo clean.
-- Use `-d` flag to write the formatted output to the terminal instead of overwriting the source file
+    - Its not recommended but backup file creation can be disabled with `--no-backup`
+- Use `-d` flag to write the formatted output to the terminal instead of overwriting the source file. When input comes from stdin the output will always be output to the terminal
 - Set tab size with `-t <size>` (4 by default)
 
 - Set max line width with `-w <width>` (40 by default). This is a soft limit, so long or deeply-nested values may sometimes overrun it.
