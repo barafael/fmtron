@@ -25,21 +25,40 @@ fn main() {
     TAB_SIZE.store(args.tab_size, Ordering::SeqCst);
     MAX_LINE_WIDTH.store(args.width, Ordering::SeqCst);
 
-    let file = std::fs::read_to_string(&args.input).expect("unable to read file");
+    let input = match (args.input, args.input_pos) {
+        (Some(input), None) => input,
+        (None, Some(input), ..) => input,
+        (None, None) => "-".parse().unwrap(),
+        (Some(_), Some(_)) => {
+            eprintln!("Error: Cannot specify both a positional input and the -i/--input flag");
+            std::process::exit(1);
+        }
+    };
+
+    let file = input
+        .clone()
+        .contents()
+        .expect("unable to read file or stdin");
 
     let ron = RonParser::parse(Rule::ron_file, &file)
         .expect("unable to parse RON")
         .next()
         .unwrap();
 
-    if args.debug {
+    if args.debug || input.is_stdin() {
         println!("{}", ast::RonFile::parse_from(ron));
     } else {
-        let mut backup = OsString::from(&args.input);
-        backup.push(".bak");
-        std::fs::copy(&args.input, &backup).expect("unable to create backup file");
-
-        std::fs::write(args.input, format!("{}", ast::RonFile::parse_from(ron)))
+        let filename = input.filename();
+        assert!(
+            filename != "-",
+            "unexpected filename, this should be unreachable"
+        );
+        if !args.no_backup {
+            let mut backup = OsString::from(filename);
+            backup.push(".bak");
+            std::fs::copy(filename, &backup).expect("unable to create backup file");
+        }
+        std::fs::write(filename, format!("{}", ast::RonFile::parse_from(ron)))
             .expect("unable to overwrite target file");
     }
 }
