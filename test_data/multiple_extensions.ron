@@ -1,0 +1,2 @@
+#![enable(foo, bar, baz)]
+(data: 1)

@@ -1,6 +1,6 @@
 mod display;
 
-use super::Rule;
+use crate::Rule;
 use itertools::Itertools;
 use pest::iterators::Pair;
 use std::collections::BTreeSet;

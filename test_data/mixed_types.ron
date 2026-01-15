@@ -1,0 +1,1 @@
+(int: 42, float: 2.71, bool: false, str: "hi", list: [(), {k: v}], tuple: (1, "a"))

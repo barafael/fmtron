@@ -2,6 +2,7 @@ use super::{Kind, RonFile, Value};
 use crate::{MAX_LINE_WIDTH, TAB_SIZE};
 use itertools::Itertools;
 use std::fmt::Write;
+use std::ops::Not;
 use std::{
     fmt::{self, Display, Formatter},
     sync::atomic::Ordering,
@@ -10,11 +11,10 @@ use std::{
 impl Display for RonFile {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let Self(extensions, value) = self;
-        if extensions.is_empty() {
-            write!(f, "{}", value.to_string_rec(0))
-        } else {
-            writeln!(f, "#![enable({})]", extensions.iter().join(", "))
+        if extensions.is_empty().not() {
+            writeln!(f, "#![enable({})]", extensions.iter().join(", "))?;
         }
+        write!(f, "{}", value.to_string_rec(0))
     }
 }
 

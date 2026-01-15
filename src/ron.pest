@@ -28,9 +28,10 @@ signed_int = @{ sign? ~ unsigned_int }
 unsigned_int = { with_base | ASCII_DIGIT+ }
 with_base = { "0" ~ ("x" | "b" | "o") ~ ASCII_HEX_DIGIT+ }
 
-float = @{ float_std | float_frac }
+float = @{ float_std | float_frac | float_sci }
 float_std = { sign? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* ~ float_exp? }
 float_frac = { "." ~ ASCII_DIGIT+ ~ float_exp? }
+float_sci = { sign? ~ ASCII_DIGIT+ ~ float_exp }
 float_exp = { ("e" | "E") ~ ASCII_DIGIT+ }
 
 // chars
