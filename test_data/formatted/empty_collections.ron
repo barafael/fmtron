@@ -1,0 +1,6 @@
+(
+    empty_fields: (),
+    empty_tuple: (),
+    empty_map: {},
+    empty_list: [],
+)

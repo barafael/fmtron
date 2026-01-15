@@ -1,6 +1,0 @@
-(
-    empty_list: [],
-    empty_map: {},
-    empty_tuple: (),
-    empty_fields: ()
-)

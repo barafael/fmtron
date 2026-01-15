@@ -3,9 +3,8 @@ mod display;
 use crate::Rule;
 use itertools::Itertools;
 use pest::iterators::Pair;
-use std::collections::BTreeSet;
 
-pub struct RonFile(BTreeSet<String>, Box<Value>);
+pub struct RonFile(Vec<String>, Box<Value>);
 
 pub struct Value(usize, Kind);
 
@@ -26,7 +25,7 @@ impl RonFile {
             .take_while_ref(|item| item.as_rule() == Rule::extension)
             .flat_map(Pair::into_inner)
             .map(|ext_name| ext_name.as_str().into())
-            .collect();
+            .collect::<Vec<String>>();
         let value = iter.next().map(Value::from).unwrap();
 
         assert!(iter.next().unwrap().as_rule() == Rule::EOI);

@@ -19,3 +19,6 @@ clap = { version = "4.5.53", features = ["derive"] }
 itertools = "0.14.0"
 pest = "2.8"
 pest_derive = "2.8"
+
+[dev-dependencies]
+fs-walk = "0.2"

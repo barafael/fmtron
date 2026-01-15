@@ -1,0 +1,3 @@
+(
+text: r#"raw string with \"quotes\" and newlines\n"#,
+)

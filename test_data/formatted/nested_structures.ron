@@ -1,0 +1,8 @@
+(
+bar: {a: (), b: (x: 1, y: 2)},
+foo: [
+1,
+2,
+(qux: [false, true], bar: "baz"),
+],
+)
