@@ -43,3 +43,13 @@ fn main() {
             .expect("unable to overwrite target file");
     }
 }
+
+#[test]
+fn formats_unit() {
+    let content = include_str!("../test_data/unit.ron");
+    let ron = RonParser::parse(Rule::ron_file, content)
+        .expect("unable to parse RON")
+        .next()
+        .unwrap();
+    println!("{}", ast::RonFile::parse_from(ron));
+}

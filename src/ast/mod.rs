@@ -71,9 +71,14 @@ impl Value {
 
             Rule::tuple_type => {
                 let mut iter = pair.into_inner().peekable();
-                let ident = match iter.peek().unwrap().as_rule() {
-                    Rule::ident => Some(iter.next().unwrap().as_str().to_string()),
-                    _ => None,
+                let ident = if let Some(peeked) = iter.peek() {
+                    if peeked.as_rule() == Rule::ident {
+                        Some(iter.next().unwrap().as_str().to_string())
+                    } else {
+                        None
+                    }
+                } else {
+                    None
                 };
 
                 let values: Vec<_> = iter.map(Self::from).collect();
