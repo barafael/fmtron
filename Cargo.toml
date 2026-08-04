@@ -3,10 +3,10 @@ name = "fmtron"
 version = "0.5.0"
 authors = [
     "Anton Filippov <a.filippov@protonmail.com>",
-    "Rafael Bachmann <rafael.bachmann.93@gmail.com",
+    "Rafael Bachmann <rafael.bachmann.93@gmail.com>",
 ]
 description = "A simple tool for autoformatting RON files."
-homepage = "https://github.com/Ristarg/ronfmt"
+homepage = "https://github.com/barafael/fmtron"
 readme = "README.md"
 keywords = ["RON", "autoformatting", "beautify", "pretty-print"]
 categories = ["command-line-utilities", "development-tools", "value-formatting"]

@@ -4,7 +4,6 @@ use std::path::Path;
 
 #[test]
 fn empty_input() {
-    use fmtron::format_ron;
     let result = format_ron("");
     assert!(result.is_err());
 }
@@ -18,7 +17,10 @@ fn invalid_input() {
 #[test]
 fn formats_test_file() {
     let content = include_str!("../test_data/test.ron");
-    let _ron = format_ron(content).expect("unable to format RON");
+    let ron = format_ron(content).expect("unable to format RON");
+    // formatting is idempotent: reformatting the output must not change it
+    let ron2 = format_ron(&ron).expect("unable to reformat RON");
+    assert_eq!(ron, ron2, "formatter output is not idempotent");
 }
 
 fn normalize(s: &str) -> String {
@@ -30,7 +32,7 @@ fn normalize(s: &str) -> String {
 }
 
 #[test]
-fn inofficial_improvised_ron_conformance_suite() {
+fn unofficial_improvised_ron_conformance_suite() {
     let unformatted_dir = "test_data/unformatted";
     let formatted_dir = "test_data/formatted";
     let walker = WalkOptions::new()
