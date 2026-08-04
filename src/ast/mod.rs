@@ -40,6 +40,7 @@ impl Value {
             Rule::bool
             | Rule::char
             | Rule::string
+            | Rule::byte_string
             | Rule::signed_int
             | Rule::float
             | Rule::unit_type => {

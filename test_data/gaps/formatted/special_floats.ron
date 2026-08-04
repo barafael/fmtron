@@ -1,0 +1,6 @@
+(
+    pos: inf,
+    neg: -inf,
+    weird: NaN,
+    also_pos: +inf,
+)

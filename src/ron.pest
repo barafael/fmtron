@@ -6,7 +6,10 @@ line_comment_inner = { (!NEWLINE ~ ANY)* }
 block_comment = { "/*" ~ (block_comment | block_comment_inner)  ~ "*/" }
 block_comment_inner = { (!"*/" ~ ANY)* }
 
-ident = @{ (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")* }
+ident = @{ ("r#")? ~ ident_first ~ ident_rest* }
+ident_first = { ASCII_ALPHA | "_" | non_ascii }
+ident_rest = { ASCII_ALPHANUMERIC | "_" | non_ascii }
+non_ascii = { !('\u{00}' .. '\u{7F}') ~ ANY }
 
 ron_file = { SOI ~ extension* ~ value ~ EOI }
 
@@ -16,7 +19,7 @@ extension = {
     ")" ~ "]"
 }
 
-value = { float | signed_int | bool | char | string | list | map | tuple_type | fields_type | unit_type }
+value = { float | signed_int | bool | char | byte_string | string | list | map | tuple_type | fields_type | unit_type }
 
 // booleans
 bool = { "true" | "false" }
@@ -24,15 +27,18 @@ bool = { "true" | "false" }
 // numbers
 sign = { "+" | "-" }
 
-signed_int = @{ sign? ~ unsigned_int }
+signed_int = @{ sign? ~ unsigned_int ~ int_suffix? }
 unsigned_int = { with_base | ASCII_DIGIT+ }
 with_base = { "0" ~ ("x" | "b" | "o") ~ ASCII_HEX_DIGIT+ }
+int_suffix = { "i8" | "i16" | "i32" | "i64" | "i128" | "u8" | "u16" | "u32" | "u64" | "u128" }
 
-float = @{ float_std | float_frac | float_sci }
-float_std = { sign? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* ~ float_exp? }
-float_frac = { "." ~ ASCII_DIGIT+ ~ float_exp? }
-float_sci = { sign? ~ ASCII_DIGIT+ ~ float_exp }
-float_exp = { ("e" | "E") ~ ASCII_DIGIT+ }
+float = @{ float_std | float_frac | float_sci | special_float }
+float_std = { sign? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* ~ float_exp? ~ float_suffix? }
+float_frac = { "." ~ ASCII_DIGIT+ ~ float_exp? ~ float_suffix? }
+float_sci = { sign? ~ ASCII_DIGIT+ ~ float_exp ~ float_suffix? }
+float_exp = { ("e" | "E") ~ sign? ~ ASCII_DIGIT+ }
+float_suffix = { "f32" | "f64" }
+special_float = @{ sign? ~ ("inf" | "NaN") ~ float_suffix? }
 
 // chars
 char = ${ "'" ~ char_inner ~ "'" }
@@ -46,6 +52,10 @@ string_std_inner = { ("\\\"" | !"\"" ~ ANY)* }
 
 string_raw = { "r" ~ PUSH("#"*) ~ "\"" ~ string_raw_inner ~ "\"" ~ POP }
 string_raw_inner = { (!("\"" ~ PEEK) ~ ANY)* }
+
+byte_string = ${ byte_string_raw | byte_string_std }
+byte_string_raw = { "br" ~ PUSH("#"*) ~ "\"" ~ string_raw_inner ~ "\"" ~ POP }
+byte_string_std = { "b" ~ "\"" ~ string_std_inner ~ "\"" }
 
 // collections
 list = {

@@ -22,3 +22,4 @@ pest_derive = "2.8"
 
 [dev-dependencies]
 fs-walk = "0.2"
+ron = "0.12"
