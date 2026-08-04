@@ -22,7 +22,7 @@ pub fn format_ron(input: &str) -> Result<String, String> {
     match RonParser::parse(Rule::ron_file, input) {
         Ok(mut pairs) => {
             if let Some(pair) = pairs.next() {
-                Ok(format!("{}", crate::ast::RonFile::parse_from(pair)))
+                Ok(format!("{}", crate::ast::RonFile::parse_from(pair, input)))
             } else {
                 Err("No RON data found".to_string())
             }

@@ -28,13 +28,13 @@ fn main() {
         .unwrap();
 
     if args.debug {
-        println!("{}", ast::RonFile::parse_from(ron));
+        println!("{}", ast::RonFile::parse_from(ron, &file));
     } else {
         let mut backup = OsString::from(&args.input);
         backup.push(".bak");
         std::fs::copy(&args.input, &backup).expect("unable to create backup file");
 
-        std::fs::write(args.input, format!("{}", ast::RonFile::parse_from(ron)))
+        std::fs::write(args.input, format!("{}", ast::RonFile::parse_from(ron, &file)))
             .expect("unable to overwrite target file");
     }
 }

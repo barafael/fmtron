@@ -1,0 +1,14 @@
+(
+    // list of things
+    things: [
+    // the first thing
+    "a"   ,
+    "b",   // the second thing
+    // dangling at end
+    ],
+    // a map
+    points: {
+    // origin
+    "o": (0, 0),
+    },
+    )
