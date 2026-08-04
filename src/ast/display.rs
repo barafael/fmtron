@@ -1,14 +1,9 @@
-use super::{Attribute, Field, Kind, RonFile, Value};
-use crate::{MAX_LINE_WIDTH, TAB_SIZE};
+use super::{Attribute, Config, Field, Kind, RonFile, Value};
 use itertools::Itertools;
-use std::fmt::Write;
-use std::{
-    fmt::{self, Display, Formatter},
-    sync::atomic::Ordering,
-};
+use std::fmt::{self, Display, Formatter};
 
-fn space(level: usize) -> String {
-    " ".repeat(TAB_SIZE.load(Ordering::SeqCst) * level)
+fn space(level: usize, cfg: &Config) -> String {
+    " ".repeat(cfg.tab_size * level)
 }
 
 impl Display for RonFile {
@@ -17,6 +12,7 @@ impl Display for RonFile {
             attributes,
             value,
             dangling,
+            config,
         } = self;
         for attr in attributes {
             match attr {
@@ -28,7 +24,7 @@ impl Display for RonFile {
         for c in &value.leading {
             writeln!(f, "{c}")?;
         }
-        write!(f, "{}", value.to_string_rec(0))?;
+        write!(f, "{}", value.to_string_rec(0, config))?;
         for c in &value.trailing {
             write!(f, " {c}")?;
         }
@@ -63,18 +59,16 @@ impl Value {
                 !dangling.is_empty() || values.iter().any(Self::has_own_comments)
             }
             Kind::FieldsType { fields, dangling, .. } => {
-                !dangling.is_empty() || fields.iter().any(|f| f.value.has_own_comments())
+                !dangling.is_empty() || fields.iter().any(|fld| fld.value.has_own_comments())
             }
         }
     }
 
-    fn to_string_rec(&self, tabs: usize) -> String {
+    fn to_string_rec(&self, tabs: usize, cfg: &Config) -> String {
         if self.internals_have_comments() {
-            self.multiline_comments(tabs)
-        } else if tabs * TAB_SIZE.load(Ordering::SeqCst) + self.len
-            > MAX_LINE_WIDTH.load(Ordering::SeqCst)
-        {
-            self.multiline(tabs)
+            self.multiline_comments(tabs, cfg)
+        } else if tabs * cfg.tab_size + self.len > cfg.max_width {
+            self.multiline(tabs, cfg)
         } else {
             self.single_line()
         }
@@ -85,11 +79,12 @@ impl Value {
     fn emit_item(
         out: &mut String,
         tabs: usize,
+        cfg: &Config,
         leading: &[String],
         main: &str,
         trailing: &[String],
     ) {
-        let ind = space(tabs);
+        let ind = space(tabs, cfg);
         for c in leading {
             out.push_str(&ind);
             out.push_str(c);
@@ -105,9 +100,9 @@ impl Value {
         out.push('\n');
     }
 
-    fn dangling_block(dangling: &[String], tabs: usize) -> String {
+    fn dangling_block(dangling: &[String], tabs: usize, cfg: &Config) -> String {
         let mut s = String::new();
-        let ind = space(tabs);
+        let ind = space(tabs, cfg);
         for c in dangling {
             s.push_str(&ind);
             s.push_str(c);
@@ -116,18 +111,18 @@ impl Value {
         s
     }
 
-    fn multiline_comments(&self, tabs: usize) -> String {
+    fn multiline_comments(&self, tabs: usize, cfg: &Config) -> String {
         let child_tabs = tabs + 1;
         match &self.kind {
             Kind::Atom(a) => a.clone(),
             Kind::List { values, dangling } => {
                 let mut s = String::from("[\n");
                 for v in values {
-                    let main = v.to_string_rec(child_tabs);
-                    Self::emit_item(&mut s, child_tabs, &v.leading, &main, &v.trailing);
+                    let main = v.to_string_rec(child_tabs, cfg);
+                    Self::emit_item(&mut s, child_tabs, cfg, &v.leading, &main, &v.trailing);
                 }
-                s.push_str(&Self::dangling_block(dangling, child_tabs));
-                s.push_str(&space(tabs));
+                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
+                s.push_str(&space(tabs, cfg));
                 s.push(']');
                 s
             }
@@ -136,13 +131,13 @@ impl Value {
                 for (k, v) in entries {
                     let main = format!(
                         "{}: {}",
-                        k.to_string_rec(child_tabs),
-                        v.to_string_rec(child_tabs)
+                        k.to_string_rec(child_tabs, cfg),
+                        v.to_string_rec(child_tabs, cfg)
                     );
-                    Self::emit_item(&mut s, child_tabs, &k.leading, &main, &v.trailing);
+                    Self::emit_item(&mut s, child_tabs, cfg, &k.leading, &main, &v.trailing);
                 }
-                s.push_str(&Self::dangling_block(dangling, child_tabs));
-                s.push_str(&space(tabs));
+                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
+                s.push_str(&space(tabs, cfg));
                 s.push('}');
                 s
             }
@@ -152,11 +147,11 @@ impl Value {
                 let id = ident.clone().unwrap_or_default();
                 let mut s = format!("{id}(\n");
                 for v in values {
-                    let main = v.to_string_rec(child_tabs);
-                    Self::emit_item(&mut s, child_tabs, &v.leading, &main, &v.trailing);
+                    let main = v.to_string_rec(child_tabs, cfg);
+                    Self::emit_item(&mut s, child_tabs, cfg, &v.leading, &main, &v.trailing);
                 }
-                s.push_str(&Self::dangling_block(dangling, child_tabs));
-                s.push_str(&space(tabs));
+                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
+                s.push_str(&space(tabs, cfg));
                 s.push(')');
                 s
             }
@@ -166,41 +161,41 @@ impl Value {
                 let id = ident.clone().unwrap_or_default();
                 let mut s = format!("{id}(\n");
                 for Field { name, value } in fields {
-                    let main = format!("{}: {}", name, value.to_string_rec(child_tabs));
-                    Self::emit_item(&mut s, child_tabs, &value.leading, &main, &value.trailing);
+                    let main = format!("{}: {}", name, value.to_string_rec(child_tabs, cfg));
+                    Self::emit_item(
+                        &mut s, child_tabs, cfg, &value.leading, &main, &value.trailing,
+                    );
                 }
-                s.push_str(&Self::dangling_block(dangling, child_tabs));
-                s.push_str(&space(tabs));
+                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
+                s.push_str(&space(tabs, cfg));
                 s.push(')');
                 s
             }
         }
     }
 
-    fn multiline(&self, tabs: usize) -> String {
+    fn multiline(&self, tabs: usize, cfg: &Config) -> String {
         match &self.kind {
             Kind::Atom(atom) => atom.clone(),
 
             Kind::List { values, .. } => {
                 let elements = values
                     .iter()
-                    .map(|e| space(tabs + 1) + &e.to_string_rec(tabs + 1) + ",\n")
+                    .map(|e| space(tabs + 1, cfg) + &e.to_string_rec(tabs + 1, cfg) + ",\n")
                     .collect::<String>();
-                format!("[\n{}{}]", elements, space(tabs))
+                format!("[\n{}{}]", elements, space(tabs, cfg))
             }
 
             Kind::Map { entries, .. } => {
                 let entries = entries.iter().fold(String::new(), |mut s, (k, v)| {
-                    writeln!(
-                        s,
-                        "{}: {},",
-                        space(tabs + 1) + &k.to_string_rec(tabs + 1),
-                        v.to_string_rec(tabs + 1)
-                    )
-                    .expect("`write!`ing to a `String` never fails");
+                    s.push_str(&space(tabs + 1, cfg));
+                    s.push_str(&k.to_string_rec(tabs + 1, cfg));
+                    s.push_str(": ");
+                    s.push_str(&v.to_string_rec(tabs + 1, cfg));
+                    s.push_str(",\n");
                     s
                 });
-                format!("{{\n{}{}}}", entries, space(tabs))
+                format!("{{\n{}{}}}", entries, space(tabs, cfg))
             }
 
             Kind::TupleType {
@@ -209,26 +204,26 @@ impl Value {
                 let ident = ident.clone().unwrap_or_default();
                 let elements = values
                     .iter()
-                    .map(|e| space(tabs + 1) + &e.to_string_rec(tabs + 1) + ",\n")
+                    .map(|e| space(tabs + 1, cfg) + &e.to_string_rec(tabs + 1, cfg) + ",\n")
                     .collect::<String>();
-                format!("{}(\n{}{})", ident, elements, space(tabs))
+                format!("{}(\n{}{})", ident, elements, space(tabs, cfg))
             }
 
             Kind::FieldsType {
                 ident, fields, ..
             } => {
                 let ident = ident.clone().unwrap_or_default();
-                let fields = fields.iter().fold(String::new(), |mut s, f| {
-                    writeln!(
-                        s,
-                        "{}: {},",
-                        space(tabs + 1) + &f.name,
-                        f.value.to_string_rec(tabs + 1)
-                    )
-                    .expect("`write!`ing to a `String` never fails");
-                    s
-                });
-                format!("{}(\n{}{})", ident, fields, space(tabs))
+                let mut s = format!("{}(\n", ident);
+                for fld in fields {
+                    s.push_str(&space(tabs + 1, cfg));
+                    s.push_str(&fld.name);
+                    s.push_str(": ");
+                    s.push_str(&fld.value.to_string_rec(tabs + 1, cfg));
+                    s.push_str(",\n");
+                }
+                s.push_str(&space(tabs, cfg));
+                s.push(')');
+                s
             }
         }
     }

@@ -1,11 +1,11 @@
-use std::{ffi::OsString, sync::atomic::Ordering};
+use std::ffi::OsString;
 
 use clap::Parser as ClapParser;
 use pest::Parser;
 use pest_derive::Parser;
 
 use arguments::Arguments;
-use fmtron::{MAX_LINE_WIDTH, TAB_SIZE};
+use fmtron::Config;
 
 mod arguments;
 mod ast;
@@ -16,9 +16,10 @@ struct RonParser;
 
 fn main() {
     let args = Arguments::parse();
-
-    TAB_SIZE.store(args.tab_size, Ordering::SeqCst);
-    MAX_LINE_WIDTH.store(args.width, Ordering::SeqCst);
+    let config = Config {
+        tab_size: args.tab_size,
+        max_width: args.width,
+    };
 
     let file = std::fs::read_to_string(&args.input).expect("unable to read file");
 
@@ -28,13 +29,16 @@ fn main() {
         .unwrap();
 
     if args.debug {
-        println!("{}", ast::RonFile::parse_from(ron, &file));
+        println!("{}", ast::RonFile::parse_from(ron, &file, config));
     } else {
         let mut backup = OsString::from(&args.input);
         backup.push(".bak");
         std::fs::copy(&args.input, &backup).expect("unable to create backup file");
 
-        std::fs::write(args.input, format!("{}", ast::RonFile::parse_from(ron, &file)))
-            .expect("unable to overwrite target file");
+        std::fs::write(
+            args.input,
+            format!("{}", ast::RonFile::parse_from(ron, &file, config)),
+        )
+        .expect("unable to overwrite target file");
     }
 }

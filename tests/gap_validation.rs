@@ -62,7 +62,7 @@ fn gap_cases_currently_unsupported_by_fmtron() {
     for (filename, currently_supported) in cases {
         let path = Path::new("test_data/gaps/unformatted").join(filename);
         let input = std::fs::read_to_string(&path).expect("gap case file missing");
-        let result = fmtron::format_ron(&input);
+        let result = fmtron::format_ron(&input, &fmtron::Config::default());
 
         if *currently_supported {
             assert!(

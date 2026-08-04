@@ -1,12 +1,13 @@
 mod display;
 
-use crate::Rule;
+use crate::{Config, Rule};
 use pest::iterators::Pair;
 
 pub struct RonFile {
     attributes: Vec<Attribute>,
     value: Box<Value>,
     dangling: Vec<String>,
+    config: Config,
 }
 
 pub enum Attribute {
@@ -85,7 +86,7 @@ impl Attribute {
 }
 
 impl RonFile {
-    pub fn parse_from(pair: Pair<Rule>, src: &str) -> Self {
+    pub fn parse_from(pair: Pair<Rule>, src: &str, config: Config) -> Self {
         assert!(pair.as_rule() == Rule::ron_file, "expected ron_file pair");
 
         let mut attributes = Vec::new();
@@ -129,6 +130,7 @@ impl RonFile {
             attributes,
             value,
             dangling,
+            config,
         }
     }
 }

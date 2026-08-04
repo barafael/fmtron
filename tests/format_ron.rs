@@ -1,25 +1,29 @@
-use fmtron::format_ron;
+use fmtron::{format_ron, Config};
 use fs_walk::WalkOptions;
 use std::path::Path;
 
+fn format_default(s: &str) -> Result<String, String> {
+    format_ron(s, &Config::default())
+}
+
 #[test]
 fn empty_input() {
-    let result = format_ron("");
+    let result = format_default("");
     assert!(result.is_err());
 }
 
 #[test]
 fn invalid_input() {
-    let result = format_ron("This is not RON!");
+    let result = format_default("This is not RON!");
     assert!(result.is_err());
 }
 
 #[test]
 fn formats_test_file() {
     let content = include_str!("../test_data/test.ron");
-    let ron = format_ron(content).expect("unable to format RON");
+    let ron = format_default(content).expect("unable to format RON");
     // formatting is idempotent: reformatting the output must not change it
-    let ron2 = format_ron(&ron).expect("unable to reformat RON");
+    let ron2 = format_default(&ron).expect("unable to reformat RON");
     assert_eq!(ron, ron2, "formatter output is not idempotent");
 }
 
@@ -49,7 +53,7 @@ fn unofficial_improvised_ron_conformance_suite() {
         let expected = std::fs::read_to_string(&formatted_path).unwrap();
         let case = filename.display().to_string();
 
-        let result = match fmtron::format_ron(&input) {
+        let result = match format_default(&input) {
             Ok(ron) => {
                 if normalize(&ron) == normalize(&expected) {
                     None
@@ -102,7 +106,7 @@ fn formatted_output_is_semantically_equivalent() {
                     continue;
                 }
             };
-            let formatted = fmtron::format_ron(&input)
+            let formatted = format_default(&input)
                 .unwrap_or_else(|e| panic!("format failed for {:?}: {e}", entry.file_name()));
             let after: ron::Value = ron::from_str(&formatted)
                 .unwrap_or_else(|e| panic!("output not valid ron {:?}: {e}", entry.file_name()));
@@ -121,8 +125,8 @@ fn formatting_is_idempotent() {
         let walker = WalkOptions::new().files().extension("ron").walk(dir);
         for entry in walker.flatten() {
             let input = std::fs::read_to_string(entry.as_path()).unwrap();
-            let once = fmtron::format_ron(&input).expect("first pass failed");
-            let twice = fmtron::format_ron(&once).expect("second pass failed");
+            let once = format_default(&input).expect("first pass failed");
+            let twice = format_default(&once).expect("second pass failed");
             assert_eq!(
                 normalize(&once),
                 normalize(&twice),
