@@ -1,0 +1,3 @@
+SerializeDyn(
+    type: "engine_utils::types::registry::tests::Player",
+)

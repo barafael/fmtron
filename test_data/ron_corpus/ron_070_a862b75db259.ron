@@ -1,0 +1,1 @@
+#![enable(unwrap_variant_newtypes)] TupleNewtypeEnum(C(4, false))

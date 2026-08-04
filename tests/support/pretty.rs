@@ -1,8 +1,12 @@
-/// Wadler/Leijen pretty-printer support used by the `wadler_advantage` tests.
-///
-/// The `Doc` algebra itself now lives in the library (`fmtron::pretty`) — this
-/// module re-exports it and keeps the pest-tree → `Doc` builder that lets the
-/// tests run the printer on real RON input.
+//! Wadler/Leijen pretty-printer support used by the `wadler_advantage` and
+//! `fuzz` tests.
+//!
+//! The `Doc` algebra itself now lives in the library (`fmtron::pretty`) — this
+//! module re-exports it and keeps the pest-tree → `Doc` builder that lets the
+//! tests run the printer on real RON input. Each test binary compiles the
+//! module on its own, so dead-code warnings would otherwise fire for the parts
+//! a given binary does not use.
+#![allow(dead_code)]
 pub use fmtron::pretty::{
     comma, concat, group, line, nest, render, soft_line, text, Doc,
 };

@@ -1,0 +1,1 @@
+#![enable(unwrap_variant_newtypes)] TupleNewtypeSeq([Struct(a: 4, b: false)])

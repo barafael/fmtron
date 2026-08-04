@@ -37,41 +37,48 @@ fn normalize(s: &str) -> String {
 
 #[test]
 fn unofficial_improvised_ron_conformance_suite() {
-    let unformatted_dir = "test_data/unformatted";
-    let formatted_dir = "test_data/formatted";
-    let walker = WalkOptions::new()
-        .files()
-        .extension("ron")
-        .walk(unformatted_dir);
+    let pairs = [
+        ("test_data/unformatted", "test_data/formatted"),
+        (
+            "test_data/ron_corpus",
+            "test_data/ron_corpus_formatted",
+        ),
+    ];
     let mut failures: Vec<String> = Vec::new();
     let mut count = 0;
-    for entry in walker.flatten() {
-        count += 1;
-        let filename = entry.as_path().strip_prefix(unformatted_dir).unwrap();
-        let formatted_path = Path::new(formatted_dir).join(filename);
-        let input = std::fs::read_to_string(entry.as_path()).unwrap();
-        let expected = std::fs::read_to_string(&formatted_path).unwrap();
-        let case = filename.display().to_string();
+    for (unformatted_dir, formatted_dir) in pairs {
+        let walker = WalkOptions::new()
+            .files()
+            .extension("ron")
+            .walk(unformatted_dir);
+        for entry in walker.flatten() {
+            count += 1;
+            let filename = entry.as_path().strip_prefix(unformatted_dir).unwrap();
+            let formatted_path = Path::new(formatted_dir).join(filename);
+            let input = std::fs::read_to_string(entry.as_path()).unwrap();
+            let expected = std::fs::read_to_string(&formatted_path).unwrap();
+            let case = filename.display().to_string();
 
-        let result = match format_default(&input) {
-            Ok(ron) => {
-                if normalize(&ron) == normalize(&expected) {
-                    None
-                } else {
-                    Some(format!(
-                        "{case}: output mismatch\n--- expected ---\n{}\n--- actual ---\n{}",
-                        normalize(&expected),
-                        normalize(&ron)
-                    ))
+            let result = match format_default(&input) {
+                Ok(ron) => {
+                    if normalize(&ron) == normalize(&expected) {
+                        None
+                    } else {
+                        Some(format!(
+                            "{case}: output mismatch\n--- expected ---\n{}\n--- actual ---\n{}",
+                            normalize(&expected),
+                            normalize(&ron)
+                        ))
+                    }
                 }
+                Err(e) => Some(format!("{case}: format_ron failed: {e}")),
+            };
+            if let Some(msg) = result {
+                failures.push(msg);
             }
-            Err(e) => Some(format!("{case}: format_ron failed: {e}")),
-        };
-        if let Some(msg) = result {
-            failures.push(msg);
         }
     }
-    assert!(count > 0, "no conformance cases found in {unformatted_dir}");
+    assert!(count > 0, "no conformance cases found");
     if !failures.is_empty() {
         panic!(
             "{} of {} conformance cases failed:\n\n{}",
@@ -92,7 +99,11 @@ fn formatted_output_is_semantically_equivalent() {
     // that the official parser rejects as unknown extensions. Such files
     // cannot be checked by this oracle and are skipped (reported as skipped,
     // not failed).
-    let dirs = ["test_data/unformatted", "test_data/gaps/unformatted"];
+    let dirs = [
+        "test_data/unformatted",
+        "test_data/gaps/unformatted",
+        "test_data/ron_corpus",
+    ];
     let mut checked = 0;
     let mut skipped = 0;
     for dir in dirs {
@@ -120,7 +131,11 @@ fn formatted_output_is_semantically_equivalent() {
 #[test]
 fn formatting_is_idempotent() {
     // A formatter's output must be a fixed point: format(format(x)) == format(x).
-    let dirs = ["test_data/unformatted", "test_data/gaps/unformatted"];
+    let dirs = [
+        "test_data/unformatted",
+        "test_data/gaps/unformatted",
+        "test_data/ron_corpus",
+    ];
     for dir in dirs {
         let walker = WalkOptions::new().files().extension("ron").walk(dir);
         for entry in walker.flatten() {

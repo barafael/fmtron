@@ -1,0 +1,4 @@
+#![enable(unwrap_variant_newtypes)]
+TupleNewtypeTupleStruct(
+    TupleStruct(4, false),
+)

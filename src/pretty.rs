@@ -85,8 +85,9 @@ pub fn render(doc: &Doc, width: usize) -> String {
 }
 
 /// `indent` = indentation to print after a line break; `col` = the *actual*
-/// current column (advances with emitted text). Only `col` feeds `fits()`,
-/// which is what catches "key: " prefixes pushing a value past the width.
+/// current column (advances with emitted text). Only `col` feeds the fit
+/// checks, which is what catches "key: " prefixes pushing a value past the
+/// width.
 fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mode: Mode) -> usize {
     match doc {
         Doc::Nil => col,
@@ -120,6 +121,9 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
         },
         Doc::Nest(n, d) => best(out, d, width, indent + n, col, mode),
         Doc::Group(d) => {
+            // A group not sitting inside a `Concat` (e.g. the document root)
+            // has no siblings to consider: it flattens iff its own flat form
+            // fits the remaining width.
             if fits(width.saturating_sub(col), d) {
                 best(out, d, width, indent, col, Mode::Flat)
             } else {
@@ -128,8 +132,23 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
         }
         Doc::Concat(docs) => {
             let mut c = col;
-            for d in docs {
-                c = best(out, d, width, indent, c, mode);
+            let mut i = 0;
+            while i < docs.len() {
+                let d = &docs[i];
+                if let Doc::Group(inner) = d {
+                    // Decide the group from its *whole* share of the current
+                    // line: its own flat form plus whatever follows it up to
+                    // the next line break (e.g. the trailing comma of a
+                    // broken container, which would otherwise push the line
+                    // one character past the width).
+                    let fits = fits_rest(width.saturating_sub(c), mode, &docs[i..]);
+                    let m = if fits { Mode::Flat } else { Mode::Break };
+                    c = best(out, inner, width, indent, c, m);
+                    i += 1;
+                } else {
+                    c = best(out, d, width, indent, c, mode);
+                    i += 1;
+                }
             }
             c
         }
@@ -138,36 +157,76 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
 
 /// True if the content of `doc` up to the first line break fits in `rem`
 /// remaining columns. A hard break means the line ends early, so it always
-/// fits.
+/// fits. Equivalently: `fits_rest(rem, Mode::Flat, &[doc])`.
 fn fits(rem: usize, doc: &Doc) -> bool {
-    let mut stack: Vec<&Doc> = vec![doc];
-    let mut rem = rem;
-    while let Some(d) = stack.pop() {
-        match d {
-            Doc::Nil => {}
-            Doc::Text(s) => {
-                if s.len() > rem {
-                    return false;
-                }
-                rem -= s.len();
+    fits_rest(rem, Mode::Flat, std::slice::from_ref(doc))
+}
+
+/// Result of probing how one `Doc` renders on the current line.
+#[derive(PartialEq)]
+enum Fit {
+    /// No line break yet — keep scanning.
+    Continue,
+    /// Content would run past the remaining width.
+    Overflow,
+    /// Renders as a line break in `mode` — the current line ends here.
+    LineBreak,
+}
+
+/// How `d` renders on the current line in `mode`: how many columns it costs
+/// and whether it ends the line.
+fn fits_probe(rem: &mut usize, mode: Mode, d: &Doc) -> Fit {
+    match d {
+        Doc::Nil => Fit::Continue,
+        Doc::Text(s) => {
+            if s.len() > *rem {
+                return Fit::Overflow;
             }
-            Doc::Line { soft } => {
+            *rem -= s.len();
+            Fit::Continue
+        }
+        Doc::Line { soft } => match mode {
+            Mode::Flat => {
                 if !*soft {
-                    if rem == 0 {
-                        return false;
+                    if *rem == 0 {
+                        return Fit::Overflow;
                     }
-                    rem -= 1;
+                    *rem -= 1;
+                }
+                Fit::Continue
+            }
+            Mode::Break => Fit::LineBreak,
+        },
+        Doc::HardLine => Fit::LineBreak,
+        Doc::IfBreak { flat, broken } => {
+            let inner = if mode == Mode::Flat { flat } else { broken };
+            fits_probe(rem, mode, inner)
+        }
+        Doc::Nest(_, d) => fits_probe(rem, mode, d),
+        // A nested group is assumed to flatten while measuring the current
+        // line; its own break decision is made separately when rendered.
+        Doc::Group(d) => fits_probe(rem, Mode::Flat, d),
+        Doc::Concat(docs) => {
+            for x in docs {
+                match fits_probe(rem, mode, x) {
+                    Fit::Continue => {}
+                    other => return other,
                 }
             }
-            Doc::HardLine => return true,
-            Doc::IfBreak { flat, .. } => stack.push(flat),
-            Doc::Nest(_, d) => stack.push(d),
-            Doc::Group(d) => stack.push(d),
-            Doc::Concat(docs) => {
-                for x in docs.iter().rev() {
-                    stack.push(x);
-                }
-            }
+            Fit::Continue
+        }
+    }
+}
+
+/// True if `docs` fit in `rem` remaining columns on the current line, where
+/// every doc renders in `mode` and scanning stops at the first line break.
+fn fits_rest(rem: usize, mode: Mode, docs: &[Doc]) -> bool {
+    let mut rem = rem;
+    for d in docs {
+        match fits_probe(&mut rem, mode, d) {
+            Fit::Continue => {}
+            Fit::Overflow => return false,
+            Fit::LineBreak => return true,
         }
     }
     true

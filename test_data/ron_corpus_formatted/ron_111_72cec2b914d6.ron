@@ -1,0 +1,5 @@
+Config(
+    bytes: b"only byte strings are allowed",
+    base64: "b25seSBiYXNlNjQtZW5jb2RlZCBzdHJpbmdzIGFyZSBhbGxvd2Vk",
+    bytes_or_base64: b"both byte strings and base64-encoded strings work",
+)

@@ -1,0 +1,2 @@
+#![enable(unwrap_variant_newtypes)]
+Struct(a: 4, b: false)

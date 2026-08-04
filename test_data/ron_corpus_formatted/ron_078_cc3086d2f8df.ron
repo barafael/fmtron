@@ -1,0 +1,2 @@
+#![enable(unwrap_variant_newtypes)]
+TupleNewtypeSeq([(a: 4, b: false)])

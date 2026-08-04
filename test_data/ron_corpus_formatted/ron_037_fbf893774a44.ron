@@ -1,0 +1,12 @@
+(
+    tasks: {
+        "shell command": Shell(
+            command: "ls",
+            args: Some(["-l", "-h"]),
+            ch_dir: Some("/"),
+        ),
+        "debug message": Dbg(
+            msg: "test message. some text after it.",
+        ),
+    },
+)

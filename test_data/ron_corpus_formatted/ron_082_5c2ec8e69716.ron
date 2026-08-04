@@ -1,0 +1,4 @@
+#![enable(unwrap_variant_newtypes)]
+TupleNewtypeMap(
+    {8: Struct(a: 4, b: false)},
+)

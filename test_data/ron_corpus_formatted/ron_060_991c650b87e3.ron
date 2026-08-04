@@ -1,0 +1,2 @@
+#![enable(unwrap_variant_newtypes)]
+TupleNewtypeTuple(4, false)

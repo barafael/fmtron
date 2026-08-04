@@ -9,11 +9,15 @@ lossless parse and the printer; the lexical gaps are mechanical.
 
 All five phases are **complete**. fmtron is now: `pest grammar (lossy) →
 comment-aware AST → display`, with `Config { tab_size, max_width }` threaded
-through instead of global atomics, comments preserved across round-trips, and a
-graceful CLI (no panics). The one deviation from the roadmap: the full
-Wadler/Leijen `Doc` printer was deferred — the greedy width heuristic produces
-correct output for the corpus, and a `Doc` rewrite would churn every expected
-output for marginal benefit.
+through instead of global atomics, comments preserved across round-trips, a
+graceful CLI (no panics), and a full Wadler/Leijen `Doc` printer. Phase 4's
+`Doc` rewrite (deferred in the earlier plan) was landed on top of the Config
+threading: `src/pretty.rs` holds the algebra, `src/ast/display.rs` builds Docs
+from the AST, and fit decisions are sibling-aware so a nested group that would
+fit "exactly" still breaks when its trailing comma would push the line past the
+width. Phase 5 added a vendored copy of the `ron` crate's test corpus
+(`test_data/ron_corpus`, 82 files) plus a seeded fuzz test (`tests/fuzz.rs`,
+default seed `0xC0FFEE`, overridable via `FMTRON_FUZZ_SEED`).
 
 ## Phases
 

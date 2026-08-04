@@ -120,7 +120,12 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 .enumerate()
                 .map(|(i, e)| {
                     let sep = if force || i < n - 1 { text(",") } else { comma() };
-                    concat(vec![value_doc(e, tab), sep, trailing_doc(e)])
+                    concat(vec![
+                        leading_doc(e),
+                        kind_doc(e, tab),
+                        sep,
+                        trailing_doc(e),
+                    ])
                 })
                 .collect();
             container(force, "[", "]", items, dangling, tab)
@@ -138,9 +143,11 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 .map(|(i, (k, val))| {
                     let sep = if force || i < n - 1 { text(",") } else { comma() };
                     concat(vec![
-                        value_doc(k, tab),
+                        leading_doc(k),
+                        kind_doc(k, tab),
                         text(": "),
-                        value_doc(val, tab),
+                        leading_doc(val),
+                        kind_doc(val, tab),
                         sep,
                         trailing_doc(val),
                     ])
@@ -160,7 +167,12 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 .enumerate()
                 .map(|(i, e)| {
                     let sep = if force || i < n - 1 { text(",") } else { comma() };
-                    concat(vec![value_doc(e, tab), sep, trailing_doc(e)])
+                    concat(vec![
+                        leading_doc(e),
+                        kind_doc(e, tab),
+                        sep,
+                        trailing_doc(e),
+                    ])
                 })
                 .collect();
             container(force, &open, ")", items, dangling, tab)

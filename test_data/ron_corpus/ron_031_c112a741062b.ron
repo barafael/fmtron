@@ -1,0 +1,14 @@
+EntityConfig(
+    name: "some name",
+    components: [
+        {
+            "type": "Component1",
+            "value": 22.0,
+            "value_2": 35.0,
+        },
+        {
+            "type": "Component2",
+            "value": 3.14,
+        },
+    ],
+)

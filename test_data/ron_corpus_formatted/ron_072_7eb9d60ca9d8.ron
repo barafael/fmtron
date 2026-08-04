@@ -1,0 +1,2 @@
+#![enable(unwrap_variant_newtypes)]
+TupleNewtypeEnum(D(a: 4, b: false))

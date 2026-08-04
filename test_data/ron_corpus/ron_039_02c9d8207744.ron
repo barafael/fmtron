@@ -1,0 +1,46 @@
+((
+    name: "Walter",
+    /// 0@age (person)
+    /// must be within range 0..256
+    age: 43,
+    /// 0@knows (person)
+    /// must be list of valid person indices
+    knows: [
+        0,
+        1,
+    ],
+    pet: None,
+), [
+    (
+        name: "Alice",
+        /// 0@age (person)
+        /// must be within range 0..256
+        age: 29,
+        /// 0@knows (person)
+        /// must be list of valid person indices
+        knows: [
+            1,
+        ],
+        pet: Some((
+            name: "Herbert",
+            /// 1@age (pet)
+            /// must be valid range 0..256
+            age: 7,
+            /// 1@kind (pet)
+            /// must be `Isopod`
+            kind: Isopod,
+        )),
+    ),
+    (
+        name: "Bob",
+        /// 0@age (person)
+        /// must be within range 0..256
+        age: 29,
+        /// 0@knows (person)
+        /// must be list of valid person indices
+        knows: [
+            0,
+        ],
+        pet: None,
+    ),
+])
