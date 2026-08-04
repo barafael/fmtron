@@ -1,9 +1,37 @@
-use super::{Attribute, Config, Field, Kind, RonFile, Value};
-use itertools::Itertools;
+use super::{Attribute, Field, Kind, RonFile, Value};
+use crate::pretty::{self, Doc};
 use std::fmt::{self, Display, Formatter};
 
-fn space(level: usize, cfg: &Config) -> String {
-    " ".repeat(cfg.tab_size * level)
+fn text(s: impl Into<String>) -> Doc {
+    pretty::text(s)
+}
+
+fn line() -> Doc {
+    pretty::line()
+}
+
+fn soft_line() -> Doc {
+    pretty::soft_line()
+}
+
+fn hard_line() -> Doc {
+    pretty::hard_line()
+}
+
+fn comma() -> Doc {
+    pretty::comma()
+}
+
+fn nest(n: usize, d: Doc) -> Doc {
+    pretty::nest(n, d)
+}
+
+fn group(d: Doc) -> Doc {
+    pretty::group(d)
+}
+
+fn concat(docs: Vec<Doc>) -> Doc {
+    pretty::concat(docs)
 }
 
 impl Display for RonFile {
@@ -21,13 +49,8 @@ impl Display for RonFile {
                 Attribute::Schema(s) => writeln!(f, "#![schema = {}]", s)?,
             }
         }
-        for c in &value.leading {
-            writeln!(f, "{c}")?;
-        }
-        write!(f, "{}", value.to_string_rec(0, config))?;
-        for c in &value.trailing {
-            write!(f, " {c}")?;
-        }
+        let doc = concat(vec![value_doc(value, config.tab_size), trailing_doc(value)]);
+        write!(f, "{}", pretty::render(&doc, config.max_width))?;
         if !value.trailing.is_empty() {
             writeln!(f)?;
         }
@@ -38,233 +61,180 @@ impl Display for RonFile {
     }
 }
 
-impl Value {
-    fn has_own_comments(&self) -> bool {
-        !self.leading.is_empty() || !self.trailing.is_empty()
+/// True if `v` or anything in its subtree carries comments. A container whose
+/// subtree has comments must render every element on its own line (hard
+/// breaks), otherwise a leading/trailing comment would collide with sibling
+/// layout.
+fn subtree_has_comments(v: &Value) -> bool {
+    if !v.leading.is_empty() || !v.trailing.is_empty() {
+        return true;
     }
-
-    fn internals_have_comments(&self) -> bool {
-        match &self.kind {
-            Kind::Atom(_) => false,
-            Kind::List { values, dangling } => {
-                !dangling.is_empty() || values.iter().any(Self::has_own_comments)
-            }
-            Kind::Map { entries, dangling } => {
-                !dangling.is_empty()
-                    || entries
-                        .iter()
-                        .any(|(k, v)| k.has_own_comments() || v.has_own_comments())
-            }
-            Kind::TupleType { values, dangling, .. } => {
-                !dangling.is_empty() || values.iter().any(Self::has_own_comments)
-            }
-            Kind::FieldsType { fields, dangling, .. } => {
-                !dangling.is_empty() || fields.iter().any(|fld| fld.value.has_own_comments())
-            }
+    match &v.kind {
+        Kind::Atom(_) => false,
+        Kind::List { values, dangling } => {
+            !dangling.is_empty() || values.iter().any(subtree_has_comments)
         }
-    }
-
-    fn to_string_rec(&self, tabs: usize, cfg: &Config) -> String {
-        if self.internals_have_comments() {
-            self.multiline_comments(tabs, cfg)
-        } else if tabs * cfg.tab_size + self.len > cfg.max_width {
-            self.multiline(tabs, cfg)
-        } else {
-            self.single_line()
-        }
-    }
-
-    /// Render an element line: leading comments (own lines), main content,
-    /// comma, trailing comments (inline after the comma).
-    fn emit_item(
-        out: &mut String,
-        tabs: usize,
-        cfg: &Config,
-        leading: &[String],
-        main: &str,
-        trailing: &[String],
-    ) {
-        let ind = space(tabs, cfg);
-        for c in leading {
-            out.push_str(&ind);
-            out.push_str(c);
-            out.push('\n');
-        }
-        out.push_str(&ind);
-        out.push_str(main);
-        out.push(',');
-        for c in trailing {
-            out.push(' ');
-            out.push_str(c);
-        }
-        out.push('\n');
-    }
-
-    fn dangling_block(dangling: &[String], tabs: usize, cfg: &Config) -> String {
-        let mut s = String::new();
-        let ind = space(tabs, cfg);
-        for c in dangling {
-            s.push_str(&ind);
-            s.push_str(c);
-            s.push('\n');
-        }
-        s
-    }
-
-    fn multiline_comments(&self, tabs: usize, cfg: &Config) -> String {
-        let child_tabs = tabs + 1;
-        match &self.kind {
-            Kind::Atom(a) => a.clone(),
-            Kind::List { values, dangling } => {
-                let mut s = String::from("[\n");
-                for v in values {
-                    let main = v.to_string_rec(child_tabs, cfg);
-                    Self::emit_item(&mut s, child_tabs, cfg, &v.leading, &main, &v.trailing);
-                }
-                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
-                s.push_str(&space(tabs, cfg));
-                s.push(']');
-                s
-            }
-            Kind::Map { entries, dangling } => {
-                let mut s = String::from("{\n");
-                for (k, v) in entries {
-                    let main = format!(
-                        "{}: {}",
-                        k.to_string_rec(child_tabs, cfg),
-                        v.to_string_rec(child_tabs, cfg)
-                    );
-                    Self::emit_item(&mut s, child_tabs, cfg, &k.leading, &main, &v.trailing);
-                }
-                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
-                s.push_str(&space(tabs, cfg));
-                s.push('}');
-                s
-            }
-            Kind::TupleType {
-                ident, values, dangling,
-            } => {
-                let id = ident.clone().unwrap_or_default();
-                let mut s = format!("{id}(\n");
-                for v in values {
-                    let main = v.to_string_rec(child_tabs, cfg);
-                    Self::emit_item(&mut s, child_tabs, cfg, &v.leading, &main, &v.trailing);
-                }
-                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
-                s.push_str(&space(tabs, cfg));
-                s.push(')');
-                s
-            }
-            Kind::FieldsType {
-                ident, fields, dangling,
-            } => {
-                let id = ident.clone().unwrap_or_default();
-                let mut s = format!("{id}(\n");
-                for Field { name, value } in fields {
-                    let main = format!("{}: {}", name, value.to_string_rec(child_tabs, cfg));
-                    Self::emit_item(
-                        &mut s, child_tabs, cfg, &value.leading, &main, &value.trailing,
-                    );
-                }
-                s.push_str(&Self::dangling_block(dangling, child_tabs, cfg));
-                s.push_str(&space(tabs, cfg));
-                s.push(')');
-                s
-            }
-        }
-    }
-
-    fn multiline(&self, tabs: usize, cfg: &Config) -> String {
-        match &self.kind {
-            Kind::Atom(atom) => atom.clone(),
-
-            Kind::List { values, .. } => {
-                let elements = values
+        Kind::Map { entries, dangling } => {
+            !dangling.is_empty()
+                || entries
                     .iter()
-                    .map(|e| space(tabs + 1, cfg) + &e.to_string_rec(tabs + 1, cfg) + ",\n")
-                    .collect::<String>();
-                format!("[\n{}{}]", elements, space(tabs, cfg))
-            }
-
-            Kind::Map { entries, .. } => {
-                let entries = entries.iter().fold(String::new(), |mut s, (k, v)| {
-                    s.push_str(&space(tabs + 1, cfg));
-                    s.push_str(&k.to_string_rec(tabs + 1, cfg));
-                    s.push_str(": ");
-                    s.push_str(&v.to_string_rec(tabs + 1, cfg));
-                    s.push_str(",\n");
-                    s
-                });
-                format!("{{\n{}{}}}", entries, space(tabs, cfg))
-            }
-
-            Kind::TupleType {
-                ident, values, ..
-            } => {
-                let ident = ident.clone().unwrap_or_default();
-                let elements = values
-                    .iter()
-                    .map(|e| space(tabs + 1, cfg) + &e.to_string_rec(tabs + 1, cfg) + ",\n")
-                    .collect::<String>();
-                format!("{}(\n{}{})", ident, elements, space(tabs, cfg))
-            }
-
-            Kind::FieldsType {
-                ident, fields, ..
-            } => {
-                let ident = ident.clone().unwrap_or_default();
-                let mut s = format!("{}(\n", ident);
-                for fld in fields {
-                    s.push_str(&space(tabs + 1, cfg));
-                    s.push_str(&fld.name);
-                    s.push_str(": ");
-                    s.push_str(&fld.value.to_string_rec(tabs + 1, cfg));
-                    s.push_str(",\n");
-                }
-                s.push_str(&space(tabs, cfg));
-                s.push(')');
-                s
-            }
+                    .any(|(k, val)| subtree_has_comments(k) || subtree_has_comments(val))
+        }
+        Kind::TupleType { values, dangling, .. } => {
+            !dangling.is_empty() || values.iter().any(subtree_has_comments)
+        }
+        Kind::FieldsType { fields, dangling, .. } => {
+            !dangling.is_empty() || fields.iter().any(|f| subtree_has_comments(&f.value))
         }
     }
+}
 
-    fn single_line(&self) -> String {
-        match &self.kind {
-            Kind::Atom(atom) => atom.clone(),
+/// Leading comments, each on its own line before the value.
+fn leading_doc(v: &Value) -> Doc {
+    let mut parts: Vec<Doc> = Vec::new();
+    for c in &v.leading {
+        parts.push(text(c.clone()));
+        parts.push(hard_line());
+    }
+    concat(parts)
+}
 
-            Kind::List { values, .. } => {
-                format!("[{}]", values.iter().map(Self::single_line).join(", "))
-            }
+/// Trailing comments, inline after the value/comma.
+fn trailing_doc(v: &Value) -> Doc {
+    concat(v.trailing.iter().map(|c| text(format!(" {c}"))).collect())
+}
 
-            Kind::Map { entries, .. } => format!(
-                "{{{}}}",
-                entries
-                    .iter()
-                    .map(|(k, v)| format!("{}: {}", k.single_line(), v.single_line()))
-                    .join(", ")
-            ),
+fn value_doc(v: &Value, tab: usize) -> Doc {
+    concat(vec![leading_doc(v), kind_doc(v, tab)])
+}
 
-            Kind::TupleType {
-                ident, values, ..
-            } => {
-                let ident = ident.clone().unwrap_or_default();
-                format!(
-                    "{}({})",
-                    ident,
-                    values.iter().map(Self::single_line).join(", ")
-                )
-            }
+fn kind_doc(v: &Value, tab: usize) -> Doc {
+    match &v.kind {
+        Kind::Atom(a) => text(a.clone()),
 
-            Kind::FieldsType {
-                ident, fields, ..
-            } => {
-                let ident = ident.clone().unwrap_or_default();
-                let fields = fields
-                    .iter()
-                    .map(|f| format!("{}: {}", f.name, f.value.single_line()))
-                    .join(", ");
-                format!("{ident}({fields})")
-            }
+        Kind::List { values, dangling } => {
+            let force = !dangling.is_empty() || values.iter().any(subtree_has_comments);
+            let n = values.len();
+            let items: Vec<Doc> = values
+                .iter()
+                .enumerate()
+                .map(|(i, e)| {
+                    let sep = if force || i < n - 1 { text(",") } else { comma() };
+                    concat(vec![value_doc(e, tab), sep, trailing_doc(e)])
+                })
+                .collect();
+            container(force, "[", "]", items, dangling, tab)
         }
+
+        Kind::Map { entries, dangling } => {
+            let force = !dangling.is_empty()
+                || entries
+                    .iter()
+                    .any(|(k, val)| subtree_has_comments(k) || subtree_has_comments(val));
+            let n = entries.len();
+            let items: Vec<Doc> = entries
+                .iter()
+                .enumerate()
+                .map(|(i, (k, val))| {
+                    let sep = if force || i < n - 1 { text(",") } else { comma() };
+                    concat(vec![
+                        value_doc(k, tab),
+                        text(": "),
+                        value_doc(val, tab),
+                        sep,
+                        trailing_doc(val),
+                    ])
+                })
+                .collect();
+            container(force, "{", "}", items, dangling, tab)
+        }
+
+        Kind::TupleType {
+            ident, values, dangling,
+        } => {
+            let force = !dangling.is_empty() || values.iter().any(subtree_has_comments);
+            let n = values.len();
+            let open = format!("{}(", ident.clone().unwrap_or_default());
+            let items: Vec<Doc> = values
+                .iter()
+                .enumerate()
+                .map(|(i, e)| {
+                    let sep = if force || i < n - 1 { text(",") } else { comma() };
+                    concat(vec![value_doc(e, tab), sep, trailing_doc(e)])
+                })
+                .collect();
+            container(force, &open, ")", items, dangling, tab)
+        }
+
+        Kind::FieldsType {
+            ident, fields, dangling,
+        } => {
+            let force = !dangling.is_empty() || fields.iter().any(|f| subtree_has_comments(&f.value));
+            let n = fields.len();
+            let open = format!("{}(", ident.clone().unwrap_or_default());
+            let items: Vec<Doc> = fields
+                .iter()
+                .enumerate()
+                .map(|(i, Field { name, value })| {
+                    let sep = if force || i < n - 1 { text(",") } else { comma() };
+                    concat(vec![
+                        leading_doc(value),
+                        text(format!("{name}: ")),
+                        kind_doc(value, tab),
+                        sep,
+                        trailing_doc(value),
+                    ])
+                })
+                .collect();
+            container(force, &open, ")", items, dangling, tab)
+        }
+    }
+}
+
+/// A container. With `force` (comments present) every element goes on its own
+/// line via hard breaks and plain commas; otherwise a `group` decides flat
+/// vs. broken with a real `fits()` check and a conditional trailing comma.
+fn container(
+    force: bool,
+    open: &str,
+    close: &str,
+    items: Vec<Doc>,
+    dangling: &[String],
+    tab: usize,
+) -> Doc {
+    if force {
+        let mut inner: Vec<Doc> = Vec::new();
+        for (i, item) in items.into_iter().enumerate() {
+            if i > 0 {
+                inner.push(hard_line());
+            }
+            inner.push(item);
+        }
+        for (i, c) in dangling.iter().enumerate() {
+            if i > 0 || !inner.is_empty() {
+                inner.push(hard_line());
+            }
+            inner.push(text(c.clone()));
+        }
+        concat(vec![
+            text(open),
+            nest(tab, concat(vec![hard_line(), concat(inner)])),
+            hard_line(),
+            text(close),
+        ])
+    } else {
+        let mut inner: Vec<Doc> = Vec::new();
+        for (i, item) in items.into_iter().enumerate() {
+            if i > 0 {
+                inner.push(line());
+            }
+            inner.push(item);
+        }
+        group(concat(vec![
+            text(open),
+            nest(tab, concat(vec![soft_line(), concat(inner)])),
+            soft_line(),
+            text(close),
+        ]))
     }
 }

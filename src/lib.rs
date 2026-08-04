@@ -1,4 +1,5 @@
 mod ast;
+pub mod pretty;
 
 pub use ast::{Kind, RonFile, Value};
 

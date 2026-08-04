@@ -17,7 +17,6 @@ pub enum Attribute {
 }
 
 pub struct Value {
-    len: usize,
     leading: Vec<String>,
     trailing: Vec<String>,
     kind: Kind,
@@ -147,7 +146,6 @@ impl Value {
             | Rule::unit_type => {
                 let a = pair.as_str().to_string();
                 Self {
-                    len: a.len(),
                     leading: vec![],
                     trailing: vec![],
                     kind: Kind::Atom(a),
@@ -156,9 +154,7 @@ impl Value {
 
             Rule::list => {
                 let (values, dangling) = collect_values(pair.clone().into_inner(), src);
-                let len = values.iter().map(|v| v.len + 2).sum();
                 Self {
-                    len,
                     leading: vec![],
                     trailing: vec![],
                     kind: Kind::List { values, dangling },
@@ -167,9 +163,7 @@ impl Value {
 
             Rule::map => {
                 let (entries, dangling) = collect_entries(pair.clone().into_inner(), src);
-                let len = entries.iter().map(|(k, v)| k.len + v.len + 4).sum();
                 Self {
-                    len,
                     leading: vec![],
                     trailing: vec![],
                     kind: Kind::Map { entries, dangling },
@@ -178,10 +172,7 @@ impl Value {
 
             Rule::tuple_type => {
                 let (ident, values, dangling) = collect_named_values(pair.clone().into_inner(), src);
-                let len = ident.as_ref().map_or(0, String::len)
-                    + values.iter().map(|v| v.len + 2).sum::<usize>();
                 Self {
-                    len,
                     leading: vec![],
                     trailing: vec![],
                     kind: Kind::TupleType {
@@ -194,13 +185,7 @@ impl Value {
 
             Rule::fields_type => {
                 let (ident, fields, dangling) = collect_fields(pair.clone().into_inner(), src);
-                let len = ident.as_ref().map_or(0, String::len)
-                    + fields
-                        .iter()
-                        .map(|f| f.name.len() + f.value.len + 4)
-                        .sum::<usize>();
                 Self {
-                    len,
                     leading: vec![],
                     trailing: vec![],
                     kind: Kind::FieldsType {

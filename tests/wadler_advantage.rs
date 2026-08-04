@@ -1,22 +1,22 @@
-//! Demonstrates the advantages of a Wadler/Leijen `Doc` printer over the
-//! greedy heuristic currently in `format_ron`.
+//! Regression tests for the Wadler/Leijen `Doc` printer that now powers
+//! `format_ron` (see `src/pretty.rs`).
 //!
-//! The greedy printer decides whether a value is flat by comparing its flat
-//! length against the width using only its own indentation
-//! (`tabs * tab_size + len > max_width` in `src/ast/display.rs`). It ignores
-//! text already emitted on the current line — most importantly the `key: `
-//! prefix of a map/struct entry — so it keeps a value flat when the real line
-//! overruns `max_width`. The Wadler printer's `group`/`fits()` decides from
-//! the *actual* column, so it breaks exactly what does not fit and never
-//! exceeds the width (the only exceptions are unbreakable tokens that are
-//! themselves wider than the limit).
+//! These lock in the properties that motivated replacing the old greedy
+//! heuristic, which decided flat-vs-broken from a value's own indentation and
+//! ignored the `key: ` prefix already on the line — producing lines wider than
+//! `max_width`. `group`/`fits()` measures from the actual column, breaks
+//! exactly what does not fit, and keeps a nested group flat when it fits.
+//!
+//! Every case is also rendered by an independent pest-tree → `Doc` builder
+//! (`support::pretty::format_wadler`) and asserted to agree with the AST-based
+//! printer, so a layout bug in either construction fails loudly.
 
 mod support;
 
 use fmtron::{format_ron, Config};
 use support::pretty::{format_wadler, max_line_len};
 
-fn greedy(input: &str, width: usize) -> String {
+fn formatted(input: &str, width: usize) -> String {
     format_ron(input, &Config {
         tab_size: 4,
         max_width: width,
@@ -28,30 +28,24 @@ fn greedy(input: &str, width: usize) -> String {
 #[test]
 fn whole_document_stays_flat_when_it_fits() {
     let input = "(alpha: 1, beta: 2, gamma: [1, 2, 3])";
-    let w = format_wadler(input, 60, 4).unwrap();
-    assert_eq!(w.lines().count(), 1, "wadler broke a doc that fits:\n{w}");
-    // Flat rendering matches the greedy printer's.
-    assert_eq!(w, greedy(input, 60));
+    let out = formatted(input, 60);
+    assert_eq!(out.lines().count(), 1, "broke a doc that fits:\n{out}");
+    assert_eq!(out, input);
+    assert_eq!(out, format_wadler(input, 60, 4).unwrap());
 }
 
-/// Greedy keeps a short list flat after a long key and overruns the width
-/// (35 chars at width 30). Wadler breaks only the list, so every line fits.
+/// A short list after a long key would overrun the width if kept flat
+/// (35 chars at width 30). The printer breaks only the list.
 #[test]
 fn map_value_does_not_overrun_width() {
     let input = "{a_very_long_map_key: [1, 2, 3], b: 2}";
     let width = 30;
 
-    let g = greedy(input, width);
-    assert!(
-        max_line_len(&g) > width,
-        "expected greedy to overrun; got:\n{g}"
-    );
-
-    let w = format_wadler(input, width, 4).unwrap();
-    assert!(max_line_len(&w) <= width, "wadler overran:\n{w}");
-    // The list is broken; the rest of the layout is unchanged.
-    assert!(w.contains("a_very_long_map_key: [\n"), "wadler:\n{w}");
-    assert!(w.contains("    b: 2,\n"), "wadler:\n{w}");
+    let out = formatted(input, width);
+    assert!(max_line_len(&out) <= width, "overran the width:\n{out}");
+    assert!(out.contains("a_very_long_map_key: [\n"), "out:\n{out}");
+    assert!(out.contains("    b: 2,\n"), "out:\n{out}");
+    assert_eq!(out, format_wadler(input, width, 4).unwrap());
 }
 
 /// Per-group precision: an inner list that fits on its line stays flat, while
@@ -61,23 +55,18 @@ fn inner_list_stays_flat_when_it_fits_and_breaks_when_not() {
     let input = "(short: [1, 2, 3], a_very_long_key_here: [1, 2, 3])";
     let width = 30;
 
-    let g = greedy(input, width);
-    assert!(
-        max_line_len(&g) > width,
-        "expected greedy to overrun; got:\n{g}"
-    );
-
-    let w = format_wadler(input, width, 4).unwrap();
-    assert!(max_line_len(&w) <= width, "wadler overran:\n{w}");
+    let out = formatted(input, width);
+    assert!(max_line_len(&out) <= width, "overran the width:\n{out}");
     // `short: [1, 2, 3]` fits on its line -> kept flat.
-    assert!(w.contains("    short: [1, 2, 3],\n"), "wadler:\n{w}");
+    assert!(out.contains("    short: [1, 2, 3],\n"), "out:\n{out}");
     // `a_very_long_key_here: [1, 2, 3]` does not -> broken.
-    assert!(w.contains("    a_very_long_key_here: [\n"), "wadler:\n{w}");
+    assert!(out.contains("    a_very_long_key_here: [\n"), "out:\n{out}");
+    assert_eq!(out, format_wadler(input, width, 4).unwrap());
 }
 
-/// Wadler never exceeds the width on a corpus across several widths. Widths
-/// are chosen to be at least as wide as the longest unbreakable token in each
-/// case (a printer cannot wrap a single 20-char key inside 16 columns).
+/// The printer never exceeds the width on a corpus across several widths.
+/// Widths are chosen to be at least as wide as the longest unbreakable token
+/// in each case (a printer cannot wrap a single long key inside 16 columns).
 #[test]
 fn wadler_never_overruns_a_corpus_of_nested_inputs() {
     let cases = [
@@ -88,10 +77,12 @@ fn wadler_never_overruns_a_corpus_of_nested_inputs() {
     ];
     for width in [24, 30, 40] {
         for input in cases {
-            let w = format_wadler(input, width, 4).unwrap();
-            assert!(
-                max_line_len(&w) <= width,
-                "wadler overran width {width}:\n{w}"
+            let out = formatted(input, width);
+            assert!(max_line_len(&out) <= width, "overran width {width}:\n{out}");
+            assert_eq!(
+                out,
+                format_wadler(input, width, 4).unwrap(),
+                "AST printer disagrees with pest-tree printer (width {width})"
             );
         }
     }
