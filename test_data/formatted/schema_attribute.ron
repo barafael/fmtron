@@ -1,0 +1,3 @@
+#![schema = "0.1"]
+#![enable(unwrap_variant_newtypes)]
+(version: 1, data: Some(5))

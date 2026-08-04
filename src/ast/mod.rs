@@ -4,7 +4,13 @@ use crate::Rule;
 use itertools::Itertools;
 use pest::iterators::Pair;
 
-pub struct RonFile(Vec<String>, Box<Value>);
+pub struct RonFile(Vec<Attribute>, Box<Value>);
+
+pub enum Attribute {
+    Enable(Vec<String>),
+    Type(String),
+    Schema(String),
+}
 
 pub struct Value(usize, Kind);
 
@@ -16,21 +22,39 @@ pub enum Kind {
     FieldsType(Option<String>, Vec<(String, Value)>),
 }
 
+impl Attribute {
+    fn from(pair: Pair<Rule>) -> Self {
+        assert!(pair.as_rule() == Rule::attribute, "expected attribute pair");
+        let inner = pair.into_inner().next().unwrap();
+        match inner.as_rule() {
+            Rule::enable_attr => Attribute::Enable(
+                inner.into_inner().map(|p| p.as_str().into()).collect(),
+            ),
+            Rule::type_attr => {
+                Attribute::Type(inner.into_inner().next().unwrap().as_str().into())
+            }
+            Rule::schema_attr => {
+                Attribute::Schema(inner.into_inner().next().unwrap().as_str().into())
+            }
+            _ => unreachable!(),
+        }
+    }
+}
+
 impl RonFile {
     pub fn parse_from(pair: Pair<Rule>) -> Self {
         assert!(pair.as_rule() == Rule::ron_file, "expected ron_file pair");
 
         let mut iter = pair.into_inner();
-        let extensions = iter
-            .take_while_ref(|item| item.as_rule() == Rule::extension)
-            .flat_map(Pair::into_inner)
-            .map(|ext_name| ext_name.as_str().into())
-            .collect::<Vec<String>>();
+        let attributes = iter
+            .take_while_ref(|item| item.as_rule() == Rule::attribute)
+            .map(Attribute::from)
+            .collect::<Vec<_>>();
         let value = iter.next().map(Value::from).unwrap();
 
         assert!(iter.next().unwrap().as_rule() == Rule::EOI);
 
-        Self(extensions, Box::new(value))
+        Self(attributes, Box::new(value))
     }
 }
 

@@ -1,8 +1,7 @@
-use super::{Kind, RonFile, Value};
+use super::{Attribute, Kind, RonFile, Value};
 use crate::{MAX_LINE_WIDTH, TAB_SIZE};
 use itertools::Itertools;
 use std::fmt::Write;
-use std::ops::Not;
 use std::{
     fmt::{self, Display, Formatter},
     sync::atomic::Ordering,
@@ -10,9 +9,13 @@ use std::{
 
 impl Display for RonFile {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        let Self(extensions, value) = self;
-        if extensions.is_empty().not() {
-            writeln!(f, "#![enable({})]", extensions.iter().join(", "))?;
+        let Self(attributes, value) = self;
+        for attr in attributes {
+            match attr {
+                Attribute::Enable(ids) => writeln!(f, "#![enable({})]", ids.join(", "))?,
+                Attribute::Type(s) => writeln!(f, "#![type = {}]", s)?,
+                Attribute::Schema(s) => writeln!(f, "#![schema = {}]", s)?,
+            }
         }
         write!(f, "{}", value.to_string_rec(0))
     }

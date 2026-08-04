@@ -11,13 +11,18 @@ ident_first = { ASCII_ALPHA | "_" | non_ascii }
 ident_rest = { ASCII_ALPHANUMERIC | "_" | non_ascii }
 non_ascii = { !('\u{00}' .. '\u{7F}') ~ ANY }
 
-ron_file = { SOI ~ extension* ~ value ~ EOI }
+ron_file = { SOI ~ attribute* ~ value ~ EOI }
 
-extension = {
-    "#" ~ "!" ~ "[" ~ "enable" ~ "(" ~
-    ident ~ ("," ~ ident)* ~ ","? ~
-    ")" ~ "]"
+attribute = {
+    "#" ~ "!" ~ "[" ~ ( enable_attr | type_attr | schema_attr ) ~ "]"
 }
+enable_attr = {
+    "enable" ~ "(" ~
+    ident ~ ("," ~ ident)* ~ ","? ~
+    ")"
+}
+type_attr = { "type" ~ "=" ~ string }
+schema_attr = { "schema" ~ "=" ~ string }
 
 value = { float | signed_int | bool | char | byte_string | string | list | map | tuple_type | fields_type | unit_type }
 
