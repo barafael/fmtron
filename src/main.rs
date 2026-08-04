@@ -1,4 +1,5 @@
 use std::ffi::OsString;
+use std::process::ExitCode;
 
 use clap::Parser as ClapParser;
 use pest::Parser;
@@ -14,31 +15,44 @@ mod ast;
 #[grammar = "ron.pest"]
 struct RonParser;
 
-fn main() {
+fn main() -> ExitCode {
+    match run() {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(e) => {
+            eprintln!("{e}");
+            ExitCode::FAILURE
+        }
+    }
+}
+
+fn run() -> Result<(), Box<dyn std::error::Error>> {
     let args = Arguments::parse();
     let config = Config {
         tab_size: args.tab_size,
         max_width: args.width,
     };
 
-    let file = std::fs::read_to_string(&args.input).expect("unable to read file");
+    let file = std::fs::read_to_string(&args.input)
+        .map_err(|e| format!("unable to read {}: {e}", args.input.display()))?;
 
-    let ron = RonParser::parse(Rule::ron_file, &file)
-        .expect("unable to parse RON")
+    let pair = RonParser::parse(Rule::ron_file, &file)
+        .map_err(|e| format!("unable to parse RON:\n{e}"))?
         .next()
-        .unwrap();
+        .ok_or("parsed RON produced no value")?;
+
+    let formatted = ast::RonFile::parse_from(pair, &file, config).to_string();
 
     if args.debug {
-        println!("{}", ast::RonFile::parse_from(ron, &file, config));
+        println!("{formatted}");
     } else {
         let mut backup = OsString::from(&args.input);
         backup.push(".bak");
-        std::fs::copy(&args.input, &backup).expect("unable to create backup file");
+        std::fs::copy(&args.input, &backup)
+            .map_err(|e| format!("unable to create backup {}: {e}", backup.to_string_lossy()))?;
 
-        std::fs::write(
-            args.input,
-            format!("{}", ast::RonFile::parse_from(ron, &file, config)),
-        )
-        .expect("unable to overwrite target file");
+        std::fs::write(&args.input, formatted)
+            .map_err(|e| format!("unable to write {}: {e}", args.input.display()))?;
     }
+
+    Ok(())
 }
