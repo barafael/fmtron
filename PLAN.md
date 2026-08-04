@@ -7,20 +7,24 @@ lossless parse and the printer; the lexical gaps are mechanical.
 
 ## Current state
 
-`pest grammar (lossy) → minimal AST (precomputed lengths) → greedy,
-column-unaware Display`, with `COMMENT` silent (`src/ron.pest:3`) and formatter
-config in global atomics (`src/lib.rs:7-8`).
+All five phases are **complete**. fmtron is now: `pest grammar (lossy) →
+comment-aware AST → display`, with `Config { tab_size, max_width }` threaded
+through instead of global atomics, comments preserved across round-trips, and a
+graceful CLI (no panics). The one deviation from the roadmap: the full
+Wadler/Leijen `Doc` printer was deferred — the greedy width heuristic produces
+correct output for the corpus, and a `Doc` rewrite would churn every expected
+output for marginal benefit.
 
 ## Phases
 
-| # | Phase | Effort | Risk | Deliverable |
-|---|---|---|---|---|
-| 0 | Harden the test harness | S (~0.5d) | none | conformance suite stops `unwrap`-panic'ing; oracle + idempotency gates |
-| 1 | Close the 6 lexical gaps | M (1–2d) | low | `gap_validation` registry flipped to green |
-| 2 | Structural grammar audit | M (1–2d) | med | tuple/newtype/named-struct/map disambiguation proven |
-| 3 | Comment capture + attachment | L (2–3d) | med | comments survive a format round-trip |
-| 4 | Column-aware printer | M (2d) | low | no overruns; global atomics gone |
-| 5 | CLI robustness + corpus fuzz | S (1d) | none | graceful errors; ron's own corpus passes |
+| # | Phase | Effort | Risk | Deliverable | Status |
+|---|---|---|---|---|---|
+| 0 | Harden the test harness | S (~0.5d) | none | conformance suite stops `unwrap`-panic'ing; oracle + idempotency gates | done `1ad6106` |
+| 1 | Close the 6 lexical gaps | M (1–2d) | low | `gap_validation` registry flipped to green | done `1ad6106` |
+| 2 | Structural grammar audit | M (1–2d) | med | tuple/newtype/named-struct/map disambiguation proven | done `380ee2c` |
+| 3 | Comment capture + attachment | L (2–3d) | med | comments survive a format round-trip | done `43829b0` |
+| 4 | Column-aware printer | M (2d) | low | no overruns; global atomics gone | done `2b955a3` |
+| 5 | CLI robustness + corpus fuzz | S (1d) | none | graceful errors; ron's own corpus passes | done `414cc02` |
 
 Estimated ~8–12 days of careful solo work. Highest-value, highest-risk pieces
 are Phase 3 (comments) and Phase 2 (structural ambiguity); Phase 1 is mostly
