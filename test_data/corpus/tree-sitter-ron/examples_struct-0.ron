@@ -1,0 +1,13 @@
+(
+    // some fields
+    some_escaped_string: "abc\"\n\A\b\\",
+    chars: ['e', '\a'],
+    integer: 1,
+    hex_integer: 0xFF,
+    binary_integer: 0b0110,
+    /* a block comment */
+    a_boolean: true,
+    a_float: 1.1234,
+    a_NEGATIVE_float: -10.1,
+    another_boolean: false, // another comment
+)

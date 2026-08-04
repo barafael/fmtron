@@ -1,0 +1,26 @@
+#![enable(implicit_some)]
+/*!
+    @import /amethyst_assets/src/prefab/mod.rs#Prefab
+    @import ../../prefab_custom/main.rs#CustomPrefabData
+    Prefab<CustomPrefabData>
+*/
+
+Prefab(
+    entities: [
+        // Player
+        PrefabEntity(
+            data: Player (
+                name: Named(name: "Zero"),
+                position: Position(1.0, 2.0, 3.0),
+            ),
+        ),
+        // Weapon
+        PrefabEntity(
+            parent: 0,
+            data: Weapon (
+                weapon_type: Sword,
+                position: Position(4.0, 5.0, 6.0),
+            ),
+        ),
+    ],
+)

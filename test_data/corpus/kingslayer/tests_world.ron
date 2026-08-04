@@ -1,0 +1,72 @@
+(player: "PLAYER", items: {
+    "PLAYER": (
+        names: ["self", "myself"],
+        locations: ["CENTER ROOM"],
+        hp: 10,
+    ),
+    "CENTER ROOM": (
+        desc: "You are in the center room.",
+        names: ["Center Room"],
+    ),
+    "CENTER ROOM NORTH": (
+        names: ["closet", "north", "enter"],
+        locations: ["CENTER ROOM"],
+        dest: "CLOSET",
+    ),
+    "CENTER ROOM SOUTH": (
+        names: ["arena", "south"],
+        locations: ["CENTER ROOM"],
+        dest: "ARENA",
+    ),
+    "BOX": (
+        desc: "There is a box here.",
+        names: ["box"],
+        locations: ["CENTER ROOM"],
+        container: Closed,
+        can_take: true,
+    ),
+    "APPLE": (
+        desc: "There is an apple on the ground.",
+        names: ["apple"],
+        locations: ["BOX"],
+        can_take: true,
+    ),
+    "CLOSET": (
+        desc: "You are in the closet.",
+        names: ["Closet"],
+    ),
+    "IRON SWORD": (
+        desc: "There is an iron sword here.",
+        names: ["iron sword"],
+        locations: ["CLOSET"],
+        can_take: true,
+    ),
+    "RED BLOCK": (
+        desc: "There is a large red block here.",
+        names: ["large red block"],
+        locations: ["CLOSET"],
+        can_take: true,
+    ),
+    "ARENA": (
+        names: ["Arena"],
+        desc: "You are in a circular arena with a dirt floor.",
+    ),
+    "GOBLIN": (
+        names: ["goblin"],
+        locations: ["ARENA"],
+        hp: 3,
+        nature: Aggressive,
+    ),
+    "DAGGER": (
+        names: ["dagger"],
+        locations: ["GOBLIN"],
+        damage: 1,
+        can_take: true,
+    ),
+    "SPEAR": (
+        names: ["spear"],
+        locations: ["ARENA"],
+        can_take: true,
+        damage: 2,
+    ),
+})

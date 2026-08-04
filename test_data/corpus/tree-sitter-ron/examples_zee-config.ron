@@ -1,0 +1,28 @@
+(
+    theme_index: 0,
+
+    // Modes and tree sitter parsers
+    modes: [
+        // C
+        Mode(
+            name: "C",
+            scope: "source.c",
+            injection_regex: "c",
+            patterns: [Suffix(".c"), Suffix(".h")],
+            comment: Some(Comment(token: "// ")),
+            indentation: Indentation(
+                width: 4,
+                unit: Space,
+            ),
+            grammar: Some(
+                Grammar(
+                    id: "c",
+                    source: Git(
+                        git: "https://github.com/tree-sitter/tree-sitter-c",
+                        rev: "f05e279aedde06a25801c3f2b2cc8ac17fac52ae",
+                    ),
+                )
+            ),
+        ),
+    ]
+)

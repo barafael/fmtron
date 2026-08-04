@@ -1,0 +1,10 @@
+(
+    // some fields
+    "abc\"\n",
+    1,
+    /* a block comment */
+    true,
+    1.1234,
+    -10.1,
+    false, // another comment
+)

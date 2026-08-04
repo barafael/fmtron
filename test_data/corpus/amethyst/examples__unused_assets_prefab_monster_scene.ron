@@ -1,0 +1,75 @@
+#![enable(implicit_some)]
+
+/*!
+
+    @import /amethyst_assets/src/prefab/mod.rs#Prefab
+    @import ../../gltf/main.rs#ScenePrefabData
+    Prefab<ScenePrefabData>
+*/
+
+Prefab (
+    entities: [
+        (
+            data: (
+                light: (ambient_color: ((0.5, 0.5, 0.5, 0.5))),
+            ),
+        ),
+        (
+            data: (
+                transform: Transform(
+                    scale: (0.2, 0.2, 0.2),
+                ),
+            ),
+        ),
+        (
+            parent: 1,
+            data: (
+                gltf: File("mesh/Monster.gltf", (
+                    generate_tex_coords: (0.1, 0.1),
+                    load_animations: true,
+                    flip_v_coord: true,
+                )),
+                tag: (),
+            ),
+        ),
+        (
+            data: (
+                transform: Transform (
+                     translation: (5.0, 2.0, 5.0),
+                ),
+                camera: Perspective(
+                    aspect: 1.33333333333333333333,
+                    fovy: 1.0471975512,
+                    znear: 0.1,
+                    zfar: 2000.0,
+                ),
+            ),
+        ),
+        (
+            data: (
+                transform: Transform (
+                     translation: (6.0, 6.0, -6.0),
+                ),
+                light: (
+                    light: Point((
+                        intensity: 6.0,
+                        color: (0.8, 0.0, 0.0, 1.0),
+                    )),
+                ),
+            ),
+        ),
+        (
+            data: (
+                transform: Transform (
+                     translation: (0.0, 4.0, 4.0),
+                ),
+                light: (
+                    light: Point((
+                        intensity: 6.0,
+                        color: (0.0, 0.3, 0.7, 1.0),
+                    )),
+                ),
+            ),
+        ),
+    ],
+)

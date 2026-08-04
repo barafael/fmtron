@@ -1,0 +1,15 @@
+/*!
+    @import /amethyst_rendy/src/sprite/mod.rs#Sprites
+    Sprites
+*/
+
+#![enable(implicit_some)]
+{
+"04c60333-c790-4586-aa76-086b19167a04":
+Grid((
+    texture_width: 128,
+    texture_height: 64,
+    columns: 2,
+    rows: 1,
+))
+}
