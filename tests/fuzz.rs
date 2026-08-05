@@ -132,11 +132,7 @@ fn value(rng: &mut Rng, depth: usize) -> String {
 }
 
 fn normalize(s: &str) -> String {
-    s.lines()
-        .map(str::trim)
-        .filter(|l| !l.is_empty())
-        .collect::<Vec<_>>()
-        .join("\n")
+    s.lines().map(str::trim_end).collect::<Vec<_>>().join("\n")
 }
 
 #[test]

@@ -121,10 +121,10 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
         },
         Doc::Nest(n, d) => best(out, d, width, indent + n, col, mode),
         Doc::Group(d) => {
-            // A group not sitting inside a `Concat` (e.g. the document root)
-            // has no siblings to consider: it flattens iff its own flat form
-            // fits the remaining width.
-            if fits(width.saturating_sub(col), d) {
+            // A group reached directly by `best` (not intercepted by the
+            // `Concat` arm) has no siblings to consider — it flattens iff its
+            // own flat form fits the remaining width.
+            if fits_rest(width.saturating_sub(col), Mode::Flat, std::slice::from_ref(d)) {
                 best(out, d, width, indent, col, Mode::Flat)
             } else {
                 best(out, d, width, indent, col, Mode::Break)
@@ -153,13 +153,6 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
             c
         }
     }
-}
-
-/// True if the content of `doc` up to the first line break fits in `rem`
-/// remaining columns. A hard break means the line ends early, so it always
-/// fits. Equivalently: `fits_rest(rem, Mode::Flat, &[doc])`.
-fn fits(rem: usize, doc: &Doc) -> bool {
-    fits_rest(rem, Mode::Flat, std::slice::from_ref(doc))
 }
 
 /// Result of probing how one `Doc` renders on the current line.
@@ -220,10 +213,23 @@ fn fits_probe(rem: &mut usize, mode: Mode, d: &Doc) -> Fit {
 
 /// True if `docs` fit in `rem` remaining columns on the current line, where
 /// every doc renders in `mode` and scanning stops at the first line break.
+///
+/// `docs[0]` is the group whose flat/break decision is being made; it is
+/// always measured in flat mode (via `fits_probe`). Any *following* `Group`
+/// (index > 0) is treated as a boundary: it will decide independently whether
+/// to flatten or break, so its content must not be counted against the current
+/// group's share of the line. This prevents a large sibling (e.g. a container
+/// value in a map entry) from forcing a small container key to break
+/// unnecessarily.
 fn fits_rest(rem: usize, mode: Mode, docs: &[Doc]) -> bool {
     let mut rem = rem;
-    for d in docs {
-        match fits_probe(&mut rem, mode, d) {
+    for (i, d) in docs.iter().enumerate() {
+        let fit = if i > 0 && matches!(d, Doc::Group(_)) {
+            Fit::LineBreak
+        } else {
+            fits_probe(&mut rem, mode, d)
+        };
+        match fit {
             Fit::Continue => {}
             Fit::Overflow => return false,
             Fit::LineBreak => return true,

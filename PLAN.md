@@ -27,8 +27,8 @@ default seed `0xC0FFEE`, overridable via `FMTRON_FUZZ_SEED`).
 | 1 | Close the 6 lexical gaps | M (1–2d) | low | `gap_validation` registry flipped to green | done `1ad6106` |
 | 2 | Structural grammar audit | M (1–2d) | med | tuple/newtype/named-struct/map disambiguation proven | done `380ee2c` |
 | 3 | Comment capture + attachment | L (2–3d) | med | comments survive a format round-trip | done `43829b0` |
-| 4 | Column-aware printer | M (2d) | low | no overruns; global atomics gone | done `2b955a3` |
-| 5 | CLI robustness + corpus fuzz | S (1d) | none | graceful errors; ron's own corpus passes | done `414cc02` |
+| 4 | Column-aware printer | M (2d) | low | no overruns; global atomics gone | done `2b955a3`, `d52e06a` |
+| 5 | CLI robustness + corpus fuzz | S (1d) | none | graceful errors; ron's own corpus passes | done `414cc02`, `f344cc9` |
 
 Estimated ~8–12 days of careful solo work. Highest-value, highest-risk pieces
 are Phase 3 (comments) and Phase 2 (structural ambiguity); Phase 1 is mostly

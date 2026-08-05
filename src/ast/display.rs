@@ -214,6 +214,9 @@ fn container(
     dangling: &[String],
     tab: usize,
 ) -> Doc {
+    if items.is_empty() && dangling.is_empty() {
+        return concat(vec![text(open), text(close)]);
+    }
     if force {
         let mut inner: Vec<Doc> = Vec::new();
         for (i, item) in items.into_iter().enumerate() {

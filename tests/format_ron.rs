@@ -27,12 +27,12 @@ fn formats_test_file() {
     assert_eq!(ron, ron2, "formatter output is not idempotent");
 }
 
+/// Trim trailing whitespace per line and drop trailing empty lines so the
+/// comparison is insensitive to newline-at-EOF differences but **preserves
+/// indentation** — a formatter regression that drops or changes indent must
+/// fail the conformance suite, not slip through silently.
 fn normalize(s: &str) -> String {
-    s.lines()
-        .map(str::trim)
-        .filter(|l| !l.is_empty())
-        .collect::<Vec<_>>()
-        .join("\n")
+    s.lines().map(str::trim_end).collect::<Vec<_>>().join("\n")
 }
 
 #[test]

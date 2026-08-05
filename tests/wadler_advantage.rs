@@ -87,3 +87,16 @@ fn wadler_never_overruns_a_corpus_of_nested_inputs() {
         }
     }
 }
+
+/// A container used as a map key stays flat when it fits, even when the
+/// *value* (a following sibling group) is too wide and must break. The fit
+/// check for the key's group stops at the value's group boundary, so the
+/// value's width must not force the key to break.
+#[test]
+fn container_map_key_stays_flat_when_only_the_value_breaks() {
+    let input = "{ {a: [1, 2, 3]}: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }";
+    let out = formatted(input, 30);
+    assert!(max_line_len(&out) <= 30, "overran:\n{out}");
+    // Key container fits on its line → stays flat.
+    assert!(out.contains("    {a: [1, 2, 3]}: [\n"), "out:\n{out}");
+}
