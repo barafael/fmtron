@@ -149,9 +149,9 @@ fn scan_number(bytes: &[u8], i: usize) -> Option<usize> {
     let starts = b.is_ascii_digit()
         || (b == b'.' && bytes.get(i + 1).is_some_and(|c| c.is_ascii_digit()))
         || ((b == b'+' || b == b'-')
-            && bytes.get(i + 1).is_some_and(
-                |&c| c.is_ascii_digit() || c == b'i' || c == b'N' || c == b'.',
-            ));
+            && bytes
+                .get(i + 1)
+                .is_some_and(|&c| c.is_ascii_digit() || c == b'i' || c == b'N' || c == b'.'));
     if !starts {
         return None;
     }
