@@ -28,17 +28,22 @@ fn gap_cases_are_valid_ron() {
         let formatted = std::fs::read_to_string(formatted_dir.join(&name))
             .expect("unable to read formatted counterpart");
 
-        let unf: ron::Value = ron::from_str(&unformatted).unwrap_or_else(|e| panic!(
-            "{}: unformatted input is not valid RON per the reference parser: {e}",
-            name.to_string_lossy()
-        ));
-        let fmt: ron::Value = ron::from_str(&formatted).unwrap_or_else(|e| panic!(
-            "{}: formatted output is not valid RON per the reference parser: {e}",
-            name.to_string_lossy()
-        ));
+        let unf: ron::Value = ron::from_str(&unformatted).unwrap_or_else(|e| {
+            panic!(
+                "{}: unformatted input is not valid RON per the reference parser: {e}",
+                name.to_string_lossy()
+            )
+        });
+        let fmt: ron::Value = ron::from_str(&formatted).unwrap_or_else(|e| {
+            panic!(
+                "{}: formatted output is not valid RON per the reference parser: {e}",
+                name.to_string_lossy()
+            )
+        });
 
         assert_eq!(
-            unf, fmt,
+            unf,
+            fmt,
             "{}: formatted output is not semantically equivalent to the unformatted input",
             name.to_string_lossy()
         );

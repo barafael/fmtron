@@ -1,0 +1,16 @@
+// Exotic values nested inside lists, maps, and tuple/struct variants.
+#![enable(implicit_some)]
+(
+    tuple_of_floats: (1e6, -3.0e-2, inf, NaN),
+    list_of_radix: [0xFF, 0o755, 0b1010],
+    map_of_chars: { 'a': 1, 'b': 2, '\n': 3 },
+    nested: Some((hex: 0xDEAD, suffix: 1i32, bits: 0b0011)),
+    matrix: [
+        [0x00, 0xFF],
+        [0b00001111, 0o777],
+    ],
+    empty_unit: (),
+    empty_list: [],
+    empty_map: {},
+    raw_inside: [r#"a"#, r"b", b"c"],
+)

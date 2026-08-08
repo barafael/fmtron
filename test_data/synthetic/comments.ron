@@ -1,0 +1,19 @@
+// Comment forms: line, block, nested block, and the doc-comment variants.
+// Leading block comment before the value.
+/* outer block comment */
+/// outer line doc
+(
+    // leading line comment on field
+    a: 1, /* inline block comment */
+    b: 2, // trailing line comment
+    /* a /* nested */ block comment */
+    c: 3,
+    d: 4, /** doc block trailing */
+    e: 5, //! inner doc trailing
+    f: [
+        // inside a list
+        10,
+        20, /* block inside list */
+    ],
+)
+/// trailing line doc after value

@@ -16,7 +16,7 @@
 
 mod support;
 
-use fmtron::{format_ron, Config};
+use fmtron::{Config, format_ron};
 use support::pretty::max_line_len;
 
 const DEFAULT_SEED: u64 = 0xC0FFEE;
@@ -26,14 +26,17 @@ const DEFAULT_SEED: u64 = 0xC0FFEE;
 const MAX_DEPTH: usize = 3;
 const ITERATIONS: usize = 400;
 
-const IDENTS: &[&str] = &["a", "b", "x1", "y", "foo", "bar", "P", "Pt", "T"];
-const STRINGS: &[&str] = &["\"\"", "x", "hi", "abc", "yolo"];
-const NUMBERS: &[&str] = &[
-    "0", "1", "-7", "42", "0x1F", "0b101", "0o17", "255u8", "100u64", "-128i8",
-    "1e3", "0.5", "-2.5", "1e-3", "inf", "-inf", "1.5f32", "2.0f64",
+const IDENTS: &[&str] = &["a", "b", "x1", "y", "foo", "bar", "P", "Pt", "T", "r#type"];
+const STRINGS: &[&str] = &[
+    "\"\"", "x", "hi", "abc", "yolo", "\"a\\nb\"", "r#\"\"#", "r#\"q\"#",
 ];
-const BYTES: &[&str] = &["b\"\"", "b\"ab\""];
-const CHARS: &[&str] = &["'a'", "'\\''", "'\\n'"];
+const NUMBERS: &[&str] = &[
+    "0", "1", "-7", "42", "0x1F", "0b101", "0o17", "0o755", "0xAbC", "255u8", "100u64",
+    "-128i8", "1e3", "0.5", "-2.5", "1e-3", "1e300", "inf", "-inf", "NaN", "1.5f32", "2.0f64",
+    "7f32", "1f64", "-.25", ".5",
+];
+const BYTES: &[&str] = &["b\"\"", "b\"ab\"", "br#\"\"#"];
+const CHARS: &[&str] = &["'a'", "'\\''", "'\\n'", "'z'", "'\\u{7}'"];
 
 fn seed() -> u64 {
     match std::env::var("FMTRON_FUZZ_SEED") {
@@ -151,9 +154,8 @@ fn seeded_fuzz_never_breaks_the_invariants() {
                 max_width: width,
             };
             let ctx = format!("seed {s}, width {width}");
-            let out = format_ron(&input, &cfg).unwrap_or_else(|e| {
-                panic!("{ctx}: format failed for {input:?}: {e}")
-            });
+            let out = format_ron(&input, &cfg)
+                .unwrap_or_else(|e| panic!("{ctx}: format failed for {input:?}: {e}"));
 
             assert!(
                 max_line_len(&out) <= width,

@@ -15,10 +15,15 @@ pub enum Doc {
     Text(String),
     /// `soft`: flat renders as "" (e.g. before a closing bracket);
     /// otherwise flat renders as " ". Broken always renders as newline + indent.
-    Line { soft: bool },
+    Line {
+        soft: bool,
+    },
     /// Always a newline + indent, regardless of mode.
     HardLine,
-    IfBreak { flat: Box<Doc>, broken: Box<Doc> },
+    IfBreak {
+        flat: Box<Doc>,
+        broken: Box<Doc>,
+    },
     Nest(usize, Box<Doc>),
     Group(Box<Doc>),
     Concat(Vec<Doc>),
@@ -124,7 +129,11 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
             // A group reached directly by `best` (not intercepted by the
             // `Concat` arm) has no siblings to consider — it flattens iff its
             // own flat form fits the remaining width.
-            if fits_rest(width.saturating_sub(col), Mode::Flat, std::slice::from_ref(d)) {
+            if fits_rest(
+                width.saturating_sub(col),
+                Mode::Flat,
+                std::slice::from_ref(d),
+            ) {
                 best(out, d, width, indent, col, Mode::Flat)
             } else {
                 best(out, d, width, indent, col, Mode::Break)

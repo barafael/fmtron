@@ -1,0 +1,11 @@
+// Raw strings: varying numbers of leading hash signs, including strings
+// that contain quote characters and hash characters. (In a raw string there
+// are no escapes, so a literal " inside requires at least one surrounding #.)
+(
+    raw0: r"plain raw",
+    raw0_hashes: r"contains a # literal",
+    raw1: r#"contains a "quote" inside"#,
+    raw2: r##"contains a "# inside"##,
+    raw_newlines: r#"line one
+line two"#,
+)

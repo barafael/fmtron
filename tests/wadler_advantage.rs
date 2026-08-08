@@ -13,14 +13,17 @@
 
 mod support;
 
-use fmtron::{format_ron, Config};
+use fmtron::{Config, format_ron};
 use support::pretty::{format_wadler, max_line_len};
 
 fn formatted(input: &str, width: usize) -> String {
-    format_ron(input, &Config {
-        tab_size: 4,
-        max_width: width,
-    })
+    format_ron(
+        input,
+        &Config {
+            tab_size: 4,
+            max_width: width,
+        },
+    )
     .expect("valid RON")
 }
 

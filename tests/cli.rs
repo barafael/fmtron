@@ -36,5 +36,8 @@ fn missing_file_is_a_clean_error_not_a_panic() {
 fn valid_input_succeeds_and_writes_formatted_output() {
     let out = run_cli("(a:1,b:[1,2,3])", &["-d"]);
     assert!(out.status.success());
-    assert_eq!(String::from_utf8_lossy(&out.stdout), "(a: 1, b: [1, 2, 3])\n");
+    assert_eq!(
+        String::from_utf8_lossy(&out.stdout),
+        "(a: 1, b: [1, 2, 3])\n"
+    );
 }

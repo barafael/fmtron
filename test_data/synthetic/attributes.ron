@@ -1,0 +1,9 @@
+// Attributes: enable, type, and schema, in combination.
+#![enable(unwrap_variant_newtypes)]
+#![type = "CharacterData"]
+#![schema = "0.1.0"]
+(
+    name: "hero",
+    hp: 100,
+    data: Some(5),
+)

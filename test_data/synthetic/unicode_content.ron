@@ -1,0 +1,9 @@
+// Unicode content inside strings and chars (valid RON); identifiers stay ASCII.
+(
+    emoji: "😀😃🤖",
+    chinese: "你好世界",
+    cyrillic: "Привет",
+    mixed: "emoji 😀 and é and \\u{1F600}",
+    emoji_char: '😀',
+    accents: "café résumé naïve",
+)

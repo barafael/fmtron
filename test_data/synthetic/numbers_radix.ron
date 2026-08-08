@@ -1,0 +1,14 @@
+// Numeric literals in non-decimal bases: hexadecimal, octal, binary.
+(
+    hex_byte: 0xFF,
+    hex_u32: 0xDEADBEEF,
+    hex_lowercase: 0xdeadbeef,
+    octal_perm: 0o755,
+    octal_max: 0o777,
+    binary_flags: 0b10100011,
+    binary_zero: 0b0,
+    zero: 0,
+    neg_hex: -0x10,
+    neg_octal: -0o17,
+    neg_binary: -0b101,
+)

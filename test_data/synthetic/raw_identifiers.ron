@@ -1,0 +1,12 @@
+// Raw identifiers (r# prefix) as field names and as unit/tuple variants.
+(
+    r#type: "struct",
+    r#fn: 42,
+    r#match: Some(1),
+    nested: (
+        r#move: true,
+        r#box: "kernel",
+    ),
+    unit: r#loop,
+    tuple: r#fn(1, 2),
+)

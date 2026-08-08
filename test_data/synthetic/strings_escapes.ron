@@ -1,0 +1,9 @@
+// String escapes: control escapes, hex escapes, and \u{...} unicode escapes.
+(
+    escapes: "a\tb\nc\\d",
+    quote: "say \"hi\"",
+    hex_escape: "\x41\x42",
+    unicode: "\u{1F600} is an emoji, \u{00E9} is e-acute",
+    mixed: "tab\there\nand a \u{1F4A9}",
+    empty: "",
+)

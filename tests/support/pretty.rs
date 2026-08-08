@@ -7,12 +7,10 @@
 //! module on its own, so dead-code warnings would otherwise fire for the parts
 //! a given binary does not use.
 #![allow(dead_code)]
-pub use fmtron::pretty::{
-    comma, concat, group, line, nest, render, soft_line, text, Doc,
-};
+pub use fmtron::pretty::{Doc, comma, concat, group, line, nest, render, soft_line, text};
 
 use fmtron::{RonParser, Rule};
-use pest::{iterators::Pair, Parser};
+use pest::{Parser, iterators::Pair};
 
 /// Walk the pest tree for a RON value and build a `Doc`. Comments are dropped
 /// (this is a layout demo, not the comment-aware printer).
@@ -149,12 +147,15 @@ mod unit {
     fn group_flattens_when_it_fits_and_breaks_otherwise() {
         let list = concat(vec![
             text("["),
-            nest(4, concat(vec![
-                soft_line(),
-                item(text("1"), false),
-                line(),
-                item(text("2"), true),
-            ])),
+            nest(
+                4,
+                concat(vec![
+                    soft_line(),
+                    item(text("1"), false),
+                    line(),
+                    item(text("2"), true),
+                ]),
+            ),
             soft_line(),
             text("]"),
         ]);
@@ -169,14 +170,17 @@ mod unit {
         // `[1, 2, 3]` (9 chars) fits on a fresh line at width 10...
         let list = concat(vec![
             text("["),
-            nest(4, concat(vec![
-                soft_line(),
-                item(text("1"), false),
-                line(),
-                item(text("2"), false),
-                line(),
-                item(text("3"), true),
-            ])),
+            nest(
+                4,
+                concat(vec![
+                    soft_line(),
+                    item(text("1"), false),
+                    line(),
+                    item(text("2"), false),
+                    line(),
+                    item(text("3"), true),
+                ]),
+            ),
             soft_line(),
             text("]"),
         ]);

@@ -73,9 +73,7 @@ impl Attribute {
             Rule::enable_attr => {
                 Attribute::Enable(inner.into_inner().map(|p| p.as_str().into()).collect())
             }
-            Rule::type_attr => {
-                Attribute::Type(inner.into_inner().next().unwrap().as_str().into())
-            }
+            Rule::type_attr => Attribute::Type(inner.into_inner().next().unwrap().as_str().into()),
             Rule::schema_attr => {
                 Attribute::Schema(inner.into_inner().next().unwrap().as_str().into())
             }
@@ -122,7 +120,11 @@ impl RonFile {
         }
 
         let mut value = value.expect("ron_file must contain a value");
-        value.leading = { let mut v = pre_comments; v.append(&mut value.leading); v };
+        value.leading = {
+            let mut v = pre_comments;
+            v.append(&mut value.leading);
+            v
+        };
         value.trailing.append(&mut trailing);
 
         Self {
@@ -171,7 +173,8 @@ impl Value {
             }
 
             Rule::tuple_type => {
-                let (ident, values, dangling) = collect_named_values(pair.clone().into_inner(), src);
+                let (ident, values, dangling) =
+                    collect_named_values(pair.clone().into_inner(), src);
                 Self {
                     leading: vec![],
                     trailing: vec![],

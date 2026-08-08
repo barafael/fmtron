@@ -3,8 +3,7 @@ WHITESPACE = _{ " " | "\n" | "\t" | "\r" }
 COMMENT = { line_comment | block_comment }
 line_comment = { "//" ~ line_comment_inner ~ (NEWLINE | &EOI) }
 line_comment_inner = { (!NEWLINE ~ ANY)* }
-block_comment = { "/*" ~ (block_comment | block_comment_inner)  ~ "*/" }
-block_comment_inner = { (!"*/" ~ ANY)* }
+block_comment = { "/*" ~ (!"*/" ~ (block_comment | ANY))* ~ "*/" }
 
 ident = @{ ("r#")? ~ ident_first ~ ident_rest* }
 ident_first = { ASCII_ALPHA | "_" | non_ascii }
@@ -37,10 +36,13 @@ unsigned_int = { with_base | ASCII_DIGIT+ }
 with_base = { "0" ~ ("x" | "b" | "o") ~ ASCII_HEX_DIGIT+ }
 int_suffix = { "i8" | "i16" | "i32" | "i64" | "i128" | "u8" | "u16" | "u32" | "u64" | "u128" }
 
-float = @{ float_std | float_frac | float_sci | special_float }
+float = @{ float_std | float_frac | float_sci | float_int_suffix | special_float }
 float_std = { sign? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* ~ float_exp? ~ float_suffix? }
-float_frac = { "." ~ ASCII_DIGIT+ ~ float_exp? ~ float_suffix? }
+float_frac = { sign? ~ "." ~ ASCII_DIGIT+ ~ float_exp? ~ float_suffix? }
 float_sci = { sign? ~ ASCII_DIGIT+ ~ float_exp ~ float_suffix? }
+// An integer literal carrying a float suffix (e.g. `7f32`, `0f64`) — no
+// decimal point and no exponent. Must be tried before `signed_int`.
+float_int_suffix = { sign? ~ ASCII_DIGIT+ ~ float_suffix }
 float_exp = { ("e" | "E") ~ sign? ~ ASCII_DIGIT+ }
 float_suffix = { "f32" | "f64" }
 special_float = @{ sign? ~ ("inf" | "NaN") ~ float_suffix? }

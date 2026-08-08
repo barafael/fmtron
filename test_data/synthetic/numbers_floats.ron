@@ -1,0 +1,14 @@
+// Floating-point literal forms: standard, leading-dot, scientific notation
+// (including signed exponents) and negative scientific values.
+(
+    std: 3.14159,
+    std_trailing_dot: 1.,
+    frac_leading_dot: .5,
+    frac_neg: -.25,
+    sci_pos: 1e6,
+    sci_exp_neg: 1e-6,
+    sci_exp_pos: 2.5e+3,
+    sci_signed_value: -3.0e-2,
+    capital_e: 6.022E23,
+    zero_float: 0.0,
+)

@@ -1,0 +1,9 @@
+// Special floating-point values: infinity and NaN, with explicit signs.
+(
+    inf_pos: inf,
+    inf_plus: +inf,
+    inf_neg: -inf,
+    nan: NaN,
+    nan_neg: -NaN,
+    list: [inf, -inf, NaN],
+)

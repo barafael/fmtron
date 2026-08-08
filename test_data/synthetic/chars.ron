@@ -1,0 +1,13 @@
+// Character literals: plain, escaped, and unicode escapes.
+(
+    plain: 'a',
+    digit: '7',
+    space: ' ',
+    newline: '\n',
+    tab: '\t',
+    quote: '\'',
+    backslash: '\\',
+    unicode_emoji: '\u{1F600}',
+    unicode_letter: '\u{00E9}',
+    list: ['x', 'y', 'z'],
+)

@@ -1,0 +1,8 @@
+// Byte strings: standard and raw, with escapes.
+(
+    plain: b"bytes",
+    escaped: b"\t\n\x41",
+    raw0: br"raw bytes",
+    raw1: br#"raw "bytes""#,
+    list: [b"a", b"b"],
+)

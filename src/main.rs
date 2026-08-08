@@ -28,8 +28,8 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
     let file = std::fs::read_to_string(&args.input)
         .map_err(|e| format!("unable to read {}: {e}", args.input.display()))?;
 
-    let formatted = fmtron::format_ron(&file, &config)
-        .map_err(|e| format!("unable to parse RON:\n{e}"))?;
+    let formatted =
+        fmtron::format_ron(&file, &config).map_err(|e| format!("unable to parse RON:\n{e}"))?;
 
     if args.debug {
         println!("{formatted}");

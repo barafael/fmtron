@@ -1,0 +1,19 @@
+// Numeric literals with explicit type suffixes.
+(
+    i8_val: 1i8,
+    i16_val: 1i16,
+    i32_val: 1i32,
+    i64_val: 2i64,
+    i128_val: 3i128,
+    u8_val: 5u8,
+    u16_val: 5u16,
+    u32_val: 5u32,
+    u64_val: 5u64,
+    u128_val: 5u128,
+    f32_val: 1.5f32,
+    f64_val: 2.5f64,
+    // integer literal with a float suffix (no decimal point)
+    int_as_f32: 7f32,
+    int_as_f64: 9f64,
+    neg_suffix: -1i8,
+)
