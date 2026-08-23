@@ -49,13 +49,13 @@ special_float = @{ sign? ~ ("inf" | "NaN") ~ float_suffix? }
 
 // chars
 char = ${ "'" ~ char_inner ~ "'" }
-char_inner = { "\\'" | (!"'" ~ ANY)* }
+char_inner = { ("\\" ~ ANY | !"'" ~ ANY)* }
 
 // strings
 string = ${ string_std | string_raw }
 
 string_std = { "\"" ~ string_std_inner ~ "\"" }
-string_std_inner = { ("\\\"" | !"\"" ~ ANY)* }
+string_std_inner = { ("\\" ~ ANY | !"\"" ~ ANY)* }
 
 string_raw = { "r" ~ PUSH("#"*) ~ "\"" ~ string_raw_inner ~ "\"" ~ POP }
 string_raw_inner = { (!("\"" ~ PEEK) ~ ANY)* }
