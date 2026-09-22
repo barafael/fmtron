@@ -8,6 +8,11 @@
 //! mode, and short-circuits `fits()` (content up to a hard break never
 //! overruns). `if_break(flat, broken)` picks a rendering by mode — used for
 //! the trailing comma, which only appears when a container breaks.
+//!
+//! Widths are measured in display columns (`unicode-width`), not bytes, so
+//! multibyte text does not trigger premature line breaks.
+
+use unicode_width::UnicodeWidthStr;
 
 #[derive(Debug, Clone)]
 pub enum Doc {
@@ -98,7 +103,7 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
         Doc::Nil => col,
         Doc::Text(s) => {
             out.push_str(s);
-            col + s.len()
+            col + s.width()
         }
         Doc::Line { soft } => match mode {
             Mode::Flat => {
@@ -181,10 +186,11 @@ fn fits_probe(rem: &mut usize, mode: Mode, d: &Doc) -> Fit {
     match d {
         Doc::Nil => Fit::Continue,
         Doc::Text(s) => {
-            if s.len() > *rem {
+            let w = s.width();
+            if w > *rem {
                 return Fit::Overflow;
             }
-            *rem -= s.len();
+            *rem -= w;
             Fit::Continue
         }
         Doc::Line { soft } => match mode {
@@ -245,4 +251,19 @@ fn fits_rest(rem: usize, mode: Mode, docs: &[Doc]) -> bool {
         }
     }
     true
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Fit checks measure display columns (unicode width), not bytes: this
+    /// group renders 12 columns but 20 bytes, so it stays flat at width 12.
+    #[test]
+    fn fits_measures_display_width_not_bytes() {
+        let doc = group(concat(vec![text("\"αααααααα\""), line(), text("2")]));
+        assert_eq!(render(&doc, 12), "\"αααααααα\" 2");
+        // One column less and it must break.
+        assert_eq!(render(&doc, 11), "\"αααααααα\"\n2");
+    }
 }

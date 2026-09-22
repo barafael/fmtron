@@ -206,12 +206,70 @@ impl Value {
     }
 }
 
-/// Collect `value` children (with attached comments) plus dangling comments.
-fn collect_values<'a, I: Iterator<Item = Pair<'a, Rule>>>(
-    inner: I,
+/// One child of a container as parsed: a bare value, a `key: value` entry,
+/// or a `name: value` field.
+enum Child {
+    Value(Value),
+    Entry(Value, Value),
+    Field { name: String, value: Value },
+}
+
+impl Child {
+    /// Previous-line comments attach here as leading comments: the child's
+    /// rendering prefix — the key for entries, the value otherwise.
+    fn leading(&mut self) -> &mut Value {
+        match self {
+            Child::Value(v) | Child::Field { value: v, .. } => v,
+            Child::Entry(key, _) => key,
+        }
+    }
+
+    /// A same-line comment after this child attaches here as trailing.
+    fn trailing(&mut self) -> &mut Value {
+        match self {
+            Child::Value(v) | Child::Entry(_, v) | Child::Field { value: v, .. } => v,
+        }
+    }
+}
+
+/// The `value` pair of an entry/field, plus comments appearing between its
+/// head (key/name) and the value.
+fn value_and_inline<'a>(
+    inner: impl Iterator<Item = Pair<'a, Rule>>,
+) -> (Pair<'a, Rule>, Vec<String>) {
+    let mut inline: Vec<String> = Vec::new();
+    let mut vp = None;
+    for c in inner {
+        match c.as_rule() {
+            Rule::value => vp = Some(c),
+            Rule::COMMENT => inline.push(comment_text(&c)),
+            _ => {}
+        }
+    }
+    (vp.unwrap(), inline)
+}
+
+/// An optional leading `ident`, e.g. the `Ident` of `Ident(..)`.
+fn take_ident<'a, I: Iterator<Item = Pair<'a, Rule>>>(
+    iter: &mut std::iter::Peekable<I>,
+) -> Option<String> {
+    if iter.peek().is_some_and(|p| p.as_rule() == Rule::ident) {
+        Some(iter.next().unwrap().as_str().to_string())
+    } else {
+        None
+    }
+}
+
+/// Collect the children of a container (list values, map entries, or struct
+/// fields), attaching comments: a comment on the same line as the preceding
+/// child becomes that child's trailing comment; a comment on its own line
+/// becomes the next child's leading comment; comments after the last child
+/// are dangling.
+fn collect_children<'a>(
+    inner: impl Iterator<Item = Pair<'a, Rule>>,
     src: &str,
-) -> (Vec<Value>, Vec<String>) {
-    let mut values: Vec<Value> = Vec::new();
+) -> (Vec<Child>, Vec<String>) {
+    let mut children: Vec<Child> = Vec::new();
     let mut pending: Vec<String> = Vec::new();
     let mut last_end: Option<usize> = None;
     for p in inner {
@@ -222,25 +280,71 @@ fn collect_values<'a, I: Iterator<Item = Pair<'a, Rule>>>(
                 if let Some(le) = last_end
                     && !newline_between(src, le, cs)
                 {
-                    let idx = values.len() - 1;
-                    values[idx].trailing.push(txt);
+                    let idx = children.len() - 1;
+                    children[idx].trailing().trailing.push(txt);
                     continue;
                 }
                 pending.push(txt);
             }
-            Rule::value => {
-                let end = p.as_span().end();
-                let mut v = Value::from(p, src);
+            Rule::value | Rule::map_entry | Rule::field => {
+                let (mut child, end) = parse_child(p, src);
                 if !pending.is_empty() {
-                    prepend_leading(&mut v, std::mem::take(&mut pending));
+                    prepend_leading(child.leading(), std::mem::take(&mut pending));
                 }
                 last_end = Some(end);
-                values.push(v);
+                children.push(child);
             }
             _ => {}
         }
     }
     let dangling = pending;
+    (children, dangling)
+}
+
+/// Parse one container child pair into a `Child`, returned with the byte
+/// offset where it ends (used to classify following comments).
+fn parse_child(p: Pair<'_, Rule>, src: &str) -> (Child, usize) {
+    match p.as_rule() {
+        Rule::value => {
+            let end = p.as_span().end();
+            (Child::Value(Value::from(p, src)), end)
+        }
+        Rule::map_entry => {
+            let mut inner = p.into_inner();
+            let kp = inner.next().unwrap();
+            let (vp, inline) = value_and_inline(inner);
+            let end = vp.as_span().end();
+            let k = Value::from(kp, src);
+            let mut v = Value::from(vp, src);
+            prepend_leading(&mut v, inline);
+            (Child::Entry(k, v), end)
+        }
+        Rule::field => {
+            let mut inner = p.into_inner();
+            let name = inner.next().unwrap().as_str().to_string();
+            let (vp, inline) = value_and_inline(inner);
+            let end = vp.as_span().end();
+            let mut v = Value::from(vp, src);
+            prepend_leading(&mut v, inline);
+            (Child::Field { name, value: v }, end)
+        }
+        _ => unreachable!("unexpected container child: {:?}", p.as_rule()),
+    }
+}
+
+/// Collect `value` children (with attached comments) plus dangling comments.
+fn collect_values<'a, I: Iterator<Item = Pair<'a, Rule>>>(
+    inner: I,
+    src: &str,
+) -> (Vec<Value>, Vec<String>) {
+    let (children, dangling) = collect_children(inner, src);
+    let values = children
+        .into_iter()
+        .map(|c| match c {
+            Child::Value(v) => v,
+            _ => unreachable!("list/tuple children are `value` pairs"),
+        })
+        .collect();
     (values, dangling)
 }
 
@@ -249,52 +353,14 @@ fn collect_entries(
     inner: pest::iterators::Pairs<Rule>,
     src: &str,
 ) -> (Vec<(Value, Value)>, Vec<String>) {
-    let mut entries: Vec<(Value, Value)> = Vec::new();
-    let mut pending: Vec<String> = Vec::new();
-    let mut last_end: Option<usize> = None;
-    for p in inner {
-        match p.as_rule() {
-            Rule::COMMENT => {
-                let txt = comment_text(&p);
-                let cs = p.as_span().start();
-                if let Some(le) = last_end
-                    && !newline_between(src, le, cs)
-                {
-                    let idx = entries.len() - 1;
-                    entries[idx].1.trailing.push(txt);
-                    continue;
-                }
-                pending.push(txt);
-            }
-            Rule::map_entry => {
-                let mut inner = p.into_inner();
-                let kp = inner.next().unwrap();
-                let mut inline: Vec<String> = Vec::new();
-                let mut vp = None;
-                for c in inner {
-                    match c.as_rule() {
-                        Rule::value => vp = Some(c),
-                        Rule::COMMENT => inline.push(comment_text(&c)),
-                        _ => {}
-                    }
-                }
-                let vp = vp.unwrap();
-                let entry_end = vp.as_span().end();
-                let mut k = Value::from(kp, src);
-                let mut v = Value::from(vp, src);
-                if !inline.is_empty() {
-                    prepend_leading(&mut v, inline);
-                }
-                if !pending.is_empty() {
-                    prepend_leading(&mut k, std::mem::take(&mut pending));
-                }
-                last_end = Some(entry_end);
-                entries.push((k, v));
-            }
-            _ => {}
-        }
-    }
-    let dangling = pending;
+    let (children, dangling) = collect_children(inner, src);
+    let entries = children
+        .into_iter()
+        .map(|c| match c {
+            Child::Entry(k, v) => (k, v),
+            _ => unreachable!("map children are `map_entry` pairs"),
+        })
+        .collect();
     (entries, dangling)
 }
 
@@ -304,11 +370,7 @@ fn collect_named_values(
     src: &str,
 ) -> (Option<String>, Vec<Value>, Vec<String>) {
     let mut iter = inner.peekable();
-    let ident = if iter.peek().is_some_and(|p| p.as_rule() == Rule::ident) {
-        Some(iter.next().unwrap().as_str().to_string())
-    } else {
-        None
-    };
+    let ident = take_ident(&mut iter);
     let (values, dangling) = collect_values(iter, src);
     (ident, values, dangling)
 }
@@ -319,55 +381,14 @@ fn collect_fields(
     src: &str,
 ) -> (Option<String>, Vec<Field>, Vec<String>) {
     let mut iter = inner.peekable();
-    let ident = if iter.peek().is_some_and(|p| p.as_rule() == Rule::ident) {
-        Some(iter.next().unwrap().as_str().to_string())
-    } else {
-        None
-    };
-    let mut fields: Vec<Field> = Vec::new();
-    let mut pending: Vec<String> = Vec::new();
-    let mut last_end: Option<usize> = None;
-    for p in iter {
-        match p.as_rule() {
-            Rule::COMMENT => {
-                let txt = comment_text(&p);
-                let cs = p.as_span().start();
-                if let Some(le) = last_end
-                    && !newline_between(src, le, cs)
-                {
-                    let idx = fields.len() - 1;
-                    fields[idx].value.trailing.push(txt);
-                    continue;
-                }
-                pending.push(txt);
-            }
-            Rule::field => {
-                let mut inner = p.into_inner();
-                let name = inner.next().unwrap().as_str().to_string();
-                let mut inline: Vec<String> = Vec::new();
-                let mut vp = None;
-                for c in inner {
-                    match c.as_rule() {
-                        Rule::value => vp = Some(c),
-                        Rule::COMMENT => inline.push(comment_text(&c)),
-                        _ => {}
-                    }
-                }
-                let vp = vp.unwrap();
-                let field_end = vp.as_span().end();
-                let mut v = Value::from(vp, src);
-                if !inline.is_empty() {
-                    prepend_leading(&mut v, inline);
-                }
-                if !pending.is_empty() {
-                    prepend_leading(&mut v, std::mem::take(&mut pending));
-                }
-                last_end = Some(field_end);
-                fields.push(Field { name, value: v });
-            }
-            _ => {}
-        }
-    }
-    let dangling = pending;
+    let ident = take_ident(&mut iter);
+    let (children, dangling) = collect_children(iter, src);
+    let fields = children
+        .into_iter()
+        .map(|c| match c {
+            Child::Field { name, value } => Field { name, value },
+            _ => unreachable!("struct children are `field` pairs"),
+        })
+        .collect();
     (ident, fields, dangling)
 }

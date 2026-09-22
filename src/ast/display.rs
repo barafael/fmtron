@@ -1,38 +1,6 @@
 use super::{Attribute, Field, Kind, RonFile, Value};
-use crate::pretty::{self, Doc};
+use crate::pretty::{Doc, comma, concat, group, hard_line, line, nest, render, soft_line, text};
 use std::fmt::{self, Display, Formatter};
-
-fn text(s: impl Into<String>) -> Doc {
-    pretty::text(s)
-}
-
-fn line() -> Doc {
-    pretty::line()
-}
-
-fn soft_line() -> Doc {
-    pretty::soft_line()
-}
-
-fn hard_line() -> Doc {
-    pretty::hard_line()
-}
-
-fn comma() -> Doc {
-    pretty::comma()
-}
-
-fn nest(n: usize, d: Doc) -> Doc {
-    pretty::nest(n, d)
-}
-
-fn group(d: Doc) -> Doc {
-    pretty::group(d)
-}
-
-fn concat(docs: Vec<Doc>) -> Doc {
-    pretty::concat(docs)
-}
 
 impl Display for RonFile {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
@@ -45,12 +13,12 @@ impl Display for RonFile {
         for attr in attributes {
             match attr {
                 Attribute::Enable(ids) => writeln!(f, "#![enable({})]", ids.join(", "))?,
-                Attribute::Type(s) => writeln!(f, "#![type = {}]", s)?,
-                Attribute::Schema(s) => writeln!(f, "#![schema = {}]", s)?,
+                Attribute::Type(s) => writeln!(f, "#![type = {s}]")?,
+                Attribute::Schema(s) => writeln!(f, "#![schema = {s}]")?,
             }
         }
         let doc = concat(vec![value_doc(value, config.tab_size), trailing_doc(value)]);
-        write!(f, "{}", pretty::render(&doc, config.max_width))?;
+        write!(f, "{}", render(&doc, config.max_width))?;
         // The rendered value ends without a trailing newline. Terminate the
         // value's line before any comments follow — inline trailing comments
         // sit at the end of that line, dangling comments start fresh lines.
@@ -81,7 +49,8 @@ fn subtree_has_comments(v: &Value) -> bool {
             !dangling.is_empty()
                 || entries
                     .iter()
-                    .any(|(k, val)| subtree_has_comments(k) || subtree_has_comments(val))
+                    .flat_map(|(k, v)| [k, v])
+                    .any(subtree_has_comments)
         }
         Kind::TupleType {
             values, dangling, ..
@@ -89,6 +58,39 @@ fn subtree_has_comments(v: &Value) -> bool {
         Kind::FieldsType {
             fields, dangling, ..
         } => !dangling.is_empty() || fields.iter().any(|f| subtree_has_comments(&f.value)),
+    }
+}
+
+/// A container element goes on its own line (hard breaks, plain commas) if
+/// the container holds dangling comments or any member subtree has comments.
+fn force_break<'a>(dangling: &[String], members: impl IntoIterator<Item = &'a Value>) -> bool {
+    !dangling.is_empty() || members.into_iter().any(subtree_has_comments)
+}
+
+/// Comma after an element: plain when the container is forced to break or the
+/// element is not last; conditional on the group breaking otherwise.
+fn item_sep(force: bool, is_last: bool) -> Doc {
+    if force || !is_last {
+        text(",")
+    } else {
+        comma()
+    }
+}
+
+/// One container element: its rendered segments plus separator and inline
+/// trailing comments.
+fn item_doc(segments: Vec<Doc>, v: &Value, force: bool, is_last: bool) -> Doc {
+    let mut parts = segments;
+    parts.push(item_sep(force, is_last));
+    parts.push(trailing_doc(v));
+    concat(parts)
+}
+
+/// The opening token of a tuple/struct: `Ident(` or just `(`.
+fn open_ident(ident: Option<&str>) -> String {
+    match ident {
+        Some(id) => format!("{id}("),
+        None => "(".to_string(),
     }
 }
 
@@ -116,47 +118,37 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
         Kind::Atom(a) => text(a.clone()),
 
         Kind::List { values, dangling } => {
-            let force = !dangling.is_empty() || values.iter().any(subtree_has_comments);
+            let force = force_break(dangling, values);
             let n = values.len();
             let items: Vec<Doc> = values
                 .iter()
                 .enumerate()
                 .map(|(i, e)| {
-                    let sep = if force || i < n - 1 {
-                        text(",")
-                    } else {
-                        comma()
-                    };
-                    concat(vec![leading_doc(e), kind_doc(e, tab), sep, trailing_doc(e)])
+                    item_doc(vec![leading_doc(e), kind_doc(e, tab)], e, force, i + 1 == n)
                 })
                 .collect();
             container(force, "[", "]", items, dangling, tab)
         }
 
         Kind::Map { entries, dangling } => {
-            let force = !dangling.is_empty()
-                || entries
-                    .iter()
-                    .any(|(k, val)| subtree_has_comments(k) || subtree_has_comments(val));
+            let force = force_break(dangling, entries.iter().flat_map(|(k, v)| [k, v]));
             let n = entries.len();
             let items: Vec<Doc> = entries
                 .iter()
                 .enumerate()
                 .map(|(i, (k, val))| {
-                    let sep = if force || i < n - 1 {
-                        text(",")
-                    } else {
-                        comma()
-                    };
-                    concat(vec![
-                        leading_doc(k),
-                        kind_doc(k, tab),
-                        text(": "),
-                        leading_doc(val),
-                        kind_doc(val, tab),
-                        sep,
-                        trailing_doc(val),
-                    ])
+                    item_doc(
+                        vec![
+                            leading_doc(k),
+                            kind_doc(k, tab),
+                            text(": "),
+                            leading_doc(val),
+                            kind_doc(val, tab),
+                        ],
+                        val,
+                        force,
+                        i + 1 == n,
+                    )
                 })
                 .collect();
             container(force, "{", "}", items, dangling, tab)
@@ -167,22 +159,23 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             values,
             dangling,
         } => {
-            let force = !dangling.is_empty() || values.iter().any(subtree_has_comments);
+            let force = force_break(dangling, values);
             let n = values.len();
-            let open = format!("{}(", ident.clone().unwrap_or_default());
             let items: Vec<Doc> = values
                 .iter()
                 .enumerate()
                 .map(|(i, e)| {
-                    let sep = if force || i < n - 1 {
-                        text(",")
-                    } else {
-                        comma()
-                    };
-                    concat(vec![leading_doc(e), kind_doc(e, tab), sep, trailing_doc(e)])
+                    item_doc(vec![leading_doc(e), kind_doc(e, tab)], e, force, i + 1 == n)
                 })
                 .collect();
-            container(force, &open, ")", items, dangling, tab)
+            container(
+                force,
+                &open_ident(ident.as_deref()),
+                ")",
+                items,
+                dangling,
+                tab,
+            )
         }
 
         Kind::FieldsType {
@@ -190,29 +183,32 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             fields,
             dangling,
         } => {
-            let force =
-                !dangling.is_empty() || fields.iter().any(|f| subtree_has_comments(&f.value));
+            let force = force_break(dangling, fields.iter().map(|f| &f.value));
             let n = fields.len();
-            let open = format!("{}(", ident.clone().unwrap_or_default());
             let items: Vec<Doc> = fields
                 .iter()
                 .enumerate()
                 .map(|(i, Field { name, value })| {
-                    let sep = if force || i < n - 1 {
-                        text(",")
-                    } else {
-                        comma()
-                    };
-                    concat(vec![
-                        leading_doc(value),
-                        text(format!("{name}: ")),
-                        kind_doc(value, tab),
-                        sep,
-                        trailing_doc(value),
-                    ])
+                    item_doc(
+                        vec![
+                            leading_doc(value),
+                            text(format!("{name}: ")),
+                            kind_doc(value, tab),
+                        ],
+                        value,
+                        force,
+                        i + 1 == n,
+                    )
                 })
                 .collect();
-            container(force, &open, ")", items, dangling, tab)
+            container(
+                force,
+                &open_ident(ident.as_deref()),
+                ")",
+                items,
+                dangling,
+                tab,
+            )
         }
     }
 }

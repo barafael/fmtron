@@ -91,6 +91,16 @@ fn wadler_never_overruns_a_corpus_of_nested_inputs() {
     }
 }
 
+/// Width is measured in display columns, not bytes: `["αα", "ββ", "γγ"]` is
+/// 18 columns but 24 bytes, so it stays flat at width 20.
+#[test]
+fn width_is_measured_in_columns_not_bytes() {
+    let input = r#"["αα", "ββ", "γγ"]"#;
+    let out = formatted(input, 20);
+    assert_eq!(out.lines().count(), 1, "broke a doc that fits:\n{out}");
+    assert_eq!(out, input);
+}
+
 /// A container used as a map key stays flat when it fits, even when the
 /// *value* (a following sibling group) is too wide and must break. The fit
 /// check for the key's group stops at the value's group boundary, so the

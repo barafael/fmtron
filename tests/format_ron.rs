@@ -2,7 +2,7 @@ use fmtron::{Config, format_ron};
 use fs_walk::WalkOptions;
 use std::path::Path;
 
-fn format_default(s: &str) -> Result<String, String> {
+fn format_default(s: &str) -> Result<String, fmtron::FormatError> {
     format_ron(s, &Config::default())
 }
 
