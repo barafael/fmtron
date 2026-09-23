@@ -130,7 +130,13 @@ fn deep_input_is_bounded_by_a_clean_error() {
     let deep = format!("{}1{}", "[".repeat(600), "]".repeat(600));
     let err = fmtron::format_ron(&deep, &cfg(40)).unwrap_err();
     assert!(
-        matches!(err, fmtron::FormatError::TooDeep { depth: 600, max: 512 }),
+        matches!(
+            err,
+            fmtron::FormatError::TooDeep {
+                depth: 600,
+                max: 512
+            }
+        ),
         "expected a clean TooDeep error, got {err:?}"
     );
     // The budget is configurable: a higher cap admits the same input. Test

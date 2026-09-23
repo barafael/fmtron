@@ -43,11 +43,10 @@ fn assert_invalid(input: &str) {
 /// The formatted output must be a fixed point and semantically identical to
 /// the input per the reference parser.
 fn assert_roundtrips(input: &str) {
-    let out = format_ron(input, &cfg(40))
-        .unwrap_or_else(|e| panic!("failed to format {input:?}: {e}"));
-    let twice = format_ron(&out, &cfg(40)).unwrap_or_else(|e| {
-        panic!("second pass failed for input {input:?} (output {out:?}): {e}")
-    });
+    let out =
+        format_ron(input, &cfg(40)).unwrap_or_else(|e| panic!("failed to format {input:?}: {e}"));
+    let twice = format_ron(&out, &cfg(40))
+        .unwrap_or_else(|e| panic!("second pass failed for input {input:?} (output {out:?}): {e}"));
     assert_eq!(out, twice, "not idempotent for {input:?}");
     let before: ron::Value =
         ron::from_str(input).unwrap_or_else(|e| panic!("input {input:?} not valid ron: {e}"));
@@ -82,7 +81,9 @@ fn deep_nesting_is_rejected_cleanly() {
         max_nesting: 2048,
         ..cfg(40)
     };
-    assert!(on_large_stack(move || format_ron(&over_limit, &bigger).is_ok()));
+    assert!(on_large_stack(
+        move || format_ron(&over_limit, &bigger).is_ok()
+    ));
 
     // Non-container nesting isn't counted: brackets inside literals and
     // comments must not inflate the measured depth. (Real nesting: 2.)
