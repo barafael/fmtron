@@ -62,6 +62,7 @@ fn gap_cases_currently_unsupported_by_fmtron() {
         ("byte_strings.ron", true),
         ("raw_identifier.ron", true),
         ("unicode_identifiers.ron", true),
+        ("digit_separators.ron", true),
     ];
 
     for (filename, currently_supported) in cases {

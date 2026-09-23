@@ -22,6 +22,7 @@ fn formatted(input: &str, width: usize) -> String {
         &Config {
             tab_size: 4,
             max_width: width,
+            ..Config::default()
         },
     )
     .expect("valid RON")

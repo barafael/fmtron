@@ -447,14 +447,17 @@ fn corpus_formats_canonically_regardless_of_layout() {
         Config {
             tab_size: 4,
             max_width: 40,
+            ..Config::default()
         },
         Config {
             tab_size: 2,
             max_width: 80,
+            ..Config::default()
         },
         Config {
             tab_size: 4,
             max_width: 24,
+            ..Config::default()
         },
     ];
     let mut failures: Vec<String> = Vec::new();
@@ -494,6 +497,9 @@ fn corpus_formats_canonically_regardless_of_layout() {
             for cfg in &configs {
                 match format_ron(&original, cfg) {
                     Ok(g) => base.push(g),
+                    // Gap cases may legitimately fail to parse yet; their
+                    // expected failure is asserted in `gap_validation.rs`.
+                    Err(_) if dir.contains("gaps") => break,
                     Err(e) => {
                         failures.push(format!("{dir}/{name}: format_ron failed on original: {e}"));
                         break;

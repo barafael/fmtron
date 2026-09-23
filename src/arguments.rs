@@ -19,4 +19,14 @@ pub struct Arguments {
     /// Prints output to console instead of overwriting the input file
     #[arg(short, default_value_t = false)]
     pub debug: bool,
+
+    /// Maximum container-nesting depth accepted before the input is rejected
+    /// (guards against stack overflow on adversarial input)
+    #[arg(long, default_value_t = fmtron::MAX_NESTING)]
+    pub max_depth: usize,
+
+    /// Upper bound enforced on the indentation size; a larger --tab-size is
+    /// rejected instead of emitting pathologically wide indentation
+    #[arg(long, default_value_t = fmtron::MAX_TAB)]
+    pub max_tab: usize,
 }

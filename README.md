@@ -20,6 +20,8 @@ identity to the crates.io team. The project was therefore renamed to `fmtron`.
 - Use `-d` flag to write the formatted output to the terminal instead of overwriting the source file
 - Set tab size with `-t <size>` (4 by default)
 - Set max line width with `-w <width>` (40 by default). This is a soft limit, so long or deeply-nested values may sometimes overrun it
+- Cap container nesting with `--max-depth <depth>` (512 by default); deeper input is rejected cleanly instead of overflowing the stack
+- Set the upper bound enforced on `-t` with `--max-tab <size>` (1024 by default); a larger `-t` is rejected
 
 ## Features
 

@@ -30,6 +30,8 @@ enum Error {
     },
     #[error("unable to parse RON:\n{0}")]
     Format(#[from] fmtron::FormatError),
+    #[error("invalid configuration: {0}")]
+    Config(String),
 }
 
 fn main() -> ExitCode {
@@ -44,9 +46,17 @@ fn main() -> ExitCode {
 
 fn run() -> Result<(), Error> {
     let args = Arguments::parse();
+    if args.tab_size > args.max_tab {
+        return Err(Error::Config(format!(
+            "--tab-size {} exceeds the --max-tab ceiling of {}",
+            args.tab_size, args.max_tab
+        )));
+    }
     let config = Config {
         tab_size: args.tab_size,
         max_width: args.width,
+        max_nesting: args.max_depth,
+        max_tab: args.max_tab,
     };
 
     let file = std::fs::read_to_string(&args.input).map_err(|source| Error::Read {

@@ -41,3 +41,43 @@ fn valid_input_succeeds_and_writes_formatted_output() {
         "(a: 1, b: [1, 2, 3])\n"
     );
 }
+
+#[test]
+fn tab_size_above_max_tab_is_a_clean_error() {
+    let out = run_cli("(a: 1)", &["-d", "-t", "2048"]);
+    assert!(!out.status.success());
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(stderr.contains("exceeds the --max-tab ceiling"));
+    assert!(!stderr.contains("panicked"));
+}
+
+#[test]
+fn max_tab_override_allows_larger_indentation() {
+    let out = run_cli("(a: 1)", &["-d", "-t", "2048", "--max-tab", "4096"]);
+    assert!(
+        out.status.success(),
+        "stderr: {}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+}
+
+#[test]
+fn too_deep_input_is_a_clean_error() {
+    let deep = format!("{}1{}", "[[[[[".repeat(120), "]]]]]".repeat(120));
+    let out = run_cli(&deep, &["-d"]);
+    assert!(!out.status.success());
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(stderr.contains("levels deep"), "stderr: {stderr}");
+    assert!(!stderr.contains("panicked"));
+}
+
+#[test]
+fn max_depth_override_admits_deeper_input() {
+    let deep = format!("{}1{}", "[[[[[".repeat(120), "]]]]]".repeat(120));
+    let out = run_cli(&deep, &["-d", "--max-depth", "2048"]);
+    assert!(
+        out.status.success(),
+        "stderr: {}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+}

@@ -159,6 +159,7 @@ fn seeded_fuzz_never_breaks_the_invariants() {
             let cfg = Config {
                 tab_size: 4,
                 max_width: width,
+                ..Config::default()
             };
             let ctx = format!("seed {s}, width {width}");
             let out = format_ron(&input, &cfg)

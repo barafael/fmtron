@@ -11,12 +11,25 @@ pub struct RonParser;
 
 pub use pest::Parser;
 
+/// Default maximum container-nesting depth. Guards against the stack overflow
+/// that pest's recursive descent would otherwise hit on deeply nested input.
+pub const MAX_NESTING: usize = 512;
+
+/// Default upper bound on `Config::tab_size`. Anything larger would emit
+/// pathological indentation; the CLI overrides this with `--max-tab`.
+pub const MAX_TAB: usize = 1024;
+
 /// Formatting configuration. Threaded through the formatter instead of using
 /// process-wide global state.
 #[derive(Debug, Clone, Copy)]
 pub struct Config {
     pub tab_size: usize,
     pub max_width: usize,
+    /// Maximum container-nesting depth accepted; deeper input is rejected with
+    /// [`FormatError::TooDeep`] instead of overflowing the stack.
+    pub max_nesting: usize,
+    /// Upper bound enforced on `tab_size`; larger values are clamped.
+    pub max_tab: usize,
 }
 
 impl Default for Config {
@@ -24,6 +37,8 @@ impl Default for Config {
         Self {
             tab_size: 4,
             max_width: 40,
+            max_nesting: MAX_NESTING,
+            max_tab: MAX_TAB,
         }
     }
 }
@@ -34,6 +49,13 @@ pub enum FormatError {
     /// The input contains no RON value.
     #[error("no RON data found")]
     Empty,
+    /// The input is too deeply nested; formatting it would overflow the stack.
+    /// `max` is the configured [`Config::max_nesting`] limit.
+    #[error(
+        "input is nested {depth} levels deep, exceeding the limit of {max} — \
+         raise with a larger `max_nesting`"
+    )]
+    TooDeep { depth: usize, max: usize },
     /// The input is not valid RON. The inner error carries line/column
     /// information and a rendering of the offending input position.
     #[error("parse error: {0}")]
@@ -43,16 +65,166 @@ pub enum FormatError {
 /// Formats a RON string using the internal formatter.
 ///
 /// # Errors
-/// Returns [`FormatError::Empty`] if the input contains no RON value, and
-/// [`FormatError::Parse`] if the input cannot be parsed as RON.
+/// Returns [`FormatError::Empty`] if the input contains no RON value,
+/// [`FormatError::TooDeep`] if the input nests deeper than
+/// [`Config::max_nesting`], and [`FormatError::Parse`] if the input cannot be
+/// parsed as RON.
 pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
+    // Clamp `tab_size` to the configured ceiling so pathological values can
+    // never emit absurd indentation, then enforce the nesting bound *before*
+    // parsing: the scan below is iterative, so it cannot blow the stack the
+    // way pest's recursive descent would on input like `[[[[...`.
+    let max_nesting = config.max_nesting.max(1);
+    let effective = Config {
+        tab_size: config.tab_size.min(config.max_tab.max(1)),
+        max_nesting,
+        ..*config
+    };
+    let depth = nesting_depth(input);
+    if depth > max_nesting {
+        return Err(FormatError::TooDeep {
+            depth,
+            max: max_nesting,
+        });
+    }
     match RonParser::parse(Rule::ron_file, input) {
         Ok(mut pairs) => match pairs.next() {
-            Some(pair) => Ok(RonFile::parse_from(pair, input, *config).to_string()),
+            Some(pair) => Ok(RonFile::parse_from(pair, input, effective).to_string()),
             None => Err(FormatError::Empty),
         },
         Err(e) => Err(Box::new(e).into()),
     }
+}
+
+/// The deepest `[`, `(` or `{` nesting reached in `input`, measured lexically.
+///
+/// String, char, byte-string, raw-string and comment bodies are skipped so
+/// brackets inside them don't count. This is an *iterative* scan — unlike the
+/// recursive pest parse and the AST renderer, it cannot overflow the stack, so
+/// [`format_ron`] runs it as a cheap guard against adversarial input.
+fn nesting_depth(input: &str) -> usize {
+    let b = input.as_bytes();
+    let mut depth = 0usize;
+    let mut peak = 0usize;
+    let mut i = 0;
+    while i < b.len() {
+        match b[i] {
+            b'"' => {
+                if let Some(end) = scan_quoted(b, i) {
+                    i = end;
+                    continue;
+                }
+            }
+            b'\'' => {
+                if let Some(end) = scan_char(b, i) {
+                    i = end;
+                    continue;
+                }
+            }
+            b'b' | b'r' => {
+                if let Some(end) = scan_raw(b, i) {
+                    i = end;
+                    continue;
+                }
+            }
+            b'/' if b.get(i + 1) == Some(&b'/') => {
+                while i < b.len() && b[i] != b'\n' {
+                    i += 1;
+                }
+                continue;
+            }
+            b'/' if b.get(i + 1) == Some(&b'*') => {
+                let mut d = 1;
+                i += 2;
+                while i < b.len() && d > 0 {
+                    if b[i] == b'/' && b.get(i + 1) == Some(&b'*') {
+                        d += 1;
+                        i += 2;
+                    } else if b[i] == b'*' && b.get(i + 1) == Some(&b'/') {
+                        d -= 1;
+                        i += 2;
+                    } else {
+                        i += 1;
+                    }
+                }
+                continue;
+            }
+            b'[' | b'(' | b'{' => {
+                depth += 1;
+                if depth > peak {
+                    peak = depth;
+                }
+            }
+            b']' | b')' | b'}' => depth = depth.saturating_sub(1),
+            _ => {}
+        }
+        i += 1;
+    }
+    peak
+}
+
+/// `"…"` (with `\` escapes): index just past the closing quote, or None.
+fn scan_quoted(b: &[u8], i: usize) -> Option<usize> {
+    let mut k = i + 1;
+    while k < b.len() {
+        match b[k] {
+            b'\\' => k = k.saturating_add(2),
+            b'"' => return Some(k + 1),
+            _ => k += 1,
+        }
+    }
+    None
+}
+
+/// `'…'` (a single char, possibly escaped): index just past the close, or None.
+fn scan_char(b: &[u8], i: usize) -> Option<usize> {
+    let mut k = i + 1;
+    while k < b.len() {
+        match b[k] {
+            b'\\' => k = k.saturating_add(2),
+            b'\'' => return Some(k + 1),
+            _ => k += 1,
+        }
+    }
+    None
+}
+
+/// `r"…"`, `r#"…"#`, `br#"…"#`: index just past the close, or None. A bare `r`
+/// /`b` followed by anything other than `#`* or `"` is a plain identifier
+/// (e.g. `return`) and returns None.
+fn scan_raw(b: &[u8], i: usize) -> Option<usize> {
+    let mut k = i;
+    if b[k] == b'b' {
+        k += 1;
+        if b.get(k) != Some(&b'r') {
+            return None;
+        }
+    } else if b[k] != b'r' {
+        return None;
+    }
+    if b.get(k + 1) != Some(&b'#') && b.get(k + 1) != Some(&b'"') {
+        return None;
+    }
+    k += 1;
+    let hash_start = k;
+    while b.get(k) == Some(&b'#') {
+        k += 1;
+    }
+    if b.get(k) != Some(&b'"') {
+        return None;
+    }
+    let hashes = k - hash_start;
+    let mut j = k + 1;
+    while j < b.len() {
+        if b[j] == b'"'
+            && j + 1 + hashes <= b.len()
+            && b[j + 1..j + 1 + hashes].iter().all(|&x| x == b'#')
+        {
+            return Some(j + 1 + hashes);
+        }
+        j += 1;
+    }
+    None
 }
 
 #[cfg(test)]

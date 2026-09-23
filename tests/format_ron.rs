@@ -115,8 +115,16 @@ fn formatted_output_is_semantically_equivalent() {
                     continue;
                 }
             };
-            let formatted = format_default(&input)
-                .unwrap_or_else(|e| panic!("format failed for {:?}: {e}", entry.file_name()));
+            // Gap cases exist precisely to document constructs fmtron cannot
+            // parse yet (see `gap_validation.rs`); skip the unparseable ones.
+            let formatted = match format_default(&input) {
+                Ok(f) => f,
+                Err(_) if dir.contains("gaps") => {
+                    skipped += 1;
+                    continue;
+                }
+                Err(e) => panic!("format failed for {:?}: {e}", entry.file_name()),
+            };
             let after: ron::Value = ron::from_str(&formatted)
                 .unwrap_or_else(|e| panic!("output not valid ron {:?}: {e}", entry.file_name()));
             assert_eq!(before, after, "semantic drift in {:?}", entry.file_name());
@@ -142,7 +150,13 @@ fn formatting_is_idempotent() {
         let walker = WalkOptions::new().files().extension("ron").walk(dir);
         for entry in walker.flatten() {
             let input = std::fs::read_to_string(entry.as_path()).unwrap();
-            let once = format_default(&input).expect("first pass failed");
+            // Gap cases may legitimately fail to parse yet; skip them here
+            // (their expected failure is asserted in `gap_validation.rs`).
+            let once = match format_default(&input) {
+                Ok(f) => f,
+                Err(_) if dir.contains("gaps") => continue,
+                Err(e) => panic!("first pass failed: {e}"),
+            };
             let twice = format_default(&once).expect("second pass failed");
             assert_eq!(
                 normalize(&once),

@@ -8,7 +8,7 @@ block_comment = { "/*" ~ (!"*/" ~ (block_comment | ANY))* ~ "*/" }
 ident = @{ ("r#")? ~ ident_first ~ ident_rest* }
 ident_first = { ASCII_ALPHA | "_" | non_ascii }
 ident_rest = { ASCII_ALPHANUMERIC | "_" | non_ascii }
-non_ascii = { !('\u{00}' .. '\u{7F}') ~ ANY }
+non_ascii = { !('\u{00}' .. '\u{7F}' | '\u{FEFF}' .. '\u{FEFF}') ~ ANY }
 
 ron_file = { SOI ~ attribute* ~ value ~ EOI }
 
@@ -32,30 +32,44 @@ bool = { "true" | "false" }
 sign = { "+" | "-" }
 
 signed_int = @{ sign? ~ unsigned_int ~ int_suffix? }
-unsigned_int = { with_base | ASCII_DIGIT+ }
-with_base = { "0" ~ ("x" | "b" | "o") ~ ASCII_HEX_DIGIT+ }
+unsigned_int = { with_base | dec }
+with_base = { "0" ~ ("x" ~ hex_digits | "b" ~ bin_digits | "o" ~ oct_digits) }
+
+// Digit strings may carry `_` separators, including consecutive and trailing
+// underscores, but must start with a real digit (so `0x_1`, `1._5` are
+// rejected) — matching the reference parser's empirically pinned behavior.
+// The exponent is the one place a leading underscore is allowed (`1e_3`).
+dec = @{ ASCII_DIGIT+ ~ ( "_"* ~ ASCII_DIGIT+ )* ~ "_"* }
+hex_digits = @{ ASCII_HEX_DIGIT+ ~ ( "_"* ~ ASCII_HEX_DIGIT+ )* ~ "_"* }
+bin_digits = @{ bin_digit+ ~ ( "_"* ~ bin_digit+ )* ~ "_"* }
+oct_digits = @{ oct_digit+ ~ ( "_"* ~ oct_digit+ )* ~ "_"* }
+bin_digit = { "0" | "1" }
+oct_digit = { '0'..'7' }
 int_suffix = { "i8" | "i16" | "i32" | "i64" | "i128" | "u8" | "u16" | "u32" | "u64" | "u128" }
 
 float = @{ float_std | float_frac | float_sci | float_int_suffix | special_float }
-float_std = { sign? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT* ~ float_exp? ~ float_suffix? }
-float_frac = { sign? ~ "." ~ ASCII_DIGIT+ ~ float_exp? ~ float_suffix? }
-float_sci = { sign? ~ ASCII_DIGIT+ ~ float_exp ~ float_suffix? }
+float_std = { sign? ~ dec ~ "." ~ dec? ~ float_exp? ~ float_suffix? }
+float_frac = { sign? ~ "." ~ dec ~ float_exp? ~ float_suffix? }
+float_sci = { sign? ~ dec ~ float_exp ~ float_suffix? }
 // An integer literal carrying a float suffix (e.g. `7f32`, `0f64`) — no
 // decimal point and no exponent. Must be tried before `signed_int`.
-float_int_suffix = { sign? ~ ASCII_DIGIT+ ~ float_suffix }
-float_exp = { ("e" | "E") ~ sign? ~ ASCII_DIGIT+ }
+float_int_suffix = { sign? ~ dec ~ float_suffix }
+float_exp = { ("e" | "E") ~ sign? ~ exp_digits }
+exp_digits = @{ "_"* ~ ASCII_DIGIT+ ~ ( "_"* ~ ASCII_DIGIT+ )* ~ "_"* }
 float_suffix = { "f32" | "f64" }
-special_float = @{ sign? ~ ("inf" | "NaN") ~ float_suffix? }
+// `inf`/`NaN` must not shadow longer identifiers (`inf32`, `NaNfoo`): the
+// keyword is only a special float when no identifier continuation follows.
+special_float = @{ sign? ~ ("inf" | "NaN") ~ !ident_rest ~ float_suffix? }
 
 // chars
 char = ${ "'" ~ char_inner ~ "'" }
-char_inner = { ("\\" ~ ANY | !"'" ~ ANY)* }
+char_inner = { "\\" ~ escape_code | !("'" | "\\" | NEWLINE) ~ ANY }
 
 // strings
 string = ${ string_std | string_raw }
 
 string_std = { "\"" ~ string_std_inner ~ "\"" }
-string_std_inner = { ("\\" ~ ANY | !"\"" ~ ANY)* }
+string_std_inner = { ("\\" ~ escape_code | !("\"" | "\\") ~ ANY)* }
 
 string_raw = { "r" ~ PUSH("#"*) ~ "\"" ~ string_raw_inner ~ "\"" ~ POP }
 string_raw_inner = { (!("\"" ~ PEEK) ~ ANY)* }
@@ -63,6 +77,17 @@ string_raw_inner = { (!("\"" ~ PEEK) ~ ANY)* }
 byte_string = ${ byte_string_raw | byte_string_std }
 byte_string_raw = { "br" ~ PUSH("#"*) ~ "\"" ~ string_raw_inner ~ "\"" ~ POP }
 byte_string_std = { "b" ~ "\"" ~ string_std_inner ~ "\"" }
+
+// The escapes the reference parser accepts: `\n \r \t \\ \' \" \0`, exactly
+// two hex digits after `\x`, and `\u{...}` with 1-6 hex digits. Anything else
+// (`\z`, `\12`, `\x4`) is rejected. `\u{...}` values above U+10FFFF are
+// accepted lexically (pest cannot express value ranges) and are a known
+// residual tolerance documented in the fix plan.
+escape_code = {
+    "n" | "r" | "t" | "\\" | "'" | "\"" | "0"
+    | "x" ~ ASCII_HEX_DIGIT{2}
+    | "u" ~ "{" ~ ASCII_HEX_DIGIT{1,6} ~ "}"
+}
 
 // collections
 list = {
