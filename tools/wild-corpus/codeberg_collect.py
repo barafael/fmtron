@@ -13,13 +13,15 @@ OUT = os.path.join(WORK, "codeberg_index.jsonl")
 API = "https://codeberg.org/api/v1"
 MAX_PER_REPO = 40
 MAX_FILE = 512 * 1024
-KEYWORDS = """bevy ron game engine config rust roguelike gamedev ecs serde egui wgpu cosmic
-voxel tui editor plugin simulation macroquad fyrox amethyst ggez piston sdl wasm cli tool
-theme dotfiles config-files settings level map tilemap sprite shader render physics
-server client daemon bot matrix fediverse gtk iced slint relm leptos yew axum tokio
-parser compiler emulator synth audio music midi keyboard wayland sway hyprland niri
-launcher compositor terminal shell nix neovim helix zellij gitui starship ui widget
+# Highest-yield keywords first; RON configs also live in dotfiles repos.
+KEYWORDS = """bevy ron dotfiles gitui cosmic game gamedev fyrox macroquad roguelike
+voxel config theme engine ecs serde egui wgpu settings level tilemap sprite shader
+editor plugin simulation tui cli tool nix hyprland sway niri wayland launcher
+server bot emulator audio music synth parser compiler iced slint leptos
 """.split()
+# Keywords whose repositories are kept regardless of language.
+ANY_LANGUAGE = {"ron", "dotfiles", "gitui", "cosmic", "config", "theme", "settings"}
+PAGES = int(os.environ.get("CODEBERG_PAGES", "4"))
 
 
 def get(url, as_json=True):
@@ -48,7 +50,7 @@ for idx in ("codeberg_index.jsonl", "forge_index.jsonl"):
 checked = set(done)
 out = open(OUT, "a")
 for kw in KEYWORDS:
-    for page in range(1, 11):
+    for page in range(1, PAGES + 1):
         try:
             res = get(f"{API}/repos/search?q={kw}&limit=50&page={page}")
         except Exception as e:
@@ -62,7 +64,8 @@ for kw in KEYWORDS:
             text = f"{r.get('name', '')} {r.get('description', '')}".lower()
             if repo in checked or r.get("empty"):
                 continue
-            if r.get("language") != "Rust" and "ron" not in text.split():
+            if (r.get("language") != "Rust" and kw not in ANY_LANGUAGE
+                    and "ron" not in text.split()):
                 continue
             checked.add(repo)
             try:

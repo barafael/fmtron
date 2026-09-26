@@ -22,9 +22,11 @@ identity to the crates.io team. The project was therefore renamed to `fmtron`.
 - Set max line width with `-w <width>` (40 by default). This is a soft limit, so long or deeply-nested values may sometimes overrun it
 - Cap container nesting with `--max-depth <depth>` (512 by default); deeper input is rejected cleanly instead of overflowing the stack
 - Set the upper bound enforced on `-t` with `--max-tab <size>` (1024 by default); a larger `-t` is rejected
+- Choose how blank lines are treated with `--blank-lines <keep|remove>`. `keep` (the default) preserves one blank line wherever the input separates elements or comments with one or more; `remove` drops them all, so the output depends only on the input's tokens and comments
 
 ## Features
 
 - Preserves comments (line, block, and nested block comments) across a format round-trip
+- Keeps the input's line endings (LF or CRLF)
 - Supports the full RON surface: numeric suffixes, special floats, byte/raw strings, raw identifiers, Unicode identifiers, and `#![...]` attributes
 - Formatting is idempotent and semantically equivalent to the input, validated against the official `ron` crate as an oracle

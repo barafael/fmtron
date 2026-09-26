@@ -251,16 +251,46 @@ files that write `Some(code: KeyZ, …)`, which a typed `ron` target reads but
 | W2 | misformat | One-element wrappers around a container broke in two levels: `Some(` / `(` / fields / `),` / `),`. RON writes `Option<Struct>` and newtypes as `Some((` … `))`, which `ron`'s own pretty-printer emits | New `pretty::hug` primitive. Flat if it all fits; if the child fits flat on its own line, break around it (`TupleNewtypeTupleStruct(` / `TupleStruct(4, false),` / `)`); only if the child must break anyway, hug: `Some((` … `))`, `Some(((` … `)))`, `Some(Some([` … `]))`. Atoms never hug. The layout-independence harness still passes, and one golden file (`ron_039`) now matches its author's `Some((` |
 | W3 | crash | `fmtron -d … \| head` panicked with `failed printing to stdout: Broken pipe` (exit 101) | stdout is written with explicit error handling. A closed pipe ends quietly with exit 0, and other write errors (e.g. a full disk) are a clean `unable to write to stdout` |
 
-## Open: subjective, needs a design decision
+## Subjective findings: decided
 
-- **S1: blank lines are always removed.** About 12% of files, from 34 of the
-  first 811 checked, use interior blank lines to group entries. rustfmt and
-  prettier keep one blank line. Keeping them conflicts with the layout-
-  independence invariant pinned by `tests/unformat.rs`, so it is your call.
-- **S2: hand-laid-out lists get squashed.** A list of small records written
-  one per line (`cnx: [(src: …, dst: …), (src: …, dst: …)]`) becomes one line
-  when it fits. That's correct for the width but discards the author's
-  layout, and has the same conflict as S1.
+- **S1: blank lines were always removed.** About 12% of files, from 34 of
+  the first 811 checked, use interior blank lines to group entries.
+  **Resolved:** new `--blank-lines <keep|remove>` (`Config::blank_lines`),
+  defaulting to `keep`. One blank line survives wherever the input has one or
+  more between elements, comments or header items; blank lines just inside
+  brackets are dropped. `remove` is the previous behaviour, and the
+  layout-independence harness now pins that mode.
+- **S2: hand-laid-out lists get squashed** when they fit. **Accepted as
+  intended.**
+
+## Codeberg, local only
+
+`tools/wild-corpus/codeberg_collect.py` searched Codeberg's API with the
+highest-yield keywords first (Bevy/game terms, then dotfiles, gitui, COSMIC,
+config). It kept Rust repositories, plus repositories of any language for
+config-style keywords, since RON configs live in dotfiles repos. The run was
+stopped after 18 of 43 keywords as new files dried up.
+
+Result: **177 unique files from 45 repositories: 174 formatted faithfully
+and none failed.** The other three are one invalid file (a single-quoted
+multi-character string, `'custom command'`, rejected by both) and two Fyrox
+`settings.ron` files, the same `ron::Value` limitation noted above. The files
+include gitui, rmpc and LeftWM configs, COSMIC themes and Bevy/Fyrox assets.
+Output looked right throughout: `palette: Dark((` hugs like COSMIC's own
+serializer, and ASCII-art headers and blank-line grouping survive. None of it
+is committed, because Codeberg's API reports no license; 13 of the 45 repos
+have a LICENSE file that could be checked by hand.
+
+## Default width
+
+Real-world RON is written wider than fmtron's default of 40 columns. The
+authors' own longest line has a median of 56, a 75th percentile of 89 and a
+90th percentile of 142 columns. At `-w 40`, 23% of files (457 of 1,950
+sampled) come out with a wrapper broken around a lone atom, e.g.
+`"3": SwitchToTab(` / `"Playlists",` / `),` between one-line siblings. That
+happens 5,508 times; at `-w 100` it is 1% of files (73 times). A default of
+100, rustfmt's, would match how RON is written. Not changed: it alters
+everyone's output, so it is a maintainer decision.
 
 ## Corpus
 
