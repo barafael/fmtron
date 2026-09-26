@@ -104,8 +104,8 @@ fn width_is_measured_in_columns_not_bytes() {
 
 /// A container used as a map key stays flat when it fits, even when the
 /// *value* (a following sibling group) is too wide and must break. The fit
-/// check for the key's group stops at the value's group boundary, so the
-/// value's width must not force the key to break.
+/// check for the key's group counts the value only up to its first possible
+/// line break (`[`), so the value's width must not force the key to break.
 #[test]
 fn container_map_key_stays_flat_when_only_the_value_breaks() {
     let input = "{ {a: [1, 2, 3]}: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }";
@@ -113,4 +113,25 @@ fn container_map_key_stays_flat_when_only_the_value_breaks() {
     assert!(max_line_len(&out) <= 30, "overran:\n{out}");
     // Key container fits on its line → stays flat.
     assert!(out.contains("    {a: [1, 2, 3]}: [\n"), "out:\n{out}");
+}
+
+/// A container map key breaks when even its own line (`key: Foo(`) would
+/// overrun the width: a following group counts up to its first possible line
+/// break, not as zero width.
+#[test]
+fn container_map_key_breaks_when_its_line_overruns() {
+    let cases = [
+        ("{Foo(3.5, 1e10): {1: 2}, [1]: Bar(a: 1)}", 20),
+        (r#"{["s", Foo]: (a: 1, b: 2)}"#, 20),
+        (r#"[{[-22, "é", None, None]: Foo(1e10, 1e10)}]"#, 30),
+    ];
+    for (input, width) in cases {
+        let out = formatted(input, width);
+        assert!(max_line_len(&out) <= width, "overran width {width}:\n{out}");
+        assert_eq!(out, format_wadler(input, width, 4).unwrap());
+    }
+    assert_eq!(
+        formatted("{Foo(3.5, 1e10): {1: 2}, [1]: Bar(a: 1)}", 20),
+        "{\n    Foo(\n        3.5,\n        1e10,\n    ): {1: 2},\n    [1]: Bar(a: 1),\n}"
+    );
 }

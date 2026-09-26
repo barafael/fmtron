@@ -113,3 +113,47 @@ fn output_ends_with_exactly_one_newline() {
         let _ = std::fs::remove_file(format!("{}.bak", file.path().display()));
     }
 }
+
+// M2: the CLI's final newline matches the input's line ending.
+#[test]
+fn crlf_input_gets_a_crlf_final_newline() {
+    let out = run_cli("[1,\r\n2]\r\n", &["-d", "-w", "3"]);
+    assert!(out.status.success());
+    assert_eq!(
+        String::from_utf8_lossy(&out.stdout),
+        "[\r\n    1,\r\n    2,\r\n]\r\n"
+    );
+}
+
+// M3: a huge --max-tab/--tab-size pair is a clean error, not a panic.
+#[test]
+fn huge_tab_size_is_a_clean_error() {
+    let max = usize::MAX.to_string();
+    let out = run_cli("[[1]]", &["-d", "-w", "1", "--max-tab", &max, "-t", &max]);
+    assert!(!out.status.success());
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(stderr.contains("--tab-size"), "stderr: {stderr}");
+    assert!(!stderr.contains("panicked"), "stderr: {stderr}");
+}
+
+// M4: raising --max-depth admits input deeper than the default thread stack
+// can handle, because the CLI sizes its stack to the limit; an absurd limit
+// is a clean error.
+#[test]
+fn raised_max_depth_does_not_overflow_the_stack() {
+    let depth = 5000;
+    let input = format!("{}1{}", "[".repeat(depth), "]".repeat(depth));
+    let out = run_cli(&input, &["-d", "-w", "100000", "--max-depth", "6000"]);
+    assert!(
+        out.status.success(),
+        "stderr: {}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    assert_eq!(String::from_utf8_lossy(&out.stdout).trim_end(), input);
+
+    let out = run_cli("[1]", &["-d", "--max-depth", &usize::MAX.to_string()]);
+    assert!(!out.status.success());
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(stderr.contains("--max-depth"), "stderr: {stderr}");
+    assert!(!stderr.contains("panicked"), "stderr: {stderr}");
+}

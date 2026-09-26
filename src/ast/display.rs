@@ -1,5 +1,7 @@
 use super::{Attribute, Field, HeaderItem, Kind, RonFile, Value};
-use crate::pretty::{Doc, comma, concat, group, hard_line, line, nest, render, soft_line, text};
+use crate::pretty::{
+    Doc, comma, concat, group, hard_line, line, nest, render_with_newline, soft_line, text,
+};
 use std::fmt::{self, Display, Formatter};
 
 impl Display for RonFile {
@@ -9,23 +11,24 @@ impl Display for RonFile {
             value,
             dangling,
             config,
+            newline: nl,
         } = self;
         for item in header {
             match item {
-                HeaderItem::Comment(text) => writeln!(f, "{text}")?,
-                HeaderItem::Attribute(attr) => writeln!(f, "{}", AttributeDisplay(attr))?,
+                HeaderItem::Comment(text) => write!(f, "{text}{nl}")?,
+                HeaderItem::Attribute(attr) => write!(f, "{}{nl}", AttributeDisplay(attr))?,
             }
         }
         let doc = concat(vec![value_doc(value, config.tab_size), trailing_doc(value)]);
-        write!(f, "{}", render(&doc, config.max_width))?;
+        write!(f, "{}", render_with_newline(&doc, config.max_width, nl))?;
         // The rendered value ends without a trailing newline. Terminate the
         // value's line before any comments follow — inline trailing comments
         // sit at the end of that line, dangling comments start fresh lines.
         if !value.trailing.is_empty() || !dangling.is_empty() {
-            writeln!(f)?;
+            write!(f, "{nl}")?;
         }
         for c in dangling {
-            writeln!(f, "{c}")?;
+            write!(f, "{c}{nl}")?;
         }
         Ok(())
     }

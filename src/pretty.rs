@@ -89,20 +89,42 @@ enum Mode {
 
 /// Render `doc` at width `width`, starting at column 0.
 pub fn render(doc: &Doc, width: usize) -> String {
-    let mut out = String::new();
+    render_with_newline(doc, width, "\n")
+}
+
+/// Like [`render`], but line breaks emit `newline` (e.g. `"\r\n"`).
+pub fn render_with_newline(doc: &Doc, width: usize, newline: &str) -> String {
+    let mut out = Out {
+        buf: String::new(),
+        newline,
+    };
     best(&mut out, doc, width, 0, 0, Mode::Break);
-    out
+    out.buf
+}
+
+/// The output buffer plus the line ending to emit at breaks.
+struct Out<'a> {
+    buf: String,
+    newline: &'a str,
+}
+
+impl Out<'_> {
+    /// A line break followed by `indent` spaces.
+    fn break_line(&mut self, indent: usize) {
+        self.buf.push_str(self.newline);
+        self.buf.extend(std::iter::repeat_n(' ', indent));
+    }
 }
 
 /// `indent` = indentation to print after a line break; `col` = the *actual*
 /// current column (advances with emitted text). Only `col` feeds the fit
 /// checks, which is what catches "key: " prefixes pushing a value past the
 /// width.
-fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mode: Mode) -> usize {
+fn best(out: &mut Out, doc: &Doc, width: usize, indent: usize, col: usize, mode: Mode) -> usize {
     match doc {
         Doc::Nil => col,
         Doc::Text(s) => {
-            out.push_str(s);
+            out.buf.push_str(s);
             col + s.width()
         }
         Doc::Line { soft } => match mode {
@@ -110,26 +132,24 @@ fn best(out: &mut String, doc: &Doc, width: usize, indent: usize, col: usize, mo
                 if *soft {
                     col
                 } else {
-                    out.push(' ');
+                    out.buf.push(' ');
                     col + 1
                 }
             }
             Mode::Break => {
-                out.push('\n');
-                out.push_str(&" ".repeat(indent));
+                out.break_line(indent);
                 indent
             }
         },
         Doc::HardLine => {
-            out.push('\n');
-            out.push_str(&" ".repeat(indent));
+            out.break_line(indent);
             indent
         }
         Doc::IfBreak { flat, broken } => match mode {
             Mode::Flat => best(out, flat, width, indent, col, mode),
             Mode::Break => best(out, broken, width, indent, col, mode),
         },
-        Doc::Nest(n, d) => best(out, d, width, indent + n, col, mode),
+        Doc::Nest(n, d) => best(out, d, width, indent.saturating_add(*n), col, mode),
         Doc::Group(d) => {
             // A group reached directly by `best` (not intercepted by the
             // `Concat` arm) has no siblings to consider — it flattens iff its
@@ -231,18 +251,17 @@ fn fits_probe(rem: &mut usize, mode: Mode, d: &Doc) -> Fit {
 ///
 /// `docs[0]` is the group whose flat/break decision is being made; it is
 /// always measured in flat mode (via `fits_probe`). Any *following* `Group`
-/// (index > 0) is treated as a boundary: it will decide independently whether
-/// to flatten or break, so its content must not be counted against the current
-/// group's share of the line. This prevents a large sibling (e.g. a container
-/// value in a map entry) from forcing a small container key to break
-/// unnecessarily.
+/// (index > 0) decides independently whether to flatten or break, so it is
+/// measured in break mode: only its text up to its first possible line break
+/// (e.g. the `Foo(` of a map value) must share the current line. A large
+/// sibling therefore cannot force a small container key to break, but the
+/// key still breaks when even `key: Foo(` would overrun the width.
 fn fits_rest(rem: usize, mode: Mode, docs: &[Doc]) -> bool {
     let mut rem = rem;
     for (i, d) in docs.iter().enumerate() {
-        let fit = if i > 0 && matches!(d, Doc::Group(_)) {
-            Fit::LineBreak
-        } else {
-            fits_probe(&mut rem, mode, d)
+        let fit = match d {
+            Doc::Group(inner) if i > 0 => fits_probe(&mut rem, Mode::Break, inner),
+            _ => fits_probe(&mut rem, mode, d),
         };
         match fit {
             Fit::Continue => {}

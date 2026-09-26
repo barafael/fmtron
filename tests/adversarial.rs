@@ -465,3 +465,52 @@ fn parse_error_on_a_huge_line_is_bounded() {
     let short = format_ron("[@]", &cfg(40)).unwrap_err().to_string();
     assert!(short.contains("1 | [@]"), "{short}");
 }
+
+// M2: a CRLF file stays CRLF, including around comments; line breaks inside
+// literals are kept exactly as written.
+#[test]
+fn crlf_line_endings_are_preserved() {
+    let input = "// header\r\n(\r\n  a: 1, /* multi\r\n  line */\r\n  b: \"x\ny\",\r\n)\r\n";
+    let out = format_ron(input, &cfg(10)).unwrap();
+    assert_eq!(
+        out,
+        "// header\r\n(\r\n    a: 1, /* multi\r\n  line */\r\n    b: \"x\ny\",\r\n)"
+    );
+    assert_eq!(format_ron(&out, &cfg(10)).unwrap(), out, "not idempotent");
+    assert_eq!(
+        ron::from_str::<ron::Value>(input).unwrap(),
+        ron::from_str::<ron::Value>(&out).unwrap()
+    );
+    // LF input is unaffected.
+    assert_eq!(
+        format_ron("[1,\n2]", &cfg(3)).unwrap(),
+        "[\n    1,\n    2,\n]"
+    );
+    assert_eq!(fmtron::line_ending("a\r\nb\nc"), "\r\n");
+    assert_eq!(fmtron::line_ending("a\nb\r\nc"), "\n");
+    assert_eq!(fmtron::line_ending("no newline"), "\n");
+}
+
+// M3: raising `max_tab` cannot turn a huge `tab_size` into an allocation
+// panic; indentation beyond `MAX_INDENT` is a typed error.
+#[test]
+fn huge_indentation_is_a_typed_error() {
+    let config = Config {
+        tab_size: usize::MAX,
+        max_tab: usize::MAX,
+        ..cfg(1)
+    };
+    let err = format_ron("[[1]]", &config).unwrap_err();
+    assert!(
+        matches!(
+            err,
+            FormatError::IndentTooWide {
+                max: fmtron::MAX_INDENT,
+                ..
+            }
+        ),
+        "got {err:?}"
+    );
+    // Flat input needs no indentation and still formats.
+    assert_eq!(format_ron("1", &config).unwrap(), "1");
+}

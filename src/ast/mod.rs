@@ -8,6 +8,8 @@ pub struct RonFile {
     value: Box<Value>,
     dangling: Vec<String>,
     config: Config,
+    /// Line ending emitted between output lines.
+    newline: &'static str,
 }
 
 /// Everything before the value, in source order.
@@ -145,7 +147,14 @@ impl RonFile {
             value,
             dangling,
             config,
+            newline: "\n",
         }
+    }
+
+    /// Emit `newline` (`"\n"` or `"\r\n"`) between output lines.
+    pub(crate) fn with_newline(mut self, newline: &'static str) -> Self {
+        self.newline = newline;
+        self
     }
 }
 

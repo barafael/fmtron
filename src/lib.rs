@@ -20,6 +20,12 @@ pub const MAX_NESTING: usize = 512;
 /// pathological indentation; the CLI overrides this with `--max-tab`.
 pub const MAX_TAB: usize = 1024;
 
+/// Upper bound on the indentation any output line may need: `tab_size` times
+/// the input's nesting depth. Input needing more is rejected with
+/// [`FormatError::IndentTooWide`] rather than allocating absurd indentation
+/// (or overflowing and panicking) when `max_tab` and `max_nesting` are raised.
+pub const MAX_INDENT: usize = 1 << 20;
+
 /// Formatting configuration. Threaded through the formatter instead of using
 /// process-wide global state.
 #[derive(Debug, Clone, Copy)]
@@ -55,6 +61,10 @@ pub enum FormatError {
     /// `max` is the configured [`Config::max_nesting`] limit.
     #[error("input is nested {depth} levels deep, exceeding the limit of {max}")]
     TooDeep { depth: usize, max: usize },
+    /// Formatting would need `indent` columns of indentation (`tab_size`
+    /// times the nesting depth), more than [`MAX_INDENT`].
+    #[error("indentation of up to {indent} columns exceeds the limit of {max}")]
+    IndentTooWide { indent: usize, max: usize },
     /// The input is not valid RON. The inner error carries line/column
     /// information and a rendering of the offending input position.
     #[error("parse error: {}", render_parse_error(.0))]
@@ -66,8 +76,11 @@ pub enum FormatError {
 /// # Errors
 /// Returns [`FormatError::Empty`] if the input contains no RON value,
 /// [`FormatError::TooDeep`] if the input nests deeper than
-/// [`Config::max_nesting`], and [`FormatError::Parse`] if the input cannot be
-/// parsed as RON.
+/// [`Config::max_nesting`], [`FormatError::IndentTooWide`] if indenting it
+/// would exceed [`MAX_INDENT`], and [`FormatError::Parse`] if the input cannot
+/// be parsed as RON.
+///
+/// The output keeps the input's line ending, per [`line_ending`].
 pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
     // Clamp `tab_size` to the configured ceiling so pathological values can
     // never emit absurd indentation, then enforce the nesting bound *before*
@@ -86,13 +99,32 @@ pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
             max: max_nesting,
         });
     }
+    let indent = effective.tab_size.saturating_mul(depth);
+    if indent > MAX_INDENT {
+        return Err(FormatError::IndentTooWide {
+            indent,
+            max: MAX_INDENT,
+        });
+    }
     match RonParser::parse(Rule::ron_file, input) {
         Ok(mut pairs) => match pairs.next() {
-            Some(pair) => Ok(RonFile::parse_from(pair, input, effective).to_string()),
+            Some(pair) => Ok(RonFile::parse_from(pair, input, effective)
+                .with_newline(line_ending(input))
+                .to_string()),
             None => Err(FormatError::Empty),
         },
         Err(_) if RonParser::parse(Rule::no_value, input).is_ok() => Err(FormatError::Empty),
         Err(e) => Err(Box::new(e).into()),
+    }
+}
+
+/// The line ending of `input`: `"\r\n"` if its first line break is CRLF,
+/// otherwise `"\n"`. The formatter emits this between output lines. Line
+/// breaks inside string literals and comments are kept as written.
+pub fn line_ending(input: &str) -> &'static str {
+    match input.find('\n') {
+        Some(i) if input[..i].ends_with('\r') => "\r\n",
+        _ => "\n",
     }
 }
 

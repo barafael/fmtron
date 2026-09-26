@@ -163,3 +163,44 @@ Out of scope / not changed:
   (`expected COMMENT or value` when `,`/`]` is meant). pest's
   `set_error_detail` yields real expected tokens, but it is a process-global
   switch and made parsing about 2.5× slower in a probe. Not adopted.
+
+---
+
+# Round 4: formatter output and CLI robustness
+
+With `ron` syntax coverage settled, this round targeted fmtron's own output:
+layout invariants, line endings, and the CLI's configurable limits. A layout
+checker formatted 8,000 random comment-free documents at widths 8/20/40/80
+and flagged three things: lines over the width that hold more than one
+element, broken containers whose flat form would fit on their line, and
+trailing whitespace.
+
+| # | Severity | Finding | Type |
+|---|----------|---------|------|
+| M1 | Medium | A container map key stayed flat even when its line overran the width, e.g. `Foo(3.5, 1e10): {` at 22 columns with width 20. This was all 179 layout violations found. `fits_rest` counted any following group (the value) as zero width, so `: Foo(` was never charged to the key's line | layout |
+| M2 | Medium | CRLF files came out LF, except inside block comments, which kept `\r\n`: mixed line endings | output corruption |
+| M3 | Medium | Raising `--max-tab` re-opened round-1 F2: `--max-tab <huge> -t <huge>` panicked with `capacity overflow` (or aborted on allocation), and `indent + n` could wrap | panic |
+| M4 | Medium | Raising `--max-depth` let input through that overflowed the stack anyway: `--max-depth 30000` on 20,000-deep input aborted, since the main thread's 8 MiB holds only about 3,000 levels | crash |
+
+Fixes:
+
+- **M1:** a following group is measured in *break* mode, up to its first
+  possible line break. `key: Foo(` must fit, but a large value still cannot
+  force a small key to break (the existing test for that still passes). The
+  checker now reports no violations at all.
+- **M2:** `fmtron::line_ending(input)` detects CRLF from the first line break.
+  The printer and header/trailer rendering emit that line ending, and the CLI's
+  final newline matches it. Line breaks inside strings and comments are never
+  rewritten; a raw `\n` in a string of a CRLF file stays `\n`.
+- **M3:** new `FormatError::IndentTooWide` when `tab_size × depth` exceeds
+  `MAX_INDENT` (1 Mi columns). The CLI says to use a smaller `--tab-size`.
+  Nest arithmetic saturates.
+- **M4:** the CLI formats on a thread with a
+  `1 MiB + 16 KiB × --max-depth` stack. Measured use is about 2.7 KiB per
+  level in release and 9.8 KiB in debug, across 8 shapes. An unreservable size
+  is a clean `invalid configuration` error.
+
+Checked and fine: tabs in strings count as wide and zero-width characters as
+zero, so neither causes wrong breaks. Output stays proportional to
+`depth² × tab` when the user explicitly raises `--max-depth`, which is
+expected.
