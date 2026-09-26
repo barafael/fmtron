@@ -6,6 +6,18 @@ fn format_default(s: &str) -> Result<String, fmtron::FormatError> {
     format_ron(s, &Config::default())
 }
 
+/// The golden files in `test_data/ron_corpus_formatted/` were generated at
+/// width 40, the default before 0.9.
+fn format_golden(s: &str) -> Result<String, fmtron::FormatError> {
+    format_ron(
+        s,
+        &Config {
+            max_width: 40,
+            ..Config::default()
+        },
+    )
+}
+
 #[test]
 fn empty_input() {
     let result = format_default("");
@@ -56,7 +68,7 @@ fn unofficial_improvised_ron_conformance_suite() {
             let expected = std::fs::read_to_string(&formatted_path).unwrap();
             let case = filename.display().to_string();
 
-            let result = match format_default(&input) {
+            let result = match format_golden(&input) {
                 Ok(ron) => {
                     if normalize(&ron) == normalize(&expected) {
                         None

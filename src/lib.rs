@@ -16,6 +16,11 @@ use pest::error::LineColLocation;
 /// that pest's recursive descent would otherwise hit on deeply nested input.
 pub const MAX_NESTING: usize = 512;
 
+/// Default `Config::max_width`: rustfmt's default, and close to how wide RON
+/// is written in practice (a sample of real-world files had a median longest
+/// line of 56 columns and a 75th percentile of 89).
+pub const DEFAULT_WIDTH: usize = 100;
+
 /// Default upper bound on `Config::tab_size`. Anything larger would emit
 /// pathological indentation; the CLI overrides this with `--max-tab`.
 pub const MAX_TAB: usize = 1024;
@@ -59,7 +64,7 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             tab_size: 4,
-            max_width: 40,
+            max_width: DEFAULT_WIDTH,
             max_nesting: MAX_NESTING,
             max_tab: MAX_TAB,
             blank_lines: BlankLines::Keep,

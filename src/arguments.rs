@@ -9,7 +9,7 @@ pub struct Arguments {
     pub input: PathBuf,
 
     /// Sets soft max line width for formatting heuristics
-    #[arg(short, default_value_t = 40)]
+    #[arg(short, default_value_t = fmtron::DEFAULT_WIDTH)]
     pub width: usize,
 
     /// Sets indentation size in spaces
