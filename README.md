@@ -24,6 +24,29 @@ identity to the crates.io team. The project was therefore renamed to `fmtron`.
 - Set the upper bound enforced on `-t` with `--max-tab <size>` (1024 by default); a larger `-t` is rejected
 - Choose how blank lines are treated with `--blank-lines <keep|remove>`. `keep` (the default) preserves one blank line wherever the input separates elements or comments with one or more; `remove` drops them all, so the output depends only on the input's tokens and comments
 
+## Configuration file: `fmt.ron`
+
+Like `rustfmt.toml`, a `fmt.ron` (or hidden `.fmt.ron`) sets formatting
+options for a project. fmtron looks for one in the input file's directory
+and then in each parent directory; the nearest one is used. Every field is
+optional:
+
+```ron
+// fmt.ron
+(
+    max_width: 100,     // -w
+    tab_size: 4,        // -t
+    blank_lines: Keep,  // --blank-lines: Keep or Remove
+    max_depth: 512,     // --max-depth
+    max_tab: 1024,      // --max-tab
+)
+```
+
+- Settings are applied in this order, later ones winning: built-in defaults, `fmt.ron`, command-line flags
+- Unknown fields and values of the wrong type are errors, reported with the file's path and position, so a typo like `max_widht` cannot silently do nothing
+- `--config <path>` uses a specific file instead of searching; `--no-config` ignores config files
+- `--print-config` prints the effective settings as a complete `fmt.ron`, with the file they came from; with `-i`, it resolves the config the way formatting that file would
+
 ## Features
 
 - Preserves comments (line, block, and nested block comments) across a format round-trip

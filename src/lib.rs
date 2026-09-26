@@ -1,7 +1,9 @@
 mod ast;
+mod config_file;
 pub mod pretty;
 
 pub use ast::{Kind, RonFile, Value};
+pub use config_file::{CONFIG_FILE_NAMES, FileConfig, FileConfigError};
 
 use pest_derive::Parser;
 
@@ -47,7 +49,7 @@ pub struct Config {
 }
 
 /// How blank lines in the input are treated.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Deserialize)]
 pub enum BlankLines {
     /// Keep one blank line wherever the input has one or more between two
     /// elements, comments or header items. A container holding one always

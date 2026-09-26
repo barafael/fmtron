@@ -21,10 +21,11 @@ exclude = ["test_data/wild", "tools"]
 clap = { version = "4.6.7", features = ["derive"] }
 pest = "2.9"
 pest_derive = "2.9"
+ron = "0.12"
+serde = { version = "1", features = ["derive"] }
 thiserror = "2"
 unicode-width = "0.2"
 
 [dev-dependencies]
 fs-walk = "0.2"
-ron = "0.12"
 tempfile = "3.27.0"

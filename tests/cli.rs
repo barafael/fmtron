@@ -47,7 +47,10 @@ fn tab_size_above_max_tab_is_a_clean_error() {
     let out = run_cli("(a: 1)", &["-d", "-t", "2048"]);
     assert!(!out.status.success());
     let stderr = String::from_utf8_lossy(&out.stderr);
-    assert!(stderr.contains("exceeds the --max-tab ceiling"));
+    assert!(
+        stderr.contains("exceeds the ceiling of 1024"),
+        "stderr: {stderr}"
+    );
     assert!(!stderr.contains("panicked"));
 }
 
@@ -198,4 +201,93 @@ fn blank_lines_option() {
     let remove = run_cli(input, &["-d", "--blank-lines", "remove"]);
     assert!(remove.status.success());
     assert_eq!(String::from_utf8_lossy(&remove.stdout), "(a: 1, b: 2)\n");
+}
+
+/// A project tree: `<root>/fmt.ron` plus an input file two directories down.
+fn project(config: &str, input: &str) -> (tempfile::TempDir, std::path::PathBuf) {
+    let root = tempfile::tempdir().expect("temp dir");
+    let dir = root.path().join("assets/levels");
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(root.path().join("fmt.ron"), config).unwrap();
+    let file = dir.join("level.ron");
+    std::fs::write(&file, input).unwrap();
+    (root, file)
+}
+
+fn fmtron_on(file: &std::path::Path, args: &[&str]) -> std::process::Output {
+    Command::new(env!("CARGO_BIN_EXE_fmtron"))
+        .args(args)
+        .args(["-i", file.to_str().unwrap()])
+        .output()
+        .expect("run fmtron")
+}
+
+// fmt.ron is found from the input's directory upward; flags override it;
+// --no-config ignores it; --config picks another file.
+#[test]
+fn fmt_ron_is_discovered_and_flags_take_precedence() {
+    let (root, file) = project(
+        "(max_width: 20, tab_size: 2)",
+        "(a: [1, 2, 3], b: (c: 1, d: 2))",
+    );
+    let stdout = |out: std::process::Output| {
+        assert!(
+            out.status.success(),
+            "{}",
+            String::from_utf8_lossy(&out.stderr)
+        );
+        String::from_utf8(out.stdout).unwrap()
+    };
+    assert_eq!(
+        stdout(fmtron_on(&file, &["-d"])),
+        "(\n  a: [1, 2, 3],\n  b: (c: 1, d: 2),\n)\n"
+    );
+    assert_eq!(
+        stdout(fmtron_on(&file, &["-d", "-t", "4"])),
+        "(\n    a: [1, 2, 3],\n    b: (c: 1, d: 2),\n)\n"
+    );
+    assert_eq!(
+        stdout(fmtron_on(&file, &["-d", "--no-config"])),
+        "(a: [1, 2, 3], b: (c: 1, d: 2))\n"
+    );
+    let other = root.path().join("wide.ron");
+    std::fs::write(&other, "(max_width: 100, tab_size: 8)").unwrap();
+    assert_eq!(
+        stdout(fmtron_on(
+            &file,
+            &["-d", "--config", other.to_str().unwrap()]
+        )),
+        "(a: [1, 2, 3], b: (c: 1, d: 2))\n"
+    );
+}
+
+// A broken fmt.ron is a clean error naming the file, not silently ignored.
+#[test]
+fn invalid_fmt_ron_is_a_clean_error() {
+    let (_root, file) = project("(max_widht: 80)", "(a: 1)");
+    let out = fmtron_on(&file, &["-d"]);
+    assert!(!out.status.success());
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(
+        stderr.contains("fmt.ron") && stderr.contains("max_widht"),
+        "stderr: {stderr}"
+    );
+    assert!(!stderr.contains("panicked"), "stderr: {stderr}");
+}
+
+// --print-config shows the merged settings as a fmt.ron that parses back.
+#[test]
+fn print_config_emits_a_valid_fmt_ron() {
+    let (_root, file) = project("(blank_lines: Remove)", "(a: 1)");
+    let out = fmtron_on(&file, &["--print-config", "-w", "80"]);
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let printed = String::from_utf8(out.stdout).unwrap();
+    let parsed: fmtron::FileConfig = printed.parse().expect("valid fmt.ron");
+    assert_eq!(parsed.max_width, Some(80));
+    assert_eq!(parsed.blank_lines, Some(fmtron::BlankLines::Remove));
+    assert!(printed.starts_with("// Effective fmtron configuration. Config file: "));
 }

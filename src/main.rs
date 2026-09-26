@@ -1,13 +1,13 @@
 use std::ffi::OsString;
 use std::io::Write as _;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use clap::Parser as ClapParser;
 use thiserror::Error;
 
 use arguments::Arguments;
-use fmtron::Config;
+use fmtron::{Config, FileConfig};
 
 mod arguments;
 
@@ -39,6 +39,8 @@ enum Error {
     Format(fmtron::FormatError),
     #[error("invalid configuration: {0}")]
     Config(String),
+    #[error(transparent)]
+    ConfigFile(#[from] fmtron::FileConfigError),
 }
 
 fn main() -> ExitCode {
@@ -53,22 +55,28 @@ fn main() -> ExitCode {
 
 fn run() -> Result<(), Error> {
     let args = Arguments::parse();
-    if args.tab_size > args.max_tab {
+    let (config, config_path) = resolve_config(&args)?;
+    if config.tab_size > config.max_tab {
         return Err(Error::Config(format!(
-            "--tab-size {} exceeds the --max-tab ceiling of {}",
-            args.tab_size, args.max_tab
+            "tab size {} (-t / tab_size) exceeds the ceiling of {} (--max-tab / max_tab)",
+            config.tab_size, config.max_tab
         )));
     }
-    let config = Config {
-        tab_size: args.tab_size,
-        max_width: args.width,
-        max_nesting: args.max_depth,
-        max_tab: args.max_tab,
-        blank_lines: args.blank_lines.into(),
-    };
+    if args.print_config {
+        let source = config_path.map_or("none (built-in defaults and flags)".into(), |p| {
+            p.display().to_string()
+        });
+        print!(
+            "// Effective fmtron configuration. Config file: {source}\n{}",
+            config.to_file_config_string()
+        );
+        return Ok(());
+    }
+    // `--input` is required unless `--print-config` is given.
+    let input = args.input.expect("clap enforces --input");
 
-    let file = std::fs::read_to_string(&args.input).map_err(|source| Error::Read {
-        path: args.input.clone(),
+    let file = std::fs::read_to_string(&input).map_err(|source| Error::Read {
+        path: input.clone(),
         source,
     })?;
 
@@ -96,15 +104,15 @@ fn run() -> Result<(), Error> {
             result => result.map_err(Error::Stdout)?,
         }
     } else {
-        let mut backup = OsString::from(&args.input);
+        let mut backup = OsString::from(&input);
         backup.push(".bak");
-        std::fs::copy(&args.input, &backup).map_err(|source| Error::Backup {
+        std::fs::copy(&input, &backup).map_err(|source| Error::Backup {
             backup: backup.into(),
             source,
         })?;
 
-        std::fs::write(&args.input, formatted).map_err(|source| Error::Write {
-            path: args.input.clone(),
+        std::fs::write(&input, formatted).map_err(|source| Error::Write {
+            path: input.clone(),
             source,
         })?;
     }
@@ -142,4 +150,40 @@ fn format_on_sized_stack(
             .join()
             .map_or_else(|panic| std::panic::resume_unwind(panic), Ok)
     })
+}
+
+/// Built-in defaults, overridden by the config file (`--config`, or the
+/// nearest `fmt.ron` above the input unless `--no-config`), overridden by
+/// flags. Also returns the config file used, if any.
+fn resolve_config(args: &Arguments) -> Result<(Config, Option<PathBuf>), Error> {
+    let mut config = Config::default();
+    let path = if args.no_config {
+        None
+    } else if let Some(path) = &args.config {
+        Some(path.clone())
+    } else {
+        FileConfig::find(&search_start(args.input.as_deref()))
+    };
+    if let Some(path) = &path {
+        FileConfig::load(path)?.apply(&mut config);
+    }
+    let flags = FileConfig {
+        max_width: args.width,
+        tab_size: args.tab_size,
+        blank_lines: args.blank_lines.map(Into::into),
+        max_depth: args.max_depth,
+        max_tab: args.max_tab,
+    };
+    flags.apply(&mut config);
+    Ok((config, path))
+}
+
+/// The directory to search for `fmt.ron` from: the input file's directory,
+/// or the current directory without an input.
+fn search_start(input: Option<&Path>) -> PathBuf {
+    let dir = input
+        .and_then(Path::parent)
+        .filter(|d| !d.as_os_str().is_empty())
+        .unwrap_or(Path::new("."));
+    std::path::absolute(dir).unwrap_or_else(|_| dir.to_path_buf())
 }
