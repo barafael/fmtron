@@ -1,0 +1,29 @@
+(
+    version: 1,
+    entities: [
+        (
+            id: "01a016f1-f170-7fe1-a274-24bf3ddce163",
+            components: {
+                "Sprite": (color:(1.0,0.35000002,0.35000002,1.0),sort_order:0,texture:Some(Path("sprites/checker.png"))),
+                "Transform": (translation:(-0.6,0.0),rotation:0.0,scale:(0.4,0.4)),
+            },
+        ),
+        (
+            id: "01a016f1-f170-7fe1-a274-24c4a83e73de",
+            components: {
+                "Parent": "01a016f1-f170-7fe1-a274-24bf3ddce163",
+                "Sprite": (color:(0.35000002,1.0,0.44999993,1.0),sort_order:0,texture:Some(Path("sprites/checker.png"))),
+                "Transform": (translation:(2.528459,1.238785),rotation:0.4,scale:(0.99999946,0.99999946)),
+            },
+        ),
+        (
+            id: "01a016f8-b3ac-7343-8de4-85a5aba477c0",
+            components: {
+                "Name": "Sprite",
+                "Parent": "01a016f1-f170-7fe1-a274-24c4a83e73de",
+                "Sprite": (color:(1.0,1.0,1.0,1.0),sort_order:0,texture:None),
+                "Transform": (translation:(-1.42968,-0.74049616),rotation:-0.39999998,scale:(1.0000006,1.0000006)),
+            },
+        ),
+    ],
+)

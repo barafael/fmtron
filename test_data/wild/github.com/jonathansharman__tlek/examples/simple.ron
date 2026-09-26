@@ -1,0 +1,25 @@
+(
+	collapse_duplicates: true,
+	start: ["Syllable"],
+	rules: {
+		"Syllable": {
+			["C", "V"]: 1,
+			["C", "V", "C"]: 1,
+			["Syllable", "Syllable"]: 1,
+		},
+		"C": {
+			["b"]: 5,
+			["c"]: 4,
+			["d"]: 3,
+			["f"]: 2,
+			["g"]: 1,
+		},
+		"V": {
+			["a"]: 5,
+			["e"]: 4,
+			["i"]: 3,
+			["o"]: 1,
+			["u"]: 2,
+		},
+	},
+)

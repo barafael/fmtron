@@ -1,0 +1,8 @@
+(
+    color_ramp: [
+        Oklcha(Oklcha(lightness: 0.500, chroma: 0.300, hue: 030, alpha: 0.600)),
+        Oklcha(Oklcha(lightness: 0.500, chroma: 0.300, hue: 030, alpha: 0.600)),
+        Oklcha(Oklcha(lightness: 0.800, chroma: 0.300, hue: 090, alpha: 0.600)),
+        Oklcha(Oklcha(lightness: 0.700, chroma: 0.300, hue: 150, alpha: 0.600)),
+    ],
+)

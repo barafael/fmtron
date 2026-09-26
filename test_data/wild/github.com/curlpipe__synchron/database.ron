@@ -1,0 +1,8 @@
+(
+    tracks: {},
+    playlists: {},
+    display: Display (
+        simple: [],
+        playlists: [],
+    ),
+)

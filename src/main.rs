@@ -1,4 +1,5 @@
 use std::ffi::OsString;
+use std::io::Write as _;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
@@ -32,6 +33,8 @@ enum Error {
     TooDeep(fmtron::FormatError),
     #[error("{0}; use a smaller --tab-size")]
     TooWide(fmtron::FormatError),
+    #[error("unable to write to stdout: {0}")]
+    Stdout(std::io::Error),
     #[error("unable to parse RON:\n{0}")]
     Format(fmtron::FormatError),
     #[error("invalid configuration: {0}")]
@@ -82,7 +85,15 @@ fn run() -> Result<(), Error> {
     );
 
     if args.debug {
-        print!("{formatted}");
+        let mut stdout = std::io::stdout().lock();
+        match stdout
+            .write_all(formatted.as_bytes())
+            .and_then(|()| stdout.flush())
+        {
+            // The reader went away (e.g. `fmtron -d … | head`): not a failure.
+            Err(e) if e.kind() == std::io::ErrorKind::BrokenPipe => {}
+            result => result.map_err(Error::Stdout)?,
+        }
     } else {
         let mut backup = OsString::from(&args.input);
         backup.push(".bak");

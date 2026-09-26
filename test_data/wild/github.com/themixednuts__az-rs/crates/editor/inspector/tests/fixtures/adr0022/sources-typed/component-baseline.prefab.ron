@@ -1,0 +1,78 @@
+(
+    version: 1,
+    type_versions: {
+        "Camera": 1,
+        "ConstraintProjection": 1,
+        "DirectionalLight": 1,
+        "InspectorBehaviors": 1,
+        "MaterialAssignment": 1,
+        "Mesh": 2,
+        "NestedCollections": 1,
+        "PointLight": 1,
+        "Transform": 1,
+        "TypedMapKeys": 1,
+    },
+    entities: {
+        "fixture-root": (
+            components: {
+                "Transform": (
+                    position: (2.0, 3.0, 4.0),
+                    rotation: (0.0, 0.0, 0.0, 1.0),
+                    scale: (1.0, 1.0, 1.0),
+                ),
+                "Mesh": (
+                    mesh: "meshes/fixture.azmesh",
+                    visible: true,
+                    cast_shadows: true,
+                    receive_shadows: true,
+                    lod_bias: 0,
+                ),
+                "MaterialAssignment": (
+                    default: Some("materials/fixture.azmaterial.ron"),
+                    slots: [],
+                ),
+                "Camera": (
+                    projection: Perspective((fov_y_degrees: 60.0)),
+                    near: 0.1,
+                    far: 1000.0,
+                    active: true,
+                    order: 0,
+                ),
+                "ConstraintProjection": (
+                    text: "first",
+                    mode: Automatic,
+                ),
+                "DirectionalLight": (
+                    color: (1.0, 1.0, 1.0, 1.0),
+                    illuminance_lux: 10000.0,
+                    shadows_enabled: false,
+                    angular_diameter_degrees: 0.53,
+                ),
+                "PointLight": (
+                    color: (1.0, 1.0, 1.0, 1.0),
+                    intensity_lumens: 1500.0,
+                    range: 10.0,
+                    radius: 0.0,
+                    shadows_enabled: false,
+                ),
+                "NestedCollections": (
+                    items: [(name: "first", weight: 0.5)],
+                    weights_by_name: {"first": 0.5},
+                    mode: Automatic,
+                ),
+                "TypedMapKeys": (
+                    values: {7: 0.75},
+                ),
+                "InspectorBehaviors": (
+                    scalar: 1.0,
+                    notes: "line one\nline two",
+                    locked: true,
+                    internal: false,
+                    asset: "meshes/fixture.azmesh",
+                    object: (entity_alias: "fixture-root"),
+                ),
+            },
+        ),
+    },
+    instances: {},
+)

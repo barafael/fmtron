@@ -1,0 +1,7 @@
+(
+    by_file: Some({
+        // naively updates all strings in the files that match the old version
+        "Cargo.toml": ( search_value: None, ),
+        "Cargo.lock": ( search_value: None, ),
+    }),
+)

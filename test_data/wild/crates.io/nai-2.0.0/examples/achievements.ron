@@ -1,0 +1,9 @@
+// Achievements.ron
+Config(
+    moments: [
+        (
+            start_date: "1980-10-15",
+            format: "{{ 'My Achievements' | yellow | bold }}\n\n{{ 'Aragorn II Elessar' | cyan | bold }}\n\nBirthdate: {{ start_date | blue }}\n\nAge: {{ duration }}\n\n- Successfully completed another year of life\n- Embarked on a fulfilling career at {{ 'Rohan Equestrian Supplies' | underline }}\n- Celebrated the joyous occasion of marriage with Arwen Undómiel\n- Faced and overcame numerous challenges\n- Gained wisdom through life's experiences\n\nI am grateful for the opportunities and support that have shaped my journey. Looking forward to embracing new adventures!\n",
+        ),
+    ],
+)

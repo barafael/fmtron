@@ -1,0 +1,5 @@
+Font(
+    id: "dogica",
+    name: "Dogica Bold",
+    kind: GBStudio
+)

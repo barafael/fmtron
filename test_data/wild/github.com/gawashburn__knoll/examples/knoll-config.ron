@@ -1,0 +1,74 @@
+[
+    // Sitting desk configuration
+    [
+        // MacBook Pro display
+        (
+            uuid: "8684ad81e3ea92cb14f43eb88b97a3f7",
+            enabled: true,
+            origin: (-1792, 453),
+            extents: (1792, 1120),
+            scaled: true,
+            frequency: 59,
+            color_depth: 8,
+            rotation: 0,
+        ),
+        // Left ThinkVision display
+        (
+            uuid: "76429601cb19106968f7850f67ce1941",
+            enabled: true,
+            origin: (0, 0),
+            extents: (3008, 1692),
+            scaled: true,
+            frequency: 60,
+            color_depth: 8,
+            rotation: 0,
+        ),
+        // Right ThinkVision display
+        (
+            uuid: "e179ec630e688885209c7638122a8464",
+            enabled: true,
+            origin: (3008, 0),
+            extents: (3008, 1692),
+            scaled: true,
+            frequency: 60,
+            color_depth: 8,
+            rotation: 0,
+        ),
+    ],
+    // Standing desk configuration
+    [
+        // MacBook Pro display
+        (
+            uuid: "8684ad81e3ea92cb14f43eb88b97a3f7",
+            enabled: true,
+            origin: (-1792, 1818),
+            extents: (1792, 1120),
+            scaled: true,
+            frequency: 59,
+            color_depth: 8,
+            rotation: 0,
+        ),
+        // Left ViewSonic display
+        (
+            uuid: "dc2636272fa3b888e0ebe0aeaa37a0bc",
+            enabled: true,
+            origin: (0, 0),
+            extents: (1890, 3360),
+            scaled: true,
+            frequency: 60,
+            color_depth: 8,
+            rotation: 90,
+        ),
+        // Right ViewSonic display
+        (
+            uuid: "08a1ccd033c00a3865636c87c809678d",
+            enabled: true,
+            origin: (1890, 0),
+            extents: (1890, 3360),
+            scaled: true,
+            frequency: 60,
+            color_depth: 8,
+            rotation: 90,
+        ),
+    ],
+]

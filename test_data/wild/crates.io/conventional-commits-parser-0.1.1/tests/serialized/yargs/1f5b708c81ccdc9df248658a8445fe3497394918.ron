@@ -1,0 +1,14 @@
+(
+    body: None,
+    desc: "update dependency rimraf to v3 (#1548)",
+    footer:[
+        (
+            token: "Co-authored-by",
+            separator: ColonSpace,
+            value: "WhiteSource Renovate <renovatebot@gmail.com>"
+        )
+    ],
+    is_breaking_change: false,
+    scope: Some("deps"),
+    ty: "chore"
+)

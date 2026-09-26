@@ -1,0 +1,21 @@
+(
+    bindings: {
+        Jump: [
+            (input: Key(Space)),
+            (input: GamepadButton(South)), // A/Cross
+        ],
+        MoveX: [
+            (input: Key(D), scale: 1.0),
+            (input: Key(A), scale: -1.0),
+            (input: GamepadAxis(LeftStickX)),
+        ],
+        MoveY: [
+            (input: Key(W), scale: 1.0),
+            (input: Key(S), scale: -1.0),
+            (input: GamepadAxis(LeftStickY)),
+        ],
+        Attack: [
+            (input: MouseButton(Left)),
+        ],
+    }
+)

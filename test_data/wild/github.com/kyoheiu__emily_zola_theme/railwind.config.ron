@@ -1,0 +1,6 @@
+(
+    content: [
+        "index.html", "base.html", "post.html", "post-page.html", "sample.html"
+    ],
+    extend_collection_options: None,
+)

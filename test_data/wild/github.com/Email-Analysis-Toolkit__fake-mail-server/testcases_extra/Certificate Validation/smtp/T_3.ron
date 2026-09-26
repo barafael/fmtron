@@ -1,0 +1,11 @@
+(
+    capabilities: [StartTLS],
+
+    capabilities_tls: [Auth([Plain])],
+
+    cert: Cert(
+        crt_path: "certs/other.example.org.pem",
+        key_path: "certs/other.example.org-key.pem",
+    ),
+    implicit_tls: false,
+)

@@ -1,0 +1,6 @@
+// No votes should result in no deaths.
+
+[
+    EndPhase,
+    EndPhase,
+]

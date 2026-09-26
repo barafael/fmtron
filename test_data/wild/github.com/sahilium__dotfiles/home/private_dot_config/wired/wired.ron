@@ -1,0 +1,264 @@
+// wired-notify — gruvbox dark hard (matches ~/.config/rofi/themes/gruvbox.rasi)
+// Docs: https://github.com/Toqozz/wired-notify/wiki
+(
+    // ── Behaviour ──────────────────────────────────────────────────────────
+    max_notifications: 0,
+    timeout: 5000,
+    zero_timeout_behavior: NeverExpire,
+    poll_interval: 16,
+    //idle_poll_interval: 500,
+    //idle_threshold: 3600,
+    //notifications_spawn_paused: false,
+    //unpause_on_input: false,
+    //replacing_enabled: true,
+    //replacing_resets_timeout: false,
+    //closing_enabled: true,
+    history_length: 50,
+    //focus_follows: Mouse,
+    icon_theme: "Gruvbox Plus Dark",
+    min_window_width: 325,
+    //trim_whitespace: true,
+
+    // Crisper text on dark backgrounds (Gray avoids subpixel fringing under
+    // translucent windows / picom).
+    font_options: (
+        antialias: Gray,
+        hint_style: Slight,
+        hint_metrics: On,
+    ),
+
+    debug: false,
+    debug_color: Color(r: 0.0, g: 1.0, b: 0.0, a: 1.0),
+    debug_color_alt: Color(r: 1.0, g: 0.0, b: 0.0, a: 1.0),
+
+    // ── Palette (gruvbox dark hard) ────────────────────────────────────────
+    // bg0-hard #1d2021 · bg1 #32302f · bg2 #3c3836 · bg3 #504945
+    // fg0 #fbf1c7 · fg1 #ebdbb2 · fg2 #d5c4a1 · dim #928374
+    // blue #83a598 · aqua #8ec07c · green #b8bb26 · yellow #fabd2f
+    // red #fb4934 · purple #d3869b · orange #fe8019
+
+    layout_blocks: [
+
+        // Card shell — top-right, same blue rim as network/launcher menus.
+        (
+            name: "root",
+            parent: "",
+            hook: Hook(parent_anchor: TR, self_anchor: TR),
+            offset: Vec2(x: -16, y: 16),
+            params: NotificationBlock((
+                monitor: 0,
+                border_width: 2.0,
+                border_rounding: 14.0,
+                background_color: Color(hex: "#1d2021"),
+                border_color: Color(hex: "#83a598"),
+                border_color_low: Color(hex: "#8ec07c"),
+                border_color_critical: Color(hex: "#fb4934"),
+                border_color_paused: Color(hex: "#fabd2f"),
+                gap: Vec2(x: 0.0, y: 12.0),
+                notification_hook: Hook(parent_anchor: BR, self_anchor: TR),
+            )),
+        ),
+
+        // App / hint icon (48×48, rounded to match card).
+        (
+            name: "image",
+            parent: "root",
+            hook: Hook(parent_anchor: ML, self_anchor: ML),
+            offset: Vec2(x: 0.0, y: 0.0),
+            params: ImageBlock((
+                image_type: HintThenApp,
+                padding: Padding(left: 14.0, right: 6.0, top: 0.0, bottom: 12.0),
+                rounding: 8.0,
+                scale_width: 48,
+                scale_height: 48,
+                filter_mode: Lanczos3,
+            )),
+        ),
+
+        // Title — bold fg0, slightly larger than body.
+        (
+            name: "summary",
+            parent: "image",
+            hook: Hook(parent_anchor: MR, self_anchor: BL),
+            offset: Vec2(x: 0.0, y: 0.0),
+            params: TextBlock((
+                text: "%s",
+                font: "JetBrainsMono Nerd Font Bold 12",
+                color: Color(hex: "#fbf1c7"),
+                color_hovered: Color(hex: "#fabd2f"),
+                padding: Padding(left: 12.0, right: 14.0, top: 12.0, bottom: 4.0),
+                dimensions: (width: (min: 80, max: 280), height: (min: 0, max: 0)),
+                ellipsize: End,
+            )),
+        ),
+
+        // Body — scroll if long; dimmer so the title stays the focus.
+        (
+            name: "body",
+            parent: "summary",
+            hook: Hook(parent_anchor: BL, self_anchor: TL),
+            offset: Vec2(x: 0.0, y: 0.0),
+            render_criteria: [Body],
+            params: ScrollingTextBlock((
+                text: "%b",
+                font: "JetBrainsMono Nerd Font 11",
+                color: Color(hex: "#d5c4a1"),
+                padding: Padding(left: 12.0, right: 14.0, top: 0.0, bottom: 4.0),
+                width: (min: 160, max: 300),
+                scroll_speed: 0.12,
+                lhs_dist: 35.0,
+                rhs_dist: 35.0,
+                scroll_t: 1.0,
+            )),
+        ),
+
+        // Progress (volume, downloads, …) — aqua fill on bg1 track.
+        (
+            name: "progress",
+            parent: "summary",
+            hook: Hook(parent_anchor: BL, self_anchor: TL),
+            offset: Vec2(x: 0.0, y: -2.0),
+            render_criteria: [Progress],
+            params: ProgressBlock((
+                padding: Padding(left: 12.0, right: 14.0, top: 6.0, bottom: 12.0),
+                border_width: 2.0,
+                border_rounding: 6.0,
+                fill_rounding: 4.0,
+                border_color: Color(hex: "#504945"),
+                background_color: Color(hex: "#282828"),
+                fill_color: Color(hex: "#8ec07c"),
+                width: 240,
+                height: 14,
+                border_color_hovered: Color(hex: "#83a598"),
+                background_color_hovered: Color(hex: "#32302f"),
+                fill_color_hovered: Color(hex: "#b8bb26"),
+            )),
+        ),
+
+        // Action buttons — pill-ish chips under the text.
+        (
+            name: "button_0",
+            parent: "summary",
+            hook: Hook(parent_anchor: BL, self_anchor: TL),
+            offset: Vec2(x: 12.0, y: 4.0),
+            render_criteria: [ActionOther(0)],
+            params: ButtonBlock((
+                padding: Padding(left: 10.0, right: 10.0, top: 6.0, bottom: 8.0),
+                action: OtherAction(0),
+                text: "%a",
+                font: "JetBrainsMono Nerd Font 10",
+                border_width: 2.0,
+                border_rounding: 8.0,
+                text_color: Color(hex: "#ebdbb2"),
+                text_color_hovered: Color(hex: "#fbf1c7"),
+                border_color: Color(hex: "#504945"),
+                border_color_hovered: Color(hex: "#83a598"),
+                background_color: Color(hex: "#282828"),
+                background_color_hovered: Color(hex: "#3c3836"),
+                dimensions: (width: (min: 0, max: 150), height: (min: 0, max: 0)),
+                ellipsize: End,
+                align: Center,
+            )),
+        ),
+        (
+            name: "button_1",
+            parent: "button_0",
+            hook: Hook(parent_anchor: TR, self_anchor: TL),
+            offset: Vec2(x: 10.0, y: 0.0),
+            render_criteria: [ActionOther(1)],
+            params: ButtonBlock((
+                padding: Padding(left: 10.0, right: 10.0, top: 6.0, bottom: 8.0),
+                action: OtherAction(1),
+                text: "%a",
+                font: "JetBrainsMono Nerd Font 10",
+                border_width: 2.0,
+                border_rounding: 8.0,
+                text_color: Color(hex: "#ebdbb2"),
+                text_color_hovered: Color(hex: "#fbf1c7"),
+                border_color: Color(hex: "#504945"),
+                border_color_hovered: Color(hex: "#83a598"),
+                background_color: Color(hex: "#282828"),
+                background_color_hovered: Color(hex: "#3c3836"),
+                dimensions: (width: (min: 0, max: 150), height: (min: 0, max: 0)),
+                ellipsize: End,
+                align: Center,
+            )),
+        ),
+        (
+            name: "button_2",
+            parent: "button_1",
+            hook: Hook(parent_anchor: TR, self_anchor: TL),
+            offset: Vec2(x: 10.0, y: 0.0),
+            render_criteria: [ActionOther(2)],
+            params: ButtonBlock((
+                padding: Padding(left: 10.0, right: 10.0, top: 6.0, bottom: 8.0),
+                action: OtherAction(2),
+                text: "%a",
+                font: "JetBrainsMono Nerd Font 10",
+                border_width: 2.0,
+                border_rounding: 8.0,
+                text_color: Color(hex: "#ebdbb2"),
+                text_color_hovered: Color(hex: "#fbf1c7"),
+                border_color: Color(hex: "#504945"),
+                border_color_hovered: Color(hex: "#83a598"),
+                background_color: Color(hex: "#282828"),
+                background_color_hovered: Color(hex: "#3c3836"),
+                dimensions: (width: (min: 0, max: 150), height: (min: 0, max: 0)),
+                ellipsize: End,
+                align: Center,
+            )),
+        ),
+        (
+            name: "button_3",
+            parent: "button_2",
+            hook: Hook(parent_anchor: TR, self_anchor: TL),
+            offset: Vec2(x: 10.0, y: 0.0),
+            render_criteria: [ActionOther(3)],
+            params: ButtonBlock((
+                padding: Padding(left: 10.0, right: 10.0, top: 6.0, bottom: 8.0),
+                action: OtherAction(3),
+                text: "%a",
+                font: "JetBrainsMono Nerd Font 10",
+                border_width: 2.0,
+                border_rounding: 8.0,
+                text_color: Color(hex: "#ebdbb2"),
+                text_color_hovered: Color(hex: "#fbf1c7"),
+                border_color: Color(hex: "#504945"),
+                border_color_hovered: Color(hex: "#83a598"),
+                background_color: Color(hex: "#282828"),
+                background_color_hovered: Color(hex: "#3c3836"),
+                dimensions: (width: (min: 0, max: 150), height: (min: 0, max: 0)),
+                ellipsize: End,
+                align: Center,
+            )),
+        ),
+
+        // Right-edge padding when at least one action button is present.
+        (
+            name: "padding",
+            parent: "button_0",
+            hook: Hook(parent_anchor: BR, self_anchor: TL),
+            offset: Vec2(x: 0.0, y: 0.0),
+            render_criteria: [ActionOther(0)],
+            params: TextBlock((
+                text: "",
+                font: "JetBrainsMono Nerd Font 1",
+                color: Color(hex: "#1d2021"),
+                padding: Padding(left: 12.0, right: 0.0, top: 0.0, bottom: 0.0),
+                dimensions: (width: (min: 0, max: 0), height: (min: 0, max: 0)),
+            )),
+        ),
+    ],
+
+    // https://github.com/Toqozz/wired-notify/wiki/Shortcuts
+    shortcuts: ShortcutsConfig(
+        notification_interact: 1,   // left click → default action / block click
+        notification_close: 2,      // right click → dismiss
+        notification_action1: 3,    // middle click → primary action
+        // notification_closeall: 99,
+        // notification_pause: 99,
+        // notification_action2: 99,
+        // notification_action3: 99,
+        // notification_action4: 99,
+    ),
+)

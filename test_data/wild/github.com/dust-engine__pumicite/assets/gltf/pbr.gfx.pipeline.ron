@@ -1,0 +1,27 @@
+GraphicsPipeline(
+    shaders: {
+        Vertex: (
+            path: "gltf/pbr.spv",
+            entry_point: "vertexMain",
+        ),
+        Fragment: (
+            path: "gltf/pbr.spv",
+            entry_point: "fragmentMain",
+        ),
+    },
+    attachments: [
+        (
+            blend_enable: true,
+            blend_equation: (
+                color: (One, Add, OneMinusSrcAlpha),
+                alpha: (One, Add, OneMinusSrcAlpha),
+            ),
+            format: B8G8R8A8_SRGB,
+        )
+    ],
+    depth_write_enable: true,
+    depth_test_enable: true,
+    depth_format: D32_SFLOAT,
+    depth_compare_enabled: true,
+    depth_compare_op: ">="
+)

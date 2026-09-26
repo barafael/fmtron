@@ -1,0 +1,9 @@
+CciConfig(
+    presets: [
+        GoApp(GoAppConfig(
+            version: "1.21",
+            linter: true,
+            security: true,
+        )),
+    ],
+)

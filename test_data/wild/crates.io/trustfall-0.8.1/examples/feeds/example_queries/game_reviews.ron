@@ -1,0 +1,29 @@
+InputQuery (
+    query: r#"
+{
+    Feed {
+        title {
+            content @filter(op: "has_substring", value: ["$feed"])
+        }
+
+        entry_: entries {
+            title_: title {
+                content @filter(op: "regex", value: ["$title_pattern"])
+                        @output
+            }
+
+            links {
+                link: href @output
+            }
+
+            content {
+                body @output
+            }
+        }
+    }
+}"#,
+    args: {
+        "feed": String("PCGamer"),
+        "title_pattern": String("[Rr]eview"),  // tolerate capitalization
+    },
+)

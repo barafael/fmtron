@@ -1,0 +1,13 @@
+Config (
+    config: (
+        output: "dummy",
+        passes: 1,
+        threads: None,
+    ),
+    camera: {
+        "DummyCamera": (),
+    },
+    integrator: {
+        "DummyIntegrator": (),
+    },
+)

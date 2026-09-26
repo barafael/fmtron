@@ -1,0 +1,7 @@
+(
+    name: "Web Search",
+    description: "Site-specific web search",
+    query: (help: "ddg ", priority: High),
+    bin: (path: "web"),
+    icon: Name("system-search"),
+)

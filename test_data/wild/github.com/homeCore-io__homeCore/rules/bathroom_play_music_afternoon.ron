@@ -1,0 +1,57 @@
+Rule(
+    id: "ba000001-0007-0007-0007-000000000007",
+    name: "Bathroom - Play Music on Close (Afternoon)",
+    enabled: true,
+    priority: 10,
+    tags: [],
+    trigger: DeviceStateChanged(
+        device_id: "yolink_d88b4c0400064299",
+        attribute: Some("open"),
+        to: Some(false),
+    ),
+    conditions: [
+        TimeWindow(
+            start: "12:00:00",
+            end: "23:59:00",
+        ),
+    ],
+    actions: [
+        RuleAction(
+            enabled: true,
+            action: SetDeviceState(
+                device_id: "sonos_bathroom",
+                state: {
+                    "action": "set_volume",
+                    "volume": 15,
+                },
+                track_event_value: false,
+            ),
+        ),
+        RuleAction(
+            enabled: true,
+            action: SetDeviceState(
+                device_id: "sonos_bathroom",
+                state: {
+                    "action": "set_shuffle",
+                    "shuffle": true,
+                },
+                track_event_value: false,
+            ),
+        ),
+        RuleAction(
+            enabled: true,
+            action: SetDeviceState(
+                device_id: "sonos_bathroom",
+                state: {
+                    "action": "play_favorite",
+                    "favorite": "ALT Radio",
+                },
+                track_event_value: false,
+            ),
+        ),
+    ],
+    log_events: false,
+    log_triggers: false,
+    log_actions: false,
+    cancel_on_false: false,
+)

@@ -1,0 +1,13 @@
+(
+  title: "Solar Lords",
+  fullscreen: None,
+  dimensions: Some((1000, 750)),
+  max_dimensions: None,
+  min_dimensions: None,
+  resizeable: false,
+  decorations: true,
+  maximized: true,
+  multisampling: 0,
+  visibility: true,
+  vsync: false,
+)

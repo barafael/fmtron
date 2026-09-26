@@ -1,0 +1,17 @@
+// Mannequin config (RON format)
+// If ca_cert/ca_key are omitted or None, fresh certs are generated at startup.
+(
+    port: 9999,
+
+    // Option A: file paths
+    // ca_cert: (path: "./certs/ca_cert.pem"),
+    // ca_key: (path: "./certs/ca_pkey.pem"),
+
+    // Option B: inline PEM (paste full PEM string here)
+    // ca_cert: "-----BEGIN CERTIFICATE-----\nMIIC...\n-----END CERTIFICATE-----\n",
+    // ca_key: "-----BEGIN PRIVATE KEY-----\nMIGH...\n-----END PRIVATE KEY-----\n",
+
+    // Server cert (optional, for pre-issued default server cert)
+    // server_cert: (path: "./certs/server_cert.pem"),
+    // server_key: (path: "./certs/server_pkey.pem"),
+)

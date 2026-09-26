@@ -1,0 +1,11 @@
+CciConfig(
+    presets: [
+        RustLibrary(RustLibraryConfig(
+            version: "stable",
+            coverage: true,
+            linter: true,
+            security: true,
+            formatter: true,
+        )),
+    ],
+)

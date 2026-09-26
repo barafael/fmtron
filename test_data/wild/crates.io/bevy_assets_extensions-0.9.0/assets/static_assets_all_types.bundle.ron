@@ -1,0 +1,29 @@
+{
+    "float_point_32": Float(2.0),
+    "color": Color(Srgba((
+      red: 1.0, green: 2.0, blue: 3.0, alpha: 4.0,
+    ))),
+    "optional_color": Color(Srgba((
+      red: 4.0, green: 3.0, blue: 2.0, alpha: 1.0,
+    ))),
+    "font": File("FiraSans-Bold.ttf"),
+    "rect": UiRect((
+      left: Px(1.0), top: Px(2.0), bottom: Px(3.0), right: Px(4.0)
+    )),
+    "layers": StringList(["bodies/03","outfits/19_01","hairstyles/01_01"]),
+    "texture_slicer": TextureSlicer((
+        border: (
+            min_inset: Vec2(4.0, 4.0),
+            max_inset: Vec2(4.0, 4.0),
+        ),
+        center_scale_mode: Stretch,
+        sides_scale_mode: Stretch,
+        max_corner_scale: 1.0,
+    )),
+    "indices": Value({
+      "a": 1
+    }),
+    "text1": Text("Hello World 1!"),
+    "text2": Text("Hello World 2!"),
+
+}

@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/ecs",
+    protocol: "binary-tarpc",
+    description: "Manages AWS Elastic Container Service resources, such as clusters, services, task definitions, and more!",
+    stability: "preview"
+)

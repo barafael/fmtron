@@ -1,0 +1,73 @@
+question((
+  group: "${group}",
+  list: [
+    single_line(
+      id: "q1",
+      prompt: "!!<easy_mark> _Q1._ A single-line question, with a multiline prompt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sed tellus sodales, cursus leo nec, varius metus. Aliquam erat volutpat. Maecenas tincidunt urna ac dolor facilisis lacinia. Suspendisse potenti. Curabitur quis eros mi. Nunc finibus arcu ipsum, sit amet rutrum felis convallis et. Sed ultricies eu augue non bibendum. Pellentesque lorem ipsum, euismod in placerat in, sollicitudin sit amet velit. Aliquam iaculis velit orci, eget cursus lacus maximus sed."
+    ),
+
+    multi_line(
+      id: "q2",
+      prompt: "!!<easy_mark> /Q2./ A multi-line question:"
+    ),
+
+    single_choice(
+      id: "q3",
+      prompt: "!!<easy_mark>  ~Q3. A single-choice question:~",
+      options: [
+        "Option Alpha",
+        "Option Beta",
+        "Option Gamma",
+        "Option Delta",
+        "Option Epsilon",
+        "Option Zeta",
+        "Option Eta"
+      ],
+      columns: 4
+    ),
+
+    multi_choice(
+      id: "q4",
+      prompt: "!!<easy_mark> `Q4.` A multi-choice question:",
+      options: ["C-1", "D-2", "E-3", "F-4"]
+    ),
+
+    single_line(
+      id: "q5",
+      prompt: "!!<easy_mark> ^Q5^. A single-line question:"
+    ),
+
+    multi_line(
+      id: "q6",
+      prompt: "Q6. A multi-line question:"
+    ),
+
+    single_choice(
+      id: "q7",
+      prompt: "Q7. A single-choice question:",
+      options: ["A", "B", "C"]
+    ),
+
+    multi_choice(
+      id: "q8",
+      prompt: "Q8. A multi-choice question:",
+      options: ["C", "D", "E", "F"]
+    ),
+
+    slider(
+      id: "q9",
+      prompt: "Q9. A floating point slider with 2-digit precision:",
+      range: (1.0, 10.0),
+      step: 0.15,
+      precision: 2
+    ),
+
+    slider(
+      id: "q10",
+      prompt: "Q10. An integer slider:",
+      range: (1.0, 10.0),
+      step: 1.0,
+      precision: 0
+    )
+  ]
+))

@@ -1,0 +1,5 @@
+(
+    max_speed: 300.0,
+    acceleration: 750.0,
+    deceleration: 4.0,
+)

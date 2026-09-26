@@ -1,0 +1,13 @@
+(
+    file_path: "/home/trungdt/Data/Projects/Rust/bevy/plugin/bevy-dialogue/examples/unnecessary_demo/assets/dialogue_sample.ron",
+    selected_class: 8391887828555666002,
+    selected_state: 3052536066844523070,
+    selected_dialog: 1,
+    encrypt_key: "",
+    file_format: Ron,
+    save_without_name: false,
+    langs: [
+        "eng",
+        "jpn",
+    ],
+)

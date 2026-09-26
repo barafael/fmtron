@@ -1,0 +1,66 @@
+#![enable(implicit_some)]
+
+AnalysisConfig(
+  meta: (
+    variant_name: "Elona+",
+    version: "2.10",
+    ax_sha256: "f90ffaec9ff2f0814e1541938f6f8322a0679c028317db0235e298e3d65fe1f6"
+  ),
+
+  includes: [
+    "database/plus2.09.ron"
+  ],
+
+  variable_groups: {
+    "chara_id": (
+      variables: [
+        ( name: "CREATURE_ID_TALKA_THE_LONG_TWINTAIL", value: 1056 ),
+
+        ( name: "MAX_CREATURE_ID", value: 1059, code_value: "CREATURE_ID_TALKA_THE_LONG_TWINTAIL + 3" ),
+      ]
+    ),
+    "item_id": (
+      variables: [
+        ( name: "ITEM_ID_AURTEHOM", value: 1249 ),
+
+        ( name: "MAX_ITEM_ID", value: 1252, code_value: "ITEM_ID_AURTEHOM + 3", exclude: true ),
+      ],
+    ),
+    "gdata": (
+      variables: [
+        (
+          name: "GDATA_FLAG_TALKA_IN_TRUCE_GROUND",
+          value: 691,
+          code_value: "STARTING_GDATA_FLAG + 441"
+        ),
+      ]
+    )
+  },
+
+  arrays: {},
+
+  expressions: {},
+
+  functions: {},
+
+  labels: {
+    "*map_riverHorizontal": (
+      rules: [
+        (
+          kind: Assignment,
+          match: "v = 6 + gdata(GDATA_FLAG_COLLECTED_WISHES)"
+        )
+      ]
+    ),
+    "*map_riverVertical": (
+      rules: [
+        (
+          kind: Assignment,
+          match: "w = 6 + gdata(GDATA_FLAG_COLLECTED_WISHES)"
+        )
+      ]
+    ),
+  },
+
+  files: {}
+)

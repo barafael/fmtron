@@ -1,0 +1,4 @@
+(
+  camera_speed: 1.0,
+  cube_kill_y: -10.0,
+)

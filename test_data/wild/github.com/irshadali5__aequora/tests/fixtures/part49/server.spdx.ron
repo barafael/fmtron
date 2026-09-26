@@ -1,0 +1,22 @@
+(
+    schema_version: 1,
+    format: "SPDX",
+    profile: Server,
+    artifact: "aequora-server",
+    artifact_digest: "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    build_id: "controlled-runner-49",
+    source_commit: "0123456789abcdef0123456789abcdef01234567",
+    lockfile_digest: "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    components: [
+        (
+            package: "serde",
+            version: "1.0.229",
+            source: "crates.io",
+            checksum: "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+            license_expression: "MIT OR Apache-2.0",
+        ),
+    ],
+    relationships: {
+        "serde": [],
+    },
+)

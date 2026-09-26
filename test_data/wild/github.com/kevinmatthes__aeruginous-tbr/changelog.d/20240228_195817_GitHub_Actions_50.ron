@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "TAR:  update archive using temporary directories; fixes #50",
+    ],
+  },
+)

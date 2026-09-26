@@ -1,0 +1,54 @@
+#![enable(implicit_some)]
+(
+	name: "flow-basic",
+	description: "Flow -- Basic",
+	appenders: [
+		(
+			type: "file",
+			name: "flow-basic--appender",
+			fileName: "flow-basic.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "sequence",
+			name: "flow-basic--entity-name",
+		),
+	],
+	entries: [
+		(
+			name: "flow-basic--entry",
+			entity: "flow-basic--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "flow-basic--file-feed",
+			content: (
+				type: "katla",
+				uri: "data:application/x.katla-rs.katla,{{ flow-basic--entry }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "flow-basic--flow",
+			timeInterval: "R20000",
+			entries: [
+				"flow-basic--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "flow-basic--file-feed",
+					appender: "flow-basic--appender",
+				),
+			],
+		),
+	],
+)

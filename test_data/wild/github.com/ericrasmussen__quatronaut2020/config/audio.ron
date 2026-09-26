@@ -1,0 +1,49 @@
+(
+  // max volume should be 0.0 - 1.0
+  // in audio.rs the individual sounds are assigned volumes
+  // for balancing
+  max_volume: 0.5,
+  player_blaster: [
+    "sfx/blaster_player_01_v01.ogg",
+    "sfx/blaster_player_01_v02.ogg",
+    "sfx/blaster_player_01_v03.ogg",
+    "sfx/blaster_player_01_v04.ogg",
+    "sfx/blaster_player_01_v05.ogg",
+    "sfx/blaster_player_01_v06.ogg",
+    "sfx/blaster_player_01_v07.ogg",
+  ],
+  player_death: [
+    "sfx/death_player_01_v01.ogg",
+    "sfx/death_player_01_v02.ogg",
+    "sfx/death_player_01_v03.ogg",
+    "sfx/death_player_01_v04.ogg",
+    "sfx/death_player_01_v05.ogg",
+    "sfx/death_player_01_v06.ogg",
+  ],
+  enemy_blaster: [
+    "sfx/blaster_enemy_01_v01.ogg",
+    "sfx/blaster_enemy_01_v02.ogg",
+    "sfx/blaster_enemy_01_v03.ogg",
+    "sfx/blaster_enemy_01_v04.ogg",
+    "sfx/blaster_enemy_01_v05.ogg",
+    "sfx/blaster_enemy_01_v06.ogg",
+    "sfx/blaster_enemy_01_v07.ogg",
+  ],
+  enemy_death: [
+    "sfx/death_enemy_01_v01.ogg",
+    "sfx/death_enemy_01_v02.ogg",
+    "sfx/death_enemy_01_v03.ogg",
+    "sfx/death_enemy_01_v04.ogg",
+    "sfx/death_enemy_01_v05.ogg",
+    "sfx/death_enemy_01_v06.ogg",
+  ],
+  triangle_lock: [
+    "sfx/Triangle_lockon_01_v02.ogg",
+    "sfx/Triangle_lockon_01_v03.ogg",
+  ],
+  short_transition: "sfx/Transition_02_v01.ogg",
+  // long transition isn't currently in use, but keeping
+  // things here to be flexible
+  long_transition: "sfx/Transition_01_v01.ogg",
+  glass_transition: "sfx/Quatronaut_-_glassbreak_v01.ogg",
+)

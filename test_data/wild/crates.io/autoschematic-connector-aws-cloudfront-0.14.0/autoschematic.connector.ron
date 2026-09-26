@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/cloudfront",
+    protocol: "binary-tarpc",
+    description: "Manages AWS CloudFront resources, such as distributions, access controls, policies, and more.",
+    stability: "preview"
+)

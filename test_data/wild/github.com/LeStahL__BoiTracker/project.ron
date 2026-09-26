@@ -1,0 +1,24 @@
+#![enable(implicit_some, unwrap_newtypes)]
+(
+	res: "hd",
+	fps: 30,
+	inputs: [
+        ( id: "dictionary", src: Img(r"dictionary/dictionary.png") ),
+    ],
+	shaders: {
+		"tracker": "tracker",
+	},
+	midi_input: r"midi/21-05-12_20.02.mid",
+	chains: [
+		(
+			id: "main",
+			inputs: [
+				( id: "dictionary" ),
+			],
+			layers: [
+				( fx: "tracker" ),
+			],
+		),
+	],
+	output: ( id: "main" ),
+)

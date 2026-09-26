@@ -1,0 +1,22 @@
+{
+    "layout": TextureAtlasLayout(
+        Grid(
+            tile_size: (
+                x: 96,
+                y: 99,
+            ),
+            columns: 2,
+            rows: 3,
+        )
+    ),
+    "layout2": TextureAtlasLayout(
+        Grid(
+            tile_size: (
+                x: 16,
+                y: 19,
+            ),
+            columns: 1,
+            rows: 4,
+        )
+    ),
+}

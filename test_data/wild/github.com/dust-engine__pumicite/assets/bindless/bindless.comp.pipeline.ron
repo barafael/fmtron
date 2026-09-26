@@ -1,0 +1,9 @@
+ComputePipeline(
+    shader: (
+        path: "bindless/bindless.spv",
+        entry_point: "main",
+    ),
+    layout: Bindless,
+    disable_optimization: false,
+    dispatch_base: false,
+)

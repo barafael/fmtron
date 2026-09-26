@@ -1,0 +1,147 @@
+("Repeat Forever", Repeater((
+    repeat: Forever,
+)), [
+    ("Wait and do", Sequencer((
+        random: false,
+    )), [
+        ("Wait a bit", Wait((
+            duration: (
+                prop: Value(5.0),
+            ),
+            fail: (
+                prop: Value(false),
+            ),
+        )), [], (
+            pos: (600.0, 0.0),
+        )),
+        ("Run until any  good", Any(()), [
+            ("Do a thing", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+                duration: (
+                    prop: Value(5.0),
+                ),
+            )), [], (
+                pos: (800.0, 200.0),
+            )),
+            ("Do another", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(true),
+                ),
+                duration: (
+                    prop: Value(2.0),
+                ),
+            )), [], (
+                pos: (800.0, 400.0),
+            )),
+            ("Do more", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+                duration: (
+                    prop: Value(8.0),
+                ),
+            )), [], (
+                pos: (800.0, 600.0),
+            )),
+            ("Wait and do", Sequencer((
+                random: false,
+            )), [
+                ("Wait a bit", Wait((
+                    duration: (
+                        prop: Value(2.0),
+                    ),
+                    fail: (
+                        prop: Value(false),
+                    ),
+                )), [], (
+                    pos: (1000.0, 800.0),
+                )),
+                ("Run until any good", Any(()), [
+                    ("Do a thing", Debug((
+                        message: (
+                            prop: Value(""),
+                        ),
+                        fail: (
+                            prop: Value(false),
+                        ),
+                        duration: (
+                            prop: Value(5.0),
+                        ),
+                    )), [], (
+                        pos: (1200.0, 1000.0),
+                    )),
+                    ("Do another", Debug((
+                        message: (
+                            prop: Value(""),
+                        ),
+                        fail: (
+                            prop: Value(true),
+                        ),
+                        duration: (
+                            prop: Value(2.0),
+                        ),
+                    )), [], (
+                        pos: (1200.0, 1200.0),
+                    )),
+                    ("Do more", Debug((
+                        message: (
+                            prop: Value(""),
+                        ),
+                        fail: (
+                            prop: Value(false),
+                        ),
+                        duration: (
+                            prop: Value(8.0),
+                        ),
+                    )), [], (
+                        pos: (1200.0, 1400.0),
+                    )),
+                ], (
+                    pos: (1000.0, 1000.0),
+                )),
+            ], (
+                pos: (800.0, 800.0),
+            )),
+            ("Wait a bit", Wait((
+                duration: (
+                    prop: Value(5.0),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+            )), [], (
+                pos: (800.0, 1600.0),
+            )),
+            ("Nothing over here", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+                duration: (
+                    prop: Value(8.0),
+                ),
+            )), [], (
+                pos: (800.0, 1800.0),
+            )),
+        ], (
+            pos: (600.0, 200.0),
+        )),
+    ], (
+        pos: (400.0, 0.0),
+    )),
+], (
+    pos: (200.0, 0.0),
+))

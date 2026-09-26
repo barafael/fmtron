@@ -1,0 +1,10 @@
+Item(
+    item_id: 26,
+    name: "Healing Potion",
+    quality: Common,
+    equip_slot: UtilitySlot,
+    stats: None,
+    description: "Restores 15hp",
+    consumable: true,
+    effects: Some([(Heal(15), None)]),
+)

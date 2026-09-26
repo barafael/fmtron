@@ -1,0 +1,171 @@
+(
+    format: 1,
+    description: "A GT3-class machine with the flat-plane V8 and its racing exhaust.",
+    parts: [
+        (
+            name: "tub",
+            part: "frame/gt3_tub",
+        ),
+        (
+            name: "body",
+            part: "body/gt3_body",
+            attach: Some((
+                to: "tub",
+                at: "origin",
+            )),
+        ),
+        (
+            name: "aero",
+            part: "aero/gt3_aero",
+            attach: Some((
+                to: "tub",
+                at: "origin",
+            )),
+        ),
+        (
+            name: "engine",
+            part: "engine/v8_4l_flatplane",
+            attach: Some((
+                to: "tub",
+                at: "engine",
+                mount: Some("base"),
+            )),
+        ),
+        (
+            name: "intake",
+            part: "intake/v8_itb",
+            attach: Some((
+                to: "engine",
+                at: "intake",
+            )),
+        ),
+        (
+            name: "exhaust",
+            part: "exhaust/v8_race",
+            attach: Some((
+                to: "tub",
+                at: "origin",
+            )),
+        ),
+        (
+            name: "gearbox",
+            part: "transmission/gt3_seq6",
+            attach: Some((
+                to: "engine",
+                at: "bellhousing",
+                mount: Some("front"),
+            )),
+        ),
+        (
+            name: "driveline",
+            part: "driveline/gt3_rwd",
+            attach: Some((
+                to: "tub",
+                at: "rear axle",
+            )),
+        ),
+        (
+            name: "front suspension",
+            part: "suspension/gt3_front",
+            attach: Some((
+                to: "tub",
+                at: "front axle",
+            )),
+            axle: Some(Front),
+        ),
+        (
+            name: "rear suspension",
+            part: "suspension/gt3_rear",
+            attach: Some((
+                to: "tub",
+                at: "rear axle",
+            )),
+            axle: Some(Rear),
+        ),
+        (
+            name: "front wheels",
+            part: "wheel/gt3_front",
+            axle: Some(Front),
+        ),
+        (
+            name: "rear wheels",
+            part: "wheel/gt3_rear",
+            axle: Some(Rear),
+        ),
+        (
+            name: "brakes",
+            part: "brakes/gt3_iron",
+            attach: Some((
+                to: "tub",
+                at: "pedals",
+            )),
+        ),
+        (
+            name: "steering",
+            part: "steering/gt3_rack",
+            attach: Some((
+                to: "tub",
+                at: "steering",
+            )),
+        ),
+        (
+            name: "cockpit",
+            part: "interior/gt3_cockpit",
+            attach: Some((
+                to: "tub",
+                at: "seat",
+            )),
+        ),
+        (
+            name: "fuel cell",
+            part: "fuel_tank/gt3_120l",
+            attach: Some((
+                to: "tub",
+                at: "fuel",
+            )),
+        ),
+        (
+            name: "electronics",
+            part: "electronics/gt3_paddle",
+            attach: Some((
+                to: "tub",
+                at: "electronics",
+            )),
+        ),
+    ],
+    setup: (
+        front: (
+            pressure: 1.38,
+            spring_rate: 120000.0,
+            bump_damping: 5500.0,
+            rebound_damping: 8000.0,
+            damper_knee: 0.1,
+            anti_roll_rate: 60000.0,
+            camber: -0.061,
+            toe: 0.0,
+            ride_height: 0.065,
+        ),
+        rear: (
+            pressure: 1.38,
+            spring_rate: 140000.0,
+            bump_damping: 6000.0,
+            rebound_damping: 9000.0,
+            damper_knee: 0.1,
+            anti_roll_rate: 40000.0,
+            camber: -0.044,
+            toe: 0.0,
+            ride_height: 0.09,
+        ),
+        brake_bias: 0.6,
+        wings: [
+            ("rear wing", 0.14),
+        ],
+        fuel: 60.0,
+        ballast: [
+            ((-0.6, 0.0, 0.1), 60.0),
+        ],
+    ),
+    driver: (
+        mass: 80.0,
+    ),
+)

@@ -1,0 +1,9 @@
+[
+    (
+        id: "jorik_vane_schism_account",
+        source: "jorik_vane",
+        fidelity: Partial,
+        event_refs: ["siege_of_silica", "battle_of_broken_glass", "purist_uprising"],
+        text: "The {purist_uprising} set the stage for everything that followed. When {brother_halix} was captured at {havens_rest}, the {iron_covenant} saw an opening. {kaine_durgan} led the assault on {silica} — not out of hatred, but cold strategy. The {mirror_order} defenders fought bravely. {silica} fell. Whether it was necessary remains debated.",
+    ),
+]

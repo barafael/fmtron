@@ -1,0 +1,20 @@
+[
+    (
+        name: "single",
+        material_mappings: [
+            ("cube", Metallic, Constant(Scalar(0.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+            ("cube", Specular, Constant(Scalar(0.0))),
+            ("cube", Sheen, Constant(Scalar(1.0))),
+            ("cube", SheenTint, Constant(Scalar(1.0))),
+
+            ("plane", Metallic, Constant(Scalar(0.5))),
+            ("plane", Roughness, Constant(Scalar(0.5))),
+        ],
+        sky_elevation_deg: Constant(10.0),
+        sky_azimuth_deg: Constant(225.0),
+        sky_turbidity: Constant(5.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    )
+]

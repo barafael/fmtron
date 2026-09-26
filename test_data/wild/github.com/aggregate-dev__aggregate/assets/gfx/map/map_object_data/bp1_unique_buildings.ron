@@ -1,0 +1,30 @@
+(schema_version: 1, entries: [
+    Property(key: "game_object_locator", operator: Assign, value: Block([
+        Property(key: "name", operator: Assign, value: Text("cristo_redentor_locator")),
+        Property(key: "clamp_to_water_level", operator: Assign, value: Boolean(false)),
+        Property(key: "render_under_water", operator: Assign, value: Boolean(false)),
+        Property(key: "generated_content", operator: Assign, value: Boolean(false)),
+        Property(key: "layer", operator: Assign, value: Text("static")),
+        Property(key: "instances", operator: Assign, value: Block([
+            Item(Block([
+                Property(key: "id", operator: Assign, value: Number("1")),
+                Property(key: "position", operator: Assign, value: Block([
+                    Item(Number("3103.362061")),
+                    Item(Number("0.000000")),
+                    Item(Number("981.426453")),
+                ])),
+                Property(key: "rotation", operator: Assign, value: Block([
+                    Item(Number("-0.000000")),
+                    Item(Number("-0.000000")),
+                    Item(Number("-0.000000")),
+                    Item(Number("0.000000")),
+                ])),
+                Property(key: "scale", operator: Assign, value: Block([
+                    Item(Number("1.000000")),
+                    Item(Number("1.000000")),
+                    Item(Number("1.000000")),
+                ])),
+            ])),
+        ])),
+    ])),
+])

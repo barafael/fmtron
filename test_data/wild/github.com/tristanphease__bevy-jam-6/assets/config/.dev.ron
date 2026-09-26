@@ -1,0 +1,11 @@
+(
+    // Diagnostics:
+    log_frame_time: false,
+    log_system_information: false,
+    log_entity_count: false,
+
+    // State:
+    log_state_flush: true,
+    extend_loading_screen: 0.0,
+    initial_screen: Some(Gameplay),
+)

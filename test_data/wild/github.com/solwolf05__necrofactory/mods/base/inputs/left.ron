@@ -1,0 +1,10 @@
+(
+    id: "left",
+    name: "Left",
+    default: (
+        kind: KeyButton(KeyA),
+        shift: false,
+        control: false,
+        alt: false,
+    ),
+)

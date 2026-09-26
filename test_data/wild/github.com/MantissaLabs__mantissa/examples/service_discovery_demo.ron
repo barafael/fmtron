@@ -1,0 +1,55 @@
+(
+    name: "discovery-demo",
+    tasks: [
+        (
+            name: "backend",
+            image: "busybox:1.36",
+            command: [
+                "sh",
+                "-c",
+                "mkdir -p /www && hostname >/www/index.html && exec httpd -f -p 8000 -h /www",
+            ],
+            replicas: 4,
+            resources: (
+                cpu_millis: 200,
+                memory_mb: 64,
+            ),
+            networks: ["demo-network"],
+            env: [],
+            secret_files: [],
+            readiness: Some((
+                kind: http,
+                port: 8000,
+                path: Some("/"),
+            )),
+            liveness: Some((
+                kind: http,
+                port: 8000,
+                path: Some("/"),
+                interval_ms: 2000,
+                timeout_ms: 1000,
+                failure_threshold: 2,
+                start_period_ms: 1000,
+            )),
+            public_port: Some(8000),
+        ),
+        (
+            name: "frontend",
+            image: "curlimages/curl:8.9.1",
+            depends_on: ["backend"],
+            command: [
+                "sh",
+                "-c",
+                "while true; do printf '\\n---\\n' && date; curl --connect-timeout 5 --max-time 5 --no-keepalive --retry 0 -sS -w '\\n[curl] http=%{http_code} remote=%{remote_ip} dns=%{time_namelookup}s connect=%{time_connect}s start=%{time_starttransfer}s total=%{time_total}s\\n' http://backend.discovery-demo.demo-network.svc.mantissa:8000; rc=$?; echo \"[curl] rc=$rc\"; sleep 2; done",
+            ],
+            replicas: 1,
+            resources: (
+                cpu_millis: 200,
+                memory_mb: 64,
+            ),
+            networks: ["demo-network"],
+            env: [],
+            secret_files: [],
+        ),
+    ],
+)

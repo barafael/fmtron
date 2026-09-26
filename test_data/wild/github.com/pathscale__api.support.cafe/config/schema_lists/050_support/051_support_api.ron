@@ -1,0 +1,38 @@
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+
+Config(
+    definition: EndpointSchemaList(
+        service_name: "supportApi",
+        service_id: 5,
+        config: (snake_case_fields: true),
+        endpoints: [
+            EndpointSchemaElement(
+                frontend_facing: true,
+                schema: (
+                    name: "SetMyTgHandle",
+                    code: 20007,
+                    description: "Set the caller's Telegram handle, used to route support replies. The handle is bound to a Telegram chat when the member sends /start to the app's bot.",
+                    parameters: [
+                        Field(name: "tg_handle", ty: String),
+                    ],
+                    returns: [],
+                    roles: ["UserRole::Admin", "UserRole::AppAdmin", "UserRole::Support"],
+                ),
+            ),
+            EndpointSchemaElement(
+                frontend_facing: true,
+                schema: (
+                    name: "GetMyTgHandle",
+                    code: 20008,
+                    description: "Get the caller's currently configured Telegram handle, if any.",
+                    parameters: [],
+                    returns: [
+                        Field(name: "tg_handle", ty: Optional(String)),
+                    ],
+                    roles: ["UserRole::Admin", "UserRole::AppAdmin", "UserRole::Support"],
+                ),
+            ),
+        ],
+    ),
+)

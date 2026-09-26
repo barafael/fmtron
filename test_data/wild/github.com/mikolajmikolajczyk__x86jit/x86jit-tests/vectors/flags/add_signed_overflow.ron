@@ -1,0 +1,51 @@
+TestVector(
+    name: "add_signed_overflow",
+    note: "0x7fffffff + 1 sets OF and SF",
+    tags: [
+        "flags",
+    ],
+    cpu_init: CpuSnapshot(
+        gpr: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+        rip: 4096,
+        flags: SnapFlags(
+            cf: false,
+            pf: false,
+            af: false,
+            zf: false,
+            sf: false,
+            of: false,
+            df: false,
+        ),
+        fs_base: 0,
+        gs_base: 0,
+    ),
+    mem_init: [
+        MemChunk(
+            addr: 4096,
+            bytes: "b8ffffff7f83c001f4",
+            kind: Ram,
+        ),
+    ],
+    entry: 4096,
+    run: UntilExit,
+    expect: Expectation(
+        cpu: CpuSnapshot(
+            gpr: (2147483648, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+            rip: 4105,
+            flags: SnapFlags(
+                cf: false,
+                pf: true,
+                af: true,
+                zf: false,
+                sf: true,
+                of: true,
+                df: false,
+            ),
+            fs_base: 0,
+            gs_base: 0,
+        ),
+        mem_diff: [],
+        exit: Hlt,
+    ),
+    dont_care_flags: [],
+)

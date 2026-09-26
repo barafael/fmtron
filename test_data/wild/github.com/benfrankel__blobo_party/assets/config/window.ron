@@ -1,0 +1,5 @@
+(
+    title: "Blobo Party!",
+    window_mode: Windowed,
+    present_mode: AutoVsync,
+)

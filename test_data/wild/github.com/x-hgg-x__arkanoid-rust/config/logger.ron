@@ -1,0 +1,6 @@
+(
+    stdout: Colored,
+    level_filter: Info,
+    allow_env_override: true,
+    log_gfx_backend_level: Some(Off),
+)

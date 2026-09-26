@@ -1,0 +1,25 @@
+(
+    name: "RON Example",
+    version: 1.0,
+    active: true,
+    count: 42,
+    price: 99.99,
+    tags: ["rust", "ron", "example"],
+    nested: (
+        description: "A nested table",
+        rating: 4.5,
+        flags: [true, false, true],
+    ),
+    users: [
+        (
+            id: 1,
+            username: "alice",
+            score: 123.45,
+        ),
+        (
+            id: 2,
+            username: "bob",
+            score: 67.89,
+        ),
+    ],
+)

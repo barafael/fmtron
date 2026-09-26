@@ -1,0 +1,40 @@
+// kb-mcp collection configuration
+//
+// This example indexes kb-mcp's own documentation and vault — the project
+// dogfoods itself. Copy this to collections.ron to try it out.
+//
+// Paths are relative to this file's location.
+(
+    collections: [
+        (
+            name: "vault",
+            path: "vault",
+            description: "AI agent memory knowledge vault",
+            writable: false,
+            sections: [
+                (prefix: "concepts", description: "Memory models, retrieval strategies, token efficiency"),
+                (prefix: "patterns", description: "Knowledge keeper, session digests, shared memory"),
+                (prefix: "tools", description: "Retrieval tool landscape and comparisons"),
+                (prefix: "research", description: "Papers, projects, and reading list"),
+            ],
+        ),
+        (
+            name: "docs",
+            path: "docs",
+            description: "Project documentation (architecture, goals)",
+            writable: false,
+            sections: [],
+        ),
+        (
+            name: "book",
+            path: "book/src",
+            description: "mdBook pages (usage guides, reference, development)",
+            writable: false,
+            sections: [
+                (prefix: "usage", description: "Configuration, MCP server, and CLI guides"),
+                (prefix: "reference", description: "Tool and RON schema reference"),
+                (prefix: "development", description: "Architecture and contributing guides"),
+            ],
+        ),
+    ],
+)

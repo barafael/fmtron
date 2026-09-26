@@ -1,0 +1,126 @@
+(
+	resources: {
+		"image.color": Image(
+			kind: D2(1, 1, 1, 1),
+			num_levels: 1,
+			format: Rgba8Unorm,
+			usage: (bits: 0x15), //COLOR_ATTACHMENT | TRANSFER_SRC (for reading) | SAMPLED (temporary for GL)
+			view_caps: (bits: 0),
+		),
+		"pass": RenderPass(
+			attachments: {
+				"c": (
+					format: Some(Rgba8Unorm),
+					samples: 1,
+					ops: (load: Clear, store: Store),
+					layouts: (start: General, end: General),
+				),
+			},
+			subpasses: {
+				"main": (
+					colors: [("c", General)],
+					depth_stencil: None,
+				)
+			},
+			dependencies: [],
+		),
+		"image.color.view": ImageView(
+			image: "image.color",
+			kind: D2,
+			format: Rgba8Unorm,
+			usage: (bits: 0x15),
+			range: (
+				aspects: (bits: 1),
+				level_start: 0,
+				level_count: None,
+				layer_start: 0,
+				layer_count: None,
+			),
+		),
+		"fbo": Framebuffer(
+			pass: "pass",
+			attachments: {
+				"c": (
+					usage: (bits: 0x15),
+					view_caps: (bits: 0),
+					format: Rgba8Unorm,
+				),
+			},
+			extent: (
+				width: 1,
+				height: 1,
+				depth: 1,
+			),
+		),
+		"pipe-layout": PipelineLayout(
+			set_layouts: [],
+			push_constant_ranges: [],
+		),
+		"shader.passthrough.vs": Shader("passthrough.vert"),
+		"shader.passthrough.fs": Shader("passthrough.frag"),
+		"pipe.passthrough": GraphicsPipeline(
+			shaders: (
+				vertex: "shader.passthrough.vs",
+				fragment: "shader.passthrough.fs",
+			),
+			rasterizer: (
+				polygon_mode: Fill,
+				cull_face: (bits: 0),
+				front_face: Clockwise,
+				depth_clamping: false,
+				depth_bias: None,
+				conservative: false,
+				line_width: Static(1.0),
+			),
+			input_assembler: (
+				primitive: TriangleList,
+				with_adjacency: false,
+				restart_index: None,
+			),
+			blender: (
+				alpha_coverage: false,
+				logic_op: None,
+				targets: [
+					(mask: (bits: 15), blend: None),
+				],
+			),
+			layout: "pipe-layout",
+			subpass: (
+				parent: "pass",
+				index: 0,
+			),
+		),
+	},
+	jobs: {
+		"empty": Graphics(
+			framebuffer: "fbo",
+			attachments: {
+				"c": (
+					image_view: "image.color.view",
+					clear_value: Color(Float((0.8, 0.8, 0.8, 1.0))),
+				),
+			},
+			pass: ("pass", {
+				"main": (commands: [
+				]),
+			}),
+		),
+		"pass-through": Graphics(
+			framebuffer: "fbo",
+			attachments: {
+				"c": (
+					image_view: "image.color.view",
+					clear_value: Color(Float((0.8, 0.8, 0.8, 1.0))),
+				),
+			},
+			pass: ("pass", {
+				"main": (commands: [
+					BindPipeline("pipe.passthrough"),
+					Draw(
+						vertices: (start: 0, end: 3),
+					),
+				]),
+			}),
+		),
+	},
+)

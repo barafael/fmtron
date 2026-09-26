@@ -1,0 +1,86 @@
+(
+    name: "ComplexItem",
+    base_type: "Window",
+    id: Some("mainWindow"),
+    imports: [
+        "import QtQuick",
+        "import QtQuick.Controls",
+    ],
+    signals: [
+        (
+            name: "exportDriveChanged",
+            parameters: [],
+        ),
+    ],
+    properties: [
+        (
+            name: "processInBackground",
+            prop_type: Bool,
+            value: Bool(false),
+            accessed_properties: [],
+        ),
+        (
+            name: "intVal",
+            prop_type: Int,
+            value: Unset,
+            accessed_properties: [],
+        ),
+        (
+            name: "anyVar",
+            prop_type: Var,
+            value: Unset,
+            accessed_properties: [],
+        ),
+    ],
+    functions: [
+        (
+            name: "onWidthChanged",
+            is_signal_handler: true,
+            parameters: [],
+            used_names: [
+                (
+                    name: "intVal",
+                    accessed_item: None,
+                ),
+                (
+                    name: "anyVar",
+                    accessed_item: Some("expression"),
+                ),
+            ],
+            declared_locals: [
+                "internalVariable",
+                "internalConst",
+                "val",
+            ],
+            member_assignments: [],
+        ),
+        (
+            name: "onExportDriveChanged",
+            is_signal_handler: true,
+            parameters: [],
+            used_names: [],
+            declared_locals: [],
+            member_assignments: [],
+        ),
+    ],
+    children: [
+        (
+            type_name: "Item",
+            id: Some("internalElement"),
+            properties: [],
+            functions: [
+                (
+                    name: "internalFunction",
+                    is_signal_handler: false,
+                    parameters: [],
+                    used_names: [],
+                    declared_locals: [
+                        "x",
+                    ],
+                    member_assignments: [],
+                ),
+            ],
+            children: [],
+        ),
+    ],
+)

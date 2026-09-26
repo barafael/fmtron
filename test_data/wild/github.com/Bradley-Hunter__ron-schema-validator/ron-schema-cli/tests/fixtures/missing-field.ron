@@ -1,0 +1,8 @@
+(
+  name: "Leather Shield",
+  count: 1,
+  weight: 3.0,
+  active: true,
+  label: None,
+  tags: [],
+)

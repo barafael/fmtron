@@ -1,0 +1,6 @@
+(
+  workspace: [
+    "auditeur-plugin",
+    "deps",
+  ],
+)

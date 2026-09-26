@@ -1,0 +1,9 @@
+(window: (
+    title: "Minesweeper",
+    width: 800.0,
+    height: 800.0,
+    mode: ("Windowed"),
+    resizable: false,
+    transparent: true,
+    decorations: true,
+))

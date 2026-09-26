@@ -1,0 +1,17 @@
+// examples/basic/main.ron
+Rectangle(
+    x: 50.0,
+    y: 50.0,
+    width: 400.0,
+    height: 300.0,
+    color: (0.2, 0.2, 0.2, 1.0),
+    children: [
+        Rectangle(
+            x: 20.0, 
+            y: 20.0, 
+            width: 100.0, 
+            height: 100.0, 
+            color: (1.0, 0.0, 0.0, 1.0)
+        ),
+    ]
+)

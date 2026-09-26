@@ -1,0 +1,11 @@
+(
+  axes: {},
+  actions: {
+    "up": [[Key(W)], [Key(Up)]],
+    "down": [[Key(S)], [Key(Down)]],
+    "left": [[Key(A)], [Key(Left)]],
+    "right": [[Key(D)], [Key(Right)]],
+    "interact": [[Key(F)]],
+    "jump": [[Key(Space)]],
+  },
+)

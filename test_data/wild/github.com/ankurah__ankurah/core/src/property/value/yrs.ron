@@ -1,0 +1,51 @@
+BackendConfig(
+    backend_name: "YrsBackend",
+    namespace: "::ankurah::property::value::yrs", 
+    provided_wrapper_types: ["String","Option<String>"],
+    substitutions: {
+        "local": {
+            "PREFIX": "crate::property",
+            "ERROR_PREFIX": "crate::error",
+        },
+        "external": {
+            "PREFIX": "::ankurah::property",
+            "ERROR_PREFIX": "::ankurah::error",
+        },
+    },
+    values: [
+        ValueConfig(
+            type_pattern: "YrsString(?:<(.+)>)?",
+            fully_qualified_type: "{PREFIX}::value::YrsString<{T}>",
+            accepts: "^String$",
+            generic_params: ["T"],
+            materialized_pattern: "YrsString{T}",
+            methods: [
+                Method(
+                    name: "value",
+                    args: [],
+                    return_type: "Option<String>",
+                ),
+                Method(
+                    name: "insert",
+                    args: [("index", "u32"), ("value", "&str")],
+                    return_type: "Result<(), {ERROR_PREFIX}::MutationError>",
+                ),
+                Method(
+                    name: "delete",
+                    args: [("index", "u32"), ("length", "u32")],
+                    return_type: "Result<(), {ERROR_PREFIX}::MutationError>",
+                ),
+                Method(
+                    name: "overwrite",
+                    args: [("start", "u32"), ("length", "u32"), ("value", "&str")],
+                    return_type: "Result<(), {ERROR_PREFIX}::MutationError>",
+                ),
+                Method(
+                    name: "replace",
+                    args: [("value", "&str")],
+                    return_type: "Result<(), {ERROR_PREFIX}::MutationError>",
+                ),
+            ],
+        ),
+    ],
+)

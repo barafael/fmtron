@@ -1,0 +1,12 @@
+(
+  title:          "Working Title",
+  fullscreen:     None,
+  dimensions:     Some((800, 800)),
+  // max_dimensions: Some((800, 800)),
+  // min_dimensions: Some((800, 800)),
+  visibility:     true,
+  decorations:    true,
+  maximized:      false,
+  resizable:      true,
+  transparent:    false,
+)

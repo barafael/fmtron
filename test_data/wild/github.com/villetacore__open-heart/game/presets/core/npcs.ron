@@ -1,0 +1,194 @@
+[
+    /*[0]*/ {
+        "color": [
+            /*[0]*/ 1.0,
+            /*[1]*/ 0.75,
+            /*[2]*/ 0.85,
+        ],
+        "id": "vale",
+        "name_en": "Ms. Vale",
+        "name_ru": "Ms. Вейл",
+        "pos": [
+            /*[0]*/ -6.0,
+            /*[1]*/ -8.0,
+        ],
+        "scene": "story",
+        "sprite": "npc_vale",
+    },
+    /*[1]*/ {
+        "color": [
+            /*[0]*/ 0.75,
+            /*[1]*/ 1.0,
+            /*[2]*/ 0.8,
+        ],
+        "id": "victor",
+        "name_en": "Victor",
+        "name_ru": "Виктор",
+        "pos": [
+            /*[0]*/ 6.0,
+            /*[1]*/ -8.0,
+        ],
+        "scene": "story",
+        "sprite": "npc_victor",
+    },
+    /*[2]*/ {
+        "color": [
+            /*[0]*/ 0.75,
+            /*[1]*/ 0.8,
+            /*[2]*/ 1.0,
+        ],
+        "id": "elena",
+        "name_en": "Elena",
+        "name_ru": "Елена",
+        "pos": [
+            /*[0]*/ -11.0,
+            /*[1]*/ 3.0,
+        ],
+        "scene": "story",
+        "sprite": "npc_elena",
+    },
+    /*[3]*/ {
+        "color": [
+            /*[0]*/ 1.0,
+            /*[1]*/ 0.95,
+            /*[2]*/ 0.7,
+        ],
+        "id": "sofia",
+        "name_en": "Sofia",
+        "name_ru": "София",
+        "pos": [
+            /*[0]*/ 11.0,
+            /*[1]*/ 3.0,
+        ],
+        "scene": "story",
+        "sprite": "npc_sofia",
+    },
+    /*[4]*/ {
+        "color": [
+            /*[0]*/ 0.85,
+            /*[1]*/ 0.85,
+            /*[2]*/ 0.85,
+        ],
+        "id": "guard",
+        "name_en": "Guard",
+        "name_ru": "Охранник",
+        "pos": [
+            /*[0]*/ -2.5,
+            /*[1]*/ -18.0,
+        ],
+        "scene": "story",
+        "sprite": "npc_guard",
+    },
+    /*[5]*/ {
+        "color": [
+            /*[0]*/ 1.0,
+            /*[1]*/ 0.85,
+            /*[2]*/ 0.6,
+        ],
+        "id": "merchant",
+        "name_en": "Merchant",
+        "name_ru": "Торговец",
+        "pos": [
+            /*[0]*/ 17.5,
+            /*[1]*/ -1.0,
+        ],
+        "scene": "story",
+        "sprite": "npc_merchant",
+    },
+    /*[6]*/ {
+        "color": [
+            /*[0]*/ 0.7,
+            /*[1]*/ 1.0,
+            /*[2]*/ 1.0,
+        ],
+        "id": "scientist",
+        "name_en": "Scientist",
+        "name_ru": "Учёный",
+        "pos": [
+            /*[0]*/ -18.0,
+            /*[1]*/ 0.0,
+        ],
+        "quest": "drone_blackout",
+        "sprite": "npc_scientist",
+    },
+    /*[7]*/ {
+        "color": [
+            /*[0]*/ 0.8,
+            /*[1]*/ 0.65,
+            /*[2]*/ 0.95,
+        ],
+        "id": "stranger",
+        "name_en": "Stranger",
+        "name_ru": "Незнакомец",
+        "pos": [
+            /*[0]*/ 5.0,
+            /*[1]*/ 16.0,
+        ],
+        "scene": "story",
+        "sprite": "npc_stranger",
+    },
+    /*[8]*/ {
+        "color": [
+            /*[0]*/ 1.0,
+            /*[1]*/ 0.55,
+            /*[2]*/ 0.45,
+        ],
+        "id": "hunter",
+        "name_en": "Hunter Ba",
+        "name_ru": "Охотница Ба",
+        "pos": [
+            /*[0]*/ -8.0,
+            /*[1]*/ -34.0,
+        ],
+        "quest": "cull_grunts",
+        "sprite": "npc_guard",
+    },
+    /*[9]*/ {
+        "color": [
+            /*[0]*/ 0.6,
+            /*[1]*/ 0.9,
+            /*[2]*/ 1.0,
+        ],
+        "id": "collector",
+        "name_en": "Collector",
+        "name_ru": "Коллекционер",
+        "pos": [
+            /*[0]*/ 8.0,
+            /*[1]*/ -33.0,
+        ],
+        "quest": "neon_shards",
+        "sprite": "npc_merchant",
+    },
+    /*[10]*/ {
+        "color": [
+            /*[0]*/ 0.9,
+            /*[1]*/ 0.4,
+            /*[2]*/ 0.9,
+        ],
+        "id": "warden",
+        "name_en": "Gate Warden",
+        "name_ru": "Смотритель врат",
+        "pos": [
+            /*[0]*/ -12.0,
+            /*[1]*/ -58.0,
+        ],
+        "quest": "depth_two",
+        "sprite": "npc_stranger",
+    },
+    /*[11]*/ {
+        "color": [
+            /*[0]*/ 0.5,
+            /*[1]*/ 1.0,
+            /*[2]*/ 0.7,
+        ],
+        "id": "medic",
+        "name_en": "Field Medic",
+        "name_ru": "Полевой медик",
+        "pos": [
+            /*[0]*/ -19.0,
+            /*[1]*/ 27.0,
+        ],
+        "quest": "medkit_run",
+        "sprite": "npc_scientist",
+    },
+]

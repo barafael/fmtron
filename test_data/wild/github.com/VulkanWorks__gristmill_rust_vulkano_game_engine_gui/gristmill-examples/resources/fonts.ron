@@ -1,0 +1,6 @@
+(
+    loader: "font",
+    assets: [
+        ("", "font", "fonts/DejaVuSans"),
+    ]
+)

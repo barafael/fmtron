@@ -1,0 +1,7 @@
+(
+    title: "Scoundrel",
+    window_size: (1024, 768),
+
+    vsync: false,
+    presentation: "8x8glyphs",
+)

@@ -1,0 +1,230 @@
+/* @[crate::config::Config] */
+
+Config(
+    ui: Ui(
+        layout: (
+            direction: Vertical,
+            panels: [
+                (
+                    kind: KnownNetworks,
+                    constraint: Percentage(50),
+                ),
+                (
+                    kind: AvailableNetworks,
+                    constraint: Percentage(50),
+                ),
+                (
+                    kind: Devices,
+                    constraint: Min(5),
+                ),
+                (
+                    kind: Help,
+                    constraint: Length(1),
+                ),
+            ],
+        ),
+        known_networks: TableConfig(
+            title: " Known Networks ",
+            header: Header(
+                columns: [
+                    (
+                        title: "Name",
+                        value: Name,
+                        constraint: Percentage(40),
+                    ),
+                    (
+                        title: "Security",
+                        value: Security,
+                        constraint: Percentage(20),
+                    ),
+                    (
+                        title: "State",
+                        value: State,
+                        constraint: Percentage(20),
+                    ),
+                    (
+                        title: "Signal",
+                        value: Signal,
+                        constraint: Percentage(20),
+                    ),
+                ],
+                style_active: StyleConfig(
+                    fg: Some("yellow"),
+                    bold: true,
+                ),
+            ),
+            border: Border(
+                style_active: StyleConfig(
+                    fg: Some("green"),
+                    bold: true,
+                ),
+                type_active: Thick,
+            ),
+            margin: Margin(
+                top: 1,
+                left: 1,
+                right: 1,
+            ),
+        ),
+        available_networks: TableConfig(
+            title: " Available Networks ",
+            header: Header(
+                columns: [
+                    (
+                        title: "Name",
+                        value: Name,
+                        constraint: Percentage(40),
+                    ),
+                    (
+                        title: "Security",
+                        value: Security,
+                        constraint: Percentage(20),
+                    ),
+                    (
+                        title: "Signal",
+                        value: Signal,
+                        constraint: Percentage(20),
+                    ),
+                ],
+                style_active: StyleConfig(
+                    fg: Some("yellow"),
+                    bold: true,
+                ),
+            ),
+            border: Border(
+                style_active: StyleConfig(
+                    fg: Some("green"),
+                    bold: true,
+                ),
+                type_active: Thick,
+            ),
+            margin: Margin(
+                left: 1,
+                right: 1,
+            ),
+        ),
+        devices: TableConfig(
+            title: " Devices ",
+            header: Header(
+                columns: [
+                    (
+                        title: "Name",
+                        value: Name,
+                        constraint: Percentage(10),
+                    ),
+                    (
+                        title: "Powered",
+                        value: Powered,
+                        constraint: Percentage(10),
+                    ),
+                    (
+                        title: "State",
+                        value: State,
+                        constraint: Percentage(15),
+                    ),
+                    (
+                        title: "Frequency",
+                        value: Frequency,
+                        constraint: Percentage(15),
+                    ),
+                    (
+                        title: "Address",
+                        value: Address,
+                        constraint: Percentage(20),
+                    ),
+                    (
+                        title: "Security",
+                        value: Security,
+                        constraint: Percentage(20),
+                    ),
+                ],
+                style_active: StyleConfig(
+                    fg: Some("yellow"),
+                    bold: true,
+                ),
+            ),
+            border: Border(
+                style_active: StyleConfig(
+                    fg: Some("green"),
+                    bold: true,
+                ),
+                type_active: Thick,
+            ),
+            margin: Margin(
+                left: 1,
+                right: 1,
+            ),
+        ),
+        password_popup: PopupConfig(
+            width: 60,
+            height: 7,
+        ),
+        toast: ToastConfig(
+            normal: UrgencyConfig(
+                default_title: "Normal",
+                title_style: StyleConfig(
+                    fg: Some("gray"),
+                    bold: true,
+                ),
+                border: Border(
+                    style_normal: StyleConfig(
+                        fg: Some("gray"),
+                        bold: true,
+                    ),
+                    type_active: Thick,
+                ),
+                default_duration_secs: 3.0,
+            ),
+            success: UrgencyConfig(
+                default_title: "Success",
+                title_style: StyleConfig(
+                    fg: Some("green"),
+                    bold: true,
+                ),
+                border: Border(
+                    style_normal: StyleConfig(
+                        fg: Some("green"),
+                        bold: true,
+                    ),
+                    type_active: Thick,
+                ),
+                default_duration_secs: 3.0,
+            ),
+            warning: UrgencyConfig(
+                default_title: "Warning",
+                title_style: StyleConfig(
+                    fg: Some("yellow"),
+                    bold: true,
+                ),
+                border: Border(
+                    style_normal: StyleConfig(
+                        fg: Some("yellow"),
+                        bold: true,
+                    ),
+                    type_active: Thick,
+                ),
+                default_duration_secs: 6.0,
+            ),
+            critical: UrgencyConfig(
+                default_title: "Critical",
+                title_style: StyleConfig(
+                    fg: Some("red"),
+                    bold: true,
+                ),
+                border: Border(
+                    style_normal: StyleConfig(
+                        fg: Some("red"),
+                        bold: true,
+                    ),
+                    type_active: Thick,
+                ),
+                default_duration_secs: 10.0,
+            ),
+            position: RightTop,
+            margin: Margin(
+                top: 1,
+                right: 1,
+            ),
+        ),
+    ),
+)

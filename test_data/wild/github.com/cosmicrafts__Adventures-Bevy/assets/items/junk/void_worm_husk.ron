@@ -1,0 +1,12 @@
+(
+    id: "void_worm_husk",
+    label: "Void Worm Husk",
+    description: "Shed by something large. Very large.",
+    slot: reactor,
+    rarity: junk,
+    base_value: 4,
+    icon: Some("#"),
+    icon_path: None,
+    modifiers: [],
+    on_kill: None,
+)

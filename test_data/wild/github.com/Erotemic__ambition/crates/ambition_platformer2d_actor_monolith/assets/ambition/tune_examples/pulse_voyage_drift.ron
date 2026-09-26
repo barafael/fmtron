@@ -1,0 +1,85 @@
+(
+id: "pulse_drift_voyage",
+display_name: "Pulse Drift Voyage",
+arrangement: (
+bpm: 92.0,
+total_beats: 192.0,
+root_hz: 440.0,
+bass_root_hz: 55.0,
+key_root_hz: 440.0,
+master_gain: 0.68,
+lowpass_alpha: 0.072,
+tape_hiss: 0.0018,
+gains: (
+chord_pad: 0.011,
+lead: 0.96,
+soft_keys: 0.016,
+bass: 0.048,
+drums: 0.82,
+),
+lead: [
+// Opening phrase (bars 1-4)
+(start: 0.0, duration: 0.5, semitone: 4, volume: 0.014),
+(start: 1.0, duration: 0.5, semitone: 7, volume: 0.014),
+(start: 2.0, duration: 0.75, semitone: 2, volume: 0.016),
+(start: 3.0, duration: 0.5, semitone: 9, volume: 0.013),
+// Lift (bars 5-8)
+(start: 4.5, duration: 0.5, semitone: 5, volume: 0.015),
+(start: 5.5, duration: 0.75, semitone: 0, volume: 0.017),
+(start: 6.5, duration: 0.5, semitone: 4, volume: 0.014),
+(start: 7.0, duration: 0.5, semitone: 7, volume: 0.015),
+// Variation (bars 9-12)
+(start: 8.5, duration: 0.25, semitone: -2, volume: 0.012),
+(start: 9.0, duration: 0.5, semitone: 2, volume: 0.014),
+(start: 10.0, duration: 1.0, semitone: 5, volume: 0.018),
+(start: 11.5, duration: 0.5, semitone: 9, volume: 0.013),
+// Return (bars 13-16)
+(start: 12.5, duration: 0.5, semitone: 0, volume: 0.015),
+(start: 13.5, duration: 0.75, semitone: 4, volume: 0.016),
+(start: 14.5, duration: 0.5, semitone: 7, volume: 0.014),
+(start: 15.0, duration: 0.5, semitone: 2, volume: 0.013),
+// Turnaround & outro (bars 17-24)
+(start: 16.5, duration: 0.5, semitone: 9, volume: 0.015),
+(start: 17.5, duration: 0.5, semitone: 5, volume: 0.014),
+(start: 18.5, duration: 0.75, semitone: 0, volume: 0.017),
+(start: 19.5, duration: 0.5, semitone: 4, volume: 0.013),
+(start: 20.5, duration: 0.5, semitone: 7, volume: 0.014),
+(start: 21.5, duration: 1.0, semitone: 2, volume: 0.016),
+(start: 23.0, duration: 0.75, semitone: 9, volume: 0.015),
+],
+chords: [
+(0, 4, 7, 11), // Cmaj7
+(2, 5, 9, 12), // Dm9
+(4, 7, 11, 14), // Ebmaj7
+(-1, 2, 5, 8), // Bm7b5
+(0, 3, 7, 10), // Cmin7
+(5, 9, 12, 16), // Fmaj9
+(7, 11, 14, 17), // Gmaj7
+(2, 5, 8, 12), // Dm7
+(4, 8, 11, 15), // E7#9
+(0, 4, 7, 11), // Cmaj7
+(-3, 0, 3, 7), // Am7
+(5, 9, 12, 16), // Fmaj9
+(7, 10, 14, 17), // G7
+(0, 4, 7, 12), // Cmaj7 (octave)
+(2, 6, 9, 13), // D9
+(4, 7, 11, 14), // Ebmaj7
+(-1, 2, 6, 9), // Bmin9
+(0, 4, 7, 11), // Cmaj7
+(5, 8, 12, 15), // F7#11
+(7, 11, 14, 18), // Gmaj9
+(2, 5, 9, 12), // Dm9
+(0, 3, 7, 10), // Cmin7
+(4, 7, 11, 15), // Eb7#9
+(0, 4, 7, 11), // Cmaj7
+],
+bass_roots: [
+0, 2, 4, -1,
+0, 5, 7, 2,
+4, 0, -3, 5,
+7, 0, 2, 4,
+-1, 0, 5, 7,
+2, 0, 4, 0,
+],
+),
+)

@@ -1,0 +1,14 @@
+(
+    schema_version: 1,
+    targets: [
+        (platform: Linux, target: "x86_64-unknown-linux-gnu", formats: [TarZstd, OciImage], native_signing_required: false, native_runner_required: false, smoke_test: "server-and-cli-linux-smoke"),
+        (platform: Linux, target: "aarch64-unknown-linux-gnu", formats: [TarZstd, OciImage], native_signing_required: false, native_runner_required: false, smoke_test: "server-and-cli-linux-arm64-smoke"),
+        (platform: Windows, target: "x86_64-pc-windows-msvc", formats: [Zip, Msi], native_signing_required: true, native_runner_required: true, smoke_test: "desktop-windows-install-upgrade-smoke"),
+        (platform: MacOs, target: "x86_64-apple-darwin", formats: [AppBundle, Dmg], native_signing_required: true, native_runner_required: true, smoke_test: "desktop-macos-intel-install-upgrade-smoke"),
+        (platform: MacOs, target: "aarch64-apple-darwin", formats: [AppBundle, Dmg], native_signing_required: true, native_runner_required: true, smoke_test: "desktop-macos-arm64-install-upgrade-smoke"),
+        (platform: Android, target: "android-supported-abis", formats: [Aar, AndroidAppBundle], native_signing_required: true, native_runner_required: false, smoke_test: "android-install-offline-resume-upgrade-smoke"),
+        (platform: Ios, target: "ios-device-and-simulator", formats: [XcFramework, Ipa], native_signing_required: true, native_runner_required: true, smoke_test: "ios-install-offline-resume-upgrade-smoke"),
+        (platform: Oci, target: "linux-amd64-arm64", formats: [OciImage], native_signing_required: true, native_runner_required: false, smoke_test: "oci-nonroot-readonly-health-sync-smoke"),
+        (platform: Rust, target: "crates-io", formats: [CargoCrate], native_signing_required: false, native_runner_required: false, smoke_test: "cargo-package-publish-plan-smoke"),
+    ],
+)

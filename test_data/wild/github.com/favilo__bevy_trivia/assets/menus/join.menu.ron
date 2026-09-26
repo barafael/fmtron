@@ -1,0 +1,6 @@
+Menu(
+    title: "Join Game",
+    children: [
+        Spacer,
+    ],
+)

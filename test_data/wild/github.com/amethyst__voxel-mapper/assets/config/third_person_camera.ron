@@ -1,0 +1,24 @@
+(
+    input: (
+        rotate_sensitivity_x: 0.005,
+        rotate_sensitivity_y: 0.005,
+        zoom_sensitivity: 0.1,
+    ),
+    control: (
+        min_radius: 1.0,
+        max_radius: 100.0,
+        smoothing_weight: 0.9,
+        target_height_above_feet: 3.0,
+        collision: (
+            ball_radius: 4.0,
+            min_obstruction_width: 1.0,
+            min_range_length: 4.0,
+            not_worth_searching_dist: 4.0,
+            max_search_iterations: 2000,
+            projection_connection_max_iterations: 10,
+            camera_lock_threshold: 2.0,
+            camera_lock_radius: 0.5,
+            range_point_selection_offset: 4,
+        )
+    ),
+)

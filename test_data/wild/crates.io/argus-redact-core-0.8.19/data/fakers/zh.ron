@@ -1,0 +1,57 @@
+// Reserved-range faker pools for zh PII types (SSOT).
+// Transcribed verbatim from src/argus_redact/specs/fakers_zh_reserved.py.
+// Pool ORDER is load-bearing: choice_index() picks by position, so the index
+// must match the Python tuple order exactly for bit-identical output.
+ZhFakerData(
+    // RESERVED_PERSON_NAMES (tuple order preserved)
+    reserved_person_names: [
+        "张三", "李四", "王五", "赵六", "钱七",
+        // 红楼梦小角色 (low real-name collision rate)
+        "焦大", "茗烟", "傻大姐", "彩云", "佩凤", "偕鸳",
+        // 西游记小角色
+        "卷帘", "毕马温",
+    ],
+    // RESERVED_PERSON_NAMES_ALIASES (keyed on the canonical fake)
+    reserved_person_names_aliases: {
+        "张三": ["Zhang San", "Zhang3", "ZhangSan"],
+        "李四": ["Li Si", "Li4", "LiSi"],
+        "王五": ["Wang Wu", "Wang5", "WangWu"],
+        "赵六": ["Zhao Liu", "Zhao6", "ZhaoLiu"],
+        "钱七": ["Qian Qi", "Qian7", "QianQi"],
+        "焦大": ["Jiao Da", "JiaoDa"],
+        "茗烟": ["Ming Yan", "MingYan"],
+        "傻大姐": ["Sha Dajie", "Silly Big Sister"],
+        "彩云": ["Cai Yun", "CaiYun"],
+        "佩凤": ["Pei Feng", "PeiFeng"],
+        "偕鸳": ["Xie Yuan", "XieYuan"],
+        "卷帘": ["Juan Lian", "JuanLian"],
+        "毕马温": ["Bi Mawen", "BiMawen"],
+    },
+    // RESERVED_CITIES: (city, district, (streets...)). Tuple/street order preserved.
+    reserved_cities: [
+        ("滨海市", "东江区", ["八荒街", "九垣街", "十方路", "万象路"]),
+        ("滨海市", "西陆区", ["青鸾街", "白虎街", "玄武路"]),
+        ("滨海市", "北原区", ["朱雀路", "麒麟街"]),
+    ],
+    // RESERVED_ADDRESSES_ZH_ALIASES: keyed on (city, district, street).
+    reserved_addresses_zh_aliases: [
+        (("滨海市", "东江区", "八荒街"), ["Bahuang Street, Dongjiang District, Binhai City"]),
+        (("滨海市", "东江区", "九垣街"), ["Jiuyuan Street, Dongjiang District, Binhai City"]),
+        (("滨海市", "东江区", "十方路"), ["Shifang Road, Dongjiang District, Binhai City"]),
+        (("滨海市", "东江区", "万象路"), ["Wanxiang Road, Dongjiang District, Binhai City"]),
+        (("滨海市", "西陆区", "青鸾街"), ["Qingluan Street, Xilu District, Binhai City"]),
+        (("滨海市", "西陆区", "白虎街"), ["Baihu Street, Xilu District, Binhai City"]),
+        (("滨海市", "西陆区", "玄武路"), ["Xuanwu Road, Xilu District, Binhai City"]),
+        (("滨海市", "北原区", "朱雀路"), ["Zhuque Road, Beiyuan District, Binhai City"]),
+        (("滨海市", "北原区", "麒麟街"), ["Qilin Street, Beiyuan District, Binhai City"]),
+    ],
+    // PASSPORT_PREFIXES (choice order preserved)
+    passport_prefixes: ["E", "G"],
+    // PLATE_SPECIAL_PREFIXES (choice order preserved)
+    plate_special_prefixes: ["测", "领"],
+    // Reserved letters / leads (single source of truth, shared with the scanner)
+    hkid_reserved_letter: "Z",
+    twid_reserved_letter: "W",
+    macau_reserved_lead: "9",
+    twarc_reserved_prefix: "WW",
+)

@@ -1,0 +1,9 @@
+[
+    (
+        fps: 1.,
+        tile_size: (16.0, 16.0),
+        rows: 11,
+        columns: 22,
+        texture_path: "Terrain/Terrain (16x16).png",
+    )
+]

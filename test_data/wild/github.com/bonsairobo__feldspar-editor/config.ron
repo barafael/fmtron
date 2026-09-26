@@ -1,0 +1,35 @@
+(
+    bevy: (
+        wireframes: false,
+    ),
+    feldspar: (
+        map: (
+            superchunk_exponent: 9,
+            chunk_exponent: 4,
+            num_lods: 4,
+        ),
+        render: (
+            debug_chunk_boundaries: false,
+        ),
+        chunk_cache: (
+            max_cached_chunks: 100000,
+            max_chunks_compressed_per_frame_per_thread: 50,
+        ),
+        witness_radius: 1024,
+    ),
+    // camera: Orbit(OrbitCameraController(
+    //     enabled: true,
+    //     mouse_rotate_sensitivity: (0.002, 0.002),
+    //     mouse_translate_sensitivity: (0.1, 0.1),
+    //     mouse_wheel_zoom_sensitivity: 0.01,
+    //     smoothing_weight: 0.8,
+    // )),
+    camera: Unreal(UnrealCameraController(
+        enabled: true,
+        mouse_rotate_sensitivity: (0.002, 0.002),
+        mouse_translate_sensitivity: (0.1, 0.1),
+        trackpad_translate_sensitivity: (0.1, -0.1),
+        smoothing_weight: 0.9,
+    )),
+    database_path: "/tmp/world1",
+)

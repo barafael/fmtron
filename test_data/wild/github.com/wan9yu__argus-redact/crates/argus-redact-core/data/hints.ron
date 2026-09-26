@@ -1,0 +1,16 @@
+// Aggregated 8-language kinship/command hint tables (SSOT).
+// Generated from argus_redact.pure.hints aggregated attributes.
+// Set/list pools are sorted; order is irrelevant (any(...) / set membership).
+(
+    kinship_exact: ["my bhaiya", "my chacha", "my didi", "my mama", "my mausi", "my mummy", "my papa", "僕の母", "僕の父", "夫", "妻", "我丈夫", "我儿子", "我先生", "我叔叔", "我哥", "我哥哥", "我外公", "我外婆", "我太太", "我女儿", "我奶奶", "我妈", "我妈妈", "我妹", "我妹妹", "我妻子", "我姐", "我姐姐", "我姑姑", "我孩子", "我家人", "我家里人", "我弟", "我弟弟", "我母亲", "我父亲", "我爷爷", "我爸", "我爸爸", "我老公", "我老婆", "我舅舅", "我阿姨", "母", "父", "私の夫", "私の妻", "私の娘", "私の子", "私の家族", "私の息子", "私の母", "私の父", "가족", "남편", "아내", "아버지", "아이", "어머니", "저의 남편", "저의 딸", "저의 아내", "저의 아들", "저의 어머니", "제 아버지"],
+    kinship_prefixes: ["mein Mann", "mein Sohn", "mein Vater", "meine Familie", "meine Frau", "meine Kinder", "meine Mutter", "meine Tochter", "meu filho", "meu marido", "meu pai", "minha esposa", "minha família", "minha filha", "minha mãe", "my "],
+    command_prefixes: ["可以帮我", "告诉我", "帮我", "我希望你", "我想知道", "我想让你", "我想问", "我要你", "我要问", "我需要", "能帮我", "请告诉我", "请帮我", "麻烦帮我"],
+    command_suffixes: ["お願いします", "してください", "してくれ", "教えて", "教えてください", "連絡してください", "가르쳐 주세요", "도와주세요", "알려주세요", "연락해 주세요", "해 주세요", "해주세요"],
+    command_patterns: [
+        (pattern: "\\b(?:können|könnten|würden)\\s+Sie\\b|\\bbitte\\b|\\bkontaktieren\\s+Sie\\s+mich\\b|\\bsagen\\s+Sie\\s+mir\\b", ignorecase: true),
+        (pattern: "\\bcould you\\b|\\bplease\\b|\\bwould you mind\\b|\\bcheers,?\\s+(?:could|can|please)\\b", ignorecase: true),
+        (pattern: "\\bkindly\\b|\\bplease do the needful\\b|\\brevert\\b|\\bdo the needful\\b", ignorecase: true),
+        (pattern: "\\bpor favor\\b|\\bvocê\\s+(?:pode|poderia)\\b|\\bme\\s+diga\\b|\\bme\\s+ajude\\b", ignorecase: true),
+        (pattern: "^(?:can you |could you |please |would you )|\\b(?:help me|tell me|show me|explain to me|let me know)\\b|^I (?:want to |need to |would like to )(?:know|ask|understand)", ignorecase: true),
+    ],
+)

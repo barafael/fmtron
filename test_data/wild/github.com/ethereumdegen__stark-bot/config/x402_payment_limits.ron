@@ -1,0 +1,18 @@
+// x402 Payment Limits — default per-call maximums
+// Each entry maps a token symbol (case-insensitive at runtime) to its max raw amount per x402 call.
+// Amounts are strings to preserve precision for large token values.
+
+{
+    "USDC": (
+        max_amount: "1000000",
+        decimals: 6,
+        display_name: "USDC",
+        address: Some("0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"),
+    ),
+    "STARKBOT": (
+        max_amount: "100000000000000000000000",
+        decimals: 18,
+        display_name: "STARKBOT",
+        address: Some("0x587Cd533F418825521f3A1daa7CCd1E7339a1B07"),
+    ),
+}

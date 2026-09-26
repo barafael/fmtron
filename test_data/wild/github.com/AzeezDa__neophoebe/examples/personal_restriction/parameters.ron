@@ -1,0 +1,13 @@
+(
+    population_size: 1000,
+    household_size: 3,
+    household_relation: 0.6,
+    extra_relations: [(10, 0.01, 500), (2, 0.1, 3000), (100, 0.03, 50), (300, 0.1, 2)],
+    hygiencity: 0.7,
+    disease_spread: 0.1,
+    disease_incubation: 5,
+    disease_recovery: 14,
+    disease_mortality: 50,
+    tests_per_day: 50,
+    restriction_plan: PersonalRestriction(0.05)
+)

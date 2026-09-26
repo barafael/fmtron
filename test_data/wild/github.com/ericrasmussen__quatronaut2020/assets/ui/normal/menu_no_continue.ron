@@ -1,0 +1,91 @@
+#![enable(implicit_some)]
+// Detailed field information can be found at https://docs.amethyst.rs/master/amethyst_ui/enum.UiWidget.html and related pages
+Container(
+    transform: (
+        id: "background",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 20.,
+        height: 20.,
+    ),
+
+    children: [
+        Image(
+          transform: (
+              id: "background",
+              stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+              tab_order: 1,
+              anchor: Middle,
+          ),
+          image: Texture(File("ui/quatronaut_menu_w_title.jpg", ("IMAGE", ()))),
+        ),
+        Container(
+            transform: (
+                id: "container_start",
+                y: -100,
+                width: 508.,
+                height: 100.,
+                anchor: Middle,
+            ),
+            background: SolidColor(1.0, 0.61, 0.94, 1.0),
+            children: [
+
+                Button(
+                    transform: (
+                        id: "start",
+                        width: 503.,
+                        height: 95.,
+                        tab_order: 1,
+                        anchor: Middle,
+                        mouse_reactive: true,
+                    ),
+                    button: (
+                        text: "NEW GAME",
+                        font: File("fonts/font_over.otf", ("TTF", ())),
+                        font_size: 63.,
+                        normal_text_color: (1.0, 0.61, 0.94, 1.0), // ff9ef1
+                        normal_image: SolidColor(0., 0., 0., 1.),
+                        hover_image: SolidColor(0.1, 0.1, 0.1, 1.),
+                        press_image: SolidColor(0.15, 0.15, 0.15, 1.),
+                    )
+                ),
+            ]
+        ),
+
+
+        Container(
+            transform: (
+                id: "container_quit",
+                y: -300,
+                width: 508.,
+                height: 100.,
+                anchor: Middle,
+            ),
+            background: SolidColor(1.0, 0.61, 0.94, 1.0),
+            children: [
+
+                // Complex Button
+                Button(
+                    transform: (
+                        id: "quit",
+                        width: 503.,
+                        height: 95.,
+                        tab_order: 3,
+                        anchor: Middle,
+                        mouse_reactive: true,
+                    ),
+                    button: (
+                        text: "QUIT",
+                        font: File("fonts/font_over.otf", ("TTF", ())),
+                        font_size: 63.,
+                        normal_text_color: (1.0, 0.61, 0.94, 1.0), // ff9ef1
+                        normal_image: SolidColor(0., 0., 0., 1.),
+                        hover_image: SolidColor(0.1, 0.1, 0.1, 1.),
+                        press_image: SolidColor(0.15, 0.15, 0.15, 1.),
+                    )
+                ),
+            ]
+        ),
+
+    ],
+)

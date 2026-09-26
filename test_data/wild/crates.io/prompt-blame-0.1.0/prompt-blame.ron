@@ -1,0 +1,5 @@
+(
+    prompt_summary_length: 100,
+    query_single_line_preview_length: 1000,
+    query_multi_line_preview_length: 100,
+)

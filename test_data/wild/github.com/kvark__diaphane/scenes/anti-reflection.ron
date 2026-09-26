@@ -1,0 +1,78 @@
+// An anti-reflection coating: one quarter-wave film makes a glass face vanish.
+//
+// A bare n = 1.8 face reflects an amplitude of (1.8−1)/2.8 ≈ 0.29 — clearly
+// visible racing back toward the source. Coat it with a quarter wave of
+// n = √1.8 ≈ 1.342 and the two reflections (air→coating and coating→glass)
+// are equal in strength and half a wavelength apart in round trip, so they
+// cancel: nothing comes back at the design frequency. Delete the coating slab
+// and run again to see the echo return.
+//
+// The substrate is *matched-lossy* glass — same refractive index, but with
+// σ*/μ₀ = σ/(ε₀εr), the reflectionless-absorption condition the boundary
+// layer is built on. The transmitted packet therefore dies out inside
+// (~10 mm per amplitude e-fold at σ = 0.4 S/m) instead of echoing off the far
+// wall, which leaves the front face as the only reflection in the scene.
+//
+// The echo (or its absence) is clearest around step 1050, when a bare face's
+// reflection is in mid-flight back toward the source.
+//
+// Try:
+//   cargo viz --scene scenes/anti-reflection.ron --warmup 1000 --mode electric --gain 3
+
+Scene(
+    grid: Grid(
+        extent: Extent(x: 112, y: 60, z: 60),
+        cell_size: 0.001,
+        courant: 0.5,
+        refinements: [
+            // 0.25 mm across the 4.47 mm coating, which a 1 mm grid would
+            // render as "4 or 5 cells" depending on where it lands.
+            Refinement(center: (-0.0022, 0.0, 0.0), size: (0.012, 0.0, 0.0), cell_size: 0.00025),
+        ],
+    ),
+    boundary: Absorbing(thickness: 10, target_reflection: 0.000001),
+    materials: MaterialTable(materials: [
+        Material(
+            relative_permittivity: 1.0,
+            relative_permeability: 1.0,
+            conductivity: 0.0,
+            magnetic_loss: 0.0,
+        ),
+        // The coating: n = √1.8, εr = 1.8 — the geometric mean of air and
+        // glass, which is what makes the two boundary echoes equal.
+        Material(
+            relative_permittivity: 1.8,
+            relative_permeability: 1.0,
+            conductivity: 0.0,
+            magnetic_loss: 0.0,
+        ),
+        // The substrate: n = 1.8 glass, matched-lossy so the transmitted
+        // packet is absorbed instead of returning from the far wall.
+        // magnetic_loss = σ·μ₀/(ε₀·εr) for σ = 0.4 S/m.
+        Material(
+            relative_permittivity: 3.24,
+            relative_permeability: 1.0,
+            conductivity: 0.4,
+            magnetic_loss: 17521.695,
+        ),
+    ]),
+    shapes: [
+        // The glass fills the right half, front face at x = 0.
+        Slab(axis: X, offset: 0.028, thickness: 0.056, material: 2),
+        // λ₀/(4·√1.8) = 4.472 mm of coating on that face.
+        Slab(axis: X, offset: -0.0022361, thickness: 0.0044721, material: 1),
+    ],
+    sources: [
+        Source(
+            // 12.491 GHz: λ₀ = 24 mm, where the coating is a quarter wave.
+            shape: Sheet(axis: X, offset: -0.044, waist: 0.016),
+            polarization: Z,
+            waveform: GaussianPulse(
+                center_frequency: 12491352000.0,
+                duration_cycles: 3.0,
+                delay: 0.00000000048033233,
+            ),
+            amplitude: 1.0,
+        ),
+    ],
+)

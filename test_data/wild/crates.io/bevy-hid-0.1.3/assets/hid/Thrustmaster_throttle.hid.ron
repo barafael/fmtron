@@ -1,0 +1,54 @@
+(
+    name: "TWCS Throttle (HID)",
+    pid: 46727,
+    vid: 1103,
+
+    mappings: (
+        buttons: {
+            // Big orange button
+            Other(1): (17, Bit(16)),
+            // Pinky
+            Other(2): (17, Bit(32)),
+            // Ring
+            Other(3): (17, Bit(64)),
+            // Middle Up/down
+            Other(4): (17, Bit(128)),
+            Other(4): (18, Bit(1)),
+            // First finger joy pruss
+            LeftThumb: (18, Bit(2)),
+
+            // Top 8-way DPad
+            Other(5): (17, Eq(0)),
+            Other(6): (17, Eq(1)),
+            Other(7): (17, Eq(2)),
+            Other(8): (17, Eq(3)),
+            Other(9): (17, Eq(4)),
+            Other(10): (17, Eq(5)),
+            Other(11): (17, Eq(6)),
+            Other(12): (17, Eq(7)),
+
+            // Middle main DPad
+            DPadUp: (18, Bit(4)),
+            DPadRight: (18, Bit(8)),
+            DPadDown: (18, Bit(16)),
+            DPadLeft: (18, Bit(32)),
+
+            // Bottom DPad
+            North: (18, Bit(64)),
+            East: (18, Bit(128)),
+            South: (19, Bit(1)),
+            West: (19, Bit(2)),
+        },
+        axes: {
+            // Throttle ('abs' set to true ensures this axis is in the range 0..1). 
+            Other(1): (fine: 15, coarse: 16, octaves: 256, inverted: true, abs: true),
+            Other(2): (fine: 13, coarse: 14, octaves: 4, inverted: false, abs: true),
+
+            // Joystick (pointy finger)
+            LeftStickX: (fine: 1, coarse: 2, octaves: 4, inverted: false, abs: false),
+            LeftStickY: (fine: 3, coarse: 4, octaves: 4, inverted: true, abs: false),
+
+            RightStickX: (fine: 5, coarse: 6, octaves: 4, inverted: false, abs: false),
+        }
+    )
+)

@@ -1,0 +1,12 @@
+[
+    (
+        id: "connected_faction",
+        name: "Connected Faction",
+        type: Faction,
+    ),
+    (
+        id: "forgotten_hermit",
+        name: "Forgotten Hermit",
+        type: Character,
+    ),
+]

@@ -1,0 +1,13 @@
+(
+    locale: "es",
+    direction: Ltr,
+    isolation: Isolate,
+    fallbacks: ["en-US"],
+    facets: {
+        "gender": (scope: Message, values: ["masculine", "feminine"]),
+    },
+    term_facets: {
+        "card-subtype.warrior": { "gender": "masculine" },
+        "card-subtype.relic": { "gender": "feminine" },
+    },
+)

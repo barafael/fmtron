@@ -1,0 +1,201 @@
+// Music generation prompts (MiniMax Music 3.0)
+//
+// Captures the exact prompts + parameters used to generate the
+// AI-authored entries in `src/plugins/music.rs::MusicPlaylist`.
+// Keep this file in sync with `MusicPlaylist::default()` so any
+// future regeneration produces the same family of tracks.
+//
+// Generated via: `mmx music generate --instrumental --prompt <...> ...`
+// API reference: https://platform.minimax.io/docs/guides/music-generation
+//
+// Prompt-engineering notes (for any future regeneration):
+//   * Use short ambient briefs — mood + 2-3 instrument cues + use case +
+//     BPM. Do NOT add Stellaris / Homeworld / Terra Invicta / Mass Effect
+//     style references. Those are OST-style references and tip the model
+//     into "song with vocals" mode even when the prompt explicitly says
+//     "no vocals".
+//   * Do NOT add song-structure tags like "intro-verse-chorus-verse-outro".
+//     "chorus" especially nudges the model toward vocal hooks.
+//   * Always pass `--instrumental` AND `--avoid "vocals, choir, singing,
+//     vocal pads, harmony, voice"`. The --avoid flag is honored more
+//     reliably than in-prompt negatives once the prompt already reads
+//     like a song brief.
+//   * Keep BPMs in the 75-100 ambient band; stick to a single mood per
+//     prompt (don't mix "triumphant" and "melancholic").
+
+[
+    // ── helios-drift.mp3 ────────────────────────────────────
+    // Slot: between exploration turns; the quietest, most
+    // contemplative track in the playlist.
+    (
+        track_id: "helios-drift",
+        title: "Helios Drift",
+        path: "audio/music/helios-drift.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Slow ambient space orchestral, cinematic, atmospheric, vast and contemplative, gentle piano with soft synthesizer pads and distant strings, suitable as background music for a 4X space strategy game during quiet exploration, no vocals, no percussion, 80 BPM",
+        use_case: "background music for video",
+        bpm: 80,
+        key: "D minor",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-jovian-rendezvous.mp3 ─────────────────────────
+    // Slot: mid-game fleet maneuvers; builds tension without
+    // becoming action music.
+    (
+        track_id: "helios-jovian-rendezvous",
+        title: "Helios Jovian Rendezvous",
+        path: "audio/music/helios-jovian-rendezvous.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Cinematic ambient orchestral building tension, deep synth bass with rising arpeggios and ethereal pads, mysterious and awe-inspiring mood, suitable as background music for a 4X space strategy game during mid-game fleet maneuvers, no vocals, slow crescendo to climax, 90 BPM",
+        use_case: "background music for video",
+        bpm: 90,
+        key: "C minor",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-first-light.mp3 ──────────────────────────────
+    // Slot: colony establishment, first-light moments.
+    (
+        track_id: "helios-first-light",
+        title: "Helios First Light",
+        path: "audio/music/helios-first-light.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Triumphant ambient orchestral, hopeful and uplifting mood, warm strings with soft piano melody and gentle synthesizer textures, suitable as background music for a 4X space strategy game during colony establishment and first-light moments, no vocals, swelling crescendos, 100 BPM",
+        use_case: "background music for video",
+        bpm: 100,
+        key: "E major",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-long-vigil.mp3 ───────────────────────────────
+    // Slot: late-game setbacks, quiet reflection.
+    (
+        track_id: "helios-long-vigil",
+        title: "Helios Long Vigil",
+        path: "audio/music/helios-long-vigil.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Dark melancholic ambient, melancholic and introspective mood, low piano with deep synthesizer drones and sparse ethereal textures, suitable as background music for a 4X space strategy game during late-game setbacks and quiet moments of reflection, no vocals, sparse and haunting, 75 BPM",
+        use_case: "background music for video",
+        bpm: 75,
+        key: "A minor",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-new-horizons.mp3 ─────────────────────────────
+    // Slot: early exploration, survey missions.
+    (
+        track_id: "helios-new-horizons",
+        title: "Helios New Horizons",
+        path: "audio/music/helios-new-horizons.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Bright hopeful ambient, discovery and wonder mood, sparkling synthesizer arpeggios with warm strings and gentle piano, suitable as background music for a 4X space strategy game during early exploration and survey missions, no vocals, uplifting and expansive, 95 BPM",
+        use_case: "background music for video",
+        bpm: 95,
+        key: "G major",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-magnetosphere.mp3 ────────────────────────────
+    // Slot: gas-giant flybys, magnetosphere operations —
+    // vast scale, the most expansive track. Sister to helios-drift
+    // (same "slow ambient space orchestral" template); offset to a
+    // slightly lower BPM and warmer register for the vast scale.
+    (
+        track_id: "helios-magnetosphere",
+        title: "Helios Magnetosphere",
+        path: "audio/music/helios-magnetosphere.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Slow ambient space orchestral, cinematic, atmospheric, vast and awe-inspiring, shimmering synthesizer pads with distant strings and soft piano, suitable as background music for a 4X space strategy game during magnetosphere operations and gas giant flybys, no vocals, no percussion, 75 BPM",
+        use_case: "background music for video",
+        bpm: 75,
+        key: "A minor",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-subsurface.mp3 ────────────────────────────────
+    // Slot: asteroid mining, subsurface colony operations —
+    // sister to helios-drift (same D minor / 80 BPM ambient
+    // template) with a slightly deeper, more subterranean mood.
+    (
+        track_id: "helios-subsurface",
+        title: "Helios Subsurface",
+        path: "audio/music/helios-subsurface.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Slow ambient space orchestral, cinematic, atmospheric, deep and mysterious, low piano with soft synthesizer pads and distant strings, suitable as background music for a 4X space strategy game during asteroid mining and subsurface colony operations, no vocals, no percussion, 80 BPM",
+        use_case: "background music for video",
+        bpm: 80,
+        key: "D minor",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-signal-in-the-dark.mp3 ───────────────────────
+    // Slot: anomaly detection, deep-space radio observation.
+    // Slower, more mysterious than helios-jovian-rendezvous;
+    // sparse rather than building tension.
+    (
+        track_id: "helios-signal-in-the-dark",
+        title: "Helios Signal in the Dark",
+        path: "audio/music/helios-signal-in-the-dark.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Dark ambient space orchestral, cinematic, atmospheric, sparse and mysterious, low piano with deep synthesizer drones and distant ethereal strings, suitable as background music for a 4X space strategy game during anomaly detection and deep space radio observation, no vocals, no percussion, 85 BPM",
+        use_case: "background music for video",
+        bpm: 85,
+        key: "C minor",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-decay-orbit.mp3 ──────────────────────────────
+    // Slot: late-game colony abandonment, decay orbit —
+    // mirrors helios-long-vigil's "dark melancholic ambient"
+    // template but at a slightly higher BPM for the orbit
+    // drift feel.
+    (
+        track_id: "helios-decay-orbit",
+        title: "Helios Decay Orbit",
+        path: "audio/music/helios-decay-orbit.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Dark melancholic ambient, melancholic and bittersweet mood, low piano with deep synthesizer drones and sparse ethereal textures, suitable as background music for a 4X space strategy game during late-game colony abandonment and decay orbit, no vocals, sparse and haunting, 78 BPM",
+        use_case: "background music for video",
+        bpm: 78,
+        key: "E minor",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+
+    // ── helios-prograde-burn.mp3 ────────────────────────────
+    // Slot: Hohmann transfer maneuvers, fleet deployment.
+    // Forward-leaning, brighter than helios-jovian-rendezvous;
+    // shares the G major register with helios-new-horizons but
+    // with rising arpeggios for momentum.
+    (
+        track_id: "helios-prograde-burn",
+        title: "Helios Prograde Burn",
+        path: "audio/music/helios-prograde-burn.mp3",
+        attribution: "minimax-music-3.0",
+        prompt: "Bright hopeful ambient, forward momentum mood, rising synthesizer arpeggios with warm strings and gentle piano, suitable as background music for a 4X space strategy game during Hohmann transfer maneuvers and fleet deployment, no vocals, uplifting and expansive, 95 BPM",
+        use_case: "background music for video",
+        bpm: 95,
+        key: "G major",
+        bitrate: 256000,
+        sample_rate: 44100,
+        format: "mp3",
+    ),
+]

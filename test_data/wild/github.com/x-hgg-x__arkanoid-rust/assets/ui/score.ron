@@ -1,0 +1,18 @@
+#![enable(implicit_some)]
+Label(
+    transform: (
+        id: "score",
+        x: 10.0,
+        y: 0.0,
+        width: 260.0,
+        height: 30.0,
+        anchor: TopLeft,
+        pivot: TopLeft,
+    ),
+    text: (
+        text: "SCORE: 0",
+        font: File("lfs/fonts/joystix.ttf", ("TTF", ())),
+        font_size: 30.0,
+        color: (1.0, 1.0, 1.0, 1.0),
+    ),
+)

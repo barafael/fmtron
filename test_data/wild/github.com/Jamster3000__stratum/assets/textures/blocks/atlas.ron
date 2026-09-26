@@ -1,0 +1,11 @@
+(
+    width: 32,
+    height: 32,
+    tex_size: 16,
+    texture_positions: {
+        "grass_dirt_side": (0, 16, 2),
+        "default": (0, 0, 0),
+        "dirt": (16, 0, 1),
+        "grass_dirt_top": (16, 16, 3),
+    },
+)

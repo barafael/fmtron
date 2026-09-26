@@ -1,0 +1,7 @@
+(
+    defense: (
+        max_health: 500,
+        health: 500,
+        armor: 0,
+    ),
+)

@@ -1,0 +1,6 @@
+(
+  title: "r-type",
+  dimensions: Some((1000, 1000)),
+  max_dimensions: None,
+  min_dimensions: None,
+)

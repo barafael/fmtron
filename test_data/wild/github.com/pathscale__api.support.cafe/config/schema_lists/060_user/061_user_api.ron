@@ -1,0 +1,32 @@
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+
+Config(
+    definition: EndpointSchemaList(
+        service_name: "userApi",
+        service_id: 6,
+        config: (snake_case_fields: true),
+        endpoints: [
+            EndpointSchemaElement(
+                frontend_facing: true,
+                schema: (
+                    name: "GetMyInfo",
+                    code: 60000,
+                    description: "Return the caller's public id, username, and platform role.",
+                    parameters: [],
+                    returns: [
+                        Field(name: "pub_id", ty: NanoId(len: 16)),
+                        Field(name: "username", ty: String),
+                        Field(name: "role", ty: EnumRef(name: "UserRole")),
+                    ],
+                    roles: [
+                        "UserRole::User",
+                        "UserRole::Support",
+                        "UserRole::AppAdmin",
+                        "UserRole::Admin",
+                    ],
+                ),
+            ),
+        ],
+    ),
+)

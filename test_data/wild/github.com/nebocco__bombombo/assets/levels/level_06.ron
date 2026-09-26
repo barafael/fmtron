@@ -1,0 +1,15 @@
+(
+    board_size: (7, 5),
+    objects: {
+        (x:1, y:1): BombSmall,
+        (x:1, y:3)  : Jewel,
+        (x: 5, y:1): Jewel,
+        (x: 5, y:3): Rock,
+    },
+    fire_coord: (x:1, y:1),
+    meta: (
+        name: "Do Not Break Jewels",
+        min_bombs: 3,
+        min_affected_cells: 19,
+    )
+)

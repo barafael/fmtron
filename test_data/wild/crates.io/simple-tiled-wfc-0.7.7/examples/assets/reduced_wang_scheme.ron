@@ -1,0 +1,539 @@
+SummerGardenAtlas(
+    tree_sub_rects: {
+        Pine: SubRect (x: 256, y: 352, width: 64, height: 64),
+        Oak: SubRect (x: 320, y: 352, width: 64, height: 64),
+        Bush: SubRect (x: 384, y: 352, width: 64, height: 64),
+    },
+
+    reduced_wang_patterns: [
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Inner, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Outer, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Inner, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Inner, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Outer, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Inner, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Inner, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Inner, south_east: Inner
+        ),
+    ],
+    extended_set_1_patterns_north_west: [
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Inner, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Inner, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer
+        )
+    ],
+    extended_set_1_patterns_north_east: [
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Outer, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Outer, south_east: Inner
+        )
+    ],
+    extended_set_1_patterns_south_west: [
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Inner, south_east: Outer,
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer,
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Inner, south_east: Inner,
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Inner, south_east: Inner,
+        ),
+    ],
+    extended_set_1_patterns_south_east: [
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Outer,
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Outer, south_east: Inner,
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Inner, south_east: Inner,
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Inner, south_east: Inner,
+        ),
+    ],
+    extended_set_2_patterns_north_west: [
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Outer, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Inner, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Outer, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Inner, south_east: Inner
+        )
+    ],
+    extended_set_2_patterns_north_east: [
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Inner, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Outer,
+            south_west: Inner, south_east: Outer
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Inner, south_east: Inner
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Inner, south_east: Outer
+        )
+    ],
+    extended_set_2_patterns_south_west: [
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Outer, south_east: Inner,
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Inner, south_east: Inner,
+        ),
+        TileSidesPattern (
+            north_west: Outer, north_east: Inner,
+            south_west: Outer, south_east: Outer,
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Outer, south_east: Outer,
+        ),
+    ],
+    extended_set_2_patterns_south_east: [
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Inner, south_east: Inner,
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Inner, south_east: Outer,
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Inner,
+            south_west: Outer, south_east: Outer,
+        ),
+        TileSidesPattern (
+            north_west: Inner, north_east: Outer,
+            south_west: Outer, south_east: Outer,
+        ),
+    ],
+
+    vertical_bridge_sides: [
+        TileSides (
+            north_west: Land,
+            north_east: Land,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Land,
+            north_east: Land,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Land,
+            north_east: Land,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Land,
+            south_east: Land
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Land,
+            south_east: Land
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Land,
+            south_east: Land
+        )
+    ],
+    horizontal_bridge_sides: [
+        TileSides (
+            north_west: Land,
+            north_east: Water,
+            south_west: Land,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Land,
+            south_west: Water,
+            south_east: Land
+        ),
+        TileSides (
+            north_west: Land,
+            north_east: Water,
+            south_west: Land,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Land,
+            south_west: Water,
+            south_east: Land
+        ),
+        TileSides (
+            north_west: Land,
+            north_east: Water,
+            south_west: Land,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Water,
+            south_west: Water,
+            south_east: Water
+        ),
+        TileSides (
+            north_west: Water,
+            north_east: Land,
+            south_west: Water,
+            south_east: Land
+        )
+    ],
+
+    reduced_wang_neighbour_strategy: [
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            south: WangCorners,
+            east: WangCorners,
+            west: WangCorners
+        ),
+    ],
+    neighbour_strategy_2_x_2: [
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            west: WangCorners,
+            east: RelOffset(1),
+            south: RelOffset(2),
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            west: RelOffset(-1),
+            east: WangCorners,
+            south: RelOffset(2),
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-2),
+            west: WangCorners,
+            east: RelOffset(1),
+            south: WangCorners,
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-2),
+            west: RelOffset(-1),
+            east: WangCorners,
+            south: WangCorners,
+        )
+    ],
+    neighbour_strategy_3_x_3: [
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            west: WangCorners,
+            east: RelOffset(1),
+            south: RelOffset(3),
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            west: RelOffset(-1),
+            east: RelOffset(1),
+            south: RelOffset(3),
+        ),
+        NeighbourChooseStrategy (
+            north: WangCorners,
+            west: RelOffset(-1),
+            east: WangCorners,
+            south: RelOffset(3),
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-3),
+            west: WangCorners,
+            east: RelOffset(1),
+            south: RelOffset(3),
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-3),
+            west: RelOffset(-1),
+            east: RelOffset(1),
+            south: RelOffset(3),
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-3),
+            west: RelOffset(-1),
+            east: WangCorners,
+            south: RelOffset(3),
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-3),
+            west: WangCorners,
+            east: RelOffset(1),
+            south: WangCorners,
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-3),
+            west: RelOffset(-1),
+            east: RelOffset(1),
+            south: WangCorners,
+        ),
+        NeighbourChooseStrategy (
+            north: RelOffset(-3),
+            west: RelOffset(-1),
+            east: WangCorners,
+            south: WangCorners,
+        )
+    ],
+
+    terrain_tile_configs: [
+        TerrainTilesConfig (
+            x_offset: 0,
+            y_offset: 0,
+            inner_type: GrassSharp,
+            outer_type: Land
+        ),
+        TerrainTilesConfig (
+            x_offset: 128,
+            y_offset: 0,
+            inner_type: GrassRound,
+            outer_type: GrassSharp
+        ),
+        TerrainTilesConfig (
+            x_offset: 0,
+            y_offset: 128,
+            inner_type: Land,
+            outer_type: GrassRound
+        ),
+        TerrainTilesConfig (
+            x_offset: 128,
+            y_offset: 128,
+            inner_type: Land,
+            outer_type: Water
+        )
+    ]
+)

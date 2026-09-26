@@ -1,0 +1,4 @@
+FiresConfig(
+    src_dir: "$ODIN_ROOT/data/odin_fires",
+    summary_pattern: ".+-summary.json"
+)

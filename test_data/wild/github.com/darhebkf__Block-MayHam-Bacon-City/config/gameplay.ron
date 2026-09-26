@@ -1,0 +1,9 @@
+// Gameplay configuration
+(
+    player_speed: 5.0,
+    sprint_multiplier: 1.5,
+    jump_force: 10.0,
+    gravity: -9.81,
+    max_health: 100.0,
+    respawn_time: 3.0,
+)

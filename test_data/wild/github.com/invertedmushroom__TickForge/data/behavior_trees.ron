@@ -1,0 +1,56 @@
+// Behavior tree definitions loaded by the simulation worker.
+//
+// These are pure decision policies: leaves emit DesiredAiAction values, and
+// Phase 7 remains responsible for applying movement/cast/state mutations.
+// Keep this catalog small and enum-backed; do not add arbitrary scripting here.
+
+(
+    trees: [
+        (
+            id: "scripted_goal_idle",
+            root: Selector([
+                Sequence([
+                    Condition(HasGoal("go_idle")),
+                    Action(ClearThreat),
+                    Action(SetState(state: Idle, reason: GoalIdle)),
+                ]),
+                Action(Idle),
+            ]),
+        ),
+        (
+            id: "basic_melee_combat",
+            root: Selector([
+                Sequence([
+                    Condition(IsCcDisabled),
+                    Action(StopMovement),
+                ]),
+                Sequence([
+                    Condition(ShouldEvade),
+                    Action(SetState(state: Evade, reason: LeashEvade)),
+                    Action(EvadeHome),
+                ]),
+                Sequence([
+                    Condition(HasSelectedTarget),
+                    Condition(IsSilenced),
+                    Action(MoveTowardSelectedTarget),
+                ]),
+                Sequence([
+                    Condition(HasSelectedTarget),
+                    Action(TryCastBestAbilityAtSelectedTarget),
+                    Action(MoveTowardSelectedTarget),
+                ]),
+                Action(Idle),
+            ]),
+        ),
+        (
+            id: "training_patrol_route",
+            root: Selector([
+                Sequence([
+                    Condition(IsCcDisabled),
+                    Action(StopMovement),
+                ]),
+                Action(FollowRoute("training_patrol_loop")),
+            ]),
+        ),
+    ],
+)

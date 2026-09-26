@@ -1,0 +1,19 @@
+(
+    version: 2,
+    entries: [
+        (
+            key: Primary,
+            state: (
+                // No saved position; window should land on saved monitor (0) via
+                // WindowPosition::Centered. Save path then captures a real position.
+                logical_position: None,
+                logical_width: 800,
+                logical_height: 600,
+                monitor_scale: 1.0,
+                monitor_index: 0,
+                mode: Windowed,
+                app_name: "restore_window",
+            )
+        ),
+    ],
+)

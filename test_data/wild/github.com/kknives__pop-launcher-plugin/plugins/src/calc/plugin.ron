@@ -1,0 +1,11 @@
+(
+    name: "Calculator",
+    description: "Calculator with unit conversion (qalc)",
+    query: (
+        regex: "^(=)+",
+        help: "= ",
+        isolate: true,
+    ),
+    bin: (path: "calc"),
+    icon: Name("x-office-spreadsheet")
+)

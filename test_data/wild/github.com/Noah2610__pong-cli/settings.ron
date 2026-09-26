@@ -1,0 +1,150 @@
+#![enable(implicit_some)]
+(
+    /// Sleep X ms between every update
+    update_delay_ms: 50,
+
+    /// The room's size
+    room: (
+        width:  80,
+        height: 24,
+    ),
+
+    paddle: (
+        /// Paddles' size
+        size: (2.0, 8.0),
+        /// Paddles' speed
+        speed: 20.0,
+        /// Paddle AI settings
+        ai: (
+            /// If left paddle should be an AI
+            left:  false,
+            /// If right paddle should be an AI
+            right: true,
+            /// Positional padding before the paddle will start following a ball.
+            /// This value is multiplied by the paddle's size.
+            /// If the ball is further away from the paddle's position than
+            ///   PADDLE_SIZE * FOLLOW_PADDING_PERCENT
+            /// then the paddle will start moving towards the ball.
+            /// So this value should stay at or below `0.5`, otherwise the paddle
+            /// won't move close enough to the ball.
+            /// The smaller the padding, the closer the paddle will try to move towards the ball.
+            follow_padding_percent: 0.4,
+        ),
+    ),
+
+    ball: (
+        /// The ball's size
+        size: (4.0, 2.0),
+        /// The ball's initial velocity
+        velocity: (20.0, 2.0),
+        /// Linearly increase velocity by this amount on each paddle hit
+        velocity_increase: (2.0, 2.0),
+        /// Time in ms before the ball starts moving after it is spawned
+        spawn_delay_ms: 1000,
+        /// Total amount of balls in a game
+        balls_amount: 1,
+        /// Time in ms before a new ball is spawned, if current ball count is less than `balls_amount`
+        spawn_next_ball_in_ms: 5000,
+        /// In which directions (x,y) the ball should start moving when spawned.
+        /// Valid values for X direction are:
+        ///   `Left`, `Right`, `Random`
+        /// Valid values for Y direction are:
+        ///   `None`, `Up`, `Down`, `Random`, `RandomUpOrDown`
+        /// `Random` will randomly pick one of the other available values.
+        /// Y's `RandomUpOrDown` value will choose either `Up` or `Down`, but never `None`.
+        /// Note that the `Random` value only works if the game is built with the `random` feature,
+        /// will panic otherwise.
+        spawn_direction: (Random, RandomUpOrDown),
+    ),
+
+    score: (
+        /// The position, where the left paddle's score should be displayed,
+        /// relative to the room size. The right paddle's score's position will be derived.
+        /// Values range from `0.0` to `1.0` (both inclusive).
+        position_relative: (0.4, 0.2),
+        /// Should everything be reset, when somebody scores?
+        /// Resetting means: Removing all balls and starting with one again,
+        /// and moving all paddles to their initial positions.
+        reset_on_score: true,
+    ),
+
+    /// Keybindings
+    /// Can either be a single printable character,
+    /// or can include modifiers "Ctrl+X" and "Alt+X",
+    /// where "X" would be any printable character.
+    /// Some additional valid keys are "Esc", "Up", "Down", "Left", "Right".
+    /// For a full list of valid keys, see
+    /// https://docs.rs/crossterm/0.11.1/crossterm/enum.KeyEvent.html
+    bindings: (
+        quit: ["q", "Ctrl+c", "Esc"],
+        paddle_left: (
+            up:   ["w", "k"],
+            down: ["s", "j"],
+        ),
+        paddle_right: (
+            up:   ["Up", "k"],
+            down: ["Down", "j"],
+        ),
+    ),
+
+    /// Visual representation of the game; which characters to use for which objects.
+    /// All fields in the `style` sections may be ommited.
+    /// The game must be built with the `style` feature for the style fields to work.
+    /// Note that styles may slow-down the rendering of the game.
+    /// For a list of available `fg_color` and `bg_color` values, see here:
+    ///   https://docs.rs/crossterm/0.12.1/crossterm/style/enum.Color.html#variants
+    /// For a list of available `attrs` values, see here:
+    ///   https://docs.rs/crossterm/0.12.1/crossterm/enum.Attribute.html#variants
+    chars: (
+        empty: (
+            character: ' ',
+            // character: '·',
+            // style: (
+            //     attrs: [Dim],
+            // ),
+        ),
+        paddle: (
+            character: '#',
+            style: (
+                fg_color: Blue,
+                bg_color: Blue,
+            ),
+        ),
+        ball: (
+            character: 'O',
+            style: (
+                fg_color: Red,
+                bg_color: Red,
+            ),
+        ),
+        score: (
+            style: (
+                fg_color: Green,
+                attrs: [Bold],
+            ),
+        ),
+        room: (
+            border_horizontal: (
+                character: '—',
+                style: (
+                    fg_color: DarkGrey,
+                    bg_color: DarkGrey,
+                ),
+            ),
+            border_vertical: (
+                character: '|',
+                style: (
+                    fg_color: DarkGrey,
+                    bg_color: DarkGrey,
+                ),
+            ),
+            border_corner: (
+                character: '+',
+                style: (
+                    fg_color: DarkGrey,
+                    bg_color: DarkGrey,
+                ),
+            ),
+        ),
+    ),
+)

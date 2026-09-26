@@ -1,0 +1,28 @@
+(
+  schema_version: 1,
+  id: "era-01-century",
+  title: "One Hundred Lives",
+  calendar: (
+    days_per_year: 360,
+    seasons: [
+      (id: "thaw", name: "Thaw", days: 90),
+      (id: "bloom", name: "Bloom", days: 90),
+      (id: "highsun", name: "Highsun", days: 90),
+      (id: "emberfall", name: "Emberfall", days: 90),
+    ],
+  ),
+  population: (
+    initial_people: 100,
+    minimum_starting_age: 0,
+    maximum_starting_age: 70,
+    mortality_bands: [
+      (through_age: 4, annual_deaths_per_10_000: 100),
+      (through_age: 14, annual_deaths_per_10_000: 20),
+      (through_age: 39, annual_deaths_per_10_000: 15),
+      (through_age: 59, annual_deaths_per_10_000: 80),
+      (through_age: 74, annual_deaths_per_10_000: 400),
+      (through_age: 89, annual_deaths_per_10_000: 1500),
+      (through_age: 65535, annual_deaths_per_10_000: 5000),
+    ],
+  ),
+)

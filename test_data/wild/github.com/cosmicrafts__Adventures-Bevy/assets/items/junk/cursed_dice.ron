@@ -1,0 +1,12 @@
+(
+    id: "cursed_dice",
+    label: "Cursed Dice",
+    description: "Always rolls 1. ALWAYS. Tested 47 times.",
+    slot: artifact,
+    rarity: junk,
+    base_value: 3,
+    icon: Some("~"),
+    icon_path: None,
+    modifiers: [],
+    on_kill: None,
+)

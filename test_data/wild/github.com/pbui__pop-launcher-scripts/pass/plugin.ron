@@ -1,0 +1,11 @@
+(
+    name: "Password Store",
+    description: "Syntax: pass <query>",
+    query: (
+        regex: "^pass\\s.*",
+        help: "pass ",
+        isolate: true
+    ),
+    bin: (path: "pass"),
+    icon: Name("password-manager")
+)

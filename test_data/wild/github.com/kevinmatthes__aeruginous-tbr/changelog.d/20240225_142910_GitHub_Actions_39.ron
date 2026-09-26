@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "TAR:  handle symlinks correctly; fixes #39",
+    ],
+  },
+)

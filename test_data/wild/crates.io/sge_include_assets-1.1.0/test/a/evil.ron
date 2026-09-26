@@ -1,0 +1,5 @@
+(
+    color: (200, 100, 255),
+    fullscreen: false,
+    name: "Lily",
+)

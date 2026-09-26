@@ -1,0 +1,11 @@
+(
+    name: "Display",
+    description: "Syntax: display <setting>",
+    query: (
+        regex: "^(display|vga|hdmi|dp|xrandr)\\s.*",
+        help: "display",
+        isolate: true
+    ),
+    bin: (path: "display"),
+    icon: Name("display")
+)

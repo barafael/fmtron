@@ -1,0 +1,101 @@
+// Sample World Partition Cell at (1, 0, 0) - East of origin
+// Cell size: 100.0 units (world position: x=100-200)
+// Contains: Rocky outcrop with sparse vegetation
+(
+    coord: [1, 0, 0],
+    entities: [
+        // Mountain Rock Formation
+        (
+            position: [120.0, 0.0, 30.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [3.0, 4.0, 3.0],
+            mesh: "models/nature/mountain_rock.glb",
+            material: 3,
+            components: {
+                "health": "1000",
+                "climbable": "true",
+            },
+            name: Some("mountain_rock_01"),
+        ),
+        // Dead Tree
+        (
+            position: [140.0, 0.0, 50.0],
+            rotation: [0.0, 0.3, 0.0, 0.954],
+            scale: [1.0, 1.2, 1.0],
+            mesh: "models/nature/dead_tree.glb",
+            material: 6,
+            components: {
+                "health": "50",
+                "harvestable": "wood",
+            },
+            name: Some("dead_tree_01"),
+        ),
+        // Cactus 1
+        (
+            position: [155.0, 0.0, 70.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [1.0, 1.5, 1.0],
+            mesh: "models/nature/cactus.glb",
+            material: 7,
+            components: {
+                "health": "80",
+                "vegetation_type": "desert",
+            },
+            name: Some("cactus_01"),
+        ),
+        // Cactus 2
+        (
+            position: [165.0, 0.0, 20.0],
+            rotation: [0.0, 0.7, 0.0, 0.714],
+            scale: [0.8, 1.2, 0.8],
+            mesh: "models/nature/cactus.glb",
+            material: 7,
+            components: {
+                "health": "80",
+                "vegetation_type": "desert",
+            },
+            name: Some("cactus_02"),
+        ),
+        // Rocky Ground 1
+        (
+            position: [130.0, 0.0, 60.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [4.0, 0.5, 4.0],
+            mesh: "models/nature/rocky_ground.glb",
+            material: 8,
+            components: {
+                "terrain_type": "rocky",
+            },
+            name: Some("rocky_ground_01"),
+        ),
+        // Ancient Ruins Pillar
+        (
+            position: [180.0, 0.0, 45.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [1.0, 3.0, 1.0],
+            mesh: "models/structures/pillar_ruined.glb",
+            material: 9,
+            components: {
+                "health": "200",
+                "interactive": "true",
+            },
+            name: Some("ruins_pillar_01"),
+        ),
+    ],
+    assets: [
+        (path: "models/nature/mountain_rock.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440020"),
+        (path: "models/nature/dead_tree.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440021"),
+        (path: "models/nature/cactus.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440022"),
+        (path: "models/nature/rocky_ground.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440023"),
+        (path: "models/structures/pillar_ruined.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440024"),
+        (path: "textures/nature/rock_sandstone.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440025"),
+        (path: "textures/nature/dead_wood.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440026"),
+        (path: "textures/nature/cactus_green.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440027"),
+        (path: "textures/structures/stone_ancient.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440028"),
+    ],
+    metadata: {
+        "biome": "rocky_desert",
+        "elevation": "highland",
+        "density": "sparse",
+    },
+)

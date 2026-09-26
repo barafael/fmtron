@@ -1,0 +1,33 @@
+#![enable(implicit_some)]
+
+Prefab (
+    entities: [
+        PrefabEntity(
+            data: PlayerPrefab(
+                // BEGIN player: Player
+                player: Player(
+                      speed: 500,
+                      laser_speed: 800,
+                      // time to delay laser shots in seconds
+                      fire_delay: 0.17,
+                      // if we want the first fire to be instant,
+                      // we set the timer to >= than the delay setting
+                      seconds_since_firing: 0.17,
+                      direction: Up,
+                      invulnerable: false,
+                ),
+                // END player: Player
+
+                // BEGIN player_collider: Collider
+                player_collider: Collider(
+                    // half extent = sprite dimension (width or height) * 0.5 * scale
+                    // for the player it should be 40.0 and 57.5, but for gameplay
+                    // it feels nicer to have a tiny bit of leeway
+                    half_width: 28.0,
+                    half_height: 28.0,
+                ),
+                // END player_collider: Collider
+            ),
+        ),
+    ]
+)

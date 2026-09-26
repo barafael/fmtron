@@ -1,0 +1,5 @@
+VoxelData(
+	voxel_type: Transparent,
+	texture_id: 7,
+	emissiveness: Some(15)
+)

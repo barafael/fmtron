@@ -1,0 +1,128 @@
+/// Usually, those with 'bg' indicate background color, while those without it typically indicate foreground color.
+///
+/// Kind Enum: Light | Dark
+/// Color Enum:
+/// - Tailwind(RED, C700): https://tailwindcss.com/docs/customizing-colors
+/// - Rgb(10, 20, 255)   : Rgb(u8, u8, u8), u8: 0 ~ 255
+/// - Hex("ffffff")      : Rgb color in radix-16, in the format: 0xRRGGBB
+/// - Default            : Depend on current buffer background & foreground
+/// - Fallback           : Fallback to Light | Dark kind defined color
+/// - Black              : ANSI Color: Black. Foreground: 30, Background: 40
+/// - Red                : ANSI Color: Red. Foreground: 31, Background: 41
+/// - Green              : ANSI Color: Green. Foreground: 32, Background: 42
+/// - Yellow             : ANSI Color: Yellow. Foreground: 33, Background: 43
+/// - Blue               : ANSI Color: Blue. Foreground: 34, Background: 44
+/// - Magenta            : ANSI Color: Magenta. Foreground: 35, Background: 45
+/// - Cyan               : ANSI Color: Cyan. Foreground: 36, Background: 46
+/// - Gray               : ANSI Color: White. Foreground: 37, Background: 47
+/// - DarkGray           : ANSI Color: Bright Black. Foreground: 90, Background: 100
+/// - LightRed           : ANSI Color: Bright Red. Foreground: 91, Background: 101
+/// - LightGreen         : ANSI Color: Bright Green. Foreground: 92, Background: 102
+/// - LightYellow        : ANSI Color: Bright Yellow. Foreground: 93, Background: 103
+/// - LightBlue          : ANSI Color: Bright Blue. Foreground: 94, Background: 104
+/// - LightMagenta       : ANSI Color: Bright Magenta. Foreground: 95, Background: 105
+/// - LightCyan          : ANSI Color: Bright Cyan. Foreground: 96, Background: 106
+/// - White              : ANSI Color: Bright White. Foreground: 97, Background: 107
+(
+    name: "ratisui-dark",
+    kind: Dark,
+    context: (
+        bg: Rgb(0, 0, 0),
+        fps: Tailwind(GRAY, C500),
+        key_bg: Tailwind(YELLOW, C700),
+    ),
+    server: (
+        highlight: Tailwind(GRAY, C950),
+        name: Tailwind(AMBER, C400),
+        location: Tailwind(CYAN, C500),
+        db: Tailwind(BLUE, C600),
+        username: Tailwind(AMBER, C400),
+        tls: Tailwind(ROSE, C600),
+        protocol: Tailwind(EMERALD, C600),
+    ),
+    table: (
+        bg: Default,
+        header_bg: Tailwind(GRAY, C900),
+        header: Tailwind(GRAY, C200),
+        row: Tailwind(GRAY, C200),
+        odd_row_bg: Default,
+        even_row_bg: Tailwind(GRAY, C950),
+    ),
+    raw: (
+        string: Tailwind(AMBER, C400),
+        boolean: Tailwind(ROSE, C600),
+        keyword: Tailwind(ROSE, C600),
+        constant: Tailwind(ROSE, C600),
+        null: Tailwind(ROSE, C600),
+        property: Tailwind(FUCHSIA, C700),
+        comment: Tailwind(CYAN, C500),
+        number: Tailwind(BLUE, C600),
+    ),
+    border: (
+        highlight: Tailwind(GRAY, C300),
+        default: Tailwind(GRAY, C600),
+    ),
+    editor: (
+        editing: Tailwind(SKY, C700),
+        warning: Tailwind(RED, C700),
+    ),
+    tab: (
+        title: Tailwind(SLATE, C100),
+        explorer: (
+            accent: Tailwind(ROSE, C900),
+            highlight: Tailwind(ROSE, C700),
+            tree: (
+                highlight: Tailwind(SLATE, C100),
+                highlight_bg: Tailwind(ROSE, C700),
+            ),
+            key_type: (
+                hash: Tailwind(BLUE, C700),
+                list: Tailwind(GREEN, C700),
+                set: Tailwind(ORANGE, C700),
+                zset: Tailwind(PINK, C700),
+                string: Tailwind(PURPLE, C700),
+                json: Tailwind(GRAY, C700),
+                stream: Tailwind(YELLOW, C700),
+                time_series: Tailwind(SLATE, C700),
+                bloom_filter: Tailwind(ORANGE, C700),
+                unknown: Tailwind(SLATE, C500),
+            ),
+        ),
+        cli: (
+            accent: Tailwind(GREEN, C900),
+            highlight: Tailwind(GREEN, C700),
+            console: (
+                cmd: Tailwind(EMERALD, C700),
+                out: Default,
+                err: Tailwind(ROSE, C700),
+            ),
+            menu: (
+                bg: Tailwind(NEUTRAL, C800),
+                highlight: Tailwind(ZINC, C900),
+                info_bg: Tailwind(STONE, C900),
+                input: Tailwind(AMBER, C500),
+            ),
+            doc: (
+                bg: Tailwind(NEUTRAL, C800),
+                command: Tailwind(AMBER, C400),
+                attribute: Tailwind(PINK, C800),
+            ),
+        ),
+        logger: (
+            accent: Tailwind(AMBER, C900),
+            highlight: Tailwind(AMBER, C700),
+            level: (
+                error: Tailwind(ROSE, C700),
+                warn: Tailwind(AMBER, C700),
+                info: Tailwind(CYAN, C700),
+                debug: Tailwind(EMERALD, C700),
+                trace: Tailwind(VIOLET, C700),
+            ),
+        ),
+    ),
+    toast: (
+        info: Tailwind(GREEN, C700),
+        warn: Tailwind(YELLOW, C700),
+        error: Tailwind(RED, C700),
+    ),
+)

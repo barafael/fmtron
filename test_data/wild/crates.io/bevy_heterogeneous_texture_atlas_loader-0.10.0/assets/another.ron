@@ -1,0 +1,19 @@
+(
+    path: "another.png",
+    sprites: [
+        (
+            name: "bang",
+            x: 0, 
+            y: 0, 
+            w: 30, 
+            h: 30
+        ),
+        (
+            name: "plant",
+            x: 48, 
+            y: 0, 
+            w: 16, 
+            h: 16
+        ),
+    ]
+)

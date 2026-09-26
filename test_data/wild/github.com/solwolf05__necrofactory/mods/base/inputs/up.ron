@@ -1,0 +1,10 @@
+(
+    id: "up",
+    name: "Up",
+    default: (
+        kind: KeyButton(Space),
+        shift: false,
+        control: false,
+        alt: false
+    )
+)

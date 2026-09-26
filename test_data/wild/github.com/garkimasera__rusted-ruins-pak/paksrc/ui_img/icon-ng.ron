@@ -1,0 +1,9 @@
+(
+    object_type: "ui_img",
+    id: "!icon-ng",
+    
+    image: (
+        path: "icon-ng.png",
+        copyright: "T.Okubo",
+    ),
+)

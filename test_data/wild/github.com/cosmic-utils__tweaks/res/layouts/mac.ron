@@ -1,0 +1,110 @@
+(
+    id: "9727f9f3-240a-4a9d-8459-3b007056cfeb",
+    name: "Mac",
+    custom: false,
+    schema: Panel((
+        panel_config: (
+            config_list: [
+                (
+                    name: "Panel",
+                    anchor: Top,
+                    anchor_gap: false,
+                    layer: Top,
+                    keyboard_interactivity: OnDemand,
+                    size: XS,
+                    output: All,
+                    background: ThemeDefault,
+                    plugins_wings: Some(([
+                        "com.system76.CosmicAppletPower",
+                    ], [
+                        "com.system76.CosmicAppletStatusArea",
+                        "com.system76.CosmicAppletBattery",
+                        "com.system76.CosmicAppletNetwork",
+                        "com.system76.CosmicPanelLauncherButton",
+                        "com.system76.CosmicAppletNotifications",
+                        "com.system76.CosmicAppletTime",
+                    ])),
+                    plugins_center: Some([]),
+                    size_wings: None,
+                    size_center: None,
+                    expand_to_edges: true,
+                    padding: 0,
+                    padding_overlap: 0.5,
+                    spacing: 4,
+                    border_radius: 0,
+                    exclusive_zone: true,
+                    autohide: Never,
+                    autohide_behavior: (
+                        wait_time: 1000,
+                        transition_time: 200,
+                        handle_size: 4,
+                        unhide_delay: 200
+                    ),
+                    margin: 0,
+                    opacity: 0.9,
+                ),
+                (
+                    name: "Dock",
+                    anchor: Bottom,
+                    anchor_gap: true,
+                    layer: Top,
+                    keyboard_interactivity: OnDemand,
+                    size: S,
+                    output: All,
+                    background: ThemeDefault,
+                    plugins_wings: Some(([], [])),
+                    plugins_center: Some([
+                        "com.system76.CosmicAppList",
+                        "com.system76.CosmicPanelAppButton",
+                        "com.system76.CosmicAppletMinimize",
+                    ]),
+                    size_wings: None,
+                    size_center: None,
+                    expand_to_edges: false,
+                    padding: 0,
+                    padding_overlap: 0.5,
+                    spacing: 0,
+                    border_radius: 8,
+                    exclusive_zone: true,
+                    autohide: Never,
+                    autohide_behavior: (
+                        wait_time: 1000,
+                        transition_time: 200,
+                        handle_size: 4,
+                        unhide_delay: 200
+                    ),
+                    margin: 4,
+                    opacity: 0.9,
+                ),
+            ],
+        ),
+        panel_config_version: 1,
+        panel_button_config: (
+            configs: {
+                "Dock": (
+                    force_presentation: Some(Icon),
+                ),
+                "Panel": (
+                    force_presentation: Some(Icon),
+                ),
+            },
+        ),
+        panel_button_config_version: 1,
+    )),
+    preview: (
+        panel: (
+            position: Top,
+            extend: true,
+            hidden: false,
+            size: 10,
+        ),
+        dock: (
+            position: Bottom,
+            extend: false,
+            hidden: false,
+            size: 20,
+        ),
+        dock_icons: 6,
+        show_window: true,
+    )
+)

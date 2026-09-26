@@ -1,0 +1,70 @@
+Spec(
+    char: Size(w: 7, h: 9),
+    pad: Size(w: 1, h: 1),
+    width_overrides: {
+        "()": 4,
+        "<>": 6,
+        "-=": 5,
+        "'": 3,
+        ".:": 2,
+        ",;": 3,
+        "I": 2,
+        "f": 5,
+        "i": 2,
+        "j": 3,
+        "l": 4,
+        "t": 5,
+        "JT": 6,
+    },
+    kerning: (
+        left: {
+            // large things that just brush against small 'o' shapes
+            "P": "PV",
+            // small things that have an 'o'-shaped right hand side
+            "o": "abcopr",
+            // small things that have a 'u'-shaped right hand side
+            "u": "guswy",
+            // T admits a lot of tucking
+            "T": "T",
+            // things that have a protruding flick at the bottom right
+            "l": "klt",
+            // things that have a protruding flick at the top right
+            "f": "f",
+        },
+        right: {
+            // small things that have an 'o'-shaped left hand side
+            "o": "acdegoq",
+            // small things that have a 'u'-shaped left hand side
+            "u": "uy",
+            // very small things
+            ".": ".",
+            // T admits a lot of tucking
+            "T": "T",
+            // 'l' has a protruding flick at the top left
+            "l": "l",
+        },
+        pairs: {
+            // nestle things underneath T
+            ("o", "T"): -1,
+            ("u", "T"): -1,
+            ("T", "o"): -1,
+            ("T", "u"): -1,
+
+            // Tighter caps-small tuck-under
+            ("P", "o"): 0,
+            ("P", "u"): 0,
+            ("P", "."): 0,
+
+            // Tucking things closer to 'l' that nest below on the left or above on the right.
+            ("l", "l"): 0,
+            ("l", "o"): 0,
+            ("l", "u"): 0,
+            ("o", "l"): 0,
+            ("u", "l"): 0,
+
+            // Pulling small letters under flicks
+            ("f", "o"): 0,
+            ("f", "u"): 0,
+        }
+    )
+)

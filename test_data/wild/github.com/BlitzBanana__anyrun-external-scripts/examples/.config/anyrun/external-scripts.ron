@@ -1,0 +1,11 @@
+Config(
+    debug: false,
+    shell: "/usr/bin/nu",
+    scripts: [
+        Script(
+            prefix: ">",
+            command: "nu ~/.config/anyrun/scripts/code.nu",
+            cache: true
+        )
+    ]
+)

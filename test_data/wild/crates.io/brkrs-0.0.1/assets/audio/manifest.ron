@@ -1,0 +1,14 @@
+// Audio asset manifest for the game audio system.
+// Maps sound types to their corresponding audio file paths.
+AudioManifest(
+    sounds: {
+        BrickDestroy: "brick_destroy.ogg",
+        MultiHitImpact: "multi_hit_impact.ogg",
+        WallBounce: "wall_bounce.ogg",
+        PaddleHit: "paddle_hit.ogg",
+        PaddleWallHit: "paddle_wall_hit.ogg",
+        PaddleBrickHit: "paddle_brick_hit.ogg",
+        LevelStart: "level_start.ogg",
+        LevelComplete: "level_complete.ogg",
+    }
+)

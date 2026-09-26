@@ -1,0 +1,59 @@
+(
+    sound: (
+        general: 1.0,
+        music: 1.0000001,
+        sfx: 0.5,
+    ),
+    fov: 45.0,
+    sun_cycle: DayNight,
+    input_map: (
+        forward: (Keyboard(
+            key: KeyW,
+            mod_keys: "",
+        ), Keyboard(
+            key: ArrowUp,
+            mod_keys: "",
+        ), r#None),
+        left: (Keyboard(
+            key: KeyA,
+            mod_keys: "",
+        ), Keyboard(
+            key: ArrowLeft,
+            mod_keys: "",
+        ), r#None),
+        backward: (Keyboard(
+            key: KeyS,
+            mod_keys: "",
+        ), Keyboard(
+            key: ArrowDown,
+            mod_keys: "",
+        ), r#None),
+        right: (Keyboard(
+            key: KeyD,
+            mod_keys: "",
+        ), Keyboard(
+            key: ArrowRight,
+            mod_keys: "",
+        ), r#None),
+        jump: (Keyboard(
+            key: Space,
+            mod_keys: "",
+        ), r#None, r#None),
+        dash: (Keyboard(
+            key: AltLeft,
+            mod_keys: "",
+        ), r#None, r#None),
+        sprint: (Keyboard(
+            key: ShiftLeft,
+            mod_keys: "",
+        ), r#None, r#None),
+        crouch: (Keyboard(
+            key: ControlLeft,
+            mod_keys: "",
+        ), r#None, r#None),
+        attack: (MouseButton(
+            button: Left,
+            mod_keys: "",
+        ), r#None, r#None),
+    ),
+)

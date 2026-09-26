@@ -1,0 +1,14 @@
+[
+    (
+        node_type: File,
+        source_path: "/some/source/a",
+    ),
+    (
+        node_type: Folder,
+        source_path: "/some/source/a",
+    ),
+    (
+        node_type: File,
+        source_path: "/some/source/b",
+    ),
+]

@@ -1,0 +1,44 @@
+Configuration(
+    files: {
+        "../README.md":  [
+            "header.md",
+            "docs.md",
+            "https://github.com/khonsulabs/.github/raw/main/snippets/readme-footer.md",
+        ],
+        "../src/crate-docs.md":  [
+            "docs.md",
+            "https://github.com/khonsulabs/.github/raw/main/snippets/readme-footer.md",
+        ],
+        "../CONTRIBUTING.md":  [
+            "https://github.com/khonsulabs/.github/raw/main/docs/CONTRIBUTING.md",
+        ],
+        "../CODE_OF_CONDUCT.md":  [
+            "https://github.com/khonsulabs/.github/raw/main/docs/CODE_OF_CONDUCT.md",
+        ],
+        "../LICENSE-APACHE":  [
+            "https://github.com/khonsulabs/.github/raw/main/licenses/LICENSE-APACHE",
+        ],
+        "../LICENSE-MIT":  [
+            "https://github.com/khonsulabs/.github/raw/main/licenses/LICENSE-MIT",
+        ],
+    },
+    glossaries: [
+        "https://github.com/khonsulabs/.github/raw/main/snippets/glossary.ron",
+        {
+            "docs-base": (
+                default: "https://khonsulabs.github.io/lrumap/main/lrumap",
+                release: "https://docs.rs/lrumap",
+            ),
+            "lruhashmap": (
+                default: "https://khonsulabs.github.io/lrumap/main/lrumap/struct.LruHashMap.html",
+                release: "https://docs.rs/lrumap/*/lrumap/struct.LruHashMap.html",
+                for_docs: "crate::LruHashMap",
+            ),
+            "lrubtreemap": (
+                default: "https://khonsulabs.github.io/lrumap/main/lrumap/struct.LruBTreeMap.html",
+                release: "https://docs.rs/lrumap/*/lrumap/struct.LruBTreeMap.html",
+                for_docs: "crate::LruBTreeMap",
+            ),
+        }
+    ],
+)

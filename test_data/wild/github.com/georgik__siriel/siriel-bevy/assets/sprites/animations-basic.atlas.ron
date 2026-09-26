@@ -1,0 +1,76 @@
+(
+    name: "animations-basic",
+    image_path: "sprites/animations-basic.png",
+    tile_size: (16, 16),
+    grid_size: (20, 2),
+    total_tiles: 40,
+    special_tiles: None,
+    animations: Some({
+        // Row 0
+        "teleport": (
+            frames: [0, 1, 2, 3],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+        "pear": (
+            frames: [4, 5, 6, 7],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+        "cherry": (
+            frames: [8, 9, 10, 11],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+        "stop_sign": (
+            frames: [12, 13, 14, 15],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+        "teleport2": (
+            frames: [16, 17, 18, 19],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+        // Row 1
+        "water": (
+            frames: [20, 21, 22, 23],
+            duration: 0.24,
+            loop_mode: Loop,
+        ),
+        "coin": (
+            frames: [24, 25, 26, 27],
+            duration: 0.16,
+            loop_mode: Loop,
+        ),
+        "heart": (
+            frames: [28, 29, 30, 31],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+        "pacman": (
+            frames: [32, 33, 34, 35],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+        "monster": (
+            frames: [36, 37, 38, 39],
+            duration: 0.2,
+            loop_mode: Loop,
+        ),
+    }),
+    // Optional mapping from semantic names to animations (can be used by systems)
+    animation_mapping: Some({
+        "exit": "teleport",
+        "pear": "pear",
+        "cherry": "cherry",
+        "stop": "stop_sign",
+        "teleport2": "teleport2",
+        "water": "water",
+        "coin": "coin",
+        "heart": "heart",
+        "pacman": "pacman",
+        "monster": "monster",
+    }),
+    metadata: None,
+)

@@ -1,0 +1,7 @@
+(
+    name: "Firefox tabs",
+    description: "Lookup open firefox tabs from pop launcher",
+    bin: (path: "firefox-tabs"),
+    icon: Name("focus-windows-symbolic"),
+    history: true,
+)

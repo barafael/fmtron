@@ -1,0 +1,56 @@
+[
+    Type((
+        id: "normal",
+    )),
+    Type((
+        id: "fighting",
+    )),
+    Type((
+        id: "flying",
+    )),
+    Type((
+        id: "poison",
+    )),
+    Type((
+        id: "ground",
+    )),
+    Type((
+        id: "rock",
+    )),
+    Type((
+        id: "bug",
+    )),
+    Type((
+        id: "ghost",
+    )),
+    Type((
+        id: "steel",
+    )),
+    Type((
+        id: "fire",
+    )),
+    Type((
+        id: "water",
+    )),
+    Type((
+        id: "grass",
+    )),
+    Type((
+        id: "electric",
+    )),
+    Type((
+        id: "psychic",
+    )),
+    Type((
+        id: "ice",
+    )),
+    Type((
+        id: "dragon",
+    )),
+    Type((
+        id: "dark",
+    )),
+    Type((
+        id: "fairy",
+    )),
+]

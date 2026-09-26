@@ -1,0 +1,8 @@
+// src/input/menu_bindings.rs
+(
+    axes: {},
+    actions: {
+        Enter: [ [Key(Return)], [Key(D)], ],
+        Back:  [ [Key(Escape)], ],
+    },
+)

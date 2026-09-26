@@ -1,0 +1,11 @@
+(
+    host: "example.com",
+    port: 443,
+    tags: [
+        "example",
+        "test",
+    ],
+    inner: (
+        answer: 42,
+    ),
+)

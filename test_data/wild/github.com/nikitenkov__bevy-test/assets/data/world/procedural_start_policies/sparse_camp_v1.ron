@@ -1,0 +1,8 @@
+ProceduralStartPolicyAsset(
+    id: "sparse_camp_v1",
+    label: "Sparse camp opening (v1)",
+    description: "A sparse opening with citizens, one starter stash with preserved emergency food but no grain stages, and one planned campfire but no finished buildings.",
+    opening: StarterTemplateCompatibility(
+        starter_template_id: "sparse_camp_v1",
+    ),
+)

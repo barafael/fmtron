@@ -1,0 +1,6 @@
+(
+    name: "Test Tesseract",
+    mesh: Tesseract,
+    position: [0.0, 0.0, 0.0, 0.0],
+    scale: 2.0,
+)

@@ -1,0 +1,8 @@
+ProceduralStartPolicyAsset(
+    id: "blank_start_v1",
+    label: "Blank start opening (v1)",
+    description: "A blank opening with citizens and starter stock but no seeded buildings or sites.",
+    opening: StarterTemplateCompatibility(
+        starter_template_id: "blank_start_v1",
+    ),
+)

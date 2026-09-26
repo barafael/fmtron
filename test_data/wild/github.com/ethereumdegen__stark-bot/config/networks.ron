@@ -1,0 +1,29 @@
+// Network configuration for context bank scanning
+// Maps network identifiers to their display names and chain IDs
+
+{
+    "base": (
+        name: "Base",
+        chain_id: 8453,
+        native_token: "ETH",
+        explorer: "https://basescan.org",
+    ),
+    "mainnet": (
+        name: "Ethereum Mainnet",
+        chain_id: 1,
+        native_token: "ETH",
+        explorer: "https://etherscan.io",
+    ),
+    "sepolia": (
+        name: "Sepolia Testnet",
+        chain_id: 11155111,
+        native_token: "ETH",
+        explorer: "https://sepolia.etherscan.io",
+    ),
+    "base-sepolia": (
+        name: "Base Sepolia",
+        chain_id: 84532,
+        native_token: "ETH",
+        explorer: "https://sepolia.basescan.org",
+    ),
+}

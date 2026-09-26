@@ -1,0 +1,15 @@
+Prefab(
+    name: "bullet",
+    components: [
+	(name: "RenderComponent", properties: [
+            (name: "radius", value: "5.0"),
+            (name: "colour", value: "Color::YELLOW")
+        ]),
+	(name: "PhysicsComponent"),
+	(name: "Bullet", properties: [
+            (name: "radius", value: "5.0"),
+            (name: "damage", value: "1")
+        ]),
+	(name: "LevelObject"),
+    ],
+)

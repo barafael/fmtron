@@ -1,0 +1,13 @@
+(
+    axes: {
+        "horizontal": Emulated(
+            pos: Key(A),
+            neg: Key(D),
+        ),
+    },
+    actions: {
+        "rotate": [[Key(W)]],
+        "soft_drop": [[Key(S)]],
+        "hard_drop": [[Key(Space)]],
+    },
+)

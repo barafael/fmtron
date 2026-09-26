@@ -1,0 +1,40 @@
+Configuration(
+    files: {
+        "../README.md":  [
+            "header.md",
+            "docs.md",
+            "https://github.com/khonsulabs/.github/raw/main/snippets/readme-footer.md",
+        ],
+        "../src/.crate-docs.md":  (
+            for_docs: true,
+            sections: [
+                "docs.md",
+            ]
+        ),
+        "../CONTRIBUTING.md":  [
+            "https://github.com/khonsulabs/.github/raw/main/docs/CONTRIBUTING.md",
+        ],
+        "../CODE_OF_CONDUCT.md":  [
+            "https://github.com/khonsulabs/.github/raw/main/docs/CODE_OF_CONDUCT.md",
+        ],
+        "../LICENSE-APACHE":  [
+            "https://github.com/khonsulabs/.github/raw/main/licenses/LICENSE-APACHE",
+        ],
+        "../LICENSE-MIT":  [
+            "https://github.com/khonsulabs/.github/raw/main/licenses/LICENSE-MIT",
+        ],
+    },
+    glossaries: [
+        "https://github.com/khonsulabs/.github/raw/main/snippets/glossary.ron",
+        {
+            "docs-base": (
+                default: "https://khonsulabs.github.io/pulldown-cmark-frontmatter/main/pulldown_cmark_frontmatter",
+                release: "https://docs.rs/pulldown-cmark-frontmatter",
+            ),
+            "src-base": (
+                default: "https://github.com/khonsulabs/pulldown-cmark-frontmatter/blob/main",
+                release: "https://github.com/khonsulabs/pulldown-cmark-frontmatter/blob/v0.3.0",
+            ),
+        }
+    ],
+)

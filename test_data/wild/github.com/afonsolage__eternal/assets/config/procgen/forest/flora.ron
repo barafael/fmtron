@@ -1,0 +1,11 @@
+[
+    (
+        name: "TREE",
+        flora: "TREE",
+        threshold: 0.0,
+        wall_spacing: 2,
+        floor_spacing: 1,
+        elevation_range: None,
+        allowed_terrains: ["GRASS"],
+    ),
+]

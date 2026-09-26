@@ -1,0 +1,34 @@
+(
+    width: 64,
+    height: 64,
+    cells: [],
+    player_spawn: (x: 4, y: 4),
+    factories: [
+        // Левая половина карты (ближе к игроку)
+        (x:  8, y:  8, factory_type: Chassis,     team: Neutral),
+        (x: 16, y:  8, factory_type: Cannon,       team: Neutral),
+        (x: 24, y:  8, factory_type: Missile,      team: Neutral),
+        (x:  8, y: 16, factory_type: Phasers,      team: Neutral),
+        (x: 16, y: 16, factory_type: Electronics,  team: Neutral),
+        (x: 24, y: 16, factory_type: Nuclear,      team: Neutral),
+        (x:  8, y: 24, factory_type: Chassis,      team: Neutral),
+        (x: 16, y: 24, factory_type: Cannon,       team: Neutral),
+        (x: 24, y: 24, factory_type: Missile,      team: Neutral),
+        (x: 32, y: 32, factory_type: Phasers,      team: Neutral),
+        // Правая половина карты (ближе к врагу)
+        (x: 40, y: 40, factory_type: Chassis,      team: Neutral),
+        (x: 48, y: 40, factory_type: Cannon,       team: Neutral),
+        (x: 56, y: 40, factory_type: Missile,      team: Neutral),
+        (x: 40, y: 48, factory_type: Phasers,      team: Neutral),
+        (x: 48, y: 48, factory_type: Electronics,  team: Neutral),
+        (x: 56, y: 48, factory_type: Nuclear,      team: Neutral),
+        (x: 40, y: 56, factory_type: Chassis,      team: Neutral),
+        (x: 48, y: 56, factory_type: Cannon,       team: Neutral),
+        (x: 56, y: 56, factory_type: Missile,      team: Neutral),
+        (x: 32, y: 40, factory_type: Electronics,  team: Neutral),
+    ],
+    warbases: [
+        (x:  4, y:  4, team: Player),
+        (x: 60, y: 60, team: Enemy),
+    ],
+)

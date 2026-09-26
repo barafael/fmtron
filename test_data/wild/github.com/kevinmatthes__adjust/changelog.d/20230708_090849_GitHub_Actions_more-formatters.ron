@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "call for vfmt, nimpretty, and rustfmt on save",
+      "src/file_management.v",
+    ],
+  },
+)

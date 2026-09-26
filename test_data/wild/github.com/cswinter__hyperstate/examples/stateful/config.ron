@@ -1,0 +1,6 @@
+Config(
+    optimizer: (
+        lr: 0.05,
+        batch_size: 4096,
+    ),
+)

@@ -1,0 +1,9 @@
+(
+  animations: [
+    (
+      name: "attack_default",
+      delays_ms: Some([50, 50, 100, 75, 100]),
+      sprite_ids: [16, 14, 18, 14, 16],
+    ),
+  ],
+)

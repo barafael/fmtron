@@ -1,0 +1,10 @@
+// Happy-path ChordProgression fixture (REQ-O36, O30).
+(
+  kind: "ChordProgression",
+  chords: [
+    (symbol: "C"),
+    (symbol: "Am", duration: "2"),
+    (symbol: "F", duration: "2"),
+    (symbol: "G", duration: "4"),
+  ],
+)

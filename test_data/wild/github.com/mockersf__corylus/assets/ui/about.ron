@@ -1,0 +1,6 @@
+#![enable(implicit_some)]
+Custom(
+    About(
+        version: "0.1",
+    )
+)

@@ -1,0 +1,22 @@
+// What ps-qa has to be told about the harness.
+//
+// Deliberately almost empty, and that is the point. AgencyZero's profile
+// carries surfaces, collapsible sections, destructive-control exclusions and
+// navigation entry points, because the harness has to find its way around a
+// whole application before it can touch a control. Here there is one component
+// on the page and nothing else, so there is nothing to navigate, nothing to
+// collapse, and nothing that must not be pressed.
+//
+// Everything below exists to say "there is one surface and it is already open".
+AppProfile(
+    // One surface: the page itself. `marker` is the harness title, which the
+    // page always renders, so arrival is decidable without knowing which
+    // component is mounted.
+    surfaces: [
+        (name: "harness", opener: "\u{0}dynamic-document", marker: Some("QA")),
+    ],
+
+    permanent_surfaces: [],
+    navigation_controls: [],
+    sections: [],
+)

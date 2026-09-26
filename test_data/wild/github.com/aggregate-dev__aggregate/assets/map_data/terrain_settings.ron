@@ -1,0 +1,8 @@
+// Visual calibration for the unpacked 16-bit heightmap. Distances are render units.
+(
+    schema_version: 1,
+    grid_columns: 1024,
+    world_width: 2048.0,
+    sea_level_raw: 4884,
+    height_scale: 10.0,
+)

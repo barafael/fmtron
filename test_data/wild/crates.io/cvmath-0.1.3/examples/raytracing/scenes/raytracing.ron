@@ -1,0 +1,143 @@
+Scene(
+	image: ImageSettings(
+		width: 960,
+		height: 540,
+		nsamples: 2048,
+		max_bounces: 6,
+		use_rayon: true,
+	),
+	camera: CameraSettings(
+		origin: Vec3(0.0, 1.25, -4.0),
+		target: Vec3(0.0, 1.0, 0.0),
+		ref_up: Vec3(0.0, 1.0, 0.0),
+		fov_y: 40.0,
+		dof_enabled: true,
+		aperture_radius: 0.05,
+		focus_distance: 4.0,
+	),
+	world: World(
+		ambient_light: 0.3,
+		light: Light(
+			pos: Vec3(0.0, 100.0, 0.0),
+			color: Vec3(1.0, 1.0, 1.0),
+			radius: 5.0,
+		),
+		materials: {
+			"ground": Material(
+				texture: Ground,
+				reflectivity: 0.0,
+				hardness: 1.0,
+				diffuse_factor: 0.8,
+				specular_factor: 0.0,
+			),
+			"sphere1": Material(
+				texture: r#None,
+				reflectivity: 0.95,
+				hardness: 1.0,
+				diffuse_factor: 0.0,
+				specular_factor: 1.0,
+			),
+			"sphere2": Material(
+				texture: Color(Vec3(1.0, 0.65, 0.0)),
+				reflectivity: 0.05,
+				hardness: 99.0,
+				diffuse_factor: 0.9,
+				specular_factor: 1.0,
+			),
+			"mirror": Material(
+				texture: Color(Vec3(1.0, 1.0, 1.0)),
+				reflectivity: 1.0,
+				hardness: 1.0,
+				diffuse_factor: 0.1,
+				specular_factor: 1.0,
+			),
+		},
+		objects: [
+			Object(
+				shape: Plane(Plane3(
+					normal: Vec3(0.0, 1.0, 0.0),
+					distance: 0.0,
+				)),
+				material: "ground",
+			),
+			Object(
+				shape: Sphere(Sphere(
+					center: Vec3(-1.0, 2.0, 3.0),
+					radius: 0.5,
+				)),
+				material: "sphere1",
+			),
+			Object(
+				shape: Sphere(Sphere(
+					center: Vec3(1.25, 0.8, 0.0),
+					radius: 0.25,
+				)),
+				material: "sphere2",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 0.0, 0.0),
+					u: Vec3(0.0, 1.0, 1.0),
+					v: Vec3(-1.0, 1.0, 0.0),
+				)),
+				material: "mirror",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 0.0, 0.0),
+					u: Vec3(-1.0, 1.0, 0.0),
+					v: Vec3(0.0, 1.0, -1.0),
+				)),
+				material: "mirror",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 0.0, 0.0),
+					u: Vec3(0.0, 1.0, -1.0),
+					v: Vec3(1.0, 1.0, 0.0),
+				)),
+				material: "mirror",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 0.0, 0.0),
+					u: Vec3(1.0, 1.0, 0.0),
+					v: Vec3(0.0, 1.0, 1.0),
+				)),
+				material: "mirror",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 2.0, 0.0),
+					u: Vec3(-1.0, -1.0, 0.0),
+					v: Vec3(0.0, -1.0, 1.0),
+				)),
+				material: "mirror",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 2.0, 0.0),
+					u: Vec3(0.0, -1.0, 1.0),
+					v: Vec3(1.0, -1.0, 0.0),
+				)),
+				material: "mirror",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 2.0, 0.0),
+					u: Vec3(1.0, -1.0, 0.0),
+					v: Vec3(0.0, -1.0, -1.0),
+				)),
+				material: "mirror",
+			),
+			Object(
+				shape: Triangle(Triangle3(
+					p: Vec3(0.0, 2.0, 0.0),
+					u: Vec3(0.0, -1.0, -1.0),
+					v: Vec3(-1.0, -1.0, 0.0),
+				)),
+				material: "mirror",
+			),
+		],
+	),
+)

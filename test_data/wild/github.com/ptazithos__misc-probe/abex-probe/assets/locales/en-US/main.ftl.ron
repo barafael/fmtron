@@ -1,0 +1,10 @@
+(
+    locale: "en-US",
+    resources: [
+        "menu-bar.ftl",
+        "common.ftl",
+        "file-dialog.ftl",
+        "triggers.ftl",
+        "trigger.ftl"
+    ]
+)

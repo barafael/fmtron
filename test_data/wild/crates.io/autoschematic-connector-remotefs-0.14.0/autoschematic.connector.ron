@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "remotefs",
+    protocol: "binary-tarpc",
+    description: "Manages files on remote hosts over SSH, with support for pre and post hooks. Useful for a VPS with E.G. docker-compose.yaml or nginx conf that you want to declaratively manage with gitops.",
+    stability: "beta"
+)

@@ -1,0 +1,273 @@
+{
+    // === ESCALATION ===
+    "escalation_opening": Rule(
+        requires: ["fn:escalation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{urgency_marker} {technical_readout}"),
+            (weight: 3, text: "{sensory_detail} {threat_proximity}"),
+            (weight: 2, text: "{environmental_detail} Something had changed. {urgency_marker}"),
+            (weight: 2, text: "The readings spiked without warning. {technical_readout}"),
+            (weight: 1, text: "It happened fast. {sensory_detail} {urgency_marker}"),
+            (weight: 2, text: "{subject} grabbed the radio. \"Move, move, move!\" {urgency_marker}"),
+            (weight: 2, text: "\"We need to go. Now.\" {subject} was already on {possessive} feet. {sensory_detail}"),
+        ],
+    ),
+    "escalation_body": Rule(
+        requires: ["fn:escalation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{threat_proximity} {resource_status} Time was running out."),
+            (weight: 2, text: "Every second counted now. {technical_readout} {urgency_marker}"),
+            (weight: 2, text: "{sensory_detail} The situation was deteriorating rapidly. {environmental_detail}"),
+            (weight: 2, text: "{urgency_marker} There was no margin for error. {threat_proximity}"),
+            (weight: 1, text: "The alarms confirmed what they already knew. {technical_readout}"),
+            (weight: 2, text: "The radio crackled. \"{radio_chatter}\" {urgency_marker}"),
+            (weight: 2, text: "\"Does anyone copy?\" {subject} barked into the handset. {sensory_detail}"),
+            (weight: 1, text: "{markov:survival_thriller:urgent}"),
+        ],
+    ),
+    "escalation_closing": Rule(
+        requires: ["fn:escalation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "There was no going back. {environmental_detail}"),
+            (weight: 2, text: "{resource_status} The window was closing."),
+            (weight: 2, text: "What came next would determine everything. {urgency_marker}"),
+            (weight: 2, text: "{sensory_detail} The point of no return had passed."),
+            (weight: 1, text: "Somewhere in the dark, something moved. {threat_proximity}"),
+        ],
+    ),
+
+    // === DISCOVERY ===
+    "discovery_opening": Rule(
+        requires: ["fn:discovery"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} stopped. {sensory_detail}"),
+            (weight: 2, text: "The beam of the flashlight revealed something unexpected. {environmental_detail}"),
+            (weight: 2, text: "{subject} knelt down to examine the markings. {sensory_detail}"),
+            (weight: 2, text: "{technical_readout} The data didn't lie. {subject} looked up."),
+            (weight: 1, text: "It was {subject} who noticed it first. {environmental_detail}"),
+            (weight: 2, text: "\"You need to see this.\" {subject}'s voice was barely a whisper. {sensory_detail}"),
+            (weight: 2, text: "{subject} held up a hand for silence. \"Look.\" {environmental_detail}"),
+        ],
+    ),
+    "discovery_body": Rule(
+        requires: ["fn:discovery"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The implications were staggering. {sensory_detail} {resource_status}"),
+            (weight: 2, text: "{subject} ran the numbers again. Same result. {technical_readout}"),
+            (weight: 2, text: "This changed everything they thought they knew. {environmental_detail}"),
+            (weight: 2, text: "{subject} traced the pattern with a trembling hand. {sensory_detail}"),
+            (weight: 1, text: "The evidence was undeniable. {threat_proximity}"),
+        ],
+    ),
+    "discovery_closing": Rule(
+        requires: ["fn:discovery"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} stood slowly, mind racing. {environmental_detail}"),
+            (weight: 2, text: "Knowledge could be a weapon or a curse. Right now, it felt like both."),
+            (weight: 2, text: "They needed to move. {urgency_marker} {resource_status}"),
+            (weight: 2, text: "{subject} filed the information away. It would matter later."),
+            (weight: 1, text: "The discovery raised more questions than it answered. {sensory_detail}"),
+        ],
+    ),
+
+    // === LOSS ===
+    "loss_opening": Rule(
+        requires: ["fn:loss"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The radio crackled once, then went silent. {environmental_detail}"),
+            (weight: 2, text: "{subject} stared at the wreckage. {sensory_detail}"),
+            (weight: 2, text: "Gone. Just like that. {urgency_marker}"),
+            (weight: 2, text: "{technical_readout} The signal flatlined."),
+            (weight: 1, text: "There was nothing left to salvage. {resource_status}"),
+            (weight: 2, text: "\"They're gone,\" {subject} reported, voice flat. {environmental_detail}"),
+            (weight: 2, text: "{subject} keyed the radio. \"We lost sector seven. All of it.\" {urgency_marker}"),
+        ],
+    ),
+    "loss_body": Rule(
+        requires: ["fn:loss"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{resource_status} They couldn't afford this. Not now. {urgency_marker}"),
+            (weight: 2, text: "{subject} catalogued the damage with grim efficiency. {technical_readout}"),
+            (weight: 2, text: "The loss rippled outward, compounding every other problem. {environmental_detail}"),
+            (weight: 2, text: "{sensory_detail} Some things, once broken, cannot be repaired."),
+            (weight: 1, text: "{subject} allowed {possessive} composure to crack, just for a moment."),
+            (weight: 1, text: "{markov:survival_thriller:dread}"),
+        ],
+    ),
+    "loss_closing": Rule(
+        requires: ["fn:loss"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "They would have to adapt. There was no other choice. {resource_status}"),
+            (weight: 2, text: "{subject} squared {possessive} shoulders. Grief was a luxury they could not afford. {urgency_marker}"),
+            (weight: 2, text: "The mission continued. It had to. {environmental_detail}"),
+            (weight: 2, text: "{sensory_detail} {subject} turned away from what had been and faced what was coming."),
+            (weight: 1, text: "One less option. One less margin. The math was getting worse."),
+        ],
+    ),
+
+    // === FORESHADOWING ===
+    "foreshadowing_opening": Rule(
+        requires: ["fn:foreshadowing"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{environmental_detail} Something felt wrong, though no one could say what."),
+            (weight: 2, text: "{sensory_detail} The stillness was unnatural."),
+            (weight: 2, text: "{technical_readout} The readings were within normal parameters. That was the problem."),
+            (weight: 2, text: "{threat_proximity} But that was not what worried {subject}."),
+            (weight: 1, text: "The birds had stopped singing. {environmental_detail}"),
+        ],
+    ),
+    "foreshadowing_body": Rule(
+        requires: ["fn:foreshadowing"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} couldn't shake the feeling that they were being watched. {sensory_detail}"),
+            (weight: 2, text: "Everything appeared normal. Too normal. {environmental_detail}"),
+            (weight: 2, text: "{technical_readout} The numbers said one thing. Instinct said another."),
+            (weight: 2, text: "A pattern was forming, but only if you knew where to look. {threat_proximity}"),
+            (weight: 1, text: "The calm was itself a warning. Nature does not go quiet without reason."),
+            (weight: 2, text: "\"Something isn't right,\" {subject} murmured. {environmental_detail}"),
+            (weight: 2, text: "\"You hear that?\" {subject} asked. Everyone stopped. \"Exactly,\" {subject} said. \"Nothing.\""),
+            (weight: 1, text: "{markov:survival_thriller:dread}"),
+        ],
+    ),
+    "foreshadowing_closing": Rule(
+        requires: ["fn:foreshadowing"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} noted it and moved on. There would be time to worry later. Or there wouldn't."),
+            (weight: 2, text: "The moment passed. But the unease remained, lodged somewhere deep. {sensory_detail}"),
+            (weight: 2, text: "{environmental_detail} Later, they would remember this as the last quiet moment."),
+            (weight: 2, text: "If only they had paid more attention. {urgency_marker}"),
+            (weight: 1, text: "The warning signs were all there. They simply weren't ready to see them."),
+        ],
+    ),
+
+    // === STATUS CHANGE ===
+    "status_change_opening": Rule(
+        requires: ["fn:status_change"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{technical_readout} {resource_status}"),
+            (weight: 2, text: "The situation had shifted. {subject} assessed the new reality. {environmental_detail}"),
+            (weight: 2, text: "{subject} checked the instruments. {technical_readout}"),
+            (weight: 2, text: "{urgency_marker} The parameters had changed."),
+            (weight: 1, text: "A new variable had entered the equation. {sensory_detail}"),
+            (weight: 2, text: "\"{radio_chatter}\" The update came through static. {technical_readout}"),
+            (weight: 2, text: "\"Status change,\" {subject} announced. \"We're in a different game now.\" {urgency_marker}"),
+        ],
+    ),
+    "status_change_body": Rule(
+        requires: ["fn:status_change"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{resource_status} {subject} updated the protocols accordingly."),
+            (weight: 2, text: "The shift demanded immediate recalculation. {technical_readout}"),
+            (weight: 2, text: "{environmental_detail} Conditions were evolving faster than they could track."),
+            (weight: 2, text: "{subject} relayed the update. {urgency_marker}"),
+            (weight: 1, text: "Every plan was now obsolete. New ones were needed. Fast."),
+            (weight: 1, text: "{markov:survival_thriller:technical}"),
+        ],
+    ),
+    "status_change_closing": Rule(
+        requires: ["fn:status_change"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} acknowledged the new baseline. {resource_status}"),
+            (weight: 2, text: "The board had changed. The game continued. {environmental_detail}"),
+            (weight: 2, text: "{technical_readout} Adjustments made. Monitoring continued."),
+            (weight: 2, text: "Adaptation was not optional. {urgency_marker}"),
+            (weight: 1, text: "They were still in the fight. That was what mattered. {sensory_detail}"),
+        ],
+    ),
+
+    // === SUPPORTING RULES ===
+    "environmental_detail": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Rain hammered against the reinforced windows."),
+            (weight: 2, text: "The emergency lighting cast everything in harsh red."),
+            (weight: 2, text: "Fog obscured the perimeter, thick and impenetrable."),
+            (weight: 2, text: "The facility hummed with the sound of failing systems."),
+            (weight: 1, text: "Wind howled through a breach somewhere in the outer wall."),
+        ],
+    ),
+    "threat_proximity": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The motion sensors showed activity in the adjacent sector."),
+            (weight: 2, text: "It was closer now. Much closer."),
+            (weight: 2, text: "The perimeter had been compromised at three points."),
+            (weight: 2, text: "Thermal imaging confirmed multiple contacts, closing fast."),
+            (weight: 1, text: "The containment line had held. For now."),
+        ],
+    ),
+    "resource_status": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Fuel reserves were at twenty-three percent and falling."),
+            (weight: 2, text: "Ammunition was limited. Medical supplies, more so."),
+            (weight: 2, text: "Power would last another six hours at current draw."),
+            (weight: 2, text: "The backup generator kicked in, buying them time."),
+            (weight: 1, text: "Everything they needed was on the other side of that door."),
+        ],
+    ),
+    "sensory_detail": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The air tasted of metal and ozone."),
+            (weight: 2, text: "A low vibration ran through the floor, felt more than heard."),
+            (weight: 2, text: "The smell of smoke drifted from somewhere deeper in the structure."),
+            (weight: 2, text: "Every sound was amplified in the silence — dripping water, distant groaning metal."),
+            (weight: 1, text: "Cold seeped through the walls, bone-deep and relentless."),
+        ],
+    ),
+    "technical_readout": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "SYSTEMS: nominal. CONTAINMENT: degraded. THREAT LEVEL: elevated."),
+            (weight: 2, text: "Sector 7 offline. Sectors 3 through 5 operating at reduced capacity."),
+            (weight: 2, text: "Core temperature rising. Automatic shutdown in T-minus forty minutes."),
+            (weight: 2, text: "Communications array: partial. Long-range: negative. Local only."),
+            (weight: 1, text: "Structural integrity at sixty-one percent. Below recommended threshold."),
+        ],
+    ),
+    "urgency_marker": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Now."),
+            (weight: 2, text: "Time was the one resource they could not replenish."),
+            (weight: 2, text: "Every second mattered."),
+            (weight: 2, text: "The clock was running."),
+            (weight: 1, text: "Move. Think later."),
+        ],
+    ),
+    "radio_chatter": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "All units, fall back to secondary positions."),
+            (weight: 2, text: "We have a breach in sector seven. I repeat, sector seven."),
+            (weight: 2, text: "Get everyone out. Now."),
+            (weight: 2, text: "This is control. We are going to full lockdown."),
+            (weight: 1, text: "Does anyone copy? Is anyone still out there?"),
+            (weight: 1, text: "Containment is no longer viable. Switching to evacuation protocol."),
+            (weight: 1, text: "Be advised, we have multiple contacts approaching from the north."),
+        ],
+    ),
+}

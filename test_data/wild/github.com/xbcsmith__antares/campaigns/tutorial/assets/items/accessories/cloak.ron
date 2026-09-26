@@ -1,0 +1,33 @@
+(
+    id: 9304,
+    name: "ItemMeshCloak",
+    meshes: [
+        (
+            name: Some("cloak"),
+            vertices: [(0.0000, 0.0000, 0.1600), (-0.2800, 0.0000, 0.0960), (-0.2240, 0.0000, -0.3200), (0.0000, 0.0000, -0.3360), (0.2240, 0.0000, -0.3200), (0.2800, 0.0000, 0.0960)],
+            indices: [0, 5, 1, 1, 5, 4, 1, 4, 2, 2, 4, 3],
+            normals: Some([(0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000)]),
+            uvs: None,
+            color: (0.72, 0.53, 0.30, 1.00),
+            lod_levels: None,
+            lod_distances: None,
+            material: Some((
+                base_color: (0.72, 0.53, 0.30, 1.00),
+                metallic: 0.00,
+                roughness: 0.90,
+                emissive: None,
+                alpha_mode: Opaque,
+            )),
+            texture_path: None,
+        ),
+    ],
+    mesh_transforms: [
+        (
+            translation: (0.0, 0.0, 0.0),
+            rotation: (0.0, 0.0, 0.0),
+            scale: (1.0, 1.0, 1.0),
+        ),
+    ],
+    scale: 0.8,
+    color_tint: None,
+)

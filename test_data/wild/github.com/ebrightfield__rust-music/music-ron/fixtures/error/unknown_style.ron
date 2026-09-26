@@ -1,0 +1,6 @@
+// Error fixture: UnknownStyle (REQ-O28, O37).
+(
+  kind: "IntervalMatrix",
+  pcs: [0, 4, 7],
+  style: "spiral",
+)

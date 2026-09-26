@@ -1,0 +1,52 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "background",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 20.,
+        height: 20.,
+    ),
+    children: [
+
+        // Heading
+        Label(
+            transform: (
+                id: "heading",
+                // x: 100.,
+                y: -25.0,
+                width: 300.,
+                height: 25.,
+                tab_order: 2,
+                anchor: TopMiddle,
+                transparent: true,
+            ),
+            text: (
+                text: "Heading",
+                font: File("font/B612Mono-Regular.ttf", ("TTF", ())),
+                font_size: 14.,
+                color: (1.0, 1.0, 1.0, 1.0),
+            )
+        ),
+
+        // Transceiver information
+        Label(
+            transform: (
+                id: "trx_status",
+                // x: 100.,
+                y: -100.0,
+                width: 300.,
+                height: 25.,
+                tab_order: 2,
+                anchor: TopMiddle,
+                transparent: true,
+            ),
+            text: (
+                text: "Transceiver connected?",
+                font: File("font/B612Mono-Regular.ttf", ("TTF", ())),
+                font_size: 14.,
+                color: (1.0, 1.0, 1.0, 1.0),
+            )
+        ),
+    ],
+)

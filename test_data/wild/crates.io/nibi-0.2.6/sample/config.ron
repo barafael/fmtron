@@ -1,0 +1,10 @@
+(
+    project_name: "sample",
+    site_name: "sample",
+    dir_conf: (
+        site: "site",
+        zairyo: "zairyo",
+        igata: "igata",
+        gears: "gears",
+    ),
+)

@@ -1,0 +1,9 @@
+(
+    seasonal_spoilage: (
+        spring: 1.0,
+        summer: 1.5,
+        autumn: 1.0,
+        winter: 0.5,
+    ),
+    settlement_spoilage: (recent_loss_window_ticks: 30),
+)

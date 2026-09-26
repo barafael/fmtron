@@ -1,0 +1,8 @@
+(
+  schema_version: 1,
+  id: "space_diplo_wars_ui",
+  title: "Space Diplo Wars",
+  entrypoint: "index.html",
+  kind: "ui_bundle",
+  version: "0.1.0",
+)

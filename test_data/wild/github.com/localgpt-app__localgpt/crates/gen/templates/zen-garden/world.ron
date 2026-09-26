@@ -1,0 +1,100 @@
+(
+    version: 2,
+    meta: (
+        name: "zen-garden",
+        description: Some("A peaceful Japanese zen garden with raked sand, rock arrangements, bridge, pagoda, cherry trees, stone lanterns, and water feature"),
+        biome: Some("temperate_garden"),
+        time_of_day: Some(16.5),
+        tags: Some(["zen", "garden", "japanese", "peaceful", "nature", "starter"]),
+        source: Some("template"),
+    ),
+    environment: Some((
+        background_color: Some((0.55, 0.65, 0.8, 1.0)),
+        ambient_intensity: Some(0.45),
+        ambient_color: Some((0.9, 0.88, 0.82, 1.0)),
+        fog_density: Some(0.015),
+        fog_color: Some((0.65, 0.7, 0.78, 1.0)),
+    )),
+    camera: Some((
+        position: (0.0, 10.0, 18.0),
+        look_at: (0.0, 0.0, 0.0),
+        fov_degrees: 45.0,
+    )),
+    avatar: Some((
+        spawn_position: (0.0, 1.8, 12.0),
+        spawn_look_at: (0.0, 0.5, 0.0),
+        pov: third_person,
+        movement_speed: 3.0,
+        height: 1.8,
+    )),
+    tours: [
+        (
+            name: "garden_stroll",
+            description: Some("A meditative walk through the zen garden"),
+            waypoints: [
+                (position: (0.0, 1.8, 12.0), look_at: (0.0, 0.5, 0.0), description: Some("Welcome. Take a moment to breathe. The garden awaits."), pause_duration: 5.0),
+                (position: (3.0, 1.8, 5.0), look_at: (0.0, 0.3, 2.0), description: Some("The raked sand represents water; the stones, islands in a vast sea."), pause_duration: 6.0),
+                (position: (-3.0, 1.8, -2.0), look_at: (-8.0, 3.0, -6.0), description: Some("The pagoda shelters contemplation. Its tiered roof echoes mountain peaks."), pause_duration: 5.0),
+                (position: (2.0, 1.8, -6.0), look_at: (0.0, 1.0, -10.0), description: Some("A stream flows beneath the bridge. Listen to the water."), pause_duration: 6.0),
+                (position: (6.0, 1.8, 4.0), look_at: (8.0, 3.0, 4.0), description: Some("Cherry blossoms drift on the breeze. Each petal a fleeting moment."), pause_duration: 5.0),
+                (position: (0.0, 1.8, 8.0), look_at: (0.0, 0.5, 0.0), description: Some("Return to stillness. The garden is always here."), pause_duration: 5.0),
+            ],
+            speed: 2.0,
+            mode: walk,
+            autostart: false,
+            loop_tour: false,
+            pov: Some(third_person),
+        ),
+    ],
+    entities: [
+        (id: (1), name: ("raked_sand"), transform: (position: (0.0, 0.0, 0.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Plane(x: 40.0, z: 40.0)), material: Some((color: (0.85, 0.8, 0.7, 1.0), metallic: 0.0, roughness: 0.95, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (2), name: ("sun"), transform: (position: (-10.0, 18.0, 8.0), rotation_degrees: (-55.0, -20.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), light: Some((light_type: directional, color: (1.0, 0.9, 0.75, 1.0), intensity: 70000.0, direction: Some((0.3, -0.7, -0.2)), shadows: true))),
+        // Rocks
+        (id: (3), name: ("rock_main"), transform: (position: (0.0, 0.6, 2.0), rotation_degrees: (0.0, 15.0, 5.0), scale: (1.3, 1.0, 1.1), visible: true), shape: Some(Icosahedron(radius: 0.9)), material: Some((color: (0.35, 0.33, 0.3, 1.0), metallic: 0.0, roughness: 0.92, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (4), name: ("rock_left"), transform: (position: (-1.8, 0.4, 2.5), rotation_degrees: (5.0, -25.0, 8.0), scale: (1.0, 0.7, 0.9), visible: true), shape: Some(Icosahedron(radius: 0.6)), material: Some((color: (0.38, 0.35, 0.32, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (5), name: ("rock_small"), transform: (position: (1.2, 0.25, 3.0), rotation_degrees: (-3.0, 60.0, 0.0), scale: (0.8, 0.5, 0.7), visible: true), shape: Some(Icosahedron(radius: 0.4)), material: Some((color: (0.4, 0.37, 0.33, 1.0), metallic: 0.0, roughness: 0.88, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        // Stream
+        (id: (6), name: ("stream_bed"), transform: (position: (0.0, -0.1, -8.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cuboid(x: 20.0, y: 0.2, z: 3.0)), material: Some((color: (0.3, 0.25, 0.2, 1.0), metallic: 0.0, roughness: 0.95, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (7), name: ("stream_water"), transform: (position: (0.0, 0.05, -8.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cuboid(x: 18.0, y: 0.05, z: 2.5)), material: Some((color: (0.15, 0.35, 0.45, 0.5), metallic: 0.1, roughness: 0.1, emissive: (0.02, 0.05, 0.08, 1.0), alpha_mode: Some(blend))), audio: Some((kind: sfx, source: Water(turbulence: 0.3), volume: 0.5, radius: Some(18.0), rolloff: inverse_square))),
+        // Bridge
+        (id: (8), name: ("bridge_deck"), transform: (position: (0.0, 0.6, -8.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cuboid(x: 2.5, y: 0.12, z: 4.0)), material: Some((color: (0.5, 0.3, 0.15, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (9), name: ("bridge_arch"), transform: (position: (0.0, 0.3, -8.0), rotation_degrees: (90.0, 0.0, 0.0), scale: (1.2, 1.0, 0.5), visible: true), shape: Some(Torus(major_radius: 2.0, minor_radius: 0.15)), material: Some((color: (0.5, 0.3, 0.15, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (10), name: ("bridge_rail_left"), transform: (position: (-1.1, 0.9, -8.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.04, height: 0.6)), material: Some((color: (0.45, 0.28, 0.12, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (11), name: ("bridge_rail_right"), transform: (position: (1.1, 0.9, -8.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.04, height: 0.6)), material: Some((color: (0.45, 0.28, 0.12, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        // Pagoda
+        (id: (12), name: ("pagoda_base"), transform: (position: (-8.0, 0.3, -5.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cuboid(x: 3.5, y: 0.6, z: 3.5)), material: Some((color: (0.4, 0.35, 0.3, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (13), name: ("pagoda_floor_1"), transform: (position: (-8.0, 1.2, -5.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cuboid(x: 3.0, y: 1.2, z: 3.0)), material: Some((color: (0.55, 0.35, 0.2, 1.0), metallic: 0.0, roughness: 0.8, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (14), name: ("pagoda_roof_1"), transform: (position: (-8.0, 2.2, -5.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Pyramid(base_x: 4.5, base_z: 4.5, height: 1.0)), material: Some((color: (0.2, 0.2, 0.22, 1.0), metallic: 0.1, roughness: 0.7, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (15), name: ("pagoda_floor_2"), transform: (position: (-8.0, 3.0, -5.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cuboid(x: 2.2, y: 1.0, z: 2.2)), material: Some((color: (0.55, 0.35, 0.2, 1.0), metallic: 0.0, roughness: 0.8, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (16), name: ("pagoda_roof_2"), transform: (position: (-8.0, 3.8, -5.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Pyramid(base_x: 3.5, base_z: 3.5, height: 0.8)), material: Some((color: (0.2, 0.2, 0.22, 1.0), metallic: 0.1, roughness: 0.7, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (17), name: ("pagoda_spire"), transform: (position: (-8.0, 4.8, -5.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cone(radius: 0.15, height: 1.2)), material: Some((color: (0.7, 0.6, 0.2, 1.0), metallic: 0.8, roughness: 0.25, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        // Cherry trees
+        (id: (18), name: ("cherry_1_trunk"), transform: (position: (8.0, 1.5, 4.0), rotation_degrees: (0.0, 0.0, 3.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.2, height: 3.0)), material: Some((color: (0.35, 0.22, 0.12, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (19), name: ("cherry_1_canopy"), transform: (position: (8.0, 3.5, 4.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.2, 0.6, 1.2), visible: true), shape: Some(Sphere(radius: 2.0)), material: Some((color: (0.95, 0.7, 0.75, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.05, 0.02, 0.02, 1.0))), behaviors: [Bob(axis: (1.0, 0.0, 0.0), amplitude: 0.08, frequency: 0.2, phase: 0.0)]),
+        (id: (20), name: ("cherry_2_trunk"), transform: (position: (6.0, 1.3, 9.0), rotation_degrees: (0.0, 0.0, -2.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.18, height: 2.6)), material: Some((color: (0.38, 0.24, 0.14, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (21), name: ("cherry_2_canopy"), transform: (position: (6.0, 3.0, 9.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.1, 0.5, 1.1), visible: true), shape: Some(Sphere(radius: 1.8)), material: Some((color: (0.92, 0.65, 0.72, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.04, 0.02, 0.02, 1.0))), behaviors: [Bob(axis: (0.0, 0.0, 1.0), amplitude: 0.1, frequency: 0.18, phase: 90.0)]),
+        (id: (22), name: ("cherry_3_trunk"), transform: (position: (-5.0, 1.4, 6.0), rotation_degrees: (0.0, 0.0, 2.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.22, height: 2.8)), material: Some((color: (0.33, 0.2, 0.1, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (23), name: ("cherry_3_canopy"), transform: (position: (-5.0, 3.3, 6.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.3, 0.55, 1.3), visible: true), shape: Some(Sphere(radius: 2.2)), material: Some((color: (0.9, 0.6, 0.68, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.04, 0.01, 0.02, 1.0))), behaviors: [Bob(axis: (1.0, 0.0, 0.5), amplitude: 0.12, frequency: 0.22, phase: 180.0)]),
+        // Floating petals
+        (id: (24), name: ("petal_1"), transform: (position: (10.0, 3.5, 4.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (0.4, 0.1, 0.3), visible: true), shape: Some(Tetrahedron(radius: 0.08)), material: Some((color: (1.0, 0.8, 0.85, 1.0), metallic: 0.0, roughness: 0.6, emissive: (0.1, 0.05, 0.06, 1.0))), behaviors: [Orbit(center: Some("cherry_1_canopy"), radius: 3.0, speed: 20.0, axis: (0.0, 1.0, 0.0), phase: 0.0, tilt: 15.0)]),
+        (id: (25), name: ("petal_2"), transform: (position: (8.0, 4.0, 4.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (0.3, 0.1, 0.4), visible: true), shape: Some(Tetrahedron(radius: 0.06)), material: Some((color: (1.0, 0.75, 0.82, 1.0), metallic: 0.0, roughness: 0.6, emissive: (0.08, 0.04, 0.05, 1.0))), behaviors: [Orbit(center: Some("cherry_1_canopy"), radius: 3.5, speed: 15.0, axis: (0.1, 1.0, 0.0), phase: 120.0, tilt: 20.0)]),
+        (id: (26), name: ("petal_3"), transform: (position: (-5.0, 4.0, 6.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (0.35, 0.1, 0.35), visible: true), shape: Some(Tetrahedron(radius: 0.07)), material: Some((color: (1.0, 0.82, 0.88, 1.0), metallic: 0.0, roughness: 0.6, emissive: (0.09, 0.04, 0.05, 1.0))), behaviors: [Orbit(center: Some("cherry_3_canopy"), radius: 3.2, speed: 18.0, axis: (0.0, 1.0, 0.1), phase: 60.0, tilt: 12.0)]),
+        // Stone lanterns
+        (id: (27), name: ("lantern_west_base"), transform: (position: (-3.0, 0.3, 0.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.3, height: 0.6)), material: Some((color: (0.5, 0.48, 0.44, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (28), name: ("lantern_west_post"), transform: (position: (-3.0, 0.9, 0.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.1, height: 0.6)), material: Some((color: (0.5, 0.48, 0.44, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (29), name: ("lantern_west_cap"), transform: (position: (-3.0, 1.3, 0.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Pyramid(base_x: 0.8, base_z: 0.8, height: 0.4)), material: Some((color: (0.5, 0.48, 0.44, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0))), light: Some((light_type: point, color: (1.0, 0.9, 0.6, 1.0), intensity: 200.0, shadows: true, range: Some(8.0)))),
+        (id: (30), name: ("lantern_east_base"), transform: (position: (4.0, 0.3, -2.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.3, height: 0.6)), material: Some((color: (0.5, 0.48, 0.44, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (31), name: ("lantern_east_post"), transform: (position: (4.0, 0.9, -2.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.1, height: 0.6)), material: Some((color: (0.5, 0.48, 0.44, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (32), name: ("lantern_east_cap"), transform: (position: (4.0, 1.3, -2.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Pyramid(base_x: 0.8, base_z: 0.8, height: 0.4)), material: Some((color: (0.5, 0.48, 0.44, 1.0), metallic: 0.0, roughness: 0.9, emissive: (0.0, 0.0, 0.0, 0.0))), light: Some((light_type: point, color: (1.0, 0.9, 0.6, 1.0), intensity: 200.0, shadows: true, range: Some(8.0))), behaviors: [LookAt(target: "cherry_1_canopy")]),
+        // Water wheel
+        (id: (33), name: ("water_wheel"), transform: (position: (6.0, 0.5, -8.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Torus(major_radius: 0.8, minor_radius: 0.08)), material: Some((color: (0.45, 0.3, 0.15, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.0, 0.0, 0.0, 0.0))), behaviors: [Spin(axis: (0.0, 0.0, 1.0), speed: 25.0)]),
+        (id: (34), name: ("water_wheel_axle"), transform: (position: (6.0, 0.5, -8.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.05, height: 0.3)), material: Some((color: (0.4, 0.28, 0.12, 1.0), metallic: 0.0, roughness: 0.85, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        // Bamboo fence
+        (id: (35), name: ("bamboo_post_1"), transform: (position: (12.0, 0.6, -4.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.04, height: 1.2)), material: Some((color: (0.6, 0.55, 0.3, 1.0), metallic: 0.0, roughness: 0.8, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (36), name: ("bamboo_post_2"), transform: (position: (12.0, 0.6, 0.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.04, height: 1.2)), material: Some((color: (0.6, 0.55, 0.3, 1.0), metallic: 0.0, roughness: 0.8, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        (id: (37), name: ("bamboo_rail"), transform: (position: (12.0, 0.8, -2.0), rotation_degrees: (90.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), shape: Some(Cylinder(radius: 0.03, height: 4.0)), material: Some((color: (0.6, 0.55, 0.3, 1.0), metallic: 0.0, roughness: 0.8, emissive: (0.0, 0.0, 0.0, 0.0)))),
+        // Ambient audio
+        (id: (38), name: ("ambience_stream"), transform: (position: (0.0, 0.0, 0.0), rotation_degrees: (0.0, 0.0, 0.0), scale: (1.0, 1.0, 1.0), visible: true), audio: Some((kind: ambient, source: Stream(flow_rate: 0.4), volume: 0.5, rolloff: inverse_square))),
+    ],
+    next_entity_id: 39,
+)

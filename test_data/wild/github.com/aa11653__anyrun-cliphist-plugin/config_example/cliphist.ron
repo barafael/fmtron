@@ -1,0 +1,4 @@
+(
+    max_entries: 5,
+    show_description: false,
+)

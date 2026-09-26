@@ -1,0 +1,18 @@
+[
+    (id:"wedding_offer",text:"Two companions ask to mark their bond before the next stretch of road.",weight:2,conditions:[All([HasAdultPair,RelationshipAtLeast(20),Not(Flag("wedding_offer_seen"))])],effects:[],choices:[
+        (id:"celebrate",label:"Set aside five dollars for a small celebration",conditions:[CashAtLeast(500)],effects:[AdjustCash(-500),CelebrateWedding,SetFlag("wedding_offer_seen")]),
+        (id:"travel",label:"Offer good wishes and keep the wagons moving",effects:[AdjustRelationship(2),SetFlag("wedding_offer_seen")]),
+    ]),
+    (id:"family_feud",text:"Hard miles leave two companions speaking bitterly around the fire.",weight:2,conditions:[All([HasAdultPair,MoraleBelow(35),Not(Flag("family_feud_settled"))])],effects:[],choices:[
+        (id:"mediate",label:"Hear them out before dawn",effects:[AdjustRelationship(8),AdjustMorale(2),SetFlag("family_feud_settled")]),
+        (id:"leave",label:"Let tempers cool on their own",effects:[AdjustRelationship(-8),AdjustMorale(-2),SetFlag("family_feud_settled")]),
+    ]),
+    (id:"party_departure",text:"With spirits low in camp, a companion asks whether they should keep traveling with the wagon.",weight:2,conditions:[All([HasAdultPair,MoraleBelow(30)])],effects:[],choices:[
+        (id:"leave",label:"Let the traveler take their leave",effects:[MemberLeaves,AdjustMorale(-2)]),
+        (id:"stay",label:"Talk the traveler into staying",effects:[AdjustMorale(3),AdjustRelationship(2)]),
+    ]),
+    (id:"relative_joins",text:"A young relative catches the train at camp and asks to travel west with you.",weight:2,conditions:[PartySizeBelow(12)],effects:[],choices:[
+        (id:"welcome",label:"Welcome Elias to the wagon",effects:[AddMember(name:"Elias",age:22),AdjustMorale(3)]),
+        (id:"decline",label:"Explain that the wagon cannot take another burden",effects:[AdjustMorale(-1)]),
+    ]),
+]

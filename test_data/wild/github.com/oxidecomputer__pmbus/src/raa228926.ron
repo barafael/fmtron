@@ -1,0 +1,304 @@
+(
+    all: [
+        (0xc5, "DMAFIX", WriteWord32, ReadWord32),
+        (0xc6, "DMASEQ", WriteWord32, ReadWord32),
+        (0xc7, "DMAADDR", WriteWord, ReadWord),
+        (0xcd, "PEAK_OC_LIMIT", WriteWord, ReadWord),
+        (0xce, "PEAK_UC_LIMIT", WriteWord, ReadWord),
+        (0xdd, "COMPPROP", WriteWord32, ReadWord32),
+        (0xde, "COMPINTEG", WriteWord32, ReadWord32),
+        (0xdf, "COMPDIFF", WriteWord32, ReadWord32),
+        (0xe0, "COMPCFB", WriteWord32, ReadWord32),
+        (0xe3, "HS_BUS_CURRENT_SCALE", WriteWord, ReadWord),
+        (0xe4, "PHASE_CURRENT", Illegal, ReadWord),
+        (0xe9, "PEAK_OCUC_COUNT", WriteWord, ReadWord),
+        (0xea, "IOUT_ALERT_THRESHOLD", WriteWord, ReadWord),
+        (0xeb, "SUM_OC_FILT_COUNT", WriteWord, ReadWord),
+        (0xec, "IOUT_ALERT_FILT_COUNT", WriteWord, ReadWord),
+        (0xf0, "LOOPCFG", WriteWord32, ReadWord32),
+        (0xf2, "RESTORE_CFG", WriteByte, ReadByte),
+    ],
+
+    numerics: [
+        (
+            "VOUT_TRANSITION_RATE",
+            Direct(( m: 1, R: 5, b: 0 )),
+            VoltsPerMicrosecond
+        ),
+        ("VOUT_DROOP", Direct(( m: 1, R: 2, b: 0)), MillivoltsPerAmp),
+        ("FREQUENCY_SWITCH", Linear11, Kilohertz),
+        ("VIN_ON", Direct(( m: 1, R: 2, b: 0 )), Volts),
+        ("VIN_OFF", Direct(( m: 1, R: 2, b: 0 )), Volts),
+        ("VOUT_OV_FAULT_LIMIT", VOutMode(Unsigned), Volts),
+        ("VOUT_OV_WARN_LIMIT", VOutMode(Unsigned), Volts),
+        ("VOUT_UV_WARN_LIMIT", VOutMode(Unsigned), Volts),
+        ("VOUT_UV_FAULT_LIMIT", VOutMode(Unsigned), Volts),
+        ("IOUT_OC_FAULT_LIMIT", Direct(( m: 1, R: 1, b: 0 )), Amperes),
+        ("OT_FAULT_LIMIT", Direct(( m: 1, R: 0, b: 0 )), Celsius),
+        ("OT_WARN_LIMIT", Direct(( m: 1, R: 0, b: 0 )), Celsius),
+        ("UT_FAULT_LIMIT", Direct(( m: 1, R: 0, b: 0 )), Celsius),
+        ("VIN_OV_FAULT_LIMIT", Direct(( m: 1, R: 2, b: 0 )), Volts),
+        ("VIN_OV_WARN_LIMIT", Direct(( m: 1, R: 2, b: 0 )), Volts),
+        ("VIN_UV_WARN_LIMIT", Direct(( m: 1, R: 2, b: 0 )), Volts),
+        ("VIN_UV_FAULT_LIMIT", Direct(( m: 1, R: 2, b: 0 )), Volts),
+        ("IIN_OC_FAULT_LIMIT", Direct(( m: 1, R: 2, b: 0 )), Amperes),
+        ("IIN_OC_WARN_LIMIT", Direct(( m: 1, R: 2, b: 0 )), Amperes),
+        ("TON_DELAY", Direct(( m: 1, R: 2, b: 0 )), Milliseconds),
+        ("TON_RISE", Direct (( m: 1, R: 3, b: 0 )), Milliseconds),
+        ("TOFF_DELAY", Direct(( m: 1, R: 2, b: 0 )), Milliseconds),
+        ("TOFF_FALL", Direct (( m: 1, R: 3, b: 0 )), Milliseconds),
+        ("READ_VIN", Direct(( m: 1, R: 2, b: 0 )), Volts),
+        ("READ_IIN", Direct(( m: 1, R: 2, b: 0 )), Amperes),
+        ("READ_VOUT", VOutMode(Unsigned), Volts),
+        ("READ_IOUT", Direct(( m: 1, R: 1, b: 0 )), Amperes),
+        ("READ_TEMPERATURE_1", Direct(( m: 1, R: 0, b: 0 )), Celsius),
+        ("READ_TEMPERATURE_2", Direct(( m: 1, R: 0, b: 0 )), Celsius),
+        ("READ_TEMPERATURE_3", Direct(( m: 1, R: 0, b: 0 )), Celsius),
+        ("READ_POUT", Direct(( m: 1, R: 0, b: 0 )), Watts),
+        ("READ_PIN", Direct(( m: 1, R: 0, b: 0 )), Watts),
+        ("DMAFIX", Raw, Unitless),
+        ("DMASEQ", Raw, Unitless),
+        ("DMAADDR", Raw, Unitless),
+        ("PEAK_OC_LIMIT", Direct(( m: 1, R: 1, b: 0 )), Amperes),
+        ("PEAK_UC_LIMIT", Direct(( m: 1, R: 1, b: 0 )), Amperes),
+        ("HS_BUS_CURRENT_SCALE", FixedPoint(Factor(16384)), Unitless),
+        ("PHASE_CURRENT", Direct(( m: 1, R: 1, b: 0 )), Amperes),
+        ("IOUT_ALERT_THRESHOLD", Direct(( m: 1, R: 1, b: 0 )), Amperes),
+    ],
+
+    structured: {
+        "STATUS_MFR_SPECIFIC": {
+            "ADCUnlock": (
+                name: "ADC clock unlock detected",
+                bits: Bit(7),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            ),
+            "CFPFault": (
+                name: "CFP fault occurred",
+                bits: Bit(5),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            ),
+            "InternalTemperatureFault": (
+                name: "Internal temp exceeded 130 C",
+                bits: Bit(4),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            ),
+            "BBEvent": (
+                name: "Black box event occurred",
+                bits: Bit(3),
+                values: Sentinels({
+                    "NoEvent": (0b0, "no event"),
+                    "Event": (0b1, "event"),
+                }),
+            ),
+            "LMSEvent": (
+                name: "Last-man-standing event occurred",
+                bits: Bit(2),
+                values: Sentinels({
+                    "NoEvent": (0b0, "no event"),
+                    "Event": (0b1, "event"),
+                }),
+            ),
+            "SPSFault": (
+                name: "SPS overtemp or overcurrent fault",
+                bits: Bit(1),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            ),
+        },
+
+        "COMPPROP": {
+            "Mantissa8To12PhaseOverride": (
+                name: "Mantissa 8 to 12 phase override",
+                bits: Bitrange(High(31), Low(28)),
+                values: Scalar(Unsigned),
+            ),
+            "Exponent8To12PhaseOverride": (
+                name: "Exponent 8 to 12 phase override",
+                bits: Bitrange(High(27), Low(25)),
+                values: Scalar(Unsigned),
+            ),
+            "Mantissa2PhaseOverride": (
+                name: "Mantissa 2-phase override",
+                bits: Bitrange(High(24), Low(21)),
+                values: Scalar(Unsigned),
+            ),
+            "Exponent2PhaseOverride": (
+                name: "Exponent 2-phase override",
+                bits: Bitrange(High(19), Low(17)),
+                values: Scalar(Unsigned),
+            ),
+            "Mantissa1PhaseOverride": (
+                name: "Mantissa 1-phase override",
+                bits: Bitrange(High(16), Low(13)),
+                values: Scalar(Unsigned),
+            ),
+            "Exponent1PhaseOverride": (
+                name: "Exponent 1-phase override",
+                bits: Bitrange(High(11), Low(9)),
+                values: Scalar(Unsigned),
+            ),
+            "MantissaAllPhase": (
+                name: "Mantissa is (value/8), all phase counts",
+                bits: Bitrange(High(7), Low(4)),
+                values: Scalar(Unsigned),
+            ),
+            "ExponentAllPhase": (
+                name: "Exponent is 2^(shift-3), all phase counts",
+                bits: Bitrange(High(2), Low(0)),
+                values: Scalar(Unsigned),
+            ),
+        },
+
+        "COMPINTEG": {
+            "Mantissa13To19PhaseOverride": (
+                name: "Mantissa 13-19 phase override",
+                bits: Bitrange(High(22), Low(19)),
+                values: Scalar(Unsigned),
+            ),
+            "Exponent13To19PhaseOverride": (
+                name: "Exponent 13-19 phase override",
+                bits: Bitrange(High(18), Low(16)),
+                values: Scalar(Unsigned),
+            ),
+            "DelayTime": (
+                name: "Delay time for stepping down gain",
+                bits: Bitrange(High(15), Low(12)),
+                values: FixedPointUnits(Factor(1.5), Microseconds),
+            ),
+            "GainWhenInDCM": (
+                name: "Gain when in DCM for a while",
+                bits: Bitrange(High(11), Low(8)),
+                values: Scalar(Unsigned),
+            ),
+            "MaximumGain": (
+                name: "Maximum gain used",
+                bits: Bitrange(High(7), Low(4)),
+                values: Scalar(Unsigned),
+            ),
+            "Gain": (
+                name: "Gain is 2^(-shift - 1)",
+                bits: Bitrange(High(3), Low(0)),
+                values: Scalar(Unsigned),
+            ),
+        },
+
+        "COMPDIFF": {
+            "FIRFilterLength": (
+                name: "FIR filter length",
+                bits: Bit(12),
+                values: Scalar(Unsigned),
+            ),
+            "Mantissa1PhaseOverride": (
+                name: "Mantissa 1-phase override",
+                bits: Bitrange(High(11), Low(8)),
+                values: Scalar(Unsigned),
+            ),
+            "Exponent1PhaseOverride": (
+                name: "Exponent 1-phase override",
+                bits: Bitrange(High(7), Low(6)),
+                values: Scalar(Unsigned),
+            ),
+            "Mantissa": (
+                name: "Mantissa is (value/8)",
+                bits: Bitrange(High(5), Low(2)),
+                values: Scalar(Unsigned),
+            ),
+            "Exponent": (
+                name: "Exponent is 2^(shift+1 + P-shift)",
+                bits: Bitrange(High(1), Low(0)),
+                values: Scalar(Unsigned),
+            ),
+        },
+
+        "COMPCFB": {
+            "Coefficient": (
+                name: "High-pass filter coefficient",
+                bits: Bitrange(High(15), Low(8)),
+                values: Scalar(Unsigned),
+            ),
+            "Gain": (
+                name: "Feedback gain, low droop cases",
+                bits: Bitrange(High(7), Low(0)),
+                values: Scalar(Unsigned),
+            ),
+        },
+
+        "PEAK_OCUC_COUNT": {
+            "UCLimit": (
+                name: "Switch cycles before UC fault",
+                bits: Bitrange(High(15), Low(8)),
+                values: Scalar(Unsigned),
+            ),
+            "OCLimit": (
+                name: "Switch cycles before OC fault",
+                bits: Bitrange(High(7), Low(0)),
+                values: Scalar(Unsigned),
+            ),
+        },
+
+        "SUM_OC_FILT_COUNT": {
+            "Filter": (
+                name: "Filter setting",
+                bits: Bitrange(High(11), Low(8)),
+                values: LogFactorUnits(Base(2), Factor(6), Microseconds),
+            ),
+            "Delay": (
+                name: "Delay setting",
+                bits: Bitrange(High(7), Low(0)),
+                values: FixedPointUnits(Factor(1.5), Microseconds),
+            )
+        },
+
+        "IOUT_ALERT_FILT_COUNT": {
+            "Filter": (
+                name: "Filter setting",
+                bits: Bitrange(High(11), Low(8)),
+                values: LogFactorUnits(Base(2), Factor(6), Microseconds),
+            ),
+        },
+
+        "LOOPCFG": {
+            "DiodeEmulationMode": (
+                name: "Diode emulation for power mode 3",
+                bits: Bit(28),
+                values: Sentinels({
+                    "Enabled": (0b1, "enabled"),
+                    "Disabled": (0b0, "disabled"),
+                }),
+            ),
+            "MinimumPhaseCount": (
+                name: "Minimum phase count 0-19",
+                bits: Bitrange(High(12), Low(8)),
+                values: Scalar(Unsigned),
+            ),
+            "DiodeEmulationEnable": (
+                name: "Diode emulation function",
+                bits: Bit(6),
+                values: Sentinels({
+                    "Enabled": (0b1, "enabled"),
+                    "Disabled": (0b0, "disabled"),
+                }),
+            ),
+            "APDEnable": (
+                name: "Auto phase add/drop",
+                bits: Bit(0),
+                values: Sentinels({
+                    "Enabled": (0b1, "enabled"),
+                    "Disabled": (0b0, "disabled"),
+                }),
+            ),
+        },
+    }
+)

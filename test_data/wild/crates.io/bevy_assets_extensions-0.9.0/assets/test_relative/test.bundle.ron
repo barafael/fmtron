@@ -1,0 +1,6 @@
+{
+    "hello": File("hello.txt"),
+    "world": File("../world.txt"),
+    "world_abs": File("/world.txt"),
+    "text": Text("Hello World!"),
+}

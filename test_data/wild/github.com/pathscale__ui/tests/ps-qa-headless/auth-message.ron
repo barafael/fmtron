@@ -1,0 +1,37 @@
+// Generated from tests/qa-harness/components.ts by tests/qa-harness/generate-checks.ts. Do not edit.
+//
+// AuthMessage, mounted alone on its own harness page. Outcomes for
+// this component share one native host; idempotent preparation keeps each
+// outcome reproducible by id against a fresh host as well.
+[
+    (
+        id: "auth-message-page-paints",
+        group: "auth-message",
+        what: "the AuthMessage page builds and paints",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:AuthMessage",
+        expect: Present,
+    ),
+    (
+        id: "auth-message-renders",
+        group: "auth-message",
+        what: "AuthMessage renders a node of its own",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "fixture",
+        expect: Paints,
+    ),
+    (
+        id: "auth-message-paints",
+        group: "auth-message",
+        what: "the AuthMessage reaches the renderer with a box",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "AuthMessage",
+        expect: Present,
+    ),
+]

@@ -1,0 +1,84 @@
+#![enable(implicit_some)]
+// Chase state visual effect configuration
+// 追逐战状态视觉效果配置
+(
+    // Heart marker configuration (judgment indicator)
+    // 判定标记配置（心形标记）
+    heart_marker: (
+        // Texture path for the heart marker
+        // 判定标记贴图路径
+        texture_path: "assets/textures/common/view/dr_heart.png",
+        
+        // Offset from player center (x, y)
+        // 相对于玩家中心的偏移 (x, y)
+        offset: (x: 0.0, y: -5.0),
+        
+        // Z-offset from player (negative = behind, positive = in front)
+        // 相对于玩家的 Z 轴偏移（负数 = 后方，正数 = 前方）
+        z_offset: 101.0,
+        
+        // Scale of the heart marker
+        // 心形标记的缩放
+        scale: 0.5,
+        
+        // Tint color (RGBA, 0.0-1.0) - applied to white sprite
+        // 着色颜色 (RGBA, 0.0-1.0) - 应用于白色精灵
+        color: (r: 1.0, g: 0.0, b: 0.0, a: 1.0),
+        
+        // Fade in/out duration in seconds
+        // 渐入/渐出持续时间（秒）
+        fade_duration: 0.5,
+    ),
+    
+    // Outline effect configuration
+    // 描边效果配置
+    outline: (
+        // Outline color (RGB)
+        // 描边颜色 (RGB)
+        color: (r: 1.0, g: 0.0, b: 0.0),
+        
+        // Fade duration in seconds
+        // 渐变持续时间（秒）
+        fade_duration: 0.5,
+    ),
+    
+    // Dark overlay configuration
+    // 黑色覆盖层配置
+    dark_overlay: (
+        // Target alpha (0.0-1.0)
+        // 目标透明度 (0.0-1.0)
+        target_alpha: 0.5,
+        
+        // Fade duration in seconds
+        // 渐变持续时间（秒）
+        fade_duration: 0.5,
+    ),
+    
+    // Player hitbox configuration for damage detection
+    // 玩家判定框配置（用于伤害检测）
+    hitbox: (
+        // Hitbox shape: Circle or Box
+        // 判定框形状：Circle（圆形）或 Box（矩形）
+        shape: Circle(radius: 4.0),
+        
+        // Offset from player center (should match heart marker offset)
+        // 相对于玩家中心的偏移（应与心形标记偏移一致）
+        offset: (x: 0.0, y: -5.0),
+    ),
+    
+    // Damage UI configuration
+    // 受伤UI配置
+    damage_ui: (
+        // UI layout file to show when player takes damage
+        // 玩家受伤时显示的UI布局文件
+        layout_path: "overworld/view/damage_flash.view.ron",
+        
+        // Duration to show the damage UI (seconds)
+        // 显示受伤UI的持续时间（秒）
+        display_duration: 2.5,
+        
+        // Sound to play when taking damage
+        // 受伤时播放的音效
+        damage_sound: "assets/audios/sfx/hurtsound.wav",
+    ),
+)

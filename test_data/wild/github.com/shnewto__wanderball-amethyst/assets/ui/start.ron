@@ -1,0 +1,79 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "start_screen",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 20.,
+        height: 20.,
+    ),
+    background: SolidColor(0., 0., 0., 1.),
+    children: [
+        Button(
+            transform: (
+                id: "start",
+                y: 150.,
+                z: 2.,
+                width: 200.,
+                height: 150.,
+                tab_order: 1,
+                anchor: Middle,
+            ),
+            button: (
+                text: "start",
+                font: File("font/square.ttf", ("TTF", ())),
+                font_size: 50.0,
+                normal_image: SolidColor(0., 0., 0., 1.),
+                hover_image: SolidColor(0., 0., 0., 1.),
+                press_image: SolidColor(0., 0., 0., 1.),
+                normal_text_color: (0.7, 0.7, 0.7, 1.0),
+                hover_text_color: (0.2, 0.2, 1.0, 1.0),
+                press_text_color: (1.0, 1.0, 1.0, 1.0),
+            )
+        ),
+        Button(
+            transform: (
+                id: "load",
+                y: 50.,
+                z: 2.,
+                width: 200.,
+                height: 50.,
+                tab_order: 1,
+                anchor: Middle,
+            ),
+            button: (
+                text: "load",
+                font: File("font/square.ttf", ("TTF", ())),
+                font_size: 50.0,
+                normal_image: SolidColor(0., 0., 0., 1.),
+                hover_image: SolidColor(0., 0., 0., 1.),
+                press_image: SolidColor(0., 0., 0., 1.),
+                normal_text_color: (0.7, 0.7, 0.7, 1.0),
+                hover_text_color: (0.2, 0.2, 1.0, 1.0),
+                press_text_color: (1.0, 1.0, 1.0, 1.0),
+            )
+        ),
+        Button(
+            transform: (
+                id: "quit",
+                y: -50.,
+                z: 2.,
+                width: 200.,
+                height: 50.,
+                tab_order: 1,
+                anchor: Middle,
+            ),
+            button: (
+                text: "quit",
+                font: File("font/square.ttf", ("TTF", ())),
+                font_size: 50.0,
+                normal_image: SolidColor(0., 0., 0., 1.),
+                hover_image: SolidColor(0., 0., 0., 1.),
+                press_image: SolidColor(0., 0., 0., 1.),
+                normal_text_color: (0.7, 0.7, 0.7, 1.0),
+                hover_text_color: (0.2, 0.2, 1.0, 1.0),
+                press_text_color: (1.0, 1.0, 1.0, 1.0),
+            )
+        ),
+    ],
+)

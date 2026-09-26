@@ -1,0 +1,10 @@
+(
+    axes: {
+        Paddle: Mouse(axis: X, over_extendable: true, radius: 1),
+        // Paddle: Emulated(pos: Key(Right), neg: Key(Left)),
+    },
+    actions: {
+        ReleaseBall: [[Mouse(Left)], [Key(W)], [Key(Z)]],
+        BallAttraction: [[Mouse(Right)], [Key(X)]],
+    },
+)

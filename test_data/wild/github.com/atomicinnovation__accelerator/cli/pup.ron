@@ -1,0 +1,495 @@
+// cargo-pup inward-dependency rule: the version domain core may import only
+// std / its own subtree / the shared kernel error taxonomy — never an
+// adapter/infrastructure module. Width kept <= 80 columns per the
+// hand-duplication convention.
+//
+// Note `matches` is the RESOLVED module path; `allowed_only` is LITERAL
+// use-path.
+(
+    lints: [
+        Module((
+            name: "version_core_imports_only_permitted",
+            matches: Module("^accelerator::version::core($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^crate::version::core(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        Module((
+            name: "launch_core_imports_only_permitted",
+            matches: Module("^accelerator::launch::core($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^crate::launch::core(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The whole config crate is domain (no adapter modules live in it), so
+        // the rule matches the crate root rather than enumerating module names.
+        Module((
+            name: "config_domain_imports_only_permitted",
+            matches: Module("^config($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The whole corpus crate is domain (no adapter modules live in it).
+        Module((
+            name: "corpus_domain_imports_only_permitted",
+            matches: Module("^corpus($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The whole vcs crate is domain (no adapter modules live in it); the
+        // filesystem walk and the subprocess probe live in vcs-adapters.
+        Module((
+            name: "vcs_domain_imports_only_permitted",
+            matches: Module("^vcs($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The whole work crate is domain (no adapter modules live in it); it
+        // additionally permits corpus for WorkItemIdScheme/IdScanner, tracker
+        // for the sync engine's RemoteTracker vocabulary, and config for the
+        // pull-scope block's value model. corpus and tracker are
+        // zero-dependency port crates; config is not, but its only edge is the
+        // shared kernel error taxonomy — already within work's permitted
+        // transitive set — so reading the config representation drags no
+        // infrastructure into the domain.
+        Module((
+            name: "work_domain_imports_only_permitted",
+            matches: Module("^work($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^config(::|$)",
+                        "^corpus(::|$)",
+                        "^tracker(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The whole tracker crate is domain: the port a remote issue tracker
+        // satisfies, and nothing else. Unlike its sibling domain rules it
+        // omits the kernel::Error allowance — the crate declares no
+        // dependencies, so that import could not compile.
+        Module((
+            name: "tracker_domain_imports_only_permitted",
+            matches: Module("^tracker($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // tracker-test-support is a fake plus a contract harness, consumed
+        // only by other crates' test targets.
+        Module((
+            name: "tracker_test_support_imports_only_permitted",
+            matches: Module("^tracker_test_support($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^tracker(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // remote-projection is pure JSON field extraction shared by the sync
+        // engine and both provider clients: no process spawning, no
+        // transport. Expressed as `denied` for the grouped-import reason
+        // recorded on the config-command rule below.
+        Module((
+            name: "remote_projection_extracts_json_only",
+            matches: Module("^remote_projection($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^std::process(::|$)",
+                        "^reqwest(::|$)",
+                        "^hyper(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // tracker-support carries the policy both provider clients share —
+        // credentials, retry schedule, identifier safety, transport bounds.
+        // It runs the credential helper, so std::process is deliberately
+        // permitted; what it must never grow is a transport of its own,
+        // which is what would let provider specifics follow.
+        Module((
+            name: "tracker_support_carries_policy_not_transport",
+            matches: Module("^tracker_support($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^reqwest(::|$)",
+                        "^hyper(::|$)",
+                        "^tokio(::|$)",
+                        "^jira_client(::|$)",
+                        "^linear_client(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // jira-client is the only place Jira request construction lives, and
+        // it must not reach up into the work domain or across to the other
+        // provider. `denied` rather than `allowed_only` because cargo-pup
+        // resolves a grouped `use a::{b, c}` to an empty module name, which a
+        // permit list would reject — forcing one single-item `use` per line
+        // through the whole crate.
+        Module((
+            name: "jira_client_is_the_only_jira_transport",
+            matches: Module("^jira_client($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^work(::|$)",
+                        "^work_adapters(::|$)",
+                        "^linear_client(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // jira-client's transport and discovery modules must stay off the
+        // filesystem: the atomic writes and the advisory lock are composition
+        // concerns confined to the cache module, so a std::fs import in either
+        // would be a second, unlocked write path beside the one that holds the
+        // shared .lock the bash init also mkdir's.
+        Module((
+            name: "jira_client_io_lives_in_cache",
+            matches: Module("^jira_client::(transport|discovery)($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^std::fs(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // linear-client is the mirror of the jira-client rule: the only place
+        // Linear request construction lives, and it may reach neither the work
+        // domain nor the sibling provider.
+        Module((
+            name: "linear_client_is_the_only_linear_transport",
+            matches: Module("^linear_client($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^work(::|$)",
+                        "^work_adapters(::|$)",
+                        "^jira_client(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The Linear mirror of jira_client_io_lives_in_cache: the transport,
+        // upload and discovery modules must stay off the filesystem, so the
+        // atomic writes and the advisory lock live only in the cache module and
+        // there is no second, unlocked write path beside the one holding the
+        // shared .lock the bash init also mkdir's.
+        Module((
+            name: "linear_client_io_lives_in_cache",
+            matches: Module("^linear_client::(transport|upload|discovery)($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^std::fs(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // http-test-support's whole value is being std-only: it must stall a
+        // connection and drop one mid-body, which no HTTP client library
+        // exposes. Expressed as a `denied` list rather than `allowed_only`
+        // because cargo-pup resolves a grouped `use std::io::{a, b}` to an
+        // empty module name, which an `allowed_only` rule would reject.
+        Module((
+            name: "http_test_support_is_std_only",
+            matches: Module("^http_test_support($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^reqwest(::|$)",
+                        "^hyper(::|$)",
+                        "^tokio(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // work-adapters spawns no subprocess: its section-diff renders
+        // in-process and its VCS identity reads through vcs-adapters' library
+        // path. This crate-wide deny catches use-path std::process imports.
+        Module((
+            name: "work_adapters_is_zero_spawn",
+            matches: Module("^work_adapters($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^std::process(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // Confines work-adapters' pure-read filesystem module to its
+        // std/work/crate import set — a tighter allow-list than the crate-wide
+        // zero-spawn deny above, same shape as
+        // vcs_adapters_library_reads_in_process below. The paired std::process
+        // deny overlaps the crate-wide rule but is kept so this rule states the
+        // module's whole boundary on its own.
+        Module((
+            name: "work_adapters_filesystem_reads_in_process",
+            matches: Module("^work_adapters::filesystem($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^work(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: Some([
+                        "^std::process(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // vcs-adapters spawns no subprocess: every port, including the
+        // status/log renderings, reads both idioms in the calling process. This
+        // crate-wide deny catches use-path std::process imports anywhere in the
+        // crate.
+        Module((
+            name: "vcs_adapters_is_zero_spawn",
+            matches: Module("^vcs_adapters($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^std::process(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // A permit list alone cannot express this, because std::process sits
+        // inside the permitted std, so the rule pairs one with an explicit
+        // deny; the deny wins on overlap. The permit list rejects grouped
+        // imports (cargo-pup resolves `use a::{b, c}` to an empty module name),
+        // so that module writes one single-item `use` per import.
+        //
+        // The library module reads both idioms in-process; this states its whole
+        // import boundary. It does not stop an inline fully-qualified
+        // std::process::Command::new() — the harness is what establishes
+        // zero-spawn.
+        Module((
+            name: "vcs_adapters_library_reads_in_process",
+            matches: Module("^vcs_adapters::library($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^dunce(::|$)",
+                        "^etcetera(::|$)",
+                        "^gix(::|$)",
+                        "^jj_lib(::|$)",
+                        "^pollster(::|$)",
+                        "^prost(::|$)",
+                        "^tracing(::|$)",
+                        "^vcs(::|$)",
+                        "^crate(::|$)",
+                    ]),
+                    denied: Some([
+                        "^std::process(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The whole migrate crate is domain (no adapter modules live in it).
+        // Unlike corpus/vcs, it also reuses `corpus`'s own `Record`/
+        // `RecordStore`/`linkage` directly (its session log is a
+        // `corpus`-typed record, not a new record type) and `document`'s
+        // zero-infrastructure value tree — both narrow, justified widenings
+        // beyond the std/kernel::Error/crate baseline every other domain
+        // crate here is held to. `config`/`vcs` stay excluded: migrate
+        // reaches them only through its own locally-declared port traits,
+        // bridged by migrate-adapters.
+        Module((
+            name: "migrate_domain_imports_only_permitted",
+            matches: Module("^migrate($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^crate(::|$)",
+                        "^corpus(::|$)",
+                        "^document(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // Mirrors vcs_adapters_library_reads_in_process's "no spawn" intent,
+        // scoped to the whole crate rather than one submodule: unlike
+        // vcs-adapters (library vs. subprocess, deliberately split so one
+        // side can spawn), every migrate-adapters module — ledger/manifest
+        // I/O, the session log, the DecisionSource pair, VCS staleness,
+        // legacy-layout config access — is in-process by design; none of
+        // them shell out.
+        Module((
+            name: "migrate_adapters_decision_source_reads_in_process",
+            matches: Module("^migrate_adapters($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^std::process(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The whole design crate is domain (no adapter modules live in it).
+        // The compiled cue-phrase regex and every filesystem, environment and
+        // process read live in design-adapters, injected through ports. It
+        // additionally permits base64 and percent-encoding for the leaked-
+        // credential scanner's encoding derivation: both are zero-dependency,
+        // pure, no-I/O crates, so neither edge drags a transitive graph into
+        // the domain, the same widening work makes for corpus and tracker.
+        Module((
+            name: "design_domain_imports_only_permitted",
+            matches: Module("^design($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: Some([
+                        "^(std|core|alloc)(::|$)",
+                        "^kernel::Error(::|$)",
+                        "^crate(::|$)",
+                        "^base64(::|$)",
+                        "^percent_encoding(::|$)",
+                    ]),
+                    denied: None,
+                    severity: Error,
+                ),
+            ],
+        )),
+        // Mirrors vcs_adapters_library_reads_in_process, and scoped the same
+        // way and for the same reason: the modules named here read in
+        // process, while the sibling `process` module the Playwright launcher
+        // needs — daemon spawn, signalling, and the start-time probe — spawns
+        // by design. Landing this crate-wide and weakening it when that module
+        // arrives would read as a rule nobody meant. `platform` reads /bin/sh
+        // and the psABI loader path in process and spawns nothing, so it joins;
+        // `marker` reads and writes the sticky-failure file in process and
+        // spawns nothing either.
+        Module((
+            name: "design_adapters_read_in_process",
+            matches: Module(
+                "^design_adapters::(filesystem|environment|platform|marker)($|::)"
+            ),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^std::process(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+        // The config command's inbound hexagon must not reach the composition
+        // root's adapter crate (`config_adapters`) nor a sibling launcher
+        // module (`crate::launch`), so the injected-ports seam cannot erode.
+        // Expressed as a `denied` list rather than `allowed_only`: cargo-pup
+        // resolves a grouped `use config::{a, b}` to an empty module name,
+        // which an `allowed_only` rule would reject as unpermitted — false-
+        // positiving every legitimate grouped import the codebase uses. A
+        // `denied` list is unaffected by that resolution and states the seam
+        // prohibition directly.
+        Module((
+            name: "config_command_may_not_import_adapters_or_launch",
+            matches: Module("^accelerator::config_command($|::)"),
+            rules: [
+                RestrictImports(
+                    allowed_only: None,
+                    denied: Some([
+                        "^config_adapters(::|$)",
+                        "^crate::launch(::|$)",
+                    ]),
+                    severity: Error,
+                ),
+            ],
+        )),
+    ],
+)

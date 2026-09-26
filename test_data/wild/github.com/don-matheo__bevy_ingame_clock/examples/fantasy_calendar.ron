@@ -1,0 +1,30 @@
+// Fantasy Calendar Configuration
+// This file defines a custom calendar system for a fantasy world
+(
+    minutes_per_hour: 60,
+    hours_per_day: 20,
+    leap_years: "# % 2 == 0",  // Leap year every 2 years
+    months: [
+        (name: "Frostmoon", days: 20, leap_days: 3),
+        (name: "Thawmoon", days: 21, leap_days: 0),
+        (name: "Bloomtide", days: 19, leap_days: 2),
+        (name: "Greentide", days: 20, leap_days: 0),
+        (name: "Suntide", days: 21, leap_days: 0),
+        (name: "Harvestmoon", days: 20, leap_days: 0),
+        (name: "Goldmoon", days: 21, leap_days: 0),
+        (name: "Fallmoon", days: 20, leap_days: 0),
+        (name: "Darkmoon", days: 21, leap_days: 0),
+        (name: "Icemoon", days: 18, leap_days: 2),
+    ],
+    weekdays: [
+        "Moonday",
+        "Fireday",
+        "Waterday",
+        "Earthday",
+        "Starday",
+    ],
+    epoch: (
+        name: "Age of Magic",
+        start_year: 1000,
+    ),
+)

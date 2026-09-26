@@ -1,0 +1,10 @@
+// Fixture `no-source` (M9 wave 1): the item to collect comes from nowhere: the moss patch is gone.
+[
+    (
+        schema_version: 1,
+        id: "cellar-moss",
+        name: "Cellar Moss",
+        category: Material,
+        stack_limit: 20,
+    ),
+]

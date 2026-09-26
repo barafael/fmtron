@@ -1,0 +1,7 @@
+Config(
+  prefix: "",
+  engines: [Google, DuckDuckGo, Custom(
+              name: "Searx", 
+              url: "searx.garudalinux.org/?q={}",
+  )] 
+)

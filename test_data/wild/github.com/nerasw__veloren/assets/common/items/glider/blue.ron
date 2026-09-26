@@ -1,0 +1,7 @@
+ItemDef(
+    name: "Blue Falcon",
+    description: "Sky colored.",
+    kind: Glider,
+    quality: High,
+    tags: [],
+)

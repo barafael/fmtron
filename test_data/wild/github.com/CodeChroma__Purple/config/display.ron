@@ -1,0 +1,4 @@
+DisplayConfig (
+	title: "Purple",
+	dimensions: Some((500, 500))
+)

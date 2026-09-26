@@ -1,0 +1,8 @@
+(
+    title: "Particles Everywhere - Bevy Enoki",
+    alias: "bevy-enoki",
+    cover: "media/bevy-enoki/cover.jpg",
+    tags: Some("bevy"),
+	teaser:"Release of my new 2D particle crate Enoki for the bevy engine. Featuring web based editor tooling and custom shaders. The perfect crate for targeting mobile and the web.",
+    published: "18.04.2024",
+)

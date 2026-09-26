@@ -1,0 +1,20 @@
+(
+    version: 1,
+    roots: [
+        1,
+    ],
+    nodes: [
+        (
+            id: 1,
+            name: "button",
+            widget_path: "common/button",
+            style: {
+                "visibility": "Visible",
+            },
+            props: {
+                "bg_normal_color": "0.301037,0.301037,0.5644444,1",
+            },
+            children: [],
+        ),
+    ],
+)

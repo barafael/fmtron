@@ -1,0 +1,5 @@
+Config(
+    prefix: ":sym",
+    max_entries: 10,
+    symbols: {},
+)

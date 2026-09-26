@@ -1,0 +1,120 @@
+[
+    (
+        id: VoiceId(100),
+        name: "host",
+        parent: None,
+        grammar_weights: {
+            "deliberate_action": 2.0,
+            "room_detail": 1.5,
+            "dialogue_tag": 1.5,
+            "emotional_reaction": 0.5,
+            "body_language": 1.0,
+            "social_observation": 1.5,
+        },
+        vocabulary: (
+            preferred: ["indeed", "naturally", "of course", "one must", "I should think"],
+            avoided: ["gonna", "wanna", "stuff", "thing", "nice"],
+        ),
+        markov_bindings: [
+            (corpus_id: "social_drama", weight: 1.0, tags: ["formal"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (12, 22),
+            clause_complexity: 0.8,
+            question_frequency: 0.1,
+        ),
+        quirks: [
+            (pattern: "naturally", frequency: 0.08),
+            (pattern: "one would think", frequency: 0.05),
+        ],
+    ),
+    (
+        id: VoiceId(101),
+        name: "gossip",
+        parent: None,
+        grammar_weights: {
+            "social_observation": 2.5,
+            "emotional_reaction": 2.0,
+            "body_language": 1.5,
+            "dialogue_tag": 0.8,
+            "room_detail": 0.5,
+            "deliberate_action": 0.8,
+        },
+        vocabulary: (
+            preferred: ["apparently", "would you believe", "between you and me", "honestly"],
+            avoided: ["indeed", "naturally", "one must"],
+        ),
+        markov_bindings: [
+            (corpus_id: "social_drama", weight: 1.5, tags: ["gossip"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (6, 14),
+            clause_complexity: 0.3,
+            question_frequency: 0.35,
+        ),
+        quirks: [
+            (pattern: "if you know what I mean", frequency: 0.12),
+            (pattern: "can you imagine", frequency: 0.10),
+        ],
+    ),
+    (
+        id: VoiceId(102),
+        name: "peacemaker",
+        parent: None,
+        grammar_weights: {
+            "emotional_reaction": 1.5,
+            "social_observation": 1.5,
+            "body_language": 1.2,
+            "dialogue_tag": 1.0,
+            "room_detail": 1.0,
+            "deliberate_action": 0.7,
+        },
+        vocabulary: (
+            preferred: ["perhaps", "surely", "after all", "we might consider", "it seems to me"],
+            avoided: ["obviously", "clearly", "never", "always"],
+        ),
+        markov_bindings: [
+            (corpus_id: "social_drama", weight: 1.0, tags: ["warm"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (10, 20),
+            clause_complexity: 0.6,
+            question_frequency: 0.25,
+        ),
+        quirks: [
+            (pattern: "if I may", frequency: 0.10),
+            (pattern: "with all due respect", frequency: 0.06),
+        ],
+    ),
+    (
+        id: VoiceId(103),
+        name: "provocateur",
+        parent: None,
+        grammar_weights: {
+            "confrontation_opening": 1.5,
+            "confrontation_body": 1.5,
+            "emotional_reaction": 1.8,
+            "body_language": 1.0,
+            "dialogue_tag": 1.5,
+            "social_observation": 0.8,
+            "room_detail": 0.3,
+            "deliberate_action": 1.2,
+        },
+        vocabulary: (
+            preferred: ["frankly", "let us be honest", "the truth is", "shall we"],
+            avoided: ["perhaps", "maybe", "possibly", "somewhat"],
+        ),
+        markov_bindings: [
+            (corpus_id: "social_drama", weight: 1.2, tags: ["tense"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (5, 12),
+            clause_complexity: 0.2,
+            question_frequency: 0.3,
+        ),
+        quirks: [
+            (pattern: "do go on", frequency: 0.08),
+            (pattern: "how delightful", frequency: 0.07),
+        ],
+    ),
+]

@@ -1,0 +1,29 @@
+(
+    name: "Test",
+    base_type: "Item",
+    id: None,
+    imports: [],
+    signals: [],
+    properties: [
+        (
+            name: "counter",
+            prop_type: Int,
+            value: Unset,
+            accessed_properties: [],
+        ),
+        (
+            name: "flag",
+            prop_type: Bool,
+            value: Unset,
+            accessed_properties: [],
+        ),
+        (
+            name: "data",
+            prop_type: Var,
+            value: Unset,
+            accessed_properties: [],
+        ),
+    ],
+    functions: [],
+    children: [],
+)

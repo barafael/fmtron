@@ -1,0 +1,187 @@
+[
+    // === SECTION ===========================================
+    // section#enemies
+
+    // EXAMPLE
+    // ("actor_name", (
+    //     traits: [
+    //         "name_trait_a",
+    //         "name_trait_b",
+    //     ],
+    //     visuals: ( [
+    //         (Body, "sprite_name_a_{}", Some((1, 5)))
+    //         (Head, "sprite_name_b", None)
+    //     ], [ 
+    //         (Prone, [
+    //             (Body, "sprite_name_b", None),
+    //             (Head, "sprite_name_b", None),
+    //         ])
+    //     ]),
+    // )),
+    
+    // === BEGIN SECTION armor ================================
+    ("actor#gunner", (
+        max_activations: 2,
+        attributes: (
+            physical_strength: 3,
+            physical_agility: 4,
+            mental_strength: 2,
+            mental_agility: 3,
+        ),
+        traits: [
+            "item#Armor_ChainMail",
+            "item#Weapon_IonGun",
+        ],
+        visuals: ([
+            (Body, "body-light_4", None),
+            (Head, "head_6", None),
+        ], [
+            (Dead, [
+                (Body, "corpses_1", None),
+            ])
+        ]),
+    )),
+
+    ("actor#spear", (
+        max_activations: 2,
+        attributes: (
+            physical_strength: 3,
+            physical_agility: 3,
+            mental_strength: 3,
+            mental_agility: 3,
+        ),
+        traits: [
+            "item#Armor_ChainMail",
+            "item#Weapon_Spear",
+        ],
+        visuals: ([
+            (Body, "body-light_2", None),
+            (Head, "head_{}", Some((1, 4))),
+        ], [
+            (Dead, [
+                (Body, "corpses_1", None),
+            ])
+        ]),
+    )),
+
+    ("actor#saw", (
+        max_activations: 2,
+        attributes: (
+            physical_strength: 4,
+            physical_agility: 3,
+            mental_strength: 3,
+            mental_agility: 2,
+        ),
+        traits: [
+            "item#Armor_PlateMail",
+            "item#Weapon_PowerSaw",
+        ],
+        visuals: ([
+            (Body, "body-heavy_1", None),
+            (Head, "head-heavy_2", None),
+        ], [
+            (Dead, [
+                (Body, "corpses_1", None),
+            ])
+        ]),
+    )),
+
+    ("actor#tank", (
+        max_activations: 2,
+        attributes: (
+            physical_strength: 4,
+            physical_agility: 2,
+            mental_strength: 4,
+            mental_agility: 2,
+        ),
+        traits: [
+            "item#Armor_PlateMail",
+            "item#Shield_TowerShield",
+            "item#Weapon_Flail",
+        ],
+        visuals: ([
+            (Body, "body-heavy_1", None),
+            (Head, "head-heavy_1", None),
+        ], [
+            (Dead, [
+                (Body, "corpses_1", None),
+            ])
+        ]),
+    )),
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // section#enemies
+
+    ("enemy#worm", (
+        max_activations: 1,
+        attributes: (
+            physical_strength: 3,
+            physical_agility: 3,
+            mental_strength: 2,
+            mental_agility: 2,
+        ),
+        traits: [
+            "intrinsic#Trait_Underground",
+            "intrinsic#Weapon_CrushingJaw",
+        ],
+        visuals: ([
+            (Body, "monster-worm_1", None),
+            (Head, "monster-worm_dust_1", None),
+        ], [
+            (Hidden, [
+                (Body, "monster-worm-hidden_1", None),
+            ]),
+            (Dead, [
+                (Body, "corpses_1", None),
+            ])
+        ]),
+    )),
+
+    ("enemy#sucker", (
+        max_activations: 1,
+        attributes: (
+            physical_strength: 2,
+            physical_agility: 4,
+            mental_strength: 2,
+            mental_agility: 2,
+        ),
+        traits: [
+            "intrinsic#Weapon_SharpTeeth",
+            "intrinsic#Trait_Quick",
+            "intrinsic#Trait_Flyer",
+        ],
+        visuals: ([
+            (Body, "monster-sucker_1", None)
+        ], [ 
+            (Prone, [
+                (Body, "monster-sucker-prone_1", None),
+            ]),
+            (Dead, [
+                (Body, "monster-sucker-prone_1", None),
+            ])
+        ]),
+    )),
+
+    ("enemy#zombi", (
+        max_activations: 1,
+        attributes: (
+            physical_strength: 5,
+            physical_agility: 2,
+            mental_strength: 2,
+            mental_agility: 1,
+        ),
+        traits: [
+            "intrinsic#Weapon_Claws",
+            "intrinsic#Trait_Slow",
+        ],
+        visuals: ([
+            (Body, "body-zombi_{}", Some((1, 1))), 
+            (Head, "head-zombi_{}", Some((1, 7))),
+        ], [
+            (Dead, [
+                (Body, "corpses_1", None),
+            ])
+        ]),
+    )),
+]

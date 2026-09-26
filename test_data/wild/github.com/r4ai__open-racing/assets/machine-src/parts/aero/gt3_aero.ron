@@ -1,0 +1,151 @@
+(
+    description: "Splitter, floor with diffuser, and the rear wing; the body\'s own drag.",
+    physical: (
+        shapes: [
+            (
+                name: "splitter",
+                kind: Box(
+                    size: (0.35, 1.9, 0.02),
+                ),
+                at: (0.95, 0.0, 0.08),
+                mass: 6.0,
+                colour: (0.12, 0.12, 0.13),
+            ),
+            (
+                name: "rear wing",
+                kind: Box(
+                    size: (0.3, 1.8, 0.03),
+                ),
+                at: (-3.46, 0.0, 1.22),
+                mass: 10.0,
+                colour: (0.12, 0.12, 0.13),
+            ),
+            (
+                name: "pylon left",
+                kind: Box(
+                    size: (0.2, 0.02, 0.4),
+                ),
+                at: (-3.4, 0.3, 1.0),
+                mass: 3.0,
+                colour: (0.12, 0.12, 0.13),
+            ),
+            (
+                name: "pylon right",
+                kind: Box(
+                    size: (0.2, 0.02, 0.4),
+                ),
+                at: (-3.4, -0.3, 1.0),
+                mass: 3.0,
+                colour: (0.12, 0.12, 0.13),
+            ),
+            (
+                name: "diffuser",
+                kind: Box(
+                    size: (0.6, 1.6, 0.05),
+                ),
+                at: (-3.2, 0.0, 0.15),
+                mass: 8.0,
+                colour: (0.12, 0.12, 0.13),
+            ),
+        ],
+        mounts: [],
+    ),
+    design: Aero((
+        elements: [
+            (
+                name: "body",
+                position: (-1.4575, 0.52),
+                area: 0.57,
+                angle: 0.0,
+                lift: [
+                    (0.0, 0.0),
+                ],
+                drag: [
+                    (0.0, 1.0),
+                ],
+                height_lift: [],
+                height_drag: [],
+                yaw_lift: 0.0,
+                damage_lift: (0.0, 0.0, 0.0, 0.0),
+                damage_drag: (0.0, 0.0, 0.0, 0.0),
+            ),
+            (
+                name: "splitter",
+                position: (0.6425000000000001, 0.06),
+                area: 1.0,
+                angle: 0.0,
+                lift: [
+                    (-0.1, 0.75),
+                    (0.0, 1.03),
+                    (0.1, 1.25),
+                ],
+                drag: [
+                    (-0.1, 0.04),
+                    (0.0, 0.05),
+                    (0.1, 0.07),
+                ],
+                height_lift: [
+                    (0.0, 0.95),
+                    (0.02, 1.12),
+                    (0.059, 1.0),
+                    (0.1, 0.8),
+                    (0.2, 0.6),
+                ],
+                height_drag: [],
+                yaw_lift: -0.3,
+                damage_lift: (0.03, 0.0, 0.01, 0.01),
+                damage_drag: (0.0, 0.0, 0.0, 0.0),
+            ),
+            (
+                name: "floor",
+                position: (-1.6575, 0.07),
+                area: 3.0,
+                angle: 0.0,
+                lift: [
+                    (-0.05, 0.21),
+                    (0.0, 0.257),
+                    (0.05, 0.3),
+                ],
+                drag: [
+                    (0.0, 0.0167),
+                ],
+                height_lift: [
+                    (0.02, 0.7),
+                    (0.045, 1.15),
+                    (0.0806, 1.0),
+                    (0.12, 0.82),
+                    (0.25, 0.55),
+                ],
+                height_drag: [],
+                yaw_lift: -0.3,
+                damage_lift: (0.005, 0.01, 0.01, 0.01),
+                damage_drag: (0.0, 0.0, 0.0, 0.0),
+            ),
+            (
+                name: "rear wing",
+                position: (-3.4575, 1.22),
+                area: 0.9,
+                angle: 0.14,
+                lift: [
+                    (-0.1, 0.55),
+                    (0.0, 0.95),
+                    (0.14, 1.333),
+                    (0.25, 1.6),
+                    (0.35, 1.55),
+                ],
+                drag: [
+                    (-0.1, 0.07),
+                    (0.0, 0.1),
+                    (0.14, 0.2),
+                    (0.25, 0.3),
+                    (0.35, 0.45),
+                ],
+                height_lift: [],
+                height_drag: [],
+                yaw_lift: -0.5,
+                damage_lift: (0.0, 0.04, 0.005, 0.005),
+                damage_drag: (0.0, 0.02, 0.0, 0.0),
+            ),
+        ],
+    )),
+)

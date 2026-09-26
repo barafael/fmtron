@@ -1,0 +1,14 @@
+(
+	resources: {},
+  entities: {
+		1: (
+			components: {
+				"bevy_transform::components::transform::Transform": (
+          translation: (4.0, 8.0, 4.0),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (1.0, 1.0, 1.0),
+        ),
+			}
+		)
+	}
+)

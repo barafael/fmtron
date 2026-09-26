@@ -1,0 +1,17 @@
+(
+    version: 2,
+    entries: [
+        (
+            key: Primary,
+            state: (
+                logical_position: Some((100, 100)),
+                logical_width: 800,
+                logical_height: 600,
+                monitor_scale: 2.0,
+                monitor_index: 0,
+                mode: Windowed,
+                app_name: "restore_window",
+            )
+        ),
+    ],
+)

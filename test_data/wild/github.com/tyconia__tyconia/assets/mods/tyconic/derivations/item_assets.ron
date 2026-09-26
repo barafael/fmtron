@@ -1,0 +1,12 @@
+{
+    "tyconia::loading::assets::items::ItemTextureMapSource": ({
+        "pizza_slice": Auto,
+        "hamburger": Auto,
+        "french_fries": Auto,
+        "hot_choco": Auto,
+        "potato_medium": Auto,
+        "cheese_wheel": Auto,
+        "bread_loaf": Auto,
+        "beef_slab": Auto,
+    }),
+}

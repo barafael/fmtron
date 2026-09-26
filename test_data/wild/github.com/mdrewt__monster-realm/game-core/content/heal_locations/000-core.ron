@@ -1,0 +1,11 @@
+[
+    (
+        location_id: 1,
+        zone_id: 0,
+        tile_x: 8,
+        tile_y: 3,
+        cost_item_id: None,
+        cost_qty: 0,
+        cooldown_ms: 30000,
+    ),
+]

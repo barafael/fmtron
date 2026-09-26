@@ -1,0 +1,248 @@
+ProceduralLandscapeArchetypeAsset(
+    id: "rich_bounded_v1",
+    label: "Rich bounded landscape (v1)",
+    description: "Shared bounded landscape policy for rich seeded-camp starts with variable bounded watercourse archetypes, a center-left opening, split forest travel corridors, staged resource geography, and readable deer and wild-pig habitats.",
+    dimensions: MapDimensionsAsset(
+        width: 42,
+        height: 30,
+        cell_size: 1,
+    ),
+    topology: LandscapeTopologyAsset(
+        watercourse_family_id: "bounded_watercourses_v1",
+        starter_clearing: StarterClearingPolicyAsset(
+            family_id: "center_left_seeded_camp_v1",
+            player_spawn_region_insets: RectInsetsAsset(
+                left: 3,
+                right: 3,
+                top: 2,
+                bottom: 2,
+            ),
+        ),
+        traversal_corridor_family_id: "split_forest_edges_v1",
+    ),
+    terrain: TerrainTuningAsset(
+        forest_stand_node_id: "timber_tree",
+        forest_stand_layout: "forest_cluster_grid_3x3",
+        forest_stand_amount_per_node: 3,
+        recovery: ForestRecoveryMetadataAsset(
+            stand_family_id: "temperate_split_forest_core",
+            target_density_per_100_cells: 12,
+            regeneration_bias: balanced,
+        ),
+        boundary_thickness: 1,
+    ),
+    resource_policies: [
+        ResourcePolicyAsset(
+            kind: nearby_sticks,
+            family_id: "starter_salvage_sticks_v1",
+            node_id: "stick_scrub",
+            default_amount_per_node: 40,
+        ),
+        ResourcePolicyAsset(
+            kind: nearby_fallen_timber,
+            family_id: "starter_salvage_timber_v1",
+            node_id: "fallen_timber",
+            default_amount_per_node: 48,
+        ),
+        ResourcePolicyAsset(
+            kind: nearby_berries,
+            family_id: "starter_forage_berries_v1",
+            node_id: "berry_bush",
+            default_amount_per_node: 6,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 2,
+                    spread: 2,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: nearby_barley,
+            family_id: "starter_forage_barley_v1",
+            node_id: "wild_barley_patch",
+            default_amount_per_node: 6,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 2,
+                    spread: 2,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: nearby_fishing,
+            family_id: "starter_water_food_v1",
+            node_id: "fishing_spot",
+            default_amount_per_node: 8,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 2,
+                    spread: 3,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: farther_sticks,
+            family_id: "midrange_salvage_sticks_v1",
+            node_id: "stick_scrub",
+            default_amount_per_node: 52,
+        ),
+        ResourcePolicyAsset(
+            kind: farther_fallen_timber,
+            family_id: "midrange_salvage_timber_v1",
+            node_id: "fallen_timber",
+            default_amount_per_node: 32,
+        ),
+        ResourcePolicyAsset(
+            kind: farther_berries,
+            family_id: "midrange_forage_berries_v1",
+            node_id: "berry_bush",
+            default_amount_per_node: 6,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 2,
+                    spread: 3,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: farther_barley,
+            family_id: "midrange_forage_barley_v1",
+            node_id: "wild_barley_patch",
+            default_amount_per_node: 6,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 2,
+                    spread: 3,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: farther_fishing,
+            family_id: "midrange_water_food_v1",
+            node_id: "fishing_spot",
+            default_amount_per_node: 8,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 2,
+                    spread: 4,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: frontier_fallen_timber,
+            family_id: "frontier_salvage_timber_v1",
+            node_id: "fallen_timber",
+            default_amount_per_node: 36,
+        ),
+        ResourcePolicyAsset(
+            kind: frontier_berries,
+            family_id: "frontier_forage_berries_v1",
+            node_id: "berry_bush",
+            default_amount_per_node: 8,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 3,
+                    spread: 4,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: frontier_barley,
+            family_id: "frontier_forage_barley_v1",
+            node_id: "wild_barley_patch",
+            default_amount_per_node: 8,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 3,
+                    spread: 4,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: frontier_fishing,
+            family_id: "frontier_water_food_v1",
+            node_id: "fishing_spot",
+            default_amount_per_node: 10,
+            food_cluster: Some(
+                FoodClusterPolicyAsset(
+                    cluster_count: 3,
+                    spread: 4,
+                    redundancy: 1,
+                ),
+            ),
+        ),
+        ResourcePolicyAsset(
+            kind: far_stone_ridge,
+            family_id: "stone_ridge_pressure_v1",
+            node_id: "stone_outcrop_harvest",
+            default_amount_per_node: 72,
+            material_expedition: Some(
+                MaterialExpeditionPolicyAsset(
+                    primary_destination_count: 1,
+                    follow_up_destination_count: 1,
+                ),
+            ),
+        ),
+    ],
+    wildlife: WildlifePolicyAsset(
+        habitat_families: [
+            WildlifeHabitatPolicyAsset(
+                family_id: "forest_edge_browse_v1",
+                lane_rule: open_edge,
+                min_distance_from_clearing: 12,
+                min_spawn_separation: 2,
+                species_mixes: [
+                    WildlifeSpeciesMixAsset(
+                        id: "deer_watchers_v1",
+                        weight: 1,
+                        groups: [
+                            WildlifeSpeciesGroupAsset(
+                                species: "deer",
+                                density_per_100_cells: 4.0,
+                                speed: 1.0,
+                                roam_start_index: 0,
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+            WildlifeHabitatPolicyAsset(
+                family_id: "watering_lane_cover_v1",
+                lane_rule: watering_lane,
+                min_distance_from_clearing: 10,
+                min_spawn_separation: 2,
+                species_mixes: [
+                    WildlifeSpeciesMixAsset(
+                        id: "pig_sounder_v1",
+                        weight: 1,
+                        groups: [
+                            WildlifeSpeciesGroupAsset(
+                                species: "wild_pig",
+                                density_per_100_cells: 4.0,
+                                speed: 0.9,
+                                roam_start_index: 48,
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    ),
+    metadata: LandscapeMetadataAsset(
+        biome: "temperate_lowland",
+        climate: "single_climate_autumn",
+        tags: [
+            "bounded",
+            "rich_procgen",
+            "seeded_camp",
+        ],
+    ),
+)

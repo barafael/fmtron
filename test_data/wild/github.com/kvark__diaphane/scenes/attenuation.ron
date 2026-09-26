@@ -1,0 +1,59 @@
+// A lossy sea: why radio dies underwater, and why nothing echoes off the way in.
+//
+// The right half of the domain is n = 1.5 "water" with conductivity — but
+// *matched* conductivity: the magnetic loss is set to σ*/μ₀ = σ/(ε₀εr), the
+// same reflectionless-absorption condition the boundary layer is built on.
+// A plain conductor of this strength would reflect noticeably at the surface;
+// matched, the packet slides in without an echo and simply dims away,
+// one amplitude e-fold per ~10 mm at σ = 0.4 S/m.
+//
+// Two things to watch: the entry face returns almost nothing (the mismatch
+// that remains is the ordinary n = 1 → 1.5 Fresnel step, not the loss), and
+// the transmitted packet fades exponentially rather than bouncing off the far
+// wall. This is the one scene where the energy readout should *fall*.
+//
+// Try:
+//   cargo viz --scene scenes/attenuation.ron --warmup 300 --mode magnitude
+//   cargo viz --scene scenes/attenuation.ron --warmup 300 --mode electric
+
+Scene(
+    grid: Grid(
+        extent: Extent(x: 100, y: 60, z: 60),
+        cell_size: 0.001,
+        courant: 0.5,
+    ),
+    boundary: Absorbing(thickness: 10, target_reflection: 0.000001),
+    materials: MaterialTable(materials: [
+        Material(
+            relative_permittivity: 1.0,
+            relative_permeability: 1.0,
+            conductivity: 0.0,
+            magnetic_loss: 0.0,
+        ),
+        // n = 1.5 with matched loss: magnetic_loss = σ·μ₀/(ε₀·εr), σ = 0.4.
+        Material(
+            relative_permittivity: 2.25,
+            relative_permeability: 1.0,
+            conductivity: 0.4,
+            magnetic_loss: 25231.24,
+        ),
+    ]),
+    shapes: [
+        // The sea: from x = −10 mm to the far wall.
+        Slab(axis: X, offset: 0.020, thickness: 0.060, material: 1),
+    ],
+    sources: [
+        Source(
+            // 13.324 GHz: λ₀ = 22.5 mm, 15 mm in the water — 15 cells per
+            // wavelength where it matters.
+            shape: Sheet(axis: X, offset: -0.038, waist: 0.014),
+            polarization: Z,
+            waveform: GaussianPulse(
+                center_frequency: 13324108000.0,
+                duration_cycles: 3.0,
+                delay: 0.00000000045031157,
+            ),
+            amplitude: 1.0,
+        ),
+    ],
+)

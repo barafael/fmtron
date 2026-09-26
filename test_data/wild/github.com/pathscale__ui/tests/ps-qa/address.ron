@@ -1,0 +1,37 @@
+// Generated from tests/qa-harness/components.ts by tests/qa-harness/generate-checks.ts. Do not edit.
+//
+// Address, mounted alone on its own harness page. Outcomes for
+// this component share one native host; idempotent preparation keeps each
+// outcome reproducible by id against a fresh host as well.
+[
+    (
+        id: "address-page-paints",
+        group: "address",
+        what: "the Address page builds and paints",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:Address",
+        expect: PaintsNamed,
+    ),
+    (
+        id: "address-renders",
+        group: "address",
+        what: "Address renders a node of its own",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "fixture",
+        expect: Paints,
+    ),
+    (
+        id: "address-copies",
+        group: "address",
+        what: "copying an address reports the full value to its caller",
+        open: None,
+        hover: None,
+        click: Some("button:Copy address"),
+        subject: "heading:Address copied:",
+        expect: NameChanges,
+    ),
+]

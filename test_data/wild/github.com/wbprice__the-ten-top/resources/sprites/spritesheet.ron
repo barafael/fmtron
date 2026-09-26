@@ -1,0 +1,158 @@
+(
+    texture_width: 264,
+    texture_height: 96,
+    sprites: [
+        // Origin is top-left
+        // Row 1
+        // 1. Happiness
+        (
+            x: 0,
+            y: 0,
+            width: 24,
+            height: 24,
+        ),
+        // 2. Sadness
+        (
+            x: 24,
+            y: 0,
+            width: 24,
+            height: 24,
+        ),
+        // 3. OK
+        (
+            x: 48,
+            y: 0,
+            width: 24,
+            height: 24,
+        ),
+        // 4. Register
+        (
+            x: 72,
+            y: 0,
+            width: 24,
+            height: 24,
+        ),
+        // 5. Stove
+        (
+            x: 96,
+            y: 0,
+            width: 24,
+            height: 24,
+        ),
+        // Row Two
+        // 6. Patron Walk Right 1
+        (
+            x: 0,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // 7. Patron Walk Right 2
+        (
+            x: 24,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // 8. Patron Walk Right 3
+        (
+            x: 48,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // 9. Patron Walk Right 4
+        (
+            x: 72,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // 10. Patron Walk Right 5
+        (
+            x: 96,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // 11. Patron Walk Right 6
+        (
+            x: 120,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // 12. Speech bubble
+        (
+            x: 144,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // 13. Thought bubble
+        (
+            x: 144,
+            y: 24,
+            width: 24,
+            height: 24
+        ),
+        // Row Three
+        // 14. Hamburger Bun
+        (
+            x: 0,
+            y: 48,
+            width: 24,
+            height: 24
+        ),
+        // 15. Hamburger Patty
+        (
+            x: 24,
+            y: 48,
+            width: 24,
+            height: 24
+        ),
+        // 16. Lettuce
+        (
+            x: 48,
+            y: 48,
+            width: 24,
+            height: 24
+        ),
+        // 17. Tomato
+        (
+            x: 72,
+            y: 48,
+            width: 24,
+            height: 24
+        ),
+        // 18. Hamburger
+        (
+            x: 96,
+            y: 48,
+            width: 24,
+            height: 24
+        ),
+        // Row 4
+        // 19. Hot Dog Weiner
+        (
+            x: 0,
+            y: 72,
+            width: 24,
+            height: 24
+        ),
+        // 20. Hot Dog Bun
+        (
+            x: 24,
+            y: 72,
+            width: 24,
+            height: 24
+        ),
+        // 21. Hot Dog
+        (
+            x: 48,
+            y: 72,
+            width: 24,
+            height: 24
+        )
+    ]
+)

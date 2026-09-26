@@ -1,0 +1,13 @@
+(
+  pips: {},
+  words: {},
+  enums: {},
+  conns: {},
+  always_on: [
+    (
+      frame: 27,
+      bit: 0,
+      invert: false,
+    ),
+  ],
+)

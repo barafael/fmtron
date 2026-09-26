@@ -1,0 +1,20 @@
+(
+  entities: {
+    0: (
+      components: {
+        "isometric_sort::cells::saved::SavedCells": (
+          main_cell: (
+            x: 114,
+            y: 85,
+          ),
+          dimensions: (
+            x: 1,
+            y: 1,
+            z: 1,
+          ),
+          facing: BottomRight,
+        ),
+      },
+    ),
+  },
+)

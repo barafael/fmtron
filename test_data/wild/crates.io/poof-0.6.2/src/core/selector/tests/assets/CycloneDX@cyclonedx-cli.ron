@@ -1,0 +1,11 @@
+[
+    "cyclonedx-linux-arm",
+    "cyclonedx-linux-arm64",
+    "cyclonedx-linux-musl-x64",
+    "cyclonedx-linux-x64",
+    "cyclonedx-osx-arm64",
+    "cyclonedx-osx-x64",
+    "cyclonedx-win-arm64.exe",
+    "cyclonedx-win-x64.exe",
+    "cyclonedx-win-x86.exe",
+]

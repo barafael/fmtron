@@ -1,0 +1,10 @@
+(
+    model_path: "assets/large_obj/sponza.obj",
+    camera: (
+        eye: (1.0, 1.0, -19.0),
+        look_at: (0.0, 5.0, 0.0),
+        fov: 60.0,
+        exposure: 0.0,
+    ),
+    sun_direction: (0.22, -1.0, -0.2),
+)

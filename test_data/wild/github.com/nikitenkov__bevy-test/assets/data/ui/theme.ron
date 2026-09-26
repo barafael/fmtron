@@ -1,0 +1,364 @@
+(
+    shell: (
+        outer_margin: 16.0,
+        panel_gap: 8.0,
+        hud_scroll_line_height: 20.0,
+        top_bar: (
+            height: 80.0,
+            summary: (
+                min_width: 400.0,
+                padding_x: 8.0,
+                padding_y: 6.0,
+                row_gap: 4.0,
+            ),
+            season: (
+                width: 60.0,
+                padding_x: 8.0,
+                padding_y: 4.0,
+                row_gap: 4.0,
+            ),
+            time: (
+                width: 240.0,
+                padding_x: 8.0,
+                padding_y: 6.0,
+                button_gap: 4.0,
+            ),
+        ),
+        management_launcher: (
+            width: 96.0,
+            height: 216.0,
+            top_offset_from_top_bar: 12.0,
+            padding: 8.0,
+            item_height: 44.0,
+            item_padding_x: 6.0,
+            item_padding_y: 5.0,
+            item_gap: 8.0,
+        ),
+        management_overlay: (
+            width: 420.0,
+            top_offset_from_top_bar: 18.0,
+            padding: 10.0,
+            row_gap: 8.0,
+            body_padding_right: 2.0,
+            body_row_gap: 8.0,
+            title_size: 16.0,
+        ),
+        inspection_panel: (top_offset_from_top_bar: 0.0),
+        summary_footer: (
+            height: 60.0,
+            width: 400.0,
+            padding: 8.0,
+            row_gap: 4.0,
+        ),
+    ),
+    palette: (
+        panel_background_strong: Srgba(
+            (
+                red: 0.11,
+                green: 0.13,
+                blue: 0.12,
+                alpha: 0.90,
+            ),
+        ),
+        panel_background_overlay: Srgba(
+            (
+                red: 0.07,
+                green: 0.09,
+                blue: 0.08,
+                alpha: 0.76,
+            ),
+        ),
+        panel_border: Srgba(
+            (
+                red: 0.47,
+                green: 0.45,
+                blue: 0.36,
+                alpha: 1.0,
+            ),
+        ),
+        panel_accent: Srgba(
+            (
+                red: 0.78,
+                green: 0.71,
+                blue: 0.49,
+                alpha: 1.0,
+            ),
+        ),
+        text_primary: Srgba(
+            (
+                red: 0.94,
+                green: 0.92,
+                blue: 0.84,
+                alpha: 1.0,
+            ),
+        ),
+        text_muted: Srgba(
+            (
+                red: 0.73,
+                green: 0.73,
+                blue: 0.67,
+                alpha: 1.0,
+            ),
+        ),
+        warning_color: Srgba(
+            (
+                red: 0.95,
+                green: 0.57,
+                blue: 0.36,
+                alpha: 1.0,
+            ),
+        ),
+        warning_background: Srgba(
+            (
+                red: 0.42,
+                green: 0.18,
+                blue: 0.11,
+                alpha: 0.92,
+            ),
+        ),
+        info_background: Srgba(
+            (
+                red: 0.18,
+                green: 0.22,
+                blue: 0.19,
+                alpha: 0.92,
+            ),
+        ),
+        chip_border: Srgba(
+            (
+                red: 0.36,
+                green: 0.39,
+                blue: 0.33,
+                alpha: 1.0,
+            ),
+        ),
+    ),
+    buttons: (
+        idle: Srgba(
+            (
+                red: 0.17,
+                green: 0.20,
+                blue: 0.18,
+                alpha: 1.0,
+            ),
+        ),
+        active: Srgba(
+            (
+                red: 0.28,
+                green: 0.43,
+                blue: 0.32,
+                alpha: 1.0,
+            ),
+        ),
+        locked: Srgba(
+            (
+                red: 0.18,
+                green: 0.16,
+                blue: 0.15,
+                alpha: 1.0,
+            ),
+        ),
+        hover: Srgba(
+            (
+                red: 0.24,
+                green: 0.28,
+                blue: 0.25,
+                alpha: 1.0,
+            ),
+        ),
+        pressed: Srgba(
+            (
+                red: 0.34,
+                green: 0.39,
+                blue: 0.35,
+                alpha: 1.0,
+            ),
+        ),
+        recommended: Srgba(
+            (
+                red: 0.34,
+                green: 0.29,
+                blue: 0.17,
+                alpha: 1.0,
+            ),
+        ),
+        recommended_hover: Srgba(
+            (
+                red: 0.41,
+                green: 0.34,
+                blue: 0.18,
+                alpha: 1.0,
+            ),
+        ),
+        disabled_text: Srgba(
+            (
+                red: 0.58,
+                green: 0.57,
+                blue: 0.51,
+                alpha: 1.0,
+            ),
+        ),
+    ),
+    common_controls: (
+        border_widths: (button: 1.5, panel_frame: 1.5),
+        compact_toggle: (
+            min_width: 40.0,
+            min_height: 28.0,
+            padding_x: 4.0,
+            padding_y: 4.0,
+        ),
+        action_card: (
+            width_percent: 48.0,
+            min_height: 46.0,
+            padding: 6.0,
+            row_gap: 1.0,
+        ),
+        square_button: (size: 30.0),
+        button_text_sizes: (
+            button: 13.5,
+            compact_button: 11.0,
+            action_card: 10.25,
+        ),
+    ),
+    controls: (
+        time_controls: [
+            (
+                action_id: "simulation.pause",
+                label: "Pause",
+                relative_speed: 0.0,
+            ),
+            (
+                action_id: "simulation.one",
+                label: "1x",
+                relative_speed: 1.0,
+            ),
+            (
+                action_id: "simulation.two",
+                label: "2x",
+                relative_speed: 2.0,
+            ),
+            (
+                action_id: "simulation.four",
+                label: "4x",
+                relative_speed: 4.0,
+            ),
+            (
+                action_id: "simulation.eight",
+                label: "8x",
+                relative_speed: 8.0,
+            ),
+            (
+                action_id: "simulation.sixteen",
+                label: "16x",
+                relative_speed: 16.0,
+            ),
+            (
+                action_id: "simulation.thirty_two",
+                label: "32x",
+                relative_speed: 32.0,
+            ),
+        ],
+        hotkeys: [
+            (
+                command: TimeControlPreset(
+                    "simulation.pause",
+                ),
+                hotkey: "1",
+            ),
+            (
+                command: TimeControlPreset(
+                    "simulation.one",
+                ),
+                hotkey: "2",
+            ),
+            (
+                command: TimeControlPreset(
+                    "simulation.two",
+                ),
+                hotkey: "3",
+            ),
+            (
+                command: TimeControlPreset(
+                    "simulation.four",
+                ),
+                hotkey: "4",
+            ),
+            (
+                command: TimeControlPreset(
+                    "simulation.eight",
+                ),
+                hotkey: "5",
+            ),
+            (
+                command: TimeControlPreset(
+                    "simulation.sixteen",
+                ),
+                hotkey: "6",
+            ),
+            (
+                command: TimeControlPreset(
+                    "simulation.thirty_two",
+                ),
+                hotkey: "7",
+            ),
+            (
+                command: Local(
+                    "toggle_pause_resume",
+                ),
+                hotkey: "Space",
+            ),
+        ],
+    ),
+    inspection: (
+        idle: (
+            width: 208.0,
+            height: 200.0,
+            padding: 8.0,
+            row_gap: 4.0,
+            title_size: 14.5,
+            body_size: 11.0,
+            scrollable: true,
+            background: Srgba(
+                (
+                    red: 0.07,
+                    green: 0.09,
+                    blue: 0.08,
+                    alpha: 0.76,
+                ),
+            ),
+            border: Srgba(
+                (
+                    red: 0.47,
+                    green: 0.45,
+                    blue: 0.36,
+                    alpha: 1.0,
+                ),
+            ),
+        ),
+        selected: (
+            width: 216.0,
+            height: 208.0,
+            padding: 10.0,
+            row_gap: 4.0,
+            title_size: 16.0,
+            body_size: 12.0,
+            scrollable: true,
+            background: Srgba(
+                (
+                    red: 0.11,
+                    green: 0.13,
+                    blue: 0.12,
+                    alpha: 0.90,
+                ),
+            ),
+            border: Srgba(
+                (
+                    red: 0.78,
+                    green: 0.71,
+                    blue: 0.49,
+                    alpha: 1.0,
+                ),
+            ),
+        ),
+    ),
+)

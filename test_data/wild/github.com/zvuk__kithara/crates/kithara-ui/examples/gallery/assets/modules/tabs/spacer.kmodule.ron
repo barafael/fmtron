@@ -1,0 +1,11 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "gallery-spacer",
+    chrome: Plain,
+    root: Column(
+        size: (w: Fill, h: Fill),
+        background: Bg,
+        children: [],
+    ),
+)

@@ -1,0 +1,30 @@
+(
+    rules: [
+        // ---- Deserialization ----
+        (
+            id: Some("python-deser-001"),
+            name: Some("Unsafe Deserialization"),
+            category: Some("deserialization"),
+            mode: "search",
+            patterns: Some([
+                "pickle.loads",
+                "pickle.load",
+                "cPickle.loads",
+                "cPickle.load",
+                "yaml.load",
+                "yaml.unsafe_load",
+                "marshal.loads",
+                "dill.loads",
+            ]),
+            finding_type: Some("Unsafe Deserialization"),
+            severity: Some("Critical"),
+            confidence: Some("High"),
+            cwe_id: Some("cwe-502"),
+            description: Some("Unsafe deserialization of untrusted data can lead to RCE"),
+            file_types: Some((
+                extensions: Some([".py"])
+            )),
+            tags: Some(["deserialization", "pickle", "yaml", "unsafe"])
+        ),
+    ]
+)

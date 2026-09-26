@@ -1,0 +1,9 @@
+[
+    Campaign((
+        id: "season_one",
+        name: "Season 1",
+        scenarios: [
+            "season_one_chapter_one",
+        ],
+    )),
+]

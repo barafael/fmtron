@@ -1,0 +1,7 @@
+[
+    (
+        id: "ruined_city",
+        name: "Ruined City",
+        type: Settlement,
+    ),
+]

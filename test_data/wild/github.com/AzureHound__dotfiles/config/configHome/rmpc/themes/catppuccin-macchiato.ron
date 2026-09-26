@@ -1,0 +1,147 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+
+(
+  default_album_art_path: None,
+  draw_borders: true,
+  show_song_table_header: false,
+  symbols: (song: "󰎋", dir: " ", marker: "✓ "),
+  layout: Split(
+    direction: Vertical,
+    panes: [
+      (
+        pane: Pane(Header),
+        size: "1",
+      ),
+      (
+        size: "3",
+        pane: Pane(Tabs),
+      ),
+      (
+        pane: Pane(TabContent),
+        size: "100%",
+      ),
+      (
+        pane: Pane(ProgressBar),
+        size: "1",
+      ),
+    ],
+  ),
+  progress_bar: (
+    symbols: ["█", "", " "],
+    track_style: (bg: "#24273a"),
+    elapsed_style: (fg: "#363a4f", bg: "#24273a"),
+    thumb_style: (fg: "#363a4f", bg: "#24273a"),
+  ),
+  scrollbar: (
+    symbols: ["│", "█", "▲", "▼"],
+    track_style: (),
+    ends_style: (),
+    thumb_style: (fg: "#b7bdf8"),
+  ),
+  browser_column_widths: [20, 38, 42],
+  text_color: "#cad3f5",
+  background_color: "#24273a",
+  header_background_color: "#24273a",
+  modal_background_color: None,
+  modal_backdrop: false,
+  tab_bar: (
+    enabled: true,
+    active_style: (fg: "#24273a", bg: "#f4dbd6", modifiers: "Bold"),
+    inactive_style: (fg: "#cad3f5", bg: "#24273a", modifiers: ""),
+  ),
+  borders_style: (fg: "#494d64"),
+  highlighted_item_style: (fg: "#eed49f", modifiers: "Bold"),
+  current_item_style: (fg: "#cad3f5", bg: "#494d64", modifiers: "Bold"),
+  highlight_border_style: (fg: "#b7bdf8"),
+  browser_song_format: [
+    (
+      kind: Group([
+      (kind: Property(Title)),
+      (kind: Text(" - ")),
+      (kind: Property(Artist)),
+      ]),
+      default: (kind: Property(Filename))
+    ),
+  ],
+  song_table_format: [
+    (
+      prop: (kind: Property(Artist), style: (fg: "#b7bdf8"), default: (kind: Text("Unknown"))),
+      width: "50%",
+      alignment: Right,
+    ),
+    (
+      prop: (kind: Text("-"), style: (fg: "#b7bdf8"), default: (kind: Text("Unknown"))),
+      width: "1",
+      alignment: Center,
+    ),
+    (
+      prop: (kind: Property(Title), style: (fg: "#8aadf4"), default: (kind: Text("Unknown"))),
+      width: "50%",
+    ),
+    (
+      prop: (kind: Property(Duration), style: (fg: "#494d64"), default: (kind: Text("Unknown"))),
+      width: "10%",
+      alignment: Right,
+    ),
+  ],
+  header: (
+    rows: [
+      (
+        left: [
+          (kind: Text(""), style: (fg: "#b7bdf8", modifiers: "Bold")),
+          (kind: Property(Status(StateV2(playing_label: "  ", paused_label: "  ", stopped_label: "  ")))),
+          (kind: Text(""), style: (fg: "#b7bdf8", modifiers: "Bold")),
+
+          (kind: Property(Status(Elapsed)), style: (fg: "#cad3f5")),
+          (kind: Text(" / "), style: (fg: "#b7bdf8")),
+          (kind: Property(Status(Duration)), style: (fg: "#cad3f5")),
+        ],
+        center: [
+          (kind: Property(Song(Title)), style: (fg: "#8bd5ca", modifiers: "Bold"),
+            default: (kind: Text("No Song"), style: (fg: "#8bd5ca", modifiers: "Bold"))
+          ),
+        ],
+        right: [
+          (kind: Text("[ "),style: (fg: "#b7bdf8")),
+          (kind: Property(Status(RepeatV2(
+            on_label: "", off_label: "",
+            on_style: (fg: "#f4dbd6", modifiers: "Bold"), off_style: (fg: "#4c566a", modifiers: "Bold"))))),
+          (kind: Text(" | "),style: (fg: "#b7bdf8")),
+          (kind: Property(Status(RandomV2(
+            on_label: "", off_label: "",
+            on_style: (fg: "#f4dbd6", modifiers: "Bold"), off_style: (fg: "#4c566a", modifiers: "Bold"))))),
+          (kind: Text(" | "),style: (fg: "#b7bdf8")),
+          (kind: Property(Status(ConsumeV2(
+            on_label: "󰮯", off_label: "󰮯", oneshot_label: "󰮯󰇊",
+            on_style: (fg: "#f4dbd6", modifiers: "Bold"), off_style: (fg: "#4c566a", modifiers: "Bold"))))),
+          (kind: Text(" | "),style: (fg: "#b7bdf8")),
+          (kind: Property(Status(SingleV2(
+            on_label: "󰎤", off_label: "󰎦", oneshot_label: "󰇊", off_oneshot_label: "󱅊",
+            on_style: (fg: "#f4dbd6", modifiers: "Bold"), off_style: (fg: "#4c566a", modifiers: "Bold"))))),
+          (kind: Text(" ]"),style: (fg: "#b7bdf8")),
+
+          (kind: Text(" "), style: (fg: "#b7bdf8", modifiers: "Bold")),
+          (kind: Property(Status(Volume)), style: (fg: "#8aadf4", modifiers: "Bold")),
+          (kind: Text("%"), style: (fg: "#b7bdf8", modifiers: "Bold")),
+        ]
+      )
+    ],
+  ),
+
+  cava: (
+    bar_symbols: [' ', '▂', '▃', '▄', '▅', '▆', '▇', '█'],
+    inverted_bar_symbols: ['▔', '🮂', '🮃', '▀', '🮄', '🮅', '🮆', '█'],
+    bg_color: "#24273a",
+    bar_width: 1,
+    bar_spacing: 1,
+    orientation: Horizontal,
+    bar_color: Gradient({
+     0: "#3d59a1",
+     20: "#7aa2f7",
+     40: "#ff757f",
+     60: "#ffc777",
+    }),
+  ),
+)

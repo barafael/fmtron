@@ -1,0 +1,122 @@
+StarterSettlementTemplateAsset(
+    id: "sparse_camp_v1",
+    label: "Sparse camp (v1)",
+    description: "Shared sparse opening with no placed buildings, one starter stash of winter-stable ready meals, no stocked sheaves, grain, or porridge, and one planned campfire.",
+    households: [
+        HouseholdTemplateAsset(
+            citizens: [
+                CitizenTemplateAsset(
+                    name: "Aster",
+                    position_offset: RelativeGridPositionAsset(
+                        x: -1,
+                        y: 0,
+                    ),
+                    life_stage: Adult,
+                    sex: Female,
+                    parents: [],
+                ),
+                CitizenTemplateAsset(
+                    name: "Bram",
+                    position_offset: RelativeGridPositionAsset(
+                        x: 0,
+                        y: -1,
+                    ),
+                    life_stage: Adult,
+                    sex: Male,
+                    parents: [],
+                ),
+                CitizenTemplateAsset(
+                    name: "Cora",
+                    position_offset: RelativeGridPositionAsset(
+                        x: 1,
+                        y: 0,
+                    ),
+                    life_stage: Adult,
+                    sex: Female,
+                    parents: [],
+                ),
+                CitizenTemplateAsset(
+                    name: "Dane",
+                    position_offset: RelativeGridPositionAsset(
+                        x: 0,
+                        y: 1,
+                    ),
+                    life_stage: Adult,
+                    sex: Male,
+                    parents: [],
+                ),
+            ],
+            residence_building_id: None,
+            birth_couple: Some(
+                HouseholdCoupleTemplateAsset(
+                    first_parent: "Aster",
+                    second_parent: "Bram",
+                ),
+            ),
+        ),
+    ],
+    buildings: [],
+    sites: [
+        ConstructionSiteTemplateAsset(
+            target: "campfire",
+            position_offset: RelativeGridPositionAsset(
+                x: 2,
+                y: 0,
+            ),
+            state: "Planned",
+        ),
+    ],
+    storage_anchors: [
+        StorageAnchorTemplateAsset(
+            position_offset: RelativeGridPositionAsset(
+                x: 1,
+                y: -1,
+            ),
+            access: "Public",
+            contents: [
+                ResourceAmountAsset(
+                    resource: "dried_meat",
+                    amount: 4,
+                ),
+                ResourceAmountAsset(
+                    resource: "dried_fish",
+                    amount: 6,
+                ),
+                ResourceAmountAsset(
+                    resource: "sticks",
+                    amount: 10,
+                ),
+                ResourceAmountAsset(
+                    resource: "wood_logs",
+                    amount: 6,
+                ),
+            ],
+            starter_stash: true,
+        ),
+    ],
+    resource_targets: [
+        ResourceAmountAsset(
+            resource: "sticks",
+            amount: 10,
+        ),
+    ],
+    unlocks: [],
+    needs: None,
+    labor_priorities: [],
+    workstation_buffer_seeds: [],
+    placement_policy: StarterSettlementPlacementPolicyAsset(
+        allowed_rotations: Some(
+            [
+                "deg0",
+                "deg90",
+                "deg180",
+                "deg270",
+            ],
+        ),
+        allow_mirroring: true,
+        anchor_jitter: StarterTemplateAnchorJitterAsset(
+            x: 1,
+            y: 1,
+        ),
+    ),
+)

@@ -1,0 +1,20 @@
+(
+    image: (
+        path: "kenney_crosshairPack/Tilesheet/crosshairs_tilesheet_white.png",
+    ),
+    texture_atlas_layout: (
+        tile_size: (64, 64),
+        columns: 20,
+        rows: 10,
+        padding: Some((5, 5)),
+    ),
+    hotspots: (
+        // The hotspot for the default cursor. Can be omitted if it's (0, 0).
+        default: (0, 0),
+        overrides: {
+            11: (32, 32),
+            95: (32, 8),
+            // You can add more overrides here.
+        },
+    ),
+)

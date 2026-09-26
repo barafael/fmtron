@@ -31,6 +31,9 @@ pub enum Attribute {
 
 pub struct Value {
     leading: Vec<String>,
+    /// Comments between a map key or field name and this value
+    /// (`key /* c */ : /* d */ value`).
+    inline: Vec<String>,
     trailing: Vec<String>,
     kind: Kind,
 }
@@ -172,6 +175,7 @@ impl Value {
                 let a = pair.as_str().to_string();
                 Self {
                     leading: vec![],
+                    inline: vec![],
                     trailing: vec![],
                     kind: Kind::Atom(a),
                 }
@@ -181,6 +185,7 @@ impl Value {
                 let (values, dangling) = collect_values(pair.clone().into_inner(), src);
                 Self {
                     leading: vec![],
+                    inline: vec![],
                     trailing: vec![],
                     kind: Kind::List { values, dangling },
                 }
@@ -190,6 +195,7 @@ impl Value {
                 let (entries, dangling) = collect_entries(pair.clone().into_inner(), src);
                 Self {
                     leading: vec![],
+                    inline: vec![],
                     trailing: vec![],
                     kind: Kind::Map { entries, dangling },
                 }
@@ -200,6 +206,7 @@ impl Value {
                     collect_named_values(pair.clone().into_inner(), src);
                 Self {
                     leading: vec![],
+                    inline: vec![],
                     trailing: vec![],
                     kind: Kind::TupleType {
                         ident,
@@ -213,6 +220,7 @@ impl Value {
                 let (ident, fields, dangling) = collect_fields(pair.clone().into_inner(), src);
                 Self {
                     leading: vec![],
+                    inline: vec![],
                     trailing: vec![],
                     kind: Kind::FieldsType {
                         ident,
@@ -339,7 +347,7 @@ fn parse_child(p: Pair<'_, Rule>, src: &str) -> (Child, usize) {
             let end = vp.as_span().end();
             let k = Value::from(kp, src);
             let mut v = Value::from(vp, src);
-            prepend_leading(&mut v, inline);
+            v.inline = inline;
             (Child::Entry(k, v), end)
         }
         Rule::field => {
@@ -348,7 +356,7 @@ fn parse_child(p: Pair<'_, Rule>, src: &str) -> (Child, usize) {
             let (vp, inline) = value_and_inline(inner);
             let end = vp.as_span().end();
             let mut v = Value::from(vp, src);
-            prepend_leading(&mut v, inline);
+            v.inline = inline;
             (Child::Field { name, value: v }, end)
         }
         _ => unreachable!("unexpected container child: {:?}", p.as_rule()),

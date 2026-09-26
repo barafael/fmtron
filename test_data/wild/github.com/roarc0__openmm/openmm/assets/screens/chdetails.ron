@@ -1,0 +1,164 @@
+(
+    id: "chdetails",
+    kind: Modal,
+    keys: {
+        "Escape": [
+            "CloseWindow()",
+        ],
+    },
+    on_close: [
+        "HideScreen(\"chdetails_stats\")",
+        "HideScreen(\"chdetails_skills\")",
+        "HideScreen(\"chdetails_inventory\")",
+        "HideScreen(\"chdetails_awards\")",
+    ],
+    elements: [
+        Image((
+            id: "icons/detbgrnd",
+            position: (8.0, 8.0),
+            size: (460.0, 344.0),
+            z: 0,
+            states: {
+                "default": (
+                    texture: "icons/detbgrnd",
+                ),
+            },
+            on_click: [],
+            on_hover: [],
+            bindings: {},
+        )),
+        Image((
+            id: "icons/BACKDOLL",
+            position: (467.0, 0.0),
+            size: (173.0, 353.0),
+            z: 9,
+            states: {
+                "default": (
+                    texture: "icons/BACKDOLL",
+                ),
+            },
+            on_click: [],
+            on_hover: [],
+            bindings: {},
+        )),
+        Image((
+            id: "icons/BUTTESC1",
+            position: (394.0, 318.0),
+            size: (61.0, 28.0),
+            z: 10,
+            states: {
+                "clicked": (
+                    texture: "icons/BUTTESC2",
+                ),
+                "default": (
+                    texture: "icons/BUTTESC1",
+                ),
+            },
+            on_click: [
+                "CloseWindow()",
+            ],
+            on_hover: [
+                "evt:Hint(\"Exit\")",
+            ],
+            bindings: {},
+            transparent_color: "cyan",
+            click_sound: "selectinganewcharacter",
+        )),
+        Image((
+            id: "icons/buttawa1",
+            position: (299.0, 315.0),
+            size: (64.0, 32.0),
+            z: 11,
+            states: {
+                "clicked": (
+                    texture: "icons/buttawa2",
+                ),
+                "default": (
+                    texture: "icons/buttawa1",
+                ),
+            },
+            on_click: [
+                "HideScreen(\"chdetails_stats\")",
+                "HideScreen(\"chdetails_skills\")",
+                "HideScreen(\"chdetails_inventory\")",
+                "HideScreen(\"chdetails_awards\")",
+                "ShowScreen(\"chdetails_awards\")",
+            ],
+            on_hover: [],
+            bindings: {},
+            click_sound: "selectinganewcharacter",
+        )),
+        Image((
+            id: "icons/buttski1",
+            position: (113.0, 315.0),
+            size: (64.0, 32.0),
+            z: 12,
+            states: {
+                "clicked": (
+                    texture: "icons/buttski2",
+                ),
+                "default": (
+                    texture: "icons/buttski1",
+                ),
+            },
+            on_click: [
+                "HideScreen(\"chdetails_stats\")",
+                "HideScreen(\"chdetails_skills\")",
+                "HideScreen(\"chdetails_inventory\")",
+                "HideScreen(\"chdetails_awards\")",
+                "ShowScreen(\"chdetails_skills\")",
+            ],
+            on_hover: [],
+            bindings: {},
+            click_sound: "selectinganewcharacter",
+        )),
+        Image((
+            id: "icons/buttsta1",
+            position: (20.0, 315.0),
+            size: (64.0, 32.0),
+            z: 13,
+            states: {
+                "clicked": (
+                    texture: "icons/buttsta2",
+                ),
+                "default": (
+                    texture: "icons/buttsta1",
+                ),
+            },
+            on_click: [
+                "HideScreen(\"chdetails_stats\")",
+                "HideScreen(\"chdetails_skills\")",
+                "HideScreen(\"chdetails_inventory\")",
+                "HideScreen(\"chdetails_awards\")",
+                "ShowScreen(\"chdetails_stats\")",
+            ],
+            on_hover: [],
+            bindings: {},
+            click_sound: "selectinganewcharacter",
+        )),
+        Image((
+            id: "icons/buttinv1",
+            position: (206.0, 315.0),
+            size: (64.0, 32.0),
+            z: 14,
+            states: {
+                "clicked": (
+                    texture: "icons/buttinv2",
+                ),
+                "default": (
+                    texture: "icons/buttinv1",
+                ),
+            },
+            on_click: [
+                "HideScreen(\"chdetails_stats\")",
+                "HideScreen(\"chdetails_skills\")",
+                "HideScreen(\"chdetails_inventory\")",
+                "HideScreen(\"chdetails_award\")",
+                "ShowScreen(\"chdetails_inventory\")",
+            ],
+            on_hover: [],
+            bindings: {},
+            click_sound: "selectinganewcharacter",
+        )),
+    ],
+)

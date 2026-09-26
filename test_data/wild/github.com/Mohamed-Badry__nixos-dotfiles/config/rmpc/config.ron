@@ -1,0 +1,194 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    address: "~/.config/mpd/socket",
+    volume_step: 5,
+    scrolloff: 2,
+    max_fps: 60,
+    wrap_navigation: true,
+    theme: "rose_pine",
+    cache_dir: Some("~/Music/Downloads"),
+    lyrics_dir: "~/Music/lyrics",
+    on_song_change: None,
+    status_update_interval_ms: 1000,
+    enable_mouse: true,
+    enable_config_hot_reload: true,
+    album_art: (
+        method: Sixel,
+        max_size_px: (width: 0, height: 0),
+        vertical_align: Top,
+        horizontal_align: Center,
+    ),
+    cava: (
+        framerate: 60,
+        autosens: true,
+        sensitivity: 130,
+        input: (
+            method: Pipewire,
+            source: "auto",
+        ),
+        smoothing: (
+            noise_reduction: 25,
+            monstercat: false,
+            waves: false,
+        ),
+    ),
+    keybinds: (
+        global: {
+            "q":       Quit,
+            "~":       ShowHelp,
+            "O":       ShowOutputs,
+            "I":       ShowCurrentSongInfo,
+            "<C-p>":   ShowDecoders,
+            ":":       CommandMode,
+            "=":       VolumeUp,
+            "-":       VolumeDown,
+            "p":       TogglePause,
+            "s":       Stop,
+            "]":       NextTrack,
+            "[":       PreviousTrack,
+            "<Right>": NextTab,
+            "<Tab>":   NextTab,
+            "<Left>":  PreviousTab,
+            "<S-Tab>": PreviousTab,
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Queue (Mini)"),
+            "3":       SwitchToTab("Directories"),
+            "4":       SwitchToTab("Playlists"),
+            "5":       SwitchToTab("Search"),
+            "z":       ToggleRepeat,
+            "x":       ToggleRandom,
+            "c":       ToggleSingle,
+            "f":       SeekForward,
+            "b":       SeekBack,
+        },
+        navigation: {
+            "<S-Up>":      PaneUp,
+            "<S-Down>":    PaneDown,
+            "<S-Left>":    PaneLeft,
+            "<S-Right>":   PaneRight,
+            "<C-u>":       UpHalf,
+            "N":           PreviousResult,
+            "a":           Add,
+            "A":           AddAll,
+            "r":           Rename,
+            "n":           NextResult,
+            "g":           Top,
+            "<Space>":     Select,
+            "G":           Bottom,
+            "h":           Left,
+            "<CR>":        Confirm,
+            "i":           FocusInput,
+            "J":           MoveDown,
+            "j":           Down,
+            "<C-d>":       DownHalf,
+            "/":           EnterSearch,
+            "<C-c>":       Close,
+            "<Esc>":       Close,
+            "K":           MoveUp,
+            "l":           Right,
+            "D":           Delete,
+            "k":           Up,
+            "B":           ShowInfo,
+        },
+        queue: {
+            "D":           DeleteAll,
+            "<CR>":        Play,
+            "<C-s>":       Save,
+            "a":           AddToPlaylist,
+            "X":       Shuffle,
+            "d":           Delete,
+        },
+    ),
+    search: (
+        case_sensitive: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+        ],
+    ),
+    tabs: [
+        (
+            name: "Queue",
+            border_type: None,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "30%",
+                        borders: "RIGHT",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "40%",
+                                    pane: Pane(AlbumArt),
+                                ),
+                                (
+                                    borders: "TOP",
+                                    size: "60%",
+                                    pane: Pane(Lyrics)
+                                ),
+                            ],
+                        ),
+                    ),
+                    (
+                        size: "100%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "60%",
+                                    pane: Pane(Queue),
+                                ),
+                                (
+                                    borders: "TOP",
+                                    size: "40%",
+                                    pane: Pane(Cava)
+                                ),
+                            ],
+                        ),
+                    )
+                ],
+            ),
+        ),
+       (
+            name: "Queue (Mini)",
+            border_type: None,
+            pane: Split(
+                direction: Vertical,
+                panes: [
+                    (
+                         size: "60%",
+                         pane: Pane(Queue),
+                     ),
+                     (
+                         borders: "TOP",
+                         size: "40%",
+                         pane: Pane(Cava),
+                     ),
+                ],
+            ),
+        ),
+        (
+            name: "Directories",
+            border_type: None,
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Playlists",
+            border_type: None,
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            border_type: None,
+            pane: Pane(Search),
+        ),
+    ],
+)

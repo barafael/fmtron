@@ -1,0 +1,12 @@
+(
+    id: "empty_medkit",
+    label: "Empty Medkit",
+    description: "Contains: hope. Does not contain: medicine.",
+    slot: reactor,
+    rarity: junk,
+    base_value: 5,
+    icon: Some("!"),
+    icon_path: None,
+    modifiers: [],
+    on_kill: None,
+)

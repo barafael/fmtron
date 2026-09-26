@@ -1,0 +1,8 @@
+// Reproduces the approved dark-fantasy crafting prototype without a UO install:
+// cargo run -p openshard-gump-render -- crates/client/gump-render/examples/blacksmith-prototype.ron --scale 1
+(
+    width: 1672,
+    height: 941,
+    backdrop: Some("../../../../docs/prototypes/blacksmith-crafting-gump-v1.png"),
+    elements: [],
+)

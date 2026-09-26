@@ -1,0 +1,248 @@
+// Per-asteroid gameplay data for Helios Ascension.
+//
+// Modding guide:
+// - Each entry's `body` must match a name in solar_system.ron whose
+//   body_type is Asteroid. The loader joins on this key.
+// - `composition` is a mass-fraction map; values must sum to <= 1.0.
+// - `discovery_tier` (0..=8) gates how many composition entries the
+//   dossier shows. See docs/design/ASTEROID_ENTITIES.md §3.1.
+// - `delta_v_to_redirect_kms` is the total mission Δv for the
+//   `redirect_target`. None = not divertable.
+// - `terraforming_source: true` flags the asteroid as a viable
+//   volatile source for ROADMAP §8.1.
+//
+// LGD-owned. Add new entries by copying an existing one.
+//
+// v0.5.x worked-example set spans the asteroid classes (C, S, M, V, P),
+// orbital regimes (main belt, near-Earth, Jupiter L4/L5), and at least
+// one body per gameplay pillar (mining / cyclical logistics / terraforming).
+
+(
+    asteroids: [
+
+        // -- Inner-belt reservoirs -----------------------------------------
+
+        // Ceres - C-type dwarf planet. The flagship volatile reservoir.
+        (
+            body: "Ceres",
+            asteroid_class: Some(CType),
+            total_mass_kg: 9.39e20,
+            composition: {
+                "Water":     0.180,
+                "Iron":      0.110,
+                "Nickel":    0.022,
+                "Silicates": 0.300,
+                "Ammonia":   0.005,
+                "Carbon":    0.022,
+                "Magnesium": 0.040,
+            },
+            discovery_tier: 2,
+            delta_v_to_redirect_kms: Some(2.4),
+            redirect_target: "Mars",
+            terraforming_source: true,
+            lore_seed: Some(r#"C-class dwarf planet. ~25% water of hydration in the regolith;
+nitrogen and ammonia trapped in clays. Practically a giant dirty
+snowball dragged into the inner system by a Jupiter assist."#),
+        ),
+
+        // Vesta - V-type differentiated fragment.
+        (
+            body: "Vesta",
+            asteroid_class: Some(VType),
+            total_mass_kg: 2.59e20,
+            composition: {
+                "Iron":      0.180,
+                "Silicates": 0.420,
+                "Titanium":  0.010,
+                "Magnesium": 0.080,
+                "Nickel":    0.025,
+                "Aluminum":  0.060,
+            },
+            discovery_tier: 2,
+            delta_v_to_redirect_kms: Some(2.7),
+            redirect_target: "Mars",
+            terraforming_source: false,
+            lore_seed: Some(r#"V-type differentiated fragment. Iron core remnants, basaltic crust
+rich in pyroxene. The HED meteorite parent body."#),
+        ),
+
+        // Psyche - M-type. The iconic metal asteroid.
+        (
+            body: "Psyche",
+            asteroid_class: Some(MType),
+            total_mass_kg: 2.72e19,
+            composition: {
+                "Iron":      0.560,
+                "Nickel":    0.180,
+                "Platinum":  0.0001,
+                "Gold":      0.00002,
+                "Copper":    0.008,
+                "Silicates": 0.080,
+                "Cobalt":    0.005,
+            },
+            discovery_tier: 3,
+            delta_v_to_redirect_kms: Some(4.9),
+            redirect_target: "Earth",
+            terraforming_source: false,
+            lore_seed: Some(r#"M-type. Probably an exposed iron core of a stripped parent body.
+Mass fractions are dominated by Fe-Ni with traces of noble metals
+rivaling Earth-crust concentrations by an order of magnitude."#),
+        ),
+
+        // -- Near-Earth survey-friendly -----------------------------------
+
+        // 101955 Bennu - low Δv to Earth, hydrated clays confirmed.
+        (
+            body: "101955 Bennu",
+            asteroid_class: Some(CType),
+            total_mass_kg: 7.8e10,
+            composition: {
+                "Water":     0.080,
+                "Iron":      0.060,
+                "Nickel":    0.012,
+                "Silicates": 0.420,
+                "Carbon":    0.045,
+                "Ammonia":   0.003,
+            },
+            discovery_tier: 1,
+            delta_v_to_redirect_kms: Some(5.8),
+            redirect_target: "Earth",
+            terraforming_source: true,
+            lore_seed: Some(r#"Near-Earth C-type. OSIRIS-REx sample returned hydrated clays and
+organics. Surrogate for accessible water on a near-Earth orbit."#),
+        ),
+
+        // 433 Eros - NEAR-Shoemaker landed; canonical v0.5.x tutorial body.
+        (
+            body: "433 Eros",
+            asteroid_class: Some(SType),
+            total_mass_kg: 6.69e15,
+            composition: {
+                "Iron":      0.190,
+                "Silicates": 0.420,
+                "Nickel":    0.025,
+                "Magnesium": 0.085,
+                "Aluminum":  0.055,
+                "Titanium":  0.005,
+            },
+            discovery_tier: 1,
+            delta_v_to_redirect_kms: Some(5.4),
+            redirect_target: "Earth",
+            terraforming_source: false,
+            lore_seed: Some(r#"Near-Earth Amor-class S-type. NEAR-Shoemaker landed 2001. The
+v0.5.x reference body for surface-mining tutorials."#),
+        ),
+
+        // 162173 Ryugu - Hayabusa2 sample returned 2020. Low Δv to Moon.
+        (
+            body: "162173 Ryugu",
+            asteroid_class: Some(CType),
+            total_mass_kg: 4.50e11,
+            composition: {
+                "Water":     0.090,
+                "Iron":      0.080,
+                "Nickel":    0.015,
+                "Silicates": 0.380,
+                "Carbon":    0.060,
+                "Ammonia":   0.005,
+            },
+            discovery_tier: 1,
+            delta_v_to_redirect_kms: Some(5.1),
+            redirect_target: "Moon",
+            terraforming_source: true,
+            lore_seed: Some(r#"Hayabusa2 sample returned 2020. Hydrated silicates and organics
+confirmed. Low Δv to the Moon makes Ryugu the v0.5.x canonical
+volatile redirect for terrestrial cislunar industry."#),
+        ),
+
+        // -- Jupiter Trojans (L4/L5 Lagrange) -----------------------------
+
+        // 588 Achilles - Greek camp at Jupiter L4.
+        (
+            body: "588 Achilles",
+            asteroid_class: Some(SType),
+            total_mass_kg: 2.27e18,
+            composition: {
+                "Iron":      0.180,
+                "Silicates": 0.430,
+                "Nickel":    0.022,
+                "Magnesium": 0.090,
+                "Aluminum":  0.060,
+                "Titanium":  0.005,
+            },
+            discovery_tier: 2,
+            delta_v_to_redirect_kms: Some(1.8),
+            redirect_target: "L4",
+            terraforming_source: false,
+            lore_seed: Some(r#"Greek camp at Jupiter L4. The first Jupiter Trojan discovered
+and a useful staging body for a deep-space refuelling post."#),
+        ),
+
+        // 617 Patroclus - Trojan camp at Jupiter L5. Binary, primitive.
+        (
+            body: "617 Patroclus",
+            asteroid_class: Some(PType),
+            total_mass_kg: 1.36e18,
+            composition: {
+                "Water":     0.090,
+                "Ammonia":   0.012,
+                "Methane":   0.008,
+                "Iron":      0.060,
+                "Silicates": 0.380,
+                "Magnesium": 0.060,
+                "Carbon":    0.030,
+            },
+            discovery_tier: 2,
+            delta_v_to_redirect_kms: Some(1.8),
+            redirect_target: "L5",
+            terraforming_source: true,
+            lore_seed: Some(r#"Trojan camp at Jupiter L5. Binary system with Menoetius; the
+pair is primitive outer-belt material. Volatiles may exceed
+bulk-fraction estimates from spectroscopy."#),
+        ),
+
+        // -- Outer belt ---------------------------------------------------
+
+        // Juno - S-type main belt; classical anchor for the v0.5.x playbook.
+        (
+            body: "Juno",
+            asteroid_class: Some(SType),
+            total_mass_kg: 2.67e19,
+            composition: {
+                "Iron":      0.220,
+                "Silicates": 0.400,
+                "Nickel":    0.030,
+                "Magnesium": 0.080,
+                "Aluminum":  0.040,
+                "Water":     0.012,
+            },
+            discovery_tier: 2,
+            delta_v_to_redirect_kms: Some(3.1),
+            redirect_target: "Mars",
+            terraforming_source: false,
+            lore_seed: Some(r#"S-type main belt. One of the earliest-discovered asteroids and a
+convenient mining anchor for the v0.5.x playbook."#),
+        ),
+
+        // Hygiea - large C-type, slow-rotating, low density. Volatile-rich.
+        (
+            body: "Hygiea",
+            asteroid_class: Some(CType),
+            total_mass_kg: 8.32e19,
+            composition: {
+                "Water":     0.060,
+                "Silicates": 0.500,
+                "Iron":      0.040,
+                "Carbon":    0.080,
+                "Ammonia":   0.004,
+                "Magnesium": 0.050,
+            },
+            discovery_tier: 2,
+            delta_v_to_redirect_kms: Some(3.6),
+            redirect_target: "Mars",
+            terraforming_source: true,
+            lore_seed: Some(r#"C-type, slow rotator, low bulk density. Probably a rubble pile
+- high porosity means redirect delta-v is lower per kg."#),
+        ),
+    ],
+)

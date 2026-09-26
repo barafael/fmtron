@@ -1,0 +1,16 @@
+(
+    seed: 12345,
+    chunk_size: 300.0,
+    grid_resolution: 100,
+    load_radius: 0,
+    unload_radius: 1,
+    spawn_x: 0.0,
+    spawn_z: 0.0,
+    flat: true,
+    terrain_mode: "Glb",
+    noise_layers: [
+        (scale: 0.005, amplitude: 30.0),
+        (scale: 0.02, amplitude: 10.0),
+        (scale: 0.1, amplitude: 3.0),
+    ],
+)

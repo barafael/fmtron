@@ -1,0 +1,6 @@
+{
+  "Hello {name}!": {
+    "de": "Hallo {name}!",
+    "fr": "Bonjour {name}!",
+  },
+}

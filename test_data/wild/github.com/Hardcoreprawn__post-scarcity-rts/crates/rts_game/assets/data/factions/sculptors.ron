@@ -1,0 +1,735 @@
+// The BioSovereigns Faction Data (Bio-Sovereigns)
+// Post-Scarcity RTS
+//
+// "Your body should be yours to shape. We're here to help."
+
+(
+    id: BioSovereigns,
+    display_name: "faction.BioSovereigns.name",
+    description: "faction.BioSovereigns.description",
+
+    primary_color: (255, 240, 245),  // Pearl white/rose
+    secondary_color: (138, 43, 226), // Deep violet
+
+    starting_feedstock: 350,
+
+    starting_buildings: [
+        (type_id: "atelier", offset_x: 0, offset_y: 0),
+    ],
+
+    starting_units: [
+        (type_id: "therapist", offset_x: 5, offset_y: 0),
+        (type_id: "aesthetic", offset_x: 5, offset_y: 3),
+        (type_id: "essence_collector", offset_x: -5, offset_y: 0),
+    ],
+
+    // ========================================
+    // UNITS
+    // ========================================
+    units: [
+        // ------ Tier 1: Practitioners ------
+        (
+            id: "therapist",
+            name: "unit.BioSovereigns.therapist.name",
+            description: "unit.BioSovereigns.therapist.description",
+            cost: 60,
+            build_time: 150,
+            health: 70,
+            speed: 34359738368,  // Fixed-point for 80.0
+            combat: Some((
+                damage: 6,  // Lightly armed, mainly support
+                range: 171798691840,  // Fixed-point for 40.0
+                attack_cooldown: 35,
+                armor: 5,
+            )),
+            tech_required: [],
+            tier: 1,
+            produced_at: ["studio"],
+            tags: ["infantry", "ground", "support", "healer"],
+        ),
+        (
+            id: "aesthetic",
+            name: "unit.BioSovereigns.aesthetic.name",
+            description: "unit.BioSovereigns.aesthetic.description",
+            cost: 75,
+            build_time: 165,
+            health: 90,
+            speed: 38654705664,  // Fixed-point for 90.0
+            combat: Some((
+                damage: 14,
+                range: 214748364800,  // Fixed-point for 50.0
+                attack_cooldown: 30,
+                armor: 10,
+            )),
+            tech_required: [],
+            tier: 1,
+            produced_at: ["studio"],
+            tags: ["infantry", "ground", "combat"],
+        ),
+        (
+            id: "courier",
+            name: "unit.BioSovereigns.courier.name",
+            description: "unit.BioSovereigns.courier.description",
+            cost: 45,
+            build_time: 90,
+            health: 60,
+            speed: 68719476736,  // Fixed-point for 16.0 - very fast
+            combat: None,  // Non-combatant scout
+            tech_required: [],
+            tier: 1,
+            produced_at: ["studio"],
+            tags: ["infantry", "ground", "scout", "fast"],
+        ),
+        (
+            id: "essence_collector",
+            name: "unit.BioSovereigns.essence_collector.name",
+            description: "unit.BioSovereigns.essence_collector.description",
+            cost: 90,
+            build_time: 180,
+            health: 120,
+            speed: 34359738368,  // Fixed-point for 80.0
+            combat: None,
+            tech_required: [],
+            tier: 1,
+            produced_at: ["harvester_bay"],
+            tags: ["ground", "harvester", "organic"],
+        ),
+
+        // ------ Tier 2: Artisans ------
+        (
+            id: "masterwork",
+            name: "unit.BioSovereigns.masterwork.name",
+            description: "unit.BioSovereigns.masterwork.description",
+            cost: 200,
+            build_time: 330,
+            health: 250,
+            speed: 30064771072,  // Fixed-point for 70.0
+            combat: Some((
+                damage: 35,
+                range: 257698037760,  // Fixed-point for 60.0
+                attack_cooldown: 35,
+                armor: 30,
+            )),
+            tech_required: [],
+            tier: 2,
+            produced_at: ["gallery"],
+            tags: ["infantry", "ground", "elite", "signature"],
+        ),
+        (
+            id: "symbiont",
+            name: "unit.BioSovereigns.symbiont.name",
+            description: "unit.BioSovereigns.symbiont.description",
+            cost: 175,
+            build_time: 270,
+            health: 300,
+            speed: 25769803776,  // Fixed-point for 60.0
+            combat: None,  // Support platform, no weapons
+            tech_required: [],
+            tier: 2,
+            produced_at: ["gallery"],
+            tags: ["vehicle", "ground", "support", "aura", "healer"],
+        ),
+        (
+            id: "dissolution",
+            name: "unit.BioSovereigns.dissolution.name",
+            description: "unit.BioSovereigns.dissolution.description",
+            cost: 180,
+            build_time: 285,
+            health: 150,
+            speed: 25769803776,  // Fixed-point for 60.0
+            combat: Some((
+                damage: 45,  // High vs buildings
+                range: 343597383680,  // Fixed-point for 80.0
+                attack_cooldown: 50,
+                armor: 15,
+            )),
+            tech_required: [],
+            tier: 2,
+            produced_at: ["gallery"],
+            tags: ["infantry", "ground", "siege"],
+        ),
+
+        // ------ Tier 3: Magnum Opus ------
+        (
+            id: "paragon",
+            name: "unit.BioSovereigns.paragon.name",
+            description: "unit.BioSovereigns.paragon.description",
+            cost: 600,
+            build_time: 540,
+            health: 800,
+            speed: 21474836480,  // Fixed-point for 50.0
+            combat: Some((
+                damage: 70,
+                range: 300647710720,  // Fixed-point for 70.0
+                attack_cooldown: 40,
+                armor: 50,
+            )),
+            tech_required: ["sanctum"],
+            tier: 3,
+            produced_at: ["sanctum"],
+            tags: ["infantry", "ground", "super_heavy", "elite", "regenerating"],
+        ),
+        (
+            id: "muse",
+            name: "unit.BioSovereigns.muse.name",
+            description: "unit.BioSovereigns.muse.description",
+            cost: 450,
+            build_time: 420,
+            health: 400,
+            speed: 30064771072,  // Fixed-point for 70.0
+            combat: Some((
+                damage: 30,
+                range: 257698037760,  // Fixed-point for 60.0
+                attack_cooldown: 35,
+                armor: 35,
+            )),
+            tech_required: ["sanctum"],
+            tier: 3,
+            produced_at: ["sanctum"],
+            tags: ["infantry", "ground", "commander", "aura"],
+        ),
+        (
+            id: "genesis_chamber",
+            name: "unit.BioSovereigns.genesis_chamber.name",
+            description: "unit.BioSovereigns.genesis_chamber.description",
+            cost: 550,
+            build_time: 480,
+            health: 600,
+            speed: 12884901888,  // Fixed-point for 30.0 - very slow
+            combat: Some((
+                damage: 20,
+                range: 214748364800,  // Fixed-point for 50.0
+                attack_cooldown: 45,
+                armor: 40,
+            )),
+            tech_required: ["sanctum"],
+            tier: 3,
+            produced_at: ["sanctum"],
+            tags: ["vehicle", "ground", "production", "conversion"],
+        ),
+    ],
+
+    // ========================================
+    // BUILDINGS
+    // ========================================
+    buildings: [
+        // ------ Core Buildings ------
+        (
+            id: "atelier",
+            name: "building.BioSovereigns.atelier.name",
+            description: "building.BioSovereigns.atelier.description",
+            cost: 0,  // Starting building
+            build_time: 0,
+            health: 3700,  // proportional increase with other factions
+            produces: [],
+            tech_required: [],
+            provides_tech: ["atelier_online"],
+            tier: 1,
+            targetable: true,
+            armor: 18,
+            vision_range: Some(51539607552),  // Fixed-point for 120.0
+            tags: ["headquarters"],
+            is_harvester: false,
+            is_main_base: true,
+        ),
+        (
+            id: "harvester_bay",
+            name: "building.BioSovereigns.harvester_bay.name",
+            description: "building.BioSovereigns.harvester_bay.description",
+            cost: 75,
+            build_time: 120,
+            health: 300,
+            produces: ["essence_collector"],
+            tech_required: [],
+            provides_tech: [],
+            tier: 1,
+            targetable: true,
+            armor: 10,
+            vision_range: Some(34359738368),
+            tags: ["production", "harvester"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+        (
+            id: "clinic",
+            name: "building.BioSovereigns.clinic.name",
+            description: "building.BioSovereigns.clinic.description",
+            cost: 100,
+            build_time: 150,
+            health: 350,
+            produces: [],
+            tech_required: [],
+            provides_tech: [],
+            tier: 1,
+            targetable: true,
+            armor: 10,
+            vision_range: Some(38654705664),
+            tags: ["economy", "healing", "refinery"],
+            is_harvester: true,
+            is_main_base: false,
+        ),
+        (
+            id: "salon",
+            name: "building.BioSovereigns.salon.name",
+            description: "building.BioSovereigns.salon.description",
+            cost: 150,
+            build_time: 210,
+            health: 400,
+            produces: [],
+            tech_required: [],
+            provides_tech: [],
+            tier: 1,
+            targetable: true,
+            armor: 12,
+            vision_range: Some(42949672960),
+            tags: ["expansion", "influence"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+
+        // ------ Production Buildings ------
+        (
+            id: "studio",
+            name: "building.BioSovereigns.studio.name",
+            description: "building.BioSovereigns.studio.description",
+            cost: 150,
+            build_time: 195,
+            health: 450,
+            produces: ["therapist", "aesthetic", "courier"],
+            tech_required: [],
+            provides_tech: [],
+            tier: 1,
+            targetable: true,
+            armor: 12,
+            vision_range: Some(38654705664),
+            tags: ["production", "infantry"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+        (
+            id: "gallery",
+            name: "building.BioSovereigns.gallery.name",
+            description: "building.BioSovereigns.gallery.description",
+            cost: 300,
+            build_time: 330,
+            health: 550,
+            produces: ["masterwork", "symbiont", "dissolution"],
+            tech_required: ["archive"],
+            provides_tech: [],
+            tier: 2,
+            targetable: true,
+            armor: 18,
+            vision_range: Some(38654705664),
+            tags: ["production", "advanced"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+        (
+            id: "sanctum",
+            name: "building.BioSovereigns.sanctum.name",
+            description: "building.BioSovereigns.sanctum.description",
+            cost: 500,
+            build_time: 480,
+            health: 700,
+            produces: ["paragon", "muse", "genesis_chamber"],
+            tech_required: ["archive"],
+            provides_tech: ["tier_3_access"],
+            tier: 3,
+            targetable: true,
+            armor: 25,
+            vision_range: Some(42949672960),
+            tags: ["production", "tier3"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+
+        // ------ Tech Buildings ------
+        (
+            id: "archive",
+            name: "building.BioSovereigns.archive.name",
+            description: "building.BioSovereigns.archive.description",
+            cost: 200,
+            build_time: 270,
+            health: 400,
+            produces: [],
+            tech_required: [],
+            provides_tech: ["tier_2_access"],
+            tier: 1,
+            targetable: true,
+            armor: 12,
+            vision_range: Some(38654705664),
+            tags: ["tech", "research"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+
+        // ------ Defense Buildings ------
+        (
+            id: "warden",
+            name: "building.BioSovereigns.warden.name",
+            description: "building.BioSovereigns.warden.description",
+            cost: 125,
+            build_time: 135,
+            health: 250,
+            produces: [],
+            tech_required: [],
+            provides_tech: [],
+            tier: 1,
+            targetable: true,
+            armor: 15,
+            vision_range: Some(47244640256),
+            tags: ["defense", "anti_ground", "organic"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+        (
+            id: "sentinel",
+            name: "building.BioSovereigns.sentinel.name",
+            description: "building.BioSovereigns.sentinel.description",
+            cost: 125,
+            build_time: 135,
+            health: 250,
+            produces: [],
+            tech_required: [],
+            provides_tech: [],
+            tier: 1,
+            targetable: true,
+            armor: 15,
+            vision_range: Some(51539607552),
+            tags: ["defense", "anti_air", "organic"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+        (
+            id: "membrane",
+            name: "building.BioSovereigns.membrane.name",
+            description: "building.BioSovereigns.membrane.description",
+            cost: 75,
+            build_time: 75,
+            health: 400,
+            produces: [],
+            tech_required: [],
+            provides_tech: [],
+            tier: 1,
+            targetable: true,
+            armor: 20,
+            vision_range: None,
+            tags: ["defense", "wall", "regenerating"],
+            is_harvester: false,
+            is_main_base: false,
+        ),
+    ],
+
+    // ========================================
+    // TECHNOLOGIES
+    // ========================================
+    technologies: [
+        // ------ Tier 1: Foundations ------
+        (
+            id: "enhanced_healing",
+            name: "tech.BioSovereigns.enhanced_healing.name",
+            description: "tech.BioSovereigns.enhanced_healing.description",
+            cost: 100,
+            research_time: 900,  // 30 seconds
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "regen_rate", params: ["25"]),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: [],
+            tier: 1,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: None,
+            icon: None,
+        ),
+        (
+            id: "optimized_forms",
+            name: "tech.BioSovereigns.optimized_forms.name",
+            description: "tech.BioSovereigns.optimized_forms.description",
+            cost: 100,
+            research_time: 900,
+            effects: [
+                (
+                    effect_type: StatModifierPercent(stat: "speed", percent: 10),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: [],
+            tier: 1,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: None,
+            icon: None,
+        ),
+        (
+            id: "sensory_suite",
+            name: "tech.BioSovereigns.sensory_suite.name",
+            description: "tech.BioSovereigns.sensory_suite.description",
+            cost: 75,
+            research_time: 600,  // 20 seconds
+            effects: [
+                (
+                    effect_type: VisionModifier(range: 8589934592),  // Fixed-point for 2.0
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: [],
+            tier: 1,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: None,
+            icon: None,
+        ),
+
+        // ------ Tier 2 Branch A: Perfection Doctrine ------
+        (
+            id: "perfection_doctrine",
+            name: "tech.BioSovereigns.perfection_doctrine.name",
+            description: "tech.BioSovereigns.perfection_doctrine.description",
+            cost: 150,
+            research_time: 1200,  // 40 seconds
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "unlock_branch", params: ["perfection"]),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: [],
+            tier: 2,
+            exclusive_with: ["harmony_doctrine"],
+            researched_at: Some("archive"),
+            is_doctrine: true,
+            branch: Some("perfection"),
+            icon: None,
+        ),
+        (
+            id: "hardened_tissue",
+            name: "tech.BioSovereigns.hardened_tissue.name",
+            description: "tech.BioSovereigns.hardened_tissue.description",
+            cost: 150,
+            research_time: 1200,
+            effects: [
+                (
+                    effect_type: StatModifierFlat(stat: "armor", amount: 15),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["perfection_doctrine"],
+            tier: 2,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: Some("perfection"),
+            icon: None,
+        ),
+        (
+            id: "redundant_systems",
+            name: "tech.BioSovereigns.redundant_systems.name",
+            description: "tech.BioSovereigns.redundant_systems.description",
+            cost: 200,
+            research_time: 1500,  // 50 seconds
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "death_save", params: ["1"]),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["perfection_doctrine"],
+            tier: 2,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: Some("perfection"),
+            icon: None,
+        ),
+        (
+            id: "living_weapons",
+            name: "tech.BioSovereigns.living_weapons.name",
+            description: "tech.BioSovereigns.living_weapons.description",
+            cost: 175,
+            research_time: 1350,  // 45 seconds
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "ammo_regen", params: []),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["perfection_doctrine"],
+            tier: 2,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: Some("perfection"),
+            icon: None,
+        ),
+
+        // ------ Tier 2 Branch B: Harmony Doctrine ------
+        (
+            id: "harmony_doctrine",
+            name: "tech.BioSovereigns.harmony_doctrine.name",
+            description: "tech.BioSovereigns.harmony_doctrine.description",
+            cost: 150,
+            research_time: 1200,
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "unlock_branch", params: ["harmony"]),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: [],
+            tier: 2,
+            exclusive_with: ["perfection_doctrine"],
+            researched_at: Some("archive"),
+            is_doctrine: true,
+            branch: Some("harmony"),
+            icon: None,
+        ),
+        (
+            id: "symbiotic_bond",
+            name: "tech.BioSovereigns.symbiotic_bond.name",
+            description: "tech.BioSovereigns.symbiotic_bond.description",
+            cost: 150,
+            research_time: 1200,
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "shared_healing", params: ["20"]),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["harmony_doctrine"],
+            tier: 2,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: Some("harmony"),
+            icon: None,
+        ),
+        (
+            id: "collective_senses",
+            name: "tech.BioSovereigns.collective_senses.name",
+            description: "tech.BioSovereigns.collective_senses.description",
+            cost: 175,
+            research_time: 1350,
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "shared_vision", params: []),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["harmony_doctrine"],
+            tier: 2,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: Some("harmony"),
+            icon: None,
+        ),
+        (
+            id: "resonance",
+            name: "tech.BioSovereigns.resonance.name",
+            description: "tech.BioSovereigns.resonance.description",
+            cost: 200,
+            research_time: 1500,
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "aura_strength", params: ["50"]),
+                    applies_to: [],
+                    applies_to_tags: ["aura"],
+                ),
+            ],
+            prerequisites: ["harmony_doctrine"],
+            tier: 2,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: Some("harmony"),
+            icon: None,
+        ),
+
+        // ------ Tier 3 Upgrades ------
+        (
+            id: "metamorphosis",
+            name: "tech.BioSovereigns.metamorphosis.name",
+            description: "tech.BioSovereigns.metamorphosis.description",
+            cost: 300,
+            research_time: 1800,  // 60 seconds
+            effects: [
+                (
+                    effect_type: GrantAbility(
+                        ability_id: "change_role",
+                        targets: [],
+                    ),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["sanctum"],
+            tier: 3,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: None,
+            icon: None,
+        ),
+        (
+            id: "eternal_forms",
+            name: "tech.BioSovereigns.eternal_forms.name",
+            description: "tech.BioSovereigns.eternal_forms.description",
+            cost: 350,
+            research_time: 2250,  // 75 seconds
+            effects: [
+                (
+                    effect_type: Custom(effect_id: "death_refund_essence", params: ["50"]),
+                    applies_to: [],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["sanctum"],
+            tier: 3,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: None,
+            icon: None,
+        ),
+        (
+            id: "apotheosis",
+            name: "tech.BioSovereigns.apotheosis.name",
+            description: "tech.BioSovereigns.apotheosis.description",
+            cost: 400,
+            research_time: 2700,  // 90 seconds
+            effects: [
+                (
+                    effect_type: GrantAbility(
+                        ability_id: "second_ability",
+                        targets: [],
+                    ),
+                    applies_to: ["paragon"],
+                    applies_to_tags: [],
+                ),
+            ],
+            prerequisites: ["sanctum"],
+            tier: 3,
+            exclusive_with: [],
+            researched_at: Some("archive"),
+            is_doctrine: false,
+            branch: None,
+            icon: None,
+        ),
+    ],
+)

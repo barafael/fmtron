@@ -1,0 +1,132 @@
+// English pattern data (SSOT). Mirrors lang/en/patterns.py PATTERNS.
+[
+    PatternData(
+        type_: r"phone",
+        label: r"[PHONE REDACTED]",
+        pattern: r"(?<![0-9])(?:\+1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}(?![0-9])",
+        description: r"North American phone number",
+    ),
+    PatternData(
+        type_: r"ssn",
+        label: r"[SSN REDACTED]",
+        pattern: r"(?<![0-9])\d{3}[-\s]?\d{2}[-\s]?\d{4}(?![0-9])",
+        validator: Some(r"ssn"),
+        check_context: true,
+        description: r"US Social Security Number (with optional spaces/dashes)",
+    ),
+    PatternData(
+        type_: r"itin",
+        label: r"[ITIN REDACTED]",
+        pattern: r"(?<![0-9])\d{3}[-\s]?\d{2}[-\s]?\d{4}(?![0-9])",
+        validator: Some(r"itin"),
+        check_context: true,
+        description: r"US Individual Taxpayer Identification Number (area 900-999, IRS-assigned group ranges)",
+    ),
+    PatternData(
+        type_: r"credit_card",
+        label: r"[CARD REDACTED]",
+        pattern: r"(?<![0-9])(?:3[47]\d{2}[-\s]?\d{6}[-\s]?\d{5}|3(?:0[0-5]|[68]\d)\d[-\s]?\d{6}[-\s]?\d{4}|[3-6]\d{3}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4})(?![0-9])",
+        validator: Some(r"credit_card_luhn"),
+        check_context: true,
+        description: r"Credit card number (Luhn checksum)",
+        // A PAN is the same digits in any script: without this flag a card in
+        // ja/ko/de/… text loads NO card pattern at all (zh `bank_card` is not
+        // neutral either) and the number passes through verbatim.
+        //
+        // It cross-loads into zh too, where `bank_card` already covers these digits:
+        // the overlap merge collapses the two matches to one entity, and a spurious
+        // `near_miss_format` (BIN-valid but Luhn-invalid UnionPay card — the zh
+        // validator accepts it, the en one rejects it) is suppressed at the hint
+        // layer, which drops any near-miss whose span an accepted entity of another
+        // type already claims.
+        language_neutral: true,
+    ),
+    PatternData(
+        type_: r"address",
+        label: r"[ADDRESS REDACTED]",
+        pattern: r"\d{1,5}\s+(?:[A-Z][a-z]+\s+){1,3}(?:St(?:reet)?|Ave(?:nue)?|Rd|Road|Blvd|Boulevard|Dr(?:ive)?|Ln|Lane|Way|Ct|Court|Pl(?:ace)?|Cir(?:cle)?)(?:\s*,\s*(?:Apt|Suite|Unit|#)\s*\w+)?",
+        description: r"US street address (number + street name + type)",
+    ),
+    PatternData(
+        type_: r"date_of_birth",
+        label: r"[DOB REDACTED]",
+        pattern: r"(?:date\s+of\s+birth|DOB|birthdate|birthday|born(?:\s+on)?)\s*[:.]?\s*(?P<date_of_birth>(?:0?[1-9]|1[0-2])/(?:0?[1-9]|[12]\d|3[01])/(?:19|20)\d{2}|(?:19|20)\d{2}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])|(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2},?\s+(?:19|20)\d{2}|\d{1,2}(?:st|nd|rd|th)?\s+(?:January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(?:19|20)\d{2})",
+        group: Some(r"date_of_birth"),
+        description: r"English date of birth (keyword-triggered, multiple formats)",
+    ),
+    PatternData(
+        type_: r"us_passport",
+        label: r"[PASSPORT REDACTED]",
+        pattern: r"(?i:passport\s*(?:number|no\.?|#)?)\s*[:.]?\s*(?P<us_passport>[A-Za-z]\d{8})(?![0-9])",
+        group: Some(r"us_passport"),
+        description: r"US passport number (keyword-triggered, letter + 8 digits)",
+    ),
+    PatternData(
+        type_: r"medical",
+        label: r"[MEDICAL REDACTED]",
+        pattern: r"(?i:(?:diagnosed with|suffering from|treated for|prescribed|patient has|history of))\s+(?P<medical>(?i:\w[\w\s]{2,30}))",
+        group: Some(r"medical"),
+        description: r"Medical diagnosis (keyword-triggered, preserves trigger phrase)",
+    ),
+    PatternData(
+        type_: r"medical",
+        label: r"[MEDICAL REDACTED]",
+        pattern: r"(?i:HIV\s*(?:positive|negative)|(?:\w+\s+)?(?:surgery|transplant|chemotherapy|radiation therapy)|(?:diabetes|cancer|tumor|leukemia|hypertension|depression|schizophrenia|epilepsy|tuberculosis|hepatitis|alzheimer|parkinson|asthma|arthritis))",
+        description: r"Medical standalone (HIV/disease/surgery)",
+    ),
+    PatternData(
+        type_: r"financial",
+        label: r"[FINANCIAL REDACTED]",
+        pattern: r"(?i:(?:salary|income|wage|earnings|pay))\s*(?:of\s*)?(?P<financial>\$[\d,.]+)",
+        group: Some(r"financial"),
+        description: r"Financial amount (keyword-triggered, preserves keyword)",
+    ),
+    PatternData(
+        type_: r"financial",
+        label: r"[FINANCIAL REDACTED]",
+        pattern: r"(?i:(?:owes?|debt|owed|loan|mortgage)\s+\$[\d,.]+(?:\s+(?:in\s+)?(?:debt|loan|mortgage))?|credit\s+score\s+\d{3}|(?:net\s+worth|annual\s+income|monthly\s+salary)\s*(?:of\s*)?\$[\d,.]+|(?:bankrupt|bankruptcy|foreclosure|repossession))",
+        description: r"Financial standalone (debt/credit score/bankruptcy)",
+    ),
+    PatternData(
+        type_: r"criminal_record",
+        label: r"[CRIMINAL REDACTED]",
+        pattern: r"(?i:(?:convicted|convicted of|found guilty|pleaded guilty)\s+\w[\w\s]{2,20}|sentenced\s+to\s+\d+\s+\w+|(?:felony|misdemeanor)\s+(?:record|charge|conviction)|(?:criminal record|arrest record|police record)|(?:on\s+parole|on\s+probation|incarcerated|imprisoned))",
+        description: r"Criminal record (conviction/sentence/felony/arrest)",
+    ),
+    PatternData(
+        type_: r"biometric",
+        label: r"[BIOMETRIC REDACTED]",
+        pattern: r"(?i:(?:fingerprint|fingerprints)\s+(?:collected|scanned|recorded|stored|data)|facial\s+recognition|(?:iris|retina)\s+scan|(?:voice(?:print)?|palm\s+print)\s+(?:recorded|collected|data)|(?:DNA|genetic)\s+(?:test|sample|data|profile|analysis)|biometric\s+(?:data|information|identifier))",
+        description: r"Biometric data (fingerprint/facial/iris/DNA/voiceprint)",
+    ),
+    PatternData(
+        type_: r"religion",
+        label: r"[RELIGION REDACTED]",
+        pattern: r"(?i:(?:Christian|Catholic|Protestant|Muslim|Jewish|Hindu|Buddhist|Sikh|Mormon|Atheist|Agnostic|Orthodox)|(?:Sunday|Friday|Saturday)\s+(?:worship|prayer|service|mass)|(?:baptized|baptism|communion|confession|pilgrimage|Ramadan|Sabbath|kosher|halal))",
+        description: r"Religious belief (faith/worship/practices)",
+    ),
+    PatternData(
+        type_: r"political",
+        label: r"[POLITICAL REDACTED]",
+        pattern: r"(?i:(?:registered|affiliated)\s+(?:Democrat|Republican|Labour|Conservative|Liberal|Independent)|voted\s+(?:for\s+)?(?:Democrat|Republican|Labour|Conservative|Liberal|Independent|\w+)|(?:protest|demonstration|rally|march)\s*(?:against|for)?|(?:political\s+(?:affiliation|party|opinion|belief|activist)))",
+        description: r"Political opinion (party/voting/protest/affiliation)",
+    ),
+    PatternData(
+        type_: r"sexual_orientation",
+        label: r"[ORIENTATION REDACTED]",
+        pattern: r"(?i:(?:homosexual|heterosexual|bisexual|asexual|pansexual)|\b(?:gay|lesbian|queer|LGBTQ?)\b|(?:came\s+out|coming\s+out))",
+        description: r"Sexual orientation (explicit terms)",
+    ),
+    PatternData(
+        type_: r"self_reference",
+        label: r"[SELF REDACTED]",
+        pattern: r"\b[Mm]y\s+(?:mother|father|mom|dad|husband|wife|spouse|son|daughter|brother|sister|grandfather|grandmother|grandma|grandpa|uncle|aunt|nephew|niece|partner|fiancée?|child|children|kid|kids|family)\b",
+        description: r"Self-reference with kinship (my mom/my husband/...)",
+    ),
+    PatternData(
+        type_: r"self_reference",
+        label: r"[SELF REDACTED]",
+        pattern: r"\b(?:myself|ourselves|mine|ours|our|my|me|us|we|I)\b",
+        description: r"Self-reference pronoun (I/me/my/we/our/...)",
+    ),
+]

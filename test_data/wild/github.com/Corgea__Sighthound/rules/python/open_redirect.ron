@@ -1,0 +1,23 @@
+(
+    rules: [
+        // ---- Open redirect ----
+        (
+            id: Some("python-redirect-001"),
+            name: Some("Open Redirect"),
+            category: Some("redirect"),
+            mode: "search",
+            patterns: Some([
+                "RedirectResponse",
+            ]),
+            finding_type: Some("Open Redirect"),
+            severity: Some("Medium"),
+            confidence: Some("Medium"),
+            cwe_id: Some("cwe-601"),
+            description: Some("Redirect target may be attacker-controlled (open redirect)"),
+            file_types: Some((
+                extensions: Some([".py"])
+            )),
+            tags: Some(["redirect", "open-redirect"])
+        ),
+    ]
+)

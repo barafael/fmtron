@@ -1,0 +1,7 @@
+{
+    "viking_room": Texture(
+        path: "viking_room.png",
+        type: Colour(RGB),
+        mipmaps: true,
+    )
+}

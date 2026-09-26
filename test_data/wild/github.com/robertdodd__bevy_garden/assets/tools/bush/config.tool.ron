@@ -1,0 +1,10 @@
+(
+    name: "Bush",
+    key: "bush",
+    tool_type: Object,
+    initial_scale: 0.25,
+    scaling: Some((
+        min: 0.25,
+        max: 1.0,
+    )),
+)

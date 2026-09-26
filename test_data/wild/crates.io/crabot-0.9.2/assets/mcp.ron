@@ -1,0 +1,37 @@
+(
+    servers: [
+        (
+            name: "exa",
+            transport: Http(
+                url: "https://mcp.exa.ai/mcp",
+                headers: {},
+            ),
+            prompt: r#"
+<tool name="web_search_exa">Search the web for any topic and get clean, ready-to-use content</tool>
+"#,
+            qualify_tool_names: false,
+        ),
+        (
+            name: "codebase",
+            transport: Stdio(
+                cmd: "codebase-memory-mcp",
+                env_vars: {},
+            ),
+            qualify_tool_names: true,
+            prompt: r#"
+<toolset prefix="codebase">
+CRITICAL - Code Discovery Protocol:
+1. ALWAYS use codebase tools FIRST for ANY code exploration:
+   - search_graph(name_pattern/label/qn_pattern) to find functions/classes/routes
+   - trace_path(function_name, mode=calls|data_flow|cross_service) for call chains
+   - get_code_snippet(qualified_name) for exact symbol source (precise ranges)
+   - query_graph(query) for complex Cypher patterns
+   - get_architecture(aspects) for project structure
+   - search_code(pattern) for text search
+2. Fall back to find/search/read for string literals, error messages, config values, non-code files.
+3. If a project is not indexed yet, run index_repository FIRST.
+</toolset>
+"#,
+        ),
+    ],
+)

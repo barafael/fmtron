@@ -1,0 +1,15 @@
+(
+    format_version: 1,
+    name: "mass-reconnect-v1",
+    profile: MassReconnect,
+    benchmark_kind: Soak,
+    seed: 19002,
+    tenants: 1000,
+    clients_per_tenant: 10,
+    operations: 2000000,
+    payload_bytes_p50: 128,
+    payload_bytes_p99: 2048,
+    max_dependency_edges: 2000000,
+    max_runtime_seconds: 7200,
+    durable: true,
+)

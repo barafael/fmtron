@@ -1,0 +1,8 @@
+Config (
+  bind: "0.0.0.0:54727",
+  popts: (
+    
+    host: "thiccmc.com",
+    port: 25565
+  )
+)

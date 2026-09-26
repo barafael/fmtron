@@ -1,0 +1,36 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "app-menu-hint-row",
+    parameters: ["command", "state", "icon", "tone", "label", "hint"],
+    root: Pressable(
+        id: "toggle",
+        press: Command(id: "$command"),
+        child: Row(
+            size: (w: Fill, h: Fixed(26.0)),
+            pad_x: 10.0,
+            gap: 8.0,
+            children: [
+                Glyph(
+                    id: "icon",
+                    icon: "$icon",
+                    style: Menu,
+                    color: Line,
+                    active_color: "$tone",
+                    active: Model(id: "$state"),
+                ),
+                Text(
+                    id: "label",
+                    size: (w: Fill, h: Fill),
+                    style: Mono,
+                    label: "$label",
+                ),
+                Text(
+                    id: "hint",
+                    style: MicroLabel,
+                    read: Model(id: "$hint"),
+                ),
+            ],
+        ),
+    ),
+)

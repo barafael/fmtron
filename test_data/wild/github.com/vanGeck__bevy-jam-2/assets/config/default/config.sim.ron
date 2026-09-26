@@ -1,0 +1,7 @@
+(
+    duration_millis: 2300,
+    max_depth: 3,
+    chance_corridor: 0.10,
+    chance_empty: 0.35,
+    chance_fight: 0.55,
+)

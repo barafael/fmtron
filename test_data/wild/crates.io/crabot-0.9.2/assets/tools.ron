@@ -1,0 +1,18 @@
+(
+    custom_tools: [
+        (
+            name: "crate_source",
+            description: "Find the local source path for a Rust crate from cargo cache. Returns the cached extraction directory containing the full crate source code. Useful for inspecting a crate\'s API, reading its implementation, or debugging dependencies.",
+            instruction: "Look up Rust crate version and source locations. Before inspecting a Rust dependency\'s source code, use crate_source to find its local path.",
+            parameters: [
+                (
+                    name: "crate",
+                    kind: String,
+                    description: "Name of the Rust crate to find (e.g., \'bevy\', \'serde\', \'nalgebra\')",
+                    required: true,
+                ),
+            ],
+            command: "bash -c \"registry=$(ls -1dt ~/.cargo/registry/src/* | head -n1);crate=$(cargo tree -i {crate} | sed -n \'1s/ v/-/p\');echo \\$registry/\\$crate\"",
+        ),
+    ],
+)

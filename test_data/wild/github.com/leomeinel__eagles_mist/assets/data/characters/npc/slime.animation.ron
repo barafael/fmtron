@@ -1,0 +1,11 @@
+AnimationData (
+    atlas_columns: 5,
+    atlas_rows: 2,
+    idle_row: Some(1),
+    idle_frames: Some(3),
+    idle_interval_ms: Some(2400),
+    walk_row: Some(0),
+    walk_frames: Some(5),
+    walk_interval_ms: Some(300),
+    walk_sound_frames: Some([5]),
+)

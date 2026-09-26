@@ -1,0 +1,10 @@
+(
+    playlist: (
+        mode: RandomNoRepeat,
+        sounds: [( file: "hurt.ogg" )],
+    ),
+    pitch: ( base: 1.0, variance: (-0.05, 0.05) ),
+    volume: ( variance: (-1.0, 0.0) ),
+    max_instances: 3,
+    cooldown: 0.1,
+)

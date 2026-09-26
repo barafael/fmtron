@@ -1,0 +1,24 @@
+// English locale for the examples (hello_world / editor_demo).
+// Keys are looked up via ctx.strings.tr("key"); scene-defined UI elements
+// use "@key" in their text fields.
+LocaleFile(
+    version: 1,
+    display_name: "English",
+    // No font: the game's own font stays active.
+    strings: {
+        "panel.title": "Controls",
+        "panel.score": "Score",
+        "panel.coins": "coins",
+        "panel.state": "State",
+        "panel.volume": "Volume:",
+        "panel.volume_bar": "Volume Bar:",
+        "panel.music_play": "Play",
+        "panel.music_pause": "Pause",
+        "panel.reset": "Reset",
+        "panel.toggle_ui": "H: Toggle UI",
+        "panel.font_on": "Font: ON",
+        "panel.font_off": "Font: OFF",
+        "scene.title": "HELLO WORLD",
+        "scene.hint": "L cycles language",
+    },
+)

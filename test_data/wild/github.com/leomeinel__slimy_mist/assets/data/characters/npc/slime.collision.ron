@@ -1,0 +1,6 @@
+CollisionData (
+    shape: Some("capsule"),
+    width: Some(16),
+    height: Some(8.0),
+    y_offset: Some(-4.0),
+)

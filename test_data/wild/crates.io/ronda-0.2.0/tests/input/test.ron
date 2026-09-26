@@ -1,0 +1,30 @@
+# // a comment
+    ! [  enable
+( unwrap_newtypes
+ , implicit_some)
+]
+// Line Comment
+/* block */
+/* Block Comment /* Nested Block Comment */ */
+(
+    value 
+
+    : "hello" // comment
+    ,
+    something_else /* */: "hi",
+    array: [
+
+
+
+
+
+
+
+
+
+    "hello", /* jo */ "bb8"
+    ], map: {"5": 10, hello:tschs},
+    tuple: (UNIT, (), {
+        (A,B,C):{hello:r"hohoho"}
+    })
+)

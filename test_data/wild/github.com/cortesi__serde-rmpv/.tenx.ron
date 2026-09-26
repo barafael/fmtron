@@ -1,0 +1,8 @@
+(
+    context: (
+        ruskel: ["rmpv", "serde-rmpv"]
+    ),
+    checks: (
+        enable: ["cargo-clippy"]
+    )
+)

@@ -1,0 +1,50 @@
+[
+    (
+        id: VoiceId(1),
+        name: "host",
+        parent: None,
+        grammar_weights: {
+            "greeting": 1.5,
+            "action_detail": 1.0,
+        },
+        vocabulary: (
+            preferred: ["indeed", "certainly", "I must say"],
+            avoided: ["gonna", "wanna"],
+        ),
+        markov_bindings: [
+            (corpus_id: "social_formal", weight: 1.0, tags: ["formal"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (10, 20),
+            clause_complexity: 0.7,
+            question_frequency: 0.1,
+        ),
+        quirks: [
+            (pattern: "you see", frequency: 0.1),
+        ],
+    ),
+    (
+        id: VoiceId(2),
+        name: "gossip",
+        parent: Some(VoiceId(1)),
+        grammar_weights: {
+            "greeting": 0.8,
+            "tense_observation": 2.0,
+        },
+        vocabulary: (
+            preferred: ["apparently", "would you believe"],
+            avoided: [],
+        ),
+        markov_bindings: [
+            (corpus_id: "gossip_prose", weight: 1.5, tags: ["informal"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (6, 14),
+            clause_complexity: 0.4,
+            question_frequency: 0.3,
+        ),
+        quirks: [
+            (pattern: "if you know what I mean", frequency: 0.15),
+        ],
+    ),
+]

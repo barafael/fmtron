@@ -1,0 +1,6 @@
+(
+    records: {
+        "www.wtf.wtf": "192.168.1.1",
+        "hahahaha": "0.0.0.0"
+    }
+)

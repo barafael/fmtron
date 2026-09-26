@@ -1,0 +1,12 @@
+#![enable(implicit_some)]
+(
+    shader: "content/shaders/prop_shader.toml",
+    params: {
+        "mainTexture": Texture ((
+            texture: "content/models/dragon-2_80/dragon.basis",
+            filter: true,
+            wrap_s: false,
+            wrap_t: false,
+        ))
+    }
+)

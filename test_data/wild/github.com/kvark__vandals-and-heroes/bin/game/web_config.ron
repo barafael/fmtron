@@ -1,0 +1,9 @@
+// Config baked into the web build (see assets.rs). Mirrors data/config.ron,
+// minus the state recorder — there is no filesystem to write the log to.
+(
+    map: "fostral-torus",
+    car: "OxidizeMonk",
+    environment: Some("Fostral"),
+    snow_area_per_particle_m2: 50.0,
+    terrain_quality: 0.75,
+)

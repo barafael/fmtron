@@ -1,0 +1,19 @@
+(
+    body: None,
+    desc: "apply default builder to command() and apply fail() handlers globally (#583)",
+    footer:[
+        (
+            token: "BREAKING CHANGE",
+            separator: ColonSpace,
+            value: "fail is now applied globally."
+        ),
+        (
+            token: "BREAKING CHANGE",
+            separator: ColonSpace,
+            value: "we now default to an empty builder function when command is executed with no builder."
+        )
+    ],
+    is_breaking_change: true,
+    scope: None,
+    ty: "feat"
+)

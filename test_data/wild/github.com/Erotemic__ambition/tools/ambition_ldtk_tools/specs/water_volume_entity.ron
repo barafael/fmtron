@@ -1,0 +1,51 @@
+// Register a `WaterVolume` LDtk entity. The runtime emits this as a
+// `RoomObjectKind::WaterVolume(WaterVolumeSpec)` so the swim system
+// applies buoyancy + drag while the player AABB intersects.
+//
+// All four tuning fields default to engine defaults (gravity_scale
+// 0.30, drag 0.08, max_fall_speed 220, swim_up_impulse 760). Authors
+// can override per-volume by editing field values in LDtk.
+
+(
+    entities: [
+        (
+            identifier: "WaterVolume",
+            color: "#3DB8E0",
+            width: 256,
+            height: 192,
+            docs: "Water region. Player AABB intersection applies buoyancy + drag; the swim ability gates the upward stroke.",
+            fields: [
+                (
+                    name: "id",
+                    type: "String",
+                    default: "",
+                ),
+                (
+                    name: "name",
+                    type: "String",
+                    default: "water",
+                ),
+                (
+                    name: "gravity_scale",
+                    type: "Float",
+                    default: 0.3,
+                ),
+                (
+                    name: "drag",
+                    type: "Float",
+                    default: 0.08,
+                ),
+                (
+                    name: "max_fall_speed",
+                    type: "Float",
+                    default: 220.0,
+                ),
+                (
+                    name: "swim_up_impulse",
+                    type: "Float",
+                    default: 760.0,
+                ),
+            ],
+        ),
+    ],
+)

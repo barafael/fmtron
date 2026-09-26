@@ -1,0 +1,36 @@
+Rule(
+    id: "ba000001-0001-0001-0001-000000000001",
+    name: "Bathroom - Cancel Timer on Close",
+    enabled: true,
+    priority: 20,
+    tags: [],
+    trigger: DeviceStateChanged(
+        device_id: "yolink_d88b4c0400064299",
+        attribute: Some("open"),
+        to: Some(false),
+    ),
+    conditions: [
+        DeviceState(
+            device_id: "timer_bathroom",
+            attribute: "state",
+            op: Eq,
+            value: "running",
+        ),
+    ],
+    actions: [
+        RuleAction(
+            enabled: true,
+            action: SetDeviceState(
+                device_id: "timer_bathroom",
+                state: {
+                    "command": "cancel",
+                },
+                track_event_value: false,
+            ),
+        ),
+    ],
+    log_events: false,
+    log_triggers: false,
+    log_actions: false,
+    cancel_on_false: false,
+)

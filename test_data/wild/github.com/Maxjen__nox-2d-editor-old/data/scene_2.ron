@@ -1,0 +1,103 @@
+(
+    scene_nodes: [
+        (
+            name: "box_static_1",
+            prefab: "boxes/box_static",
+            components: [
+                Transform(
+                    translation: (400.0, 64.0),
+                    rotation: 0.0,
+                ),
+                /*Mesh("boxes/box"),
+                RigidBody("boxes/rb_box_static"),
+                Collider("boxes/c_box"),*/
+            ],
+        ),
+        (
+            name: "box_static_2",
+            prefab: "boxes/box_static",
+            components: [
+                Transform(
+                    translation: (336.0, 64.0),
+                    rotation: 0.0,
+                ),
+                /*Mesh("boxes/box"),
+                RigidBody("boxes/rb_box_static"),
+                Collider("boxes/c_box"),*/
+            ],
+        ),
+
+        (
+            name: "box_static_3",
+            prefab: "boxes/box_static",
+            components: [
+                Transform(
+                    translation: (464.0, 64.0),
+                    rotation: 0.0,
+                ),
+                /*Mesh("boxes/box"),
+                RigidBody("boxes/rb_box_static"),
+                Collider("boxes/c_box"),*/
+            ],
+        ),
+        (
+            name: "box_dynamic_1",
+            prefab: "boxes/box_dynamic",
+            components: [
+                Transform(
+                    translation: (384.0, 300.0),
+                    rotation: 0.0,
+                ),
+                /*Mesh("boxes/box"),
+                RigidBody("boxes/rb_box_dynamic"),
+                Collider("boxes/c_box"),*/
+            ],
+        ),
+        (
+            name: "box_dynamic_2",
+            prefab: "boxes/box_dynamic",
+            components: [
+                Transform(
+                    translation: (364.0, 200.0),
+                    rotation: 0.0,
+                ),
+                /*Mesh("boxes/box"),
+                RigidBody("boxes/rb_box_dynamic"),
+                Collider("boxes/c_box"),*/
+            ],
+        ),
+        (
+            name: "box_dynamic_3",
+            prefab: "boxes/box_dynamic",
+            components: [
+                Transform(
+                    translation: (364.0, 400.0),
+                    rotation: 0.0,
+                ),
+                /*Mesh("boxes/box"),
+                RigidBody("boxes/rb_box_dynamic"),
+                Collider("boxes/c_box"),*/
+            ],
+        ),
+        (
+            name: "sabre",
+            components: [
+                Transform(
+                    translation: (600.0, 270.0),
+                    rotation: -45.0,
+                ),
+                Mesh("meshes/sabre.png"),
+            ],
+        ),
+        (
+            name: "sabre2",
+            components: [
+                Transform(
+                    translation: (1200.0, 270.0),
+                    rotation: 0.0,
+                ),
+                Mesh("meshes/sabre.png"),
+            ],
+        ),
+    ],
+)

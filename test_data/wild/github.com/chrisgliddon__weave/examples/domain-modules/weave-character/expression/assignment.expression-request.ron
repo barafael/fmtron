@@ -1,0 +1,47 @@
+(
+    request_format_version: 1,
+    id: "org.weave.character.expression.assignment.ari_glasswind",
+    character_id: "org.weave.character.ari_vale",
+    expected_profile_sha256: "9451751027f2b1d634533d60f800e1160bb47afeb24cc8006f4490db19f6bdfa",
+    pack: (
+        id: "org.weave.expression.glasswind",
+        version: "1.0.0",
+        sha256: "cb9a577720dde087af5e633c337dcb9814b12b25a0102636cc2a06444b8d66f6",
+    ),
+    entry_ids: [
+        "avoid_crowded_metaphors",
+        "pauses_to_map",
+        "prefers_shared_landmarks",
+        "steady_question",
+        "trailmark",
+    ],
+    vocabulary_pool_ids: [
+        "wayfinding_terms",
+    ],
+    template_ids: [
+        "arrival_greeting",
+    ],
+    reviewer: "org.weave.reviewer.expression_fixture",
+    rationale: "Accept every independently authored Glasswind expression record for the public offline fixture.",
+    seed: 20260824,
+    provenance: (
+        sources: [
+            (
+                id: "weave_expression_assignment_fixture",
+                kind: original,
+                url: "https://github.com/chrisgliddon/weave",
+                revision: "expression-dialogue-v1",
+                license: "MIT",
+                license_url: "https://github.com/chrisgliddon/weave/blob/main/LICENSE",
+                attribution: "Original synthetic reviewed expression-pack assignment.",
+                modified: false,
+            ),
+        ],
+        transformations: [],
+        claims: {
+            "assignment": [
+                "weave_expression_assignment_fixture",
+            ],
+        },
+    ),
+)

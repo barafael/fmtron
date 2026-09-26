@@ -1,0 +1,7 @@
+[
+    (
+        name: "Steve",
+        id: 0,
+        voxel_texture_path: "assets/voxels/char.vox",
+    ),
+]

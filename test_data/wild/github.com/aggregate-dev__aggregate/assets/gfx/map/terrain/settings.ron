@@ -1,0 +1,6 @@
+(schema_version: 1, entries: [
+    Property(key: "detail_blend_range", operator: Assign, value: Number("0.1")),
+    Property(key: "detail_tile_factor", operator: Assign, value: Number("512")),
+    Property(key: "normal_height_scale", operator: Assign, value: Number(".25")),
+    Property(key: "skirt_height_factor", operator: Assign, value: Number(".1")),
+])

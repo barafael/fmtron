@@ -1,0 +1,6 @@
+(border_width: Some(1),
+margin: Some(4),
+default_border_color: Some("#222222"),
+floating_border_color: Some("#005500"),
+focused_border_color: Some("#FFB53A"),
+)

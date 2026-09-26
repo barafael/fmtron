@@ -1,0 +1,11 @@
+// src/settings/camera_settings.rs
+
+#![enable(implicit_some)]
+(
+    z: 20.0,
+    size: (
+        w: 96.0,
+        h: 192.0,
+    ),
+    follow_offset: (0.0, -32.0),
+)

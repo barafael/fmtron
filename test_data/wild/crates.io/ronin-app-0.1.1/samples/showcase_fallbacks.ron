@@ -1,0 +1,52 @@
+// showcase_fallbacks.ron — each field is a list that triggers exactly one
+// classifier::FallbackReason (the conservative uniform-section classifier's
+// closed reason set). The Part-D test classifies each list and asserts the
+// matching reason fires.
+//
+// classify() order: (1) every element must be a record of the SAME name
+// (else NameMismatch / NotARecordList), then (2) reconcile fields + detect a
+// same-named scalar TypeConflict, then NestedOnly (no scalar cell anywhere),
+// then TooSmall (<=2 uniform elements), else table-eligible.
+(
+    // NameMismatch: records of differing struct names (A vs B). >2 elements so
+    // the size guard cannot pre-empt; the name mismatch short-circuits first.
+    name_mismatch: [
+        A(x: 1),
+        B(x: 2),
+        A(x: 3),
+    ],
+
+    // TypeConflict: the SAME field `v` appears as an integer in one record and a
+    // string in another (same struct name, so it passes the name check first).
+    type_conflict: [
+        Row(v: 1),
+        Row(v: "two"),
+        Row(v: 3),
+    ],
+
+    // NestedOnly: every cell of every record is a nested collection (no scalar
+    // cell anywhere), so there is nothing to edit as a grid. >2 uniform records.
+    nested_only: [
+        Box(items: [1, 2], meta: { "k": 0 }),
+        Box(items: [3, 4], meta: { "k": 1 }),
+        Box(items: [5, 6], meta: { "k": 2 }),
+    ],
+
+    // NotARecordList: a list mixing a record with a stray scalar element (the
+    // scalar is not a record, so the list is not a list of records).
+    not_a_record_list: [
+        Item(id: 1),
+        99,
+        Item(id: 3),
+    ],
+
+    // TooSmall: exactly 2 genuinely-uniform records — defaults to tree/form (the
+    // user can still override to a table). All uniformity checks pass first.
+    too_small: [
+        Cell(n: 1),
+        Cell(n: 2),
+    ],
+
+    // Empty: an empty list has no rows to project.
+    empty: [],
+)

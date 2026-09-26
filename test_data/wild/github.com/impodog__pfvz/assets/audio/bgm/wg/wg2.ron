@@ -1,0 +1,8 @@
+(
+    file: "audio/bgm/wg/data/wg2.ogg",
+    loop_region: Some(Region(
+        start: Seconds(0.0),
+        end: EndOfAudio,
+    )),
+    volume: 0.7,
+)

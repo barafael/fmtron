@@ -1,0 +1,14 @@
+LevelDefinition(
+    creatures: [
+        CreatureDefinition (
+            image: Weasel,
+            max_speed: 1000.0,
+            movement: Circle ( radius: 0.5, duration_ms: 4000 )
+        ),
+        CreatureDefinition (
+            image: Weasel,
+            max_speed: 1000.0,
+            movement: Circle ( radius: 0.5, duration_ms: 3000 )
+        ),
+    ]
+)

@@ -1,0 +1,6 @@
+GoesrSatelliteInfo(
+    sat_id: 51850,
+    name: "G18",
+    description: "GOES West",
+    show: true,
+)

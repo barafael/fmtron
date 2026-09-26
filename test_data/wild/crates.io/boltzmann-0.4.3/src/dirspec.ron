@@ -1,0 +1,169 @@
+Dir(DirSpec(
+  children: [
+    ("boltzmann.js", 0o755, Template(TemplateSpec(
+      template_name: "boltzmann.js"
+    )), None),
+
+    ("handlers.js", 0o644, Template(TemplateSpec(
+      template_name: "handlers_cjs.js"
+    )), Some(When(
+      none_of: ["esm", "typescript"],
+      if_not_present: ["handlers.js", "handlers"]
+    ))),
+
+    ("handlers.js", 0o644, Template(TemplateSpec(
+      template_name: "handlers_esm.js"
+    )), Some(When(
+      none_of: ["typescript"],
+      all_of: ["esm"],
+      if_not_present: ["handlers.js", "handlers"]
+    ))),
+
+    ("handlers.ts", 0o644, Template(TemplateSpec(
+      template_name: "handlers.ts"
+    )), Some(When(
+      all_of: ["typescript"],
+      if_not_present: ["handlers.js", "handlers", "handlers.ts"]
+    ))),
+
+    ("middleware.js", 0o644, Template(TemplateSpec(
+      template_name: "middleware_cjs.js",
+    )), Some(When(
+      none_of: ["esm", "typescript"],
+      if_not_present: ["middleware.js", "middleware"]
+    ))),
+
+    ("middleware.js", 0o644, Template(TemplateSpec(
+      template_name: "middleware_esm.js",
+    )), Some(When(
+      none_of: ["typescript"],
+      all_of: ["esm"],
+      if_not_present: ["middleware.js", "middleware"]
+    ))),
+
+    ("middleware.ts", 0o644, Template(TemplateSpec(
+      template_name: "middleware.ts",
+    )), Some(When(
+      all_of: ["typescript"],
+      if_not_present: ["middleware.js", "middleware", "middleware.ts"]
+    ))),
+
+    ("tsconfig.json", 0o644, Template(TemplateSpec(
+      template_name: "tsconfig.json",
+    )), Some(When(
+      all_of: ["typescript"],
+      if_not_present: ["tsconfig.json"]
+    ))),
+
+    ("boltzmann.d.ts", 0o644, Template(TemplateSpec(
+      template_name: "boltzmann.d.ts",
+    )), Some(When(
+      all_of: ["typescript"],
+    ))),
+
+    ("nodemon.json", 0o644, Template(TemplateSpec(
+      template_name: "nodemon.json",
+    )), Some(When(
+      if_not_present: ["nodemon.json"]
+    ))),
+
+    ("templates", 0o755, Dir(DirSpec(
+      children: [
+            ("index.html", 0o644, Template(TemplateSpec(
+              template_name: "index.html"
+            )), None)
+      ],
+    )), Some(When(
+      all_of: ["templates"],
+      if_not_present: [ "templates/index.html"]
+    ))),
+
+    ("client", 0o755, Dir(DirSpec(
+      children: [
+            ("greeting.js", 0o644, Template(TemplateSpec(
+              template_name: "greeting.js"
+            )), None)
+      ],
+    )), Some(When(
+      all_of: ["staticfiles"],
+      if_not_present: [ "client/greeting.js"]
+    ))),
+
+    (".eslintrc.js", 0o644, Template(TemplateSpec(
+      template_name: "eslintrc.js"
+    )), Some(When(
+      if_not_present: [".eslintrc.js", ".eslintrc"],
+      none_of: ["esm"]
+    ))),
+
+    (".eslintrc.cjs", 0o644, Template(TemplateSpec(
+      template_name: "eslintrc.js"
+    )), Some(When(
+      if_not_present: [".eslintrc.js", ".eslintrc"],
+      all_of: ["esm"],
+    ))),
+
+    (".prettierrc.js", 0o644, Template(TemplateSpec(
+      template_name: "prettierrc.js"
+    )), Some(When(
+      if_not_present: [".prettierrc.js", ".prettierrc" ],
+      none_of: ["esm"]
+    ))),
+
+    (".prettierrc.cjs", 0o644, Template(TemplateSpec(
+      template_name: "prettierrc.js"
+    )), Some(When(
+      if_not_present: [".prettierrc.cjs", ".prettierrc" ],
+      all_of: ["esm"]
+    ))),
+
+    (".github", 0o755, Dir(DirSpec(
+      children: [
+        ("workflows", 0o755, Dir(DirSpec(
+          children: [
+            ("test.yml", 0o644, Template(TemplateSpec(
+              template_name: "github-action-test.yml"
+            )), None)
+          ]
+        )), None)
+      ]
+    )), Some(When(
+      all_of: ["githubci"],
+    ))),
+
+    // jumper module for selftest, to trick tap into
+    // reporting test coverage output for boltzmann.js
+    ("test.js", 0o644, Template(TemplateSpec(
+      template_name: "selftest.js",
+    )), Some(When(
+      all_of: ["selftest"],
+    ))),
+
+    ("tests", 0o755, Dir(DirSpec(
+        children: [
+            ("00-example.js", 0o644, Template(TemplateSpec(
+              template_name: "test.js",
+            )), Some(When(
+              none_of: ["typescript", "esm"],
+            ))),
+
+            ("00-example.js", 0o644, Template(TemplateSpec(
+              template_name: "test_esm.js",
+            )), Some(When(
+              none_of: ["typescript"],
+              all_of: ["esm"],
+            ))),
+
+            ("00-example.ts", 0o644, Template(TemplateSpec(
+              template_name: "test.ts",
+            )), Some(When(
+              none_of: ["esm"],
+              all_of: ["typescript"],
+            )))
+        ]
+    )), Some(When(
+      if_not_present: ["tests"],
+      none_of: ["selftest"]
+    ))),
+  ],
+))

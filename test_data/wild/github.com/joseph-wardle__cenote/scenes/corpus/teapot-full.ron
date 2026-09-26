@@ -1,0 +1,274 @@
+// 'Utah Teapot (full)' — Benedikt Bitterli (CC0, public domain;
+// crediting the artist encouraged). The full glass teapot of tea on a
+// checkered floor under a captured sky — the classic, with media.
+// Official pbrt-v4 export from https://benedikt-bitterli.me/resources/
+// — `scenes/corpus/fetch.sh teapot-full` materializes the source; this
+// RON was bootstrapped once by `cenote-cli import
+// sources/bitterli/teapot-full/scene-v4.pbrt` and is the source of
+// truth — re-imports diff into scratch, never over it. The octahedral
+// PFM sky resamples to the derived, gitignored `teapot-full-sky.exr`
+// beside this file (the corpus README has the regeneration recipe).
+//
+// Import fidelity: two knowing gaps. The tea is a homogeneous
+// absorbing medium (MakeNamedMedium/MediumInterface) the renderer
+// can't carry until M8 volumes — the pot pours clear glass here, the
+// dominant visual divergence from the pbrt reference. And the floor's
+// procedural checkerboard texture has no importer support (imports
+// mid-gray); curated to the identical 20×20 checker the CI corpus
+// baked to a committed PNG (tests/scenes/teapot-full/textures/).
+(
+    version: 2,
+    ops: [
+        Settings((
+            name: "main",
+            resolution: Some((1280, 720)),
+            spp: Some(64),
+            max_bounces: Some(65),
+            seed: None,
+        )),
+        Camera((
+            name: "main",
+            position: Some((23.170126, 15.714214, -0.17247628)),
+            look_at: Some((22.297527, 15.225801, -0.16757579)),
+            up: Some((-0.48840514, 0.8726124, 0.0027428637)),
+            vfov_degrees: Some(20.114292),
+            focus_distance: None,
+            aperture_radius: Some(0.0),
+        )),
+        Material((
+            name: "Floor",
+            // Curated: the source's procedural checkerboard (20×20 cells
+            // of the two rgb constants) has no importer support and lands
+            // mid-gray; the CI corpus baked the identical checker to a
+            // committed PNG, and the floor borrows it.
+            base_color: Some(Texture((
+                path: "../../tests/scenes/teapot-full/textures/checker.png",
+                color_space: None,
+                channel: None,
+            ))),
+            base_diffuse_roughness: None,
+            base_metalness: None,
+            specular_weight: Some(0.0),
+            specular_roughness: None,
+            specular_ior: None,
+            transmission_weight: None,
+            transmission_color: None,
+            transmission_depth: None,
+            coat_weight: None,
+            coat_color: None,
+            coat_roughness: None,
+            coat_ior: None,
+            coat_darkening: None,
+            fuzz_weight: None,
+            fuzz_color: None,
+            fuzz_roughness: None,
+            emission_luminance: None,
+            emission_color: None,
+            geometry_opacity: None,
+            geometry_thin_walled: None,
+            geometry_normal: None,
+        )),
+        Mesh((
+            name: "trianglemesh-0",
+            source: Some(Inline(
+                positions: [
+                    (-2.13123, 0.0, 70.0611),
+                    (-71.502, -0.00000875425, -2.15457),
+                    (0.713687, 0.0, -71.5254),
+                    (70.0845, 0.00000875425, 0.690351),
+                ],
+                normals: Some([
+                    (0.00000012361, -1.0, 0.0000000024837),
+                    (0.00000012361, -1.0, 0.0000000024837),
+                    (0.00000012361, -1.0, 0.0000000024837),
+                    (0.00000012361, -1.0, 0.0000000024837),
+                ]),
+                uvs: Some([
+                    (0.0, 1.0),
+                    (1.0, 1.0),
+                    (1.0, 0.0),
+                    (0.0, 0.0),
+                ]),
+                triangles: [
+                    (0, 1, 2),
+                    (0, 2, 3),
+                ],
+            )),
+        )),
+        Instance((
+            name: "trianglemesh-0",
+            mesh: Some("trianglemesh-0"),
+            material: Some("Floor"),
+            transforms: Some([
+                Matrix(((1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (0.0, 0.0, 1.0, 0.0))),
+            ]),
+            camera_visible: None,
+        )),
+        Environment((
+            name: "sky",
+            path: Some(Some("teapot-full-sky.exr")),
+            tint: None,
+            transform: None,
+        )),
+        Material((
+            name: "dielectric-0",
+            base_color: None,
+            base_diffuse_roughness: None,
+            base_metalness: None,
+            specular_weight: None,
+            specular_roughness: Some(Constant(0.0)),
+            specular_ior: Some(1.5),
+            transmission_weight: Some(1.0),
+            transmission_color: None,
+            transmission_depth: None,
+            coat_weight: None,
+            coat_color: None,
+            coat_roughness: None,
+            coat_ior: None,
+            coat_darkening: None,
+            fuzz_weight: None,
+            fuzz_color: None,
+            fuzz_roughness: None,
+            emission_luminance: None,
+            emission_color: None,
+            geometry_opacity: None,
+            geometry_thin_walled: None,
+            geometry_normal: None,
+        )),
+        Mesh((
+            name: "Mesh003-0",
+            source: Some(Ply(
+                path: "sources/bitterli/teapot-full/models/Mesh003.ply",
+            )),
+        )),
+        Instance((
+            name: "Mesh003-0",
+            mesh: Some("Mesh003-0"),
+            material: Some("dielectric-0"),
+            transforms: Some([
+                Matrix(((1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (0.0, 0.0, 1.0, 0.0))),
+            ]),
+            camera_visible: None,
+        )),
+        Material((
+            name: "dielectric-1",
+            base_color: None,
+            base_diffuse_roughness: None,
+            base_metalness: None,
+            specular_weight: None,
+            specular_roughness: Some(Constant(0.0)),
+            specular_ior: Some(1.5),
+            transmission_weight: Some(1.0),
+            transmission_color: None,
+            transmission_depth: None,
+            coat_weight: None,
+            coat_color: None,
+            coat_roughness: None,
+            coat_ior: None,
+            coat_darkening: None,
+            fuzz_weight: None,
+            fuzz_color: None,
+            fuzz_roughness: None,
+            emission_luminance: None,
+            emission_color: None,
+            geometry_opacity: None,
+            geometry_thin_walled: None,
+            geometry_normal: None,
+        )),
+        Mesh((
+            name: "Mesh001-0",
+            source: Some(Ply(
+                path: "sources/bitterli/teapot-full/models/Mesh001.ply",
+            )),
+        )),
+        Instance((
+            name: "Mesh001-0",
+            mesh: Some("Mesh001-0"),
+            material: Some("dielectric-1"),
+            transforms: Some([
+                Matrix(((1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (0.0, 0.0, 1.0, 0.0))),
+            ]),
+            camera_visible: None,
+        )),
+        Material((
+            name: "dielectric-2",
+            base_color: None,
+            base_diffuse_roughness: None,
+            base_metalness: None,
+            specular_weight: None,
+            specular_roughness: Some(Constant(0.0)),
+            specular_ior: Some(1.33),
+            transmission_weight: Some(1.0),
+            transmission_color: None,
+            transmission_depth: None,
+            coat_weight: None,
+            coat_color: None,
+            coat_roughness: None,
+            coat_ior: None,
+            coat_darkening: None,
+            fuzz_weight: None,
+            fuzz_color: None,
+            fuzz_roughness: None,
+            emission_luminance: None,
+            emission_color: None,
+            geometry_opacity: None,
+            geometry_thin_walled: None,
+            geometry_normal: None,
+        )),
+        Mesh((
+            name: "Mesh002-0",
+            source: Some(Ply(
+                path: "sources/bitterli/teapot-full/models/Mesh002.ply",
+            )),
+        )),
+        Instance((
+            name: "Mesh002-0",
+            mesh: Some("Mesh002-0"),
+            material: Some("dielectric-2"),
+            transforms: Some([
+                Matrix(((1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (0.0, 0.0, 1.0, 0.0))),
+            ]),
+            camera_visible: None,
+        )),
+        Material((
+            name: "dielectric-3",
+            base_color: None,
+            base_diffuse_roughness: None,
+            base_metalness: None,
+            specular_weight: None,
+            specular_roughness: Some(Constant(0.0)),
+            specular_ior: Some(1.13),
+            transmission_weight: Some(1.0),
+            transmission_color: None,
+            transmission_depth: None,
+            coat_weight: None,
+            coat_color: None,
+            coat_roughness: None,
+            coat_ior: None,
+            coat_darkening: None,
+            fuzz_weight: None,
+            fuzz_color: None,
+            fuzz_roughness: None,
+            emission_luminance: None,
+            emission_color: None,
+            geometry_opacity: None,
+            geometry_thin_walled: None,
+            geometry_normal: None,
+        )),
+        Mesh((
+            name: "Mesh000-0",
+            source: Some(Ply(
+                path: "sources/bitterli/teapot-full/models/Mesh000.ply",
+            )),
+        )),
+        Instance((
+            name: "Mesh000-0",
+            mesh: Some("Mesh000-0"),
+            material: Some("dielectric-3"),
+            transforms: Some([
+                Matrix(((1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (0.0, 0.0, 1.0, 0.0))),
+            ]),
+            camera_visible: None,
+        )),
+    ],
+)

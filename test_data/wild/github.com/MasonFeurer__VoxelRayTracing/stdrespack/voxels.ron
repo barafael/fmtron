@@ -1,0 +1,100 @@
+[
+VoxelData( name: "air", state: Gas ),
+VoxelData( name: "fire", state: Gas ),
+VoxelData( name: "lava", state: Liquid ),
+VoxelData( name: "water", state: Liquid ),
+
+// Base stones (all found naturally)
+VoxelData( name: "limestone" ),
+VoxelData( name: "slate" ),
+VoxelData( name: "mudstone" ),
+VoxelData( name: "sandstone" ),
+
+// Variant stones (all found naturally)
+VoxelData( name: "granite" ), // contains quartz
+VoxelData( name: "diorite" ), // 
+VoxelData( name: "andesite" ), // 
+VoxelData( name: "blairmorite" ), // 
+VoxelData( name: "basalt" ), // 
+
+// Ores (all found naturally)
+VoxelData( name: "bauxite" ), // contains aluminum
+VoxelData( name: "electrum" ), // contains gold and silver
+VoxelData( name: "kimberlite" ), // contains Diamod
+VoxelData( name: "scheelite" ), // contains CaW (Calcium Tungstat)
+VoxelData( name: "tin_ore" ), // 
+VoxelData( name: "iron_ore" ), // contains iron oxide
+VoxelData( name: "gold_ore" ), // 
+VoxelData( name: "copper_ore" ), // 
+
+// Minerals
+VoxelData( name: "obsidian" ), // found naturally
+VoxelData( name: "tungsten" ), // extracted from scheelite
+VoxelData( name: "aluminum" ), // extracted from bauxite
+VoxelData( name: "tin" ), // extracted from tin_ore
+VoxelData( name: "iron" ), // extracted from iron_ore
+VoxelData( name: "gold" ), // extracted from gold_ore and electrum
+VoxelData( name: "copper" ), // extracted from copper_ore
+VoxelData( name: "silver" ), // extracted from electrum
+VoxelData( name: "steel" ), // Iron + Carbon alloy (where get carbon?)
+VoxelData( name: "bronze" ), // Copper + Tin alloy
+VoxelData( name: "quartz" ), // crystal ; found naturally in veins ; and extracted from granite
+VoxelData( name: "amethyst" ), // crystal ; found naturally in veins
+VoxelData( name: "calcite" ), // crystal ; found naturally in veins
+VoxelData( name: "fluorite" ), // crystal ; found naturally in veins
+
+VoxelData( name: "diamond" ), // gem ; extracted from kimberlite
+VoxelData( name: "ruby" ), // gem ; found naturally in viens
+VoxelData( name: "emerald" ), // gem ; found naturally in veins
+VoxelData( name: "sapphire" ), // gem ; found naturally in viens
+
+// Earth (all found naturally)
+VoxelData( name: "dirt" ),
+VoxelData( name: "grass" ),
+VoxelData( name: "snowy_grass" ),
+VoxelData( name: "dry_grass" ),
+VoxelData( name: "moist_grass" ),
+VoxelData( name: "dead_grass" ),
+VoxelData( name: "snow" ),
+VoxelData( name: "ice" ),
+VoxelData( name: "sand" ),
+VoxelData( name: "redsand" ),
+VoxelData( name: "mud" ),
+VoxelData( name: "clay" ),
+VoxelData( name: "gravel" ),
+
+// Wood (all found naturally)
+VoxelData( name: "birch_wood" ),
+VoxelData( name: "oak_wood" ),
+VoxelData( name: "maple_wood" ),
+VoxelData( name: "spruce_wood" ),
+VoxelData( name: "willow_wood" ),
+VoxelData( name: "brazil_nut_wood" ),
+VoxelData( name: "mahogany_wood" ), // jungle
+VoxelData( name: "cacao_wood" ),
+VoxelData( name: "monkey_wood" ),
+
+// Leaves/Shrub (all found naturally)
+VoxelData( name: "cactus" ),
+VoxelData( name: "oak_leaves" ),
+VoxelData( name: "birch_leaves" ),
+VoxelData( name: "maple_leaves" ),
+VoxelData( name: "spruce_leaves" ),
+VoxelData( name: "acacia_leaves" ),
+VoxelData( name: "mahogany_leaves" ),
+
+// Fruits (all found naturally)
+VoxelData( name: "cacao" ),
+VoxelData( name: "apple" ),
+VoxelData( name: "orange" ),
+VoxelData( name: "peach" ),
+VoxelData( name: "brazil_nut" ),
+
+// Decorative (all crafted)
+VoxelData( name: "mirror" ),
+VoxelData ( name: "glass" ),
+VoxelData ( name: "colored_glass", attrs: Some(Color) ),
+VoxelData ( name: "concrete" ),
+VoxelData ( name: "colored_concrete", attrs: Some(Color) ),
+VoxelData ( name: "colored_planks", attrs: Some(Color) ),
+]

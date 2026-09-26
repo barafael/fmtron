@@ -1,0 +1,11 @@
+(
+  format_version: 1,
+  pack_id: "base_game",
+  species: ["content/species.ron"],
+  evolutions: ["content/evolutions.ron"],
+  items: ["content/items.ron"],
+  moves: ["content/moves.ron"],
+  illnesses: ["content/illnesses.ron"],
+  compatibility: ["content/compatibility.ron"],
+  en_us: "content/en_us.ron",
+)

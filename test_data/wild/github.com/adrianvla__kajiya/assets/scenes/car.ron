@@ -1,0 +1,13 @@
+(
+    instances: [
+        (
+            position: (0, -0.001, 0),
+            mesh: "/meshes/336_lrm/scene.gltf",
+            scale: (0.01, 0.01, 0.01),
+        ),
+        (
+            position: (0, 0, 0),
+            mesh: "/meshes/floor/scene.gltf",
+        ),
+    ]
+)

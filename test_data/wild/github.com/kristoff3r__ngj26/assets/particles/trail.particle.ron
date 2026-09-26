@@ -1,0 +1,55 @@
+(
+    spawn_rate: 0.01,
+    spawn_amount: 200,
+    emission_shape: Point,
+    lifetime: (1.0, 0.2),
+    linear_speed: Some((15, 0.5)),
+    direction: Some(((0, -1), 0.30)),
+    scale: Some((15.0, 0.3)),
+    linear_damp: Some((5, 0.5)),
+    scale_curve: Some(
+        MultiCurve(
+            points: [
+                (1.0, 0, None),
+                (0.5, 0.3, Some(SineOut)),
+                (0.0, 1.0, Some(SineOut)),
+            ],
+        ),
+    ),
+    color_curve: Some(
+        MultiCurve(
+            points: [
+                (
+                    LinearRgba(
+                        red: 1.0,
+                        green: 1.0,
+                        blue: 1.0,
+                        alpha: 0.8,
+                    ),
+                    0,
+                    None,
+                ),
+                (
+                    LinearRgba(
+                        red: 1.0,
+                        green: 1.0,
+                        blue: 1.0,
+                        alpha: 0.3,
+                    ),
+                    0.3,
+                    None,
+                ),
+                (
+                    LinearRgba(
+                        red: 1.0,
+                        green: 1.0,
+                        blue: 1.0,
+                        alpha: 0.0,
+                    ),
+                    1.0,
+                    None,
+                ),
+            ],
+        ),
+    ),
+)

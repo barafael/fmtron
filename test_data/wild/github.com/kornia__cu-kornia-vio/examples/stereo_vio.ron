@@ -1,0 +1,68 @@
+// A self-contained stereo-VIO graph: synthetic stereo and IMU sources, the tracker in the
+// background, and a sink that logs every pose. Run it with `cargo run --example stereo_vio`.
+(
+    logging: (
+        enable_task_logging: true,
+        slab_size_mib: 64,
+        section_size_mib: 16,
+    ),
+    resources: [
+        (
+            id: "bus",
+            provider: "cu_kornia_vio::VioBus",
+        ),
+    ],
+    tasks: [
+        (
+            id: "stereo",
+            type: "SyntheticStereo",
+        ),
+        (
+            id: "imu",
+            type: "SyntheticImu",
+        ),
+        (
+            id: "imu_feed",
+            type: "cu_kornia_vio::ImuFeed<32>",
+            resources: {
+                "imu": "bus.imu",
+            },
+        ),
+        (
+            id: "vio",
+            type: "cu_kornia_vio::StereoVio",
+            config: {
+                "on_tracking_loss": "reset_map",
+                "max_keyframes": 120,
+                "orb_keypoints": 400,
+                "pnp_lm_iterations": 5,
+            },
+            resources: {
+                "imu": "bus.imu",
+                "epoch": "bus.reset_epoch",
+            },
+            background: true,
+        ),
+        (
+            id: "poses",
+            type: "PoseSink",
+        ),
+    ],
+    cnx: [
+        (
+            src: "stereo",
+            dst: "vio",
+            msg: "cu_stereo_payloads::StereoPair",
+        ),
+        (
+            src: "imu",
+            dst: "imu_feed",
+            msg: "cu_stereo_payloads::ImuBatch<32>",
+        ),
+        (
+            src: "vio",
+            dst: "poses",
+            msg: "cu_stereo_payloads::VioPose",
+        ),
+    ],
+)

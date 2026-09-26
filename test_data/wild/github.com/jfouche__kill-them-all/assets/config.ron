@@ -1,0 +1,3 @@
+GameConfig(
+    monster_spawn_delay: 15
+)

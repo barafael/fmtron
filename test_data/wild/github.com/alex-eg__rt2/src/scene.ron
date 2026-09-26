@@ -1,0 +1,251 @@
+(
+    cam: (
+        eye: (0, 0, 60),
+        dir: (0, 0, -1),
+        up: (0, -1, 0),
+        fov: 30,
+        width: 128,
+        height: 128,
+        angles: (
+            x: 0,
+            y: 180,
+        ),
+    ),
+    objects: [
+        (
+            name: "s1",
+            shapes: [
+                Sphere((
+                    radius: 5,
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (0, 1, 0.3),
+                specular: (1, 1, 1),
+                shininess: 10,
+                reflection: 0.8,
+                refraction: 0,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 15, 15, 15, 1),
+            animation: Some((
+                path_lengts: [
+                    10,
+                    10,
+                ],
+                control_points: [
+                    (15, 15, 15),
+                    (15, 5, 15),
+                ],
+                factor: 0.1,
+            )),
+        ),
+        (
+            name: "b1",
+            shapes: [
+                Cuboid((
+                    extent: (10, 10, 10),
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (1, 0, 0),
+                specular: (1, 1, 1),
+                shininess: 30,
+                reflection: 0.8,
+                refraction: 0,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 10, 10, -20, 1),
+            animation: Some((
+                path_lengts: [
+                    7,
+                    7,
+                ],
+                control_points: [
+                    (10, 10, -20),
+                    (10, 17, -20),
+                ],
+                factor: 0.1,
+            )),
+        ),
+        (
+            name: "s5",
+            shapes: [
+                Sphere((
+                    radius: 5,
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (0, 0.3, 1),
+                specular: (1, 1, 1),
+                shininess: 10,
+                reflection: 0.4,
+                refraction: 1.025,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -15, 15, 15, 1),
+            animation: Some((
+                path_lengts: [
+                    8,
+                    8,
+                ],
+                control_points: [
+                    (-15, 15, 15),
+                    (-15, 7, 15),
+                ],
+                factor: 0.1,
+            )),
+        ),
+        (
+            name: "s6",
+            shapes: [
+                Sphere((
+                    radius: 5,
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (1, 0, 0),
+                specular: (1, 1, 1),
+                shininess: 30,
+                reflection: 0.8,
+                refraction: 0,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -15, 15, -15, 1),
+            animation: Some((
+                path_lengts: [
+                    5,
+                    5,
+                ],
+                control_points: [
+                    (-15, 15, -15),
+                    (-15, 20, -15),
+                ],
+                factor: 0.1,
+            )),
+        ),
+        (
+            name: "s3",
+            shapes: [
+                Sphere((
+                    radius: 5,
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (0, 1, 0.3),
+                specular: (1, 1, 1),
+                shininess: 10,
+                reflection: 0.8,
+                refraction: 0,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 15, -15, 15, 1),
+            animation: None,
+        ),
+        (
+            name: "s4",
+            shapes: [
+                Sphere((
+                    radius: 5,
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (0, 0.3, 1),
+                specular: (1, 1, 1),
+                shininess: 10,
+                reflection: 0.4,
+                refraction: 1.025,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 15, -15, -15, 1),
+            animation: None,
+        ),
+        (
+            name: "s7",
+            shapes: [
+                Sphere((
+                    radius: 5,
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (1, 0, 0),
+                specular: (1, 1, 1),
+                shininess: 30,
+                reflection: 0.8,
+                refraction: 0,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -15, -15, 15, 1),
+            animation: None,
+        ),
+        (
+            name: "tri1",
+            shapes: [
+                Triangle((
+                    a: (0, -10, -10),
+                    b: (-10, 10, 0),
+                    c: (10, 10, 0),
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (0, 0.3, 1),
+                specular: (1, 1, 1),
+                shininess: 10,
+                reflection: 0.4,
+                refraction: 1.025,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
+            animation: None,
+        ),
+        (
+            name: "s8",
+            shapes: [
+                Sphere((
+                    radius: 5,
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (0, 1, 0.3),
+                specular: (1, 1, 1),
+                shininess: 10,
+                reflection: 0.8,
+                refraction: 0,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -15, -15, -15, 1),
+            animation: None,
+        ),
+        (
+            name: "square",
+            shapes: [
+                Triangle((
+                    a: (-64, 30, -64),
+                    b: (64, 30, -64),
+                    c: (64, 30, 64),
+                )),
+                Triangle((
+                    a: (-64, 30, -64),
+                    b: (64, 30, 64),
+                    c: (-64, 30, 64),
+                )),
+            ],
+            mat: (
+                ambient: (0.1, 0.1, 0.1),
+                diffuse: (0, 0.3, 1),
+                specular: (1, 1, 1),
+                shininess: 10,
+                reflection: 0.4,
+                refraction: 1.025,
+            ),
+            transform: (1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
+            animation: None,
+        ),
+    ],
+    lights: [
+        (
+            pos: (0, -60, 0),
+            color: (1, 1, 1),
+        ),
+    ],
+)

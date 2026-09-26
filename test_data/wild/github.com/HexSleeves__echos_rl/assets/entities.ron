@@ -1,0 +1,11 @@
+({
+  "player": File (
+    path: "entities/player.definition.ron",
+  ),
+  "entities": Folder (
+    path: "entities",
+  ),
+  "enemies": Folder (
+    path: "entities/enemies",
+  ),
+})

@@ -1,0 +1,29 @@
+SkillLint(
+    id: "skill_description_too_long",
+    human_readable_name: "skill description exceeds 1024 characters",
+    description: "The frontmatter `description` must not exceed 1024 characters.",
+    lint_level: Deny,
+    reference_link: Some("https://agentskills.io/specification#description-field"),
+    query: r#"
+    {
+        Skill {
+            has_frontmatter @filter(op: "=", value: ["$true"])
+            description @filter(op: "is_not_null")
+            description_length @filter(op: ">", value: ["$max_chars"]) @output
+
+            skill_file_path @output
+
+            span_: description_span @optional {
+                filename @output
+                begin_line @output
+                end_line @output
+            }
+        }
+    }"#,
+    arguments: {
+        "true": true,
+        "max_chars": 1024,
+    },
+    error_message: "The `description` field exceeds the maximum length of 1024 characters. Keep descriptions concise.",
+    per_result_error_template: Some("{{skill_file_path}} description is {{description_length}} characters (maximum: {{max_chars}})"),
+)

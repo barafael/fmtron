@@ -1,0 +1,8 @@
+(
+    body: None,
+    desc: "rename footer-specific methods",
+    footer:[],
+    is_breaking_change: true,
+    scope: Some("parser"),
+    ty: "refactor"
+)

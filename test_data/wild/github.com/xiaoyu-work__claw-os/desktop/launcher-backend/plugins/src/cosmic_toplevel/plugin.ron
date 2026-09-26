@@ -1,0 +1,9 @@
+(
+    name: "ClawOS Windows",
+    description: "Active windows controllable via ClawOS",
+    category: Apps,
+    query: (persistent: true, priority: High),
+    bin: (path: "cosmic-toplevel"),
+    icon: Name("focus-windows-symbolic"),
+    long_lived: true,
+)

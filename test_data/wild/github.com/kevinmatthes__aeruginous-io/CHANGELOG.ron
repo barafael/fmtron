@@ -1,0 +1,252 @@
+(
+  references: {
+    "Keep a Changelog": "https://keepachangelog.com/en/1.0.0/",
+  },
+  introduction: Some("All notable changes to this project are documented in this file.\n\nThe format is based on `Keep a Changelog`_."),
+  sections: [
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 8,
+        patch: 1,
+      ),
+      released: "2024-06-06T11:49:35.668876508Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CHANGELOG:  information on LICENSE introduction; fixes #122",
+            "CI:  install cargo-mutants via GHA; fixes #133",
+            "CI:  run Aeruginous complain over .github/ directory; fixes #123",
+            "README:  apply Range of Mercy on URL definition section; fixes #124",
+          ],
+          "Changed": [
+            "CI:  upload PR code coverage report as asset instead of PR comment; fixes #151",
+          ],
+          "Fixed": [
+            "CI:  bug when checking out forks for PR workflow runs",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 8,
+        patch: 0,
+      ),
+      released: "2024-02-11T15:11:15.784499830Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "PathBufLikeAppendix",
+            "PathBufLikeAppendix::append_loudly",
+            "PathBufLikeAppendix::append_silently",
+            "tests for PathBufLikeAppendix",
+          ],
+          "Changed": [
+            "CI:  call Renovate configuration linter directly",
+            "MSRV:  1.76.0",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 7,
+        patch: 0,
+      ),
+      released: "2024-02-02T16:40:59.029670692Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "VectorReader",
+            "VectorReader::read_loudly",
+            "VectorReader::read_silently",
+            "tests for VectorReader",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 6,
+        patch: 0,
+      ),
+      released: "2024-01-28T19:14:35.172962196Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "OptionTruncation",
+            "OptionTruncation::truncate_loudly",
+            "OptionTruncation::truncate_silently",
+            "tests for OptionTruncation",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 5,
+        patch: 0,
+      ),
+      released: "2024-01-28T16:24:24.975888046Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "CFF:  cite CI utility ``cargo-mutants``",
+            "Writer",
+            "Writer::write_loudly",
+            "Writer::write_silently",
+            "tests for Writer",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 4,
+        patch: 0,
+      ),
+      released: "2024-01-25T13:36:37.082844541Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            "PathBufLikeTruncation",
+            "PathBufLikeTruncation::truncate_loudly",
+            "PathBufLikeTruncation::truncate_silently",
+            "src/writing.rs",
+            "tests for PathBufLikeTruncation",
+            "tests/writing.rs",
+          ],
+          "Fixed": [
+            "BufReadReader:  rename generics to be more intuitive",
+            "Clippy:  mercy on multiple crate versions",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 3,
+        patch: 0,
+      ),
+      released: "2024-01-14T20:36:25.118222436Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            ".github/workflows/rustfmt.yml; fixes #38",
+            "CI:  run ``cargo-mutants`` on PR",
+            "OptionReader",
+            "OptionReader::read_loudly",
+            "OptionReader::read_silently",
+            "tests for OptionReader",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 2,
+        patch: 0,
+      ),
+      released: "2024-01-13T16:21:28.970748981Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            ".gitattributes; fixes #21",
+            ".rustfmt.toml; fixes #24",
+            "BufReadReader",
+            "BufReadReader::read_loudly",
+            "BufReadReader::read_silently",
+            "CI:  upload new crate version to registry on release",
+            "tests for BufReadReader",
+          ],
+          "Changed": [
+            "README:  list of dependencies",
+          ],
+          "Fixed": [
+            "typos in documentation",
+          ],
+        },
+      ),
+    ),
+    (
+      references: {},
+      version: (
+        major: 0,
+        minor: 1,
+        patch: 0,
+      ),
+      released: "2024-01-12T16:51:12.198926517Z",
+      introduction: None,
+      changes: (
+        references: {},
+        changes: {
+          "Added": [
+            ".clippy.toml",
+            ".github/CODEOWNERS",
+            ".github/aeruginous-io.cff",
+            ".github/release.yml",
+            ".github/workflows/cff.yml",
+            ".github/workflows/ci.yml",
+            ".github/workflows/comment-changes.yml",
+            ".github/workflows/mirror.yml",
+            ".github/workflows/pr.yml",
+            ".github/workflows/release.yml",
+            ".github/workflows/ronlog.yml",
+            ".gitignore",
+            ".renovaterc.json5",
+            ".version",
+            "CHANGELOG.ron",
+            "CITATION.cff",
+            "Cargo.lock",
+            "Cargo.toml",
+            "LICENSE",
+            "PathBufLikeReader",
+            "PathBufLikeReader::read_loudly",
+            "PathBufLikeReader::read_silently",
+            "README.md",
+            "README:  list of dependencies",
+            "dependency:  Rust crate ``sysexits``",
+            "license:  GPL-3.0",
+            "repository creation",
+            "src/lib.rs",
+            "src/reading.rs",
+            "tests/assets/GPL-3.0.rs",
+            "tests/reading.rs",
+          ],
+        },
+      ),
+    ),
+  ],
+)

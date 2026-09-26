@@ -1,0 +1,15 @@
+# // a comment
+    ! [  enable
+( unwrap_newtypes
+ , implicit_some)
+]
+// Line Comment
+/* block */
+/* Block Comment /* Nested Block Comment */ */
+(
+    value 
+
+    : "hello" // comment
+    ,
+    something_else /* */: "hi"
+)

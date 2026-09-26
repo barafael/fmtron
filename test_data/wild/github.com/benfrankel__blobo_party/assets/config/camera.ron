@@ -1,0 +1,5 @@
+(
+    scaling_mode: WindowSize,
+    zoom: Vec2(8, 8),
+    follow_rate: Vec2(5, 10),
+)

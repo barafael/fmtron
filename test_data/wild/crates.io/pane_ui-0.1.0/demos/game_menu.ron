@@ -1,0 +1,25 @@
+(
+    hot_reload: true,
+    start_root: "pause_menu",
+    default_style: Some("game_menu_style"),
+    shader_dirs: ["demos/shaders"],
+    style_dirs: ["demos/styles"],
+    roots: [
+        (
+            name: "pause_menu",
+            labels: [
+                ( id: "title", x: -100.0, y: -280.0, text: "Game Menu", size: 36.0, color: Some((r:1.0,g:1.0,b:1.0,a:1.0)) ),
+            ],
+            buttons: [
+                ( id: "btn_back_to_game", x: -350.0, y: -180.0, width: 700.0, height: 60.0, text: "Back to Game",           tooltip: None, on_press: Custom("back_to_game"),    nav_default: true ),
+                ( id: "btn_advancements", x: -350.0, y: -105.0, width: 340.0, height: 60.0, text: "Advancements",           tooltip: None, on_press: Custom("advancements")              ),
+                ( id: "btn_stats",        x:   10.0, y: -105.0, width: 340.0, height: 60.0, text: "Statistics",             tooltip: None, on_press: Custom("statistics")                ),
+                ( id: "btn_options",      x: -350.0, y:   45.0, width: 340.0, height: 60.0, text: "Options...",             tooltip: None, on_press: Custom("options")                   ),
+                ( id: "btn_rpt",          x:   10.0, y:  -30.0, width: 340.0, height: 60.0, text: "Report Bugs",            tooltip: None, on_press: Custom("share")                     ),
+                ( id: "btn_fdbck",        x: -350.0, y:  -30.0, width: 340.0, height: 60.0, text: "Give Feedback",            tooltip: None, on_press: Custom("share")                     ),
+                ( id: "btn_title",        x:   -350, y:  120.0, width: 700.0, height: 60.0, text: "Save and Quit to Title", tooltip: None, on_press: Custom("quit_to_title")             ),
+                ( id: "btn_server",       x:   10.0, y:   45.0, width: 340.0, height: 60.0, text: "Open to LAN",            tooltip: None, on_press: Custom("open_lan")                  ),
+            ],
+        ),
+    ],
+)

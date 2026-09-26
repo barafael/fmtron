@@ -1,0 +1,10 @@
+{
+    "hello": File ("test_relative/hello.txt"),
+    "world": Bundle (
+        {
+            "hello": File ("test_relative/hello.txt"),
+            "world": File ("world.txt"),
+            "text": Text ("Hello World!"),
+        }
+    )
+}

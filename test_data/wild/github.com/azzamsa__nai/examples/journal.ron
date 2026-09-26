@@ -1,0 +1,17 @@
+// Journal.ron
+Config(
+    moments: [
+        (
+            start_date: "2023-07-01",
+            format: "{{ 'Journal Entry' | green | bold }}\n\nDate: {{ start_date | red }}\n\nDear Journal,\n\nToday marks another milestone in my journey. It has been {{ duration }} since I last wrote.\n\nI wanted to capture the memories of my recent experiences. On this day, I celebrated my birthday and took a moment to reflect on the passing years.",
+        ),
+        (
+            start_date: "2021-03-01",
+            format: "In the realm of work, I have been dedicated to my career at {{ 'Rohan Equestrian Supplies' | underline }} staring from {{ start_date }}. The challenges and accomplishments have shaped me into a stronger individual."
+        ),
+        (
+            start_date: "2010-02-20",
+            format: "Furthermore, love has been a guiding force in my life. On {{ start_date | red }}, I exchanged vows with my beloved, Arwen Undómiel. Together, we continue to build a life filled with love, support, and shared dreams.\n\nAs I write these words, I am filled with gratitude for the adventures and lessons life has bestowed upon me. Each step has led me closer to self-discovery and personal growth.\n\nUntil the next entry,\n{{ 'Aragorn II Elessar' | cyan | bold }}\n",
+        ),
+    ],
+)

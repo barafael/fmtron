@@ -1,0 +1,10 @@
+(
+    mode: ProductionReject,
+    minimum_suite_version: 1,
+    minimum_tier: CoreTransactional,
+    minimum_trust: MaintainerVerified,
+    allowed_subjects: [],
+    required_features: [],
+    exact_build_configuration: {},
+    required_database_engine: None,
+)

@@ -1,0 +1,23 @@
+(
+    request_format_version: 1,
+    id: "org.weave.character.expression.resolution.ari_arrival",
+    assignment_id: "arrival_greeting",
+    scenario_id: "arrival",
+    speaker_character_id: "org.weave.character.ari_vale",
+    listener: Some((
+        character_id: "org.weave.character.tavi_quill",
+        display_name: "Tavi Quill",
+    )),
+    relationship_kind_ids: [
+        "org.weave.relationship.friend",
+    ],
+    date_label: Some("Harbor Festival"),
+    date_context_ids: [
+        "harbor_festival",
+    ],
+    world_place_name: Some("Stormwatch Gate"),
+    world_context_tags: [
+        "stormwatch",
+    ],
+    seed: 42,
+)

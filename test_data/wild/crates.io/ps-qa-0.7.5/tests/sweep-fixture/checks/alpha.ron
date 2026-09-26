@@ -1,0 +1,12 @@
+[
+    (
+        id: "alpha-paints",
+        group: "alpha",
+        what: "the Alpha page paints its heading",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:Alpha",
+        expect: PaintsNamed,
+    ),
+]

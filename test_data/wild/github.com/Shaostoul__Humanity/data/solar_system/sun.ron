@@ -1,0 +1,51 @@
+// HumanityOS Celestial Body: Sun (Sol)
+// Real astrophysical data from NASA/ESA sources.
+
+Star(
+    name: "Sun",
+    spectral_type: "G2V",
+
+    physical: (
+        mass_kg: 1.989e30,
+        luminosity_watts: 3.828e26,
+        surface_temperature_k: 5778.0,
+        corona_temperature_k: 2000000.0,
+        age_billion_years: 4.603,
+        metallicity: 0.0122,
+    ),
+
+    magnetic: (
+        field_strength_tesla: 0.00025,
+        solar_wind_speed_km_s: 400.0,
+        sunspot_cycle_years: 11.0,
+    ),
+
+    composition: (
+        hydrogen: 0.73,
+        helium: 0.25,
+        other_elements: 0.02,
+    ),
+
+    fusion_reactions: ["pp_chain", "cno_cycle"],
+
+    visual: (
+        apparent_magnitude: -26.74,
+        absolute_magnitude: 4.83,
+        color_index_bv: 0.656,
+        angular_diameter_arcsec: 1919.0,
+        limb_darkening: true,
+    ),
+
+    galactic_orbit: (
+        center_distance_kpc: 8.122,
+        orbital_period_myr: 225.0,
+        orbital_velocity_km_s: 220.0,
+    ),
+
+    gameplay: (
+        observation_priority: "critical",
+        space_weather: ["solar_flares", "coronal_mass_ejections", "solar_wind"],
+        research_topics: ["stellar_evolution", "solar_physics", "space_weather"],
+        energy_source: true,
+    ),
+)

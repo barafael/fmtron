@@ -1,0 +1,613 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+	draw_borders: true,
+    borders_style: (fg: "light_green", modifiers: "Bold"),
+    show_song_table_header: false,
+    highlighted_item_style: (fg: "light_green", modifiers: "Bold"),
+    current_item_style: (fg: "black", bg: "light_green", modifiers: "Bold"),
+    text_color: "gray",
+    header: (
+        rows: [
+			(
+				left: [],
+				center: [],
+				right: [],
+			),
+            (
+				left: [
+                    (kind: Text("  ")),
+                    (kind: Text("["), style: (fg: "yellow", modifiers: "Bold")),
+                    (kind: Property(Status(StateV2(playing_label: "Playing", paused_label: "Paused", stopped_label: "Stopped"))), style: (fg: "yellow", modifiers: "Bold")),
+                    (kind: Text("]"), style: (fg: "yellow", modifiers: "Bold"))
+				],
+                center: [
+                    (kind: Property(Song(Title)), style: (modifiers: "Bold"),
+						default: (kind: Text("Unknown Song"), style: (fg: "red", modifiers: "Bold | Italic"))
+                    ),
+                ],
+                right: [
+                    (kind: Property(Widget(ScanStatus)), style: (fg: "light_green")),
+                    (kind: Text("  ")),
+                    (kind: Property(Widget(Volume)), style: (fg: "light_green")),
+                    (kind: Text("  ")),
+                ]
+            ),
+            (
+                left: [
+                    (kind: Text("  Queue "), style: (fg: "gray")),
+                    (kind: Property(Song(Position)), style: (fg: "gray", modifiers: "Bold")),
+                    (kind: Text(" / "), style: (fg: "gray")),
+                    (kind: Property(Status(QueueLength())), style: (fg: "gray")),
+                    (kind: Text(" / "), style: (fg: "gray")),
+                    // (kind: Property(Status(QueueTimeRemaining())), style: (fg: "gray")),
+                    // (kind: Text(" / "), style: (fg: "dark_gray")),
+                    (kind: Property(Status(QueueTimeTotal())), style: (fg: "gray")),
+                ],
+                center: [
+					(kind: Property(Song(Album)), style: (fg: "gray"))
+                ],
+                right: [
+					// Dont repeat queue, dont stop after song
+					// Dont repeat queue, stop after song once
+					// Dont repeat queue, stop after song
+					// Repeat song
+					// Repeat queue
+					(kind: Transform(Replace(content: (kind: Property(Status(SingleV2()))), replacements: [
+						(match: "On", replace: (kind: Property(Status(RepeatV2(
+							on_label: "Repeat Song [z]",
+							off_label: "Stop After Song [z]",
+							on_style: (fg: "light_magenta", modifiers: "Bold"),
+							off_style: (fg: "light_red", modifiers: "Bold"),
+						))))),
+						(match: "OS", replace: (kind: Property(Status(RepeatV2(
+							on_label: "Repeat Song [z]",
+							off_label: "Stop After Song Once [z]",
+							on_style: (fg: "light_magenta", modifiers: "Bold"),
+							off_style: (fg: "yellow", modifiers: "Bold"),
+						))))),
+						(match: "Off", replace: (kind: Property(Status(RepeatV2(
+							on_label: "Repeat Queue [z]",
+							off_label: "Repeat / Stop - Off [z]",
+							on_style: (fg: "light_green", modifiers: "Bold"),
+							off_style: (fg: "dark_gray")
+						))))),
+					]))),
+                    (kind: Text("  ")),
+                ]
+            ),
+			(
+				left: [
+                    (kind: Text("  ")),
+                    (kind: Property(Status(Elapsed)), style: (fg: "white", modifiers: "Bold")),
+                    (kind: Text(" / "), style: (fg: "gray")),
+                    (kind: Property(Status(Duration)), style: (fg: "gray")),
+                    (kind: Text(" ("), style: (fg: "dark_gray")),
+                    (kind: Property(Status(Bitrate)), style: (fg: "dark_gray")),
+                    (kind: Text(" kbps)"), style: (fg: "dark_gray")),
+				],
+				center: [
+                    (
+						kind: Property(Song(Artist)),
+						style: (fg: "gray", modifiers: "Italic"),
+                        default: (
+							kind: Text("Unknown Artist"),
+							style: (fg: "red", modifiers: "Bold | Italic")
+						)
+                    ),
+				],
+				right: [
+					(kind: Property(Status(RandomV2(
+						on_label: "Shuffle [x]",
+						off_label: "Shuffle [x]",
+						on_style: (fg: "light_green", modifiers: "Bold"),
+						off_style: (fg: "dark_gray")
+					)))),
+					(kind: Text(" / "), style: (fg: "dark_gray")),
+					(kind: Property(Status(ConsumeV2(
+						on_label: "Consume Song [c]",
+						oneshot_label: "Consume Song Once [c]",
+						off_label: "Consume Song [c]",
+						on_style: (fg: "light_cyan", modifiers: "Bold"),
+						oneshot_style: (fg: "cyan", modifiers: "Bold"),
+						off_style: (fg: "dark_gray")
+					)))),
+                    (kind: Text("  ")),
+				]
+			)
+        ],
+	),
+	symbols: (song: "󰝚 ", dir: " ", playlist: "󰲸 ", marker: "* ", ellipsis: "...",
+        song_style: (fg: "light_green"), dir_style: (fg: "light_green")
+    ),
+    tab_bar: (
+        enabled: true,
+        active_style: (fg: "black", bg: "light_green", modifiers: "Bold"),
+        inactive_style: (fg: "gray"),
+    ),
+	progress_bar: (
+        symbols: ["┣", "━", "●", "┄", "┤"],
+        track_style: (fg: "dark_gray", modifiers: "Bold"),
+        elapsed_style: (fg: "light_green", modifiers: "Bold"),
+        thumb_style: (fg: "light_green", modifiers: "Bold"),
+    ),
+    scrollbar: (
+        symbols: ["│", "█", "┬", "┴"],
+        track_style: (fg: "dark_gray"),
+        ends_style: (fg: "dark_gray"),
+        thumb_style: (fg: "light_green"),
+    ),
+	song_table_format: [
+		(
+			prop: (kind: Property(Position)),
+			width: "5"
+		),
+		(
+			prop: (kind: Property(Title),
+				default: (kind: Property(Filename), style: (fg: "dark_gray", modifiers: "Italic"))
+			),
+			width: "45%",
+		),
+		(
+			prop: (
+				kind: Group([
+					(kind: Property(Disc)),
+					(kind: Text(".")),
+					(kind: Property(Track))
+				]),
+				default: (
+					kind: Transform(Replace(content: (kind: Property(Track)), replacements: [
+						(match: "01", replace: (kind: Text("1"))),
+						(match: "02", replace: (kind: Text("2"))),
+						(match: "03", replace: (kind: Text("3"))),
+						(match: "04", replace: (kind: Text("4"))),
+						(match: "05", replace: (kind: Text("5"))),
+						(match: "06", replace: (kind: Text("6"))),
+						(match: "07", replace: (kind: Text("7"))),
+						(match: "08", replace: (kind: Text("8"))),
+						(match: "09", replace: (kind: Text("9"))),
+					]))
+				)
+			),
+			width: "5",
+			alignment: Right
+		),
+		(
+			prop: (kind: Text("")),
+			width: "0",
+		),
+		(
+			prop: (kind: Property(Album),
+				default: (kind: Text("-"), style: (fg: "dark_gray", modifiers: "Italic"))
+			),
+			width: "25%",
+		),
+		(
+			prop: (kind: Property(Artist),
+				default: (kind: Text("-"), style: (fg: "dark_gray", modifiers: "Italic"))
+			),
+			width: "30%",
+		),
+		(
+			prop: (kind: Transform(Replace(content: (kind: Sticker("rating")), replacements: [
+				(match:  "0", replace: (kind: Group([(kind: Text("     "))]))),
+				(match:  "1", replace: (kind: Group([(kind: Text("·    "),style: (fg: "gray"))]))),
+				(match:  "2", replace: (kind: Group([(kind: Text("*    "),style: (fg: "red"))]))),
+				(match:  "3", replace: (kind: Group([(kind: Text("*·   "),style: (fg: "light_red"))]))),
+				(match:  "4", replace: (kind: Group([(kind: Text("**   "),style: (fg: "yellow"))]))),
+				(match:  "5", replace: (kind: Group([(kind: Text("**·  "),style: (fg: "yellow"))]))),
+				(match:  "6", replace: (kind: Group([(kind: Text("***  "),style: (fg: "green"))]))),
+				(match:  "7", replace: (kind: Group([(kind: Text("***· "),style: (fg: "light_green"))]))),
+				(match:  "8", replace: (kind: Group([(kind: Text("**** "),style: (fg: "light_cyan"))]))),
+				(match:  "9", replace: (kind: Group([(kind: Text("****·"),style: (fg: "magenta"))]))),
+				(match: "10", replace: (kind: Group([
+					(kind: Text("*"),style: (fg: "light_red")),
+					(kind: Text("*"),style: (fg: "yellow")),
+					(kind: Text("*"),style: (fg: "light_green")),
+					(kind: Text("*"),style: (fg: "light_cyan")),
+					(kind: Text("*"),style: (fg: "light_blue"))
+				]))),
+			])), default: (kind: Text("  ?  "), style: (fg: "dark_gray", modifiers: "Italic"))),
+			width: "7",
+			alignment: Right,
+		),
+		(
+			prop: (kind: Property(Duration),
+				default: (kind: Text("-"), style: (fg: "light_red"))
+			),
+			width: "8",
+			label: " ",
+			alignment: Right,
+		),
+	],
+	layout: Pane(TabContent),
+    cava: (
+        bar_symbols: ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '█'],
+        bar_width: 1,
+		bar_spacing: 1,
+        // bg_color: "#2e3440",
+        bar_color: Gradient({
+			0:   "#5e81ac",
+			33:  "#81a1c1",
+			67:  "#88c0d0",
+			100: "#8fbcbb",
+		})
+    ),
+	components: {
+		"tabs": Split(
+			direction: Vertical,
+			panes: [
+				(
+					size: "1",
+					pane: Pane(Tabs),
+				),
+				(
+					size: "1",
+					pane: Pane(Property(
+						content: [(
+							kind: Text("▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔"),
+							style: (fg: "light_green")
+						)],
+						align: Center
+					))
+				),
+			]
+		),
+		"header": Split(
+			direction: Vertical,
+			panes: [
+				(
+					size: "2",
+					pane: Component("tabs"),
+				),
+				(
+					size: "6",
+					pane: Split(
+						direction: Horizontal,
+						panes: [
+							(
+								size: "2",
+								pane: Pane(Property(content: [(kind: Text("  "))]))
+							),
+							(
+								size: "14",
+								pane: Pane(AlbumArt),
+							),
+							(
+								size: "2",
+								pane: Pane(Property(content: [(kind: Text("  "))]))
+							),
+							(
+								size: "100%",
+								pane: Split(
+									direction: Vertical,
+									panes: [
+										(
+											size: "4",
+											pane: Pane(Header),
+										),
+										(
+											size: "1",
+											pane: Pane(ProgressBar),
+										),
+									]
+								)
+							),
+						]
+					)
+				)
+			],
+		),
+		"custom_song_table_header": Split(
+			direction: Horizontal,
+			borders: "BOTTOM",
+			panes: [
+				(
+					size: "1",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				),
+				(
+					size: "5",
+					pane: Pane(Property(content: [(kind: Text(" #   "))]))
+				),
+				(
+					size: "1",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				),
+				(
+					size: "45%",
+					pane: Pane(Property(content: [
+						(kind: Text("Title ")),
+						(kind: Text(" "), style: (fg: "light_green"))
+					])),
+				),
+				(
+					size: "1",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				),
+				(
+					size: "5",
+					pane: Pane(Property(content: [(kind: Text("Track"))]))
+				),
+				(
+					size: "2",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				),
+				(
+					size: "25%",
+					pane: Pane(Property(content: [
+						(kind: Text("Album ")),
+						(kind: Text("󰀥 "), style: (fg: "light_green"))
+					])),
+				),
+				(
+					size: "1",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				),
+				(
+					size: "30%",
+					pane: Pane(Property(content: [
+						(kind: Text("Artist ")),
+						(kind: Text(" "), style: (fg: "light_green"))
+					])),
+				),
+				(
+					size: "1",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				),
+				(
+					size: "7",
+					pane: Pane(Property(content: [
+						(kind: Text("   "), style: (fg: "light_green"))
+					])),
+				),
+				(
+					size: "1",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				),
+				(
+					size: "8",
+					pane: Pane(Property(content: [
+						(kind: Text("     "), style: (fg: "light_green"))
+					])),
+				),
+				(
+					size: "1",
+					pane: Pane(Property(content: [(kind: Text(" "))]))
+				)
+			]
+		),
+		"songview": Split(
+			direction: Vertical,
+			panes: [
+				(
+					size: "100%",
+					pane: Split(
+						direction: Horizontal,
+						panes: [
+							(size: "3", pane: Pane(Property(content: [(kind: Text(""))]))),
+							(
+								size: "30%",
+								pane: Split(
+									direction: Vertical,
+									panes: [
+										(
+											size: "100%",
+											pane: Pane(AlbumArt),
+										),
+									]
+								),
+							),
+							(size: "4", pane: Pane(Property(content: [(kind: Text(""))]))),
+							(
+								size: "70%",
+								pane: Split(
+									direction: Vertical,
+									panes: [
+										(size: "5", pane: Pane(Property(content: [(kind: Text(""))]))),
+										(
+											size: "1",
+											pane: Pane(Property(
+												content: [(
+													kind: Property(Song(Title)),
+													style: (fg: "white", modifiers: "Bold"),
+													default: (kind: Property(Song(Filename)), style: (fg: "gray", modifiers: "Italic"))
+												)],
+												align: Center
+											)),
+										),
+										(
+											size: "1",
+											pane: Pane(Property(
+												content: [(kind: Property(Song(Album)), style: (fg: "gray"))],
+												align: Center
+											)),
+										),
+										(
+											size: "1",
+											pane: Pane(Property(
+												content: [(
+													kind: Property(Song(Artist)),
+													style: (fg: "gray", modifiers: "Italic"),
+													default: (kind: Text("Unknown Artist"), style: (fg: "red", modifiers: "Italic"))
+												)],
+												align: Center
+											)),
+										),
+										(
+											size: "1",
+											pane: Pane(Property(
+												content: [(
+													kind: Transform(Replace(content: (kind: Sticker("rating")), replacements: [
+														(match:  "0", replace: (kind: Group([(kind: Text("     "))]))),
+														(match:  "1", replace: (kind: Group([(kind: Text("·    "),style: (fg: "gray"))]))),
+														(match:  "2", replace: (kind: Group([(kind: Text("*    "),style: (fg: "red"))]))),
+														(match:  "3", replace: (kind: Group([(kind: Text("*·   "),style: (fg: "light_red"))]))),
+														(match:  "4", replace: (kind: Group([(kind: Text("**   "),style: (fg: "yellow"))]))),
+														(match:  "5", replace: (kind: Group([(kind: Text("**·  "),style: (fg: "yellow"))]))),
+														(match:  "6", replace: (kind: Group([(kind: Text("***  "),style: (fg: "green"))]))),
+														(match:  "7", replace: (kind: Group([(kind: Text("***· "),style: (fg: "light_green"))]))),
+														(match:  "8", replace: (kind: Group([(kind: Text("**** "),style: (fg: "light_cyan"))]))),
+														(match:  "9", replace: (kind: Group([(kind: Text("****·"),style: (fg: "magenta"))]))),
+														(match: "10", replace: (kind: Group([
+															(kind: Text("*"),style: (fg: "light_red")),
+															(kind: Text("*"),style: (fg: "yellow")),
+															(kind: Text("*"),style: (fg: "light_green")),
+															(kind: Text("*"),style: (fg: "light_cyan")),
+															(kind: Text("*"),style: (fg: "light_blue"))
+														]))),
+													])),
+													default: (
+														kind: Text("  ?  "),
+														style: (fg: "dark_gray", modifiers: "Italic")
+													)
+												)],
+												align: Center,
+											))
+										),
+										(size: "1", pane: Pane(Property(content: [(kind: Text(""))]))),
+										(
+											size: "1",
+											pane: Pane(Property(
+												content: [(kind: Property(Widget(Volume)), style: (fg: "light_green"))],
+												align: Center
+											))
+										),
+										(size: "1", pane: Pane(Property(content: [(kind: Text(""))]))),
+										(
+											size: "1",
+											pane: Pane(Property(
+												content: [
+													(kind: Property(Status(Elapsed)), style: (fg: "white", modifiers: "Bold")),
+													(kind: Text(" / "), style: (fg: "dark_gray")),
+													(kind: Property(Status(Duration)), style: (fg: "gray")),
+												],
+												align: Center
+											))
+										),
+										(
+											size: "1",
+											pane: Pane(ProgressBar)
+										),
+										(size: "1", pane: Pane(Property(content: [(kind: Text(""))]))),
+										(
+											size: "10",
+											pane: Pane(Lyrics)
+										),
+										(size: "1", pane: Pane(Property(content: [(kind: Text(""))]))),
+										(size: "1", pane: Split(
+											direction: Horizontal,
+											panes: [
+												(
+													size: "33%",
+													pane: Pane(Property(content: [
+														(kind: Transform(Replace(
+															content: (kind: Group([
+																(kind: Property(Status(SingleV2()))),
+																(kind: Property(Status(ConsumeV2())))
+															])),
+															replacements: [
+																(match: "OnOn", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Song [z]",
+																	off_label: "Stop After Song [z]",
+																	on_style: (fg: "light_magenta", modifiers: "Bold | CrossedOut"),
+																	off_style: (fg: "light_red", modifiers: "Bold"),
+																))))),
+																(match: "OSOn", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Song [z]",
+																	off_label: "Stop After Song Once [z]",
+																	on_style: (fg: "light_magenta", modifiers: "Bold | CrossedOut"),
+																	off_style: (fg: "yellow", modifiers: "Bold"),
+																))))),
+																(match: "OffOn", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Queue [z]",
+																	off_label: "Repeat / Stop - Off [z]",
+																	on_style: (fg: "light_green", modifiers: "Bold"),
+																	off_style: (fg: "dark_gray")
+																))))),
+																(match: "OnOS", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Song [z]",
+																	off_label: "Stop After Song [z]",
+																	on_style: (fg: "light_magenta", modifiers: "Bold | CrossedOut"),
+																	off_style: (fg: "light_red", modifiers: "Bold"),
+																))))),
+																(match: "OSOS", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Song [z]",
+																	off_label: "Stop After Song Once [z]",
+																	on_style: (fg: "light_magenta", modifiers: "Bold | CrossedOut"),
+																	off_style: (fg: "yellow", modifiers: "Bold"),
+																))))),
+																(match: "OffOS", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Queue [z]",
+																	off_label: "Repeat / Stop - Off [z]",
+																	on_style: (fg: "light_green", modifiers: "Bold"),
+																	off_style: (fg: "dark_gray")
+																))))),
+																(match: "OnOff", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Song [z]",
+																	off_label: "Stop After Song [z]",
+																	on_style: (fg: "light_magenta", modifiers: "Bold"),
+																	off_style: (fg: "light_red", modifiers: "Bold"),
+																))))),
+																(match: "OSOff", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Song [z]",
+																	off_label: "Stop After Song Once [z]",
+																	on_style: (fg: "light_magenta", modifiers: "Bold"),
+																	off_style: (fg: "yellow", modifiers: "Bold"),
+																))))),
+																(match: "OffOff", replace: (kind: Property(Status(RepeatV2(
+																	on_label: "Repeat Queue [z]",
+																	off_label: "Repeat / Stop - Off [z]",
+																	on_style: (fg: "light_green", modifiers: "Bold"),
+																	off_style: (fg: "dark_gray")
+																))))),
+															]
+														))),
+													]))
+												),
+												(
+													size: "34%",
+													pane: Pane(Property(content: [
+														(kind: Property(Status(RandomV2(
+															on_label: "Shuffle [x]",
+															off_label: "Shuffle [x]",
+															on_style: (fg: "light_green", modifiers: "Bold"),
+															off_style: (fg: "dark_gray")
+														)))),
+													], align: Center))
+												),
+												(
+													size: "33%",
+													pane: Pane(Property(content: [
+														(kind: Property(Status(ConsumeV2(
+															on_label: "Consume Song [c]",
+															oneshot_label: "Consume Song Once [c]",
+															off_label: "Consume Song [c]",
+															on_style: (fg: "light_cyan", modifiers: "Bold"),
+															oneshot_style: (fg: "cyan", modifiers: "Bold"),
+															off_style: (fg: "dark_gray")
+														)))),
+													], align: Right))
+												)
+											]
+										))
+									]
+								)
+							),
+							(size: "3", pane: Pane(Property(content: [(kind: Text(""))]))),
+						]
+					)
+				),
+				(
+					size: "2",
+					pane: Pane(Property(content: [(kind: Text(""))]))
+				),
+				(
+					size: "10",
+					pane: Pane(Cava)
+				),
+			],
+		)
+	},
+)

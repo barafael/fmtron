@@ -1,0 +1,7 @@
+(
+    id: "chair_daddy",
+    display_name: "Chair Daddy",
+    speech_sfx: None,
+    font: None,
+    font_colour: None,
+)

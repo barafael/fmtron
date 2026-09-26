@@ -1,0 +1,31 @@
+Scene(
+    assets: AssetManager(
+        textures: [],
+        materials: [],
+    ),
+    entities: [
+        Entity(
+            components: [
+                {
+                    "component": "u32",
+                    "value": 16,
+                },
+                {
+                    "component": "Transform",
+                    "translation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                    ],
+                    "scale": 1.0,
+                },
+            ],
+        ),
+    ],
+)

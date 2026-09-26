@@ -1,0 +1,5 @@
+#![enable(implicit_some)]
+(
+    total_population: 2550000,
+    groups: [],
+)

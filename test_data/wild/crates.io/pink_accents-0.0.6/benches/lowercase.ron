@@ -1,0 +1,9 @@
+(
+    normalize_case: true,
+
+    patterns: [
+        ("a", Lowercase(Original)),
+        ("VeryLongNonExistent12344343243244234", Lowercase(Original)),
+        ("you", Lowercase(Original)),
+    ],
+)

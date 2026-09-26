@@ -1,0 +1,4 @@
+(
+  draw_sound: Some("reactant/assets/clock-pulse"),
+  reveal_burst: Some("reactant/effect-burst"),
+)

@@ -1,0 +1,132 @@
+[
+    (
+        name: "base_color",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", BaseColor, Keyframes([
+
+                (0.0, Vector3((1.00, 0.36, 0.10)), CubicInOut),
+                (2.0, Vector3((1.00, 1.00, 1.00)), CubicInOut),
+            ]))
+        ],
+        sky_elevation_deg: Constant(45.0),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    ),
+    (
+        name: "roughness",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(0.5))),
+            ("cube", Roughness, Keyframes([
+                (0.0, Scalar(0.0), CubicInOut),
+                (2.0, Scalar(1.0), CubicInOut),
+            ]))
+        ],
+        sky_elevation_deg: Constant(45.0),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    ),
+    (
+        name: "metallic",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Keyframes([
+                (0.0, Scalar(0.0), CubicInOut),
+                (2.0, Scalar(1.0), CubicInOut),
+            ]))
+        ],
+        sky_elevation_deg: Constant(45.0),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    ),
+    (
+        name: "specular",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(0.5))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+            ("cube", Specular, Keyframes([
+                (0.0, Scalar(0.0), CubicInOut),
+                (2.0, Scalar(1.0), CubicInOut),
+            ])),
+            ("cube", SpecularTint, Constant(Scalar(1.0))),
+        ],
+        sky_elevation_deg: Constant(45.0),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    ),
+    (
+        name: "specular_tint",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(0.5))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+            ("cube", Specular, Constant(Scalar(1.0))),
+            ("cube", SpecularTint, Keyframes([
+                (0.0, Scalar(0.0), CubicInOut),
+                (2.0, Scalar(1.0), CubicInOut),
+            ])),
+        ],
+        sky_elevation_deg: Constant(45.0),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    ),
+    (
+        name: "sheen",
+        material_mappings: [
+            ("cube", Metallic, Constant(Scalar(0.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+            ("cube", Specular, Constant(Scalar(0.0))),
+            ("cube", Sheen, Keyframes([
+                (0.0, Scalar(0.0), CubicInOut),
+                (2.0, Scalar(1.0), CubicInOut),
+            ])),
+            ("cube", SheenTint, Constant(Scalar(1.0))),
+
+            ("plane", Metallic, Constant(Scalar(0.5))),
+            ("plane", Roughness, Constant(Scalar(0.5))),
+        ],
+        sky_elevation_deg: Constant(10.0),
+        sky_azimuth_deg: Constant(225.0),
+        sky_turbidity: Constant(5.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    ),
+    (
+        name: "sheen_tint",
+        material_mappings: [
+            ("cube", Metallic, Constant(Scalar(0.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+            ("cube", Specular, Constant(Scalar(0.0))),
+            ("cube", Sheen, Constant(Scalar(1.0))),
+            ("cube", SheenTint, Keyframes([
+                (0.0, Scalar(0.0), CubicInOut),
+                (2.0, Scalar(1.0), CubicInOut),
+            ])),
+
+            ("plane", Metallic, Constant(Scalar(0.5))),
+            ("plane", Roughness, Constant(Scalar(0.5))),
+        ],
+        sky_elevation_deg: Constant(10.0),
+        sky_azimuth_deg: Constant(225.0),
+        sky_turbidity: Constant(5.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [Material("cube")],
+    )
+]

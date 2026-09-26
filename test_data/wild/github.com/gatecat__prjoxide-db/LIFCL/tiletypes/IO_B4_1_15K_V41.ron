@@ -1,0 +1,21 @@
+(
+  pips: {},
+  words: {},
+  enums: {
+    "BANK4.VREF1_USED": (
+      options: {
+        "OFF": [],
+        "ON": [(frame:94,bit:1,invert:false,),],
+      },
+      desc: "use VREF1 input for bank 4",
+    ),
+  },
+  conns: {},
+  always_on: [
+    (
+      frame: 89,
+      bit: 0,
+      invert: false,
+    ),
+  ],
+)

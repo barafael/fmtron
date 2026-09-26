@@ -1,0 +1,86 @@
+#![enable(implicit_some)]
+(
+	meta: (
+		id: "tracker",
+		name: "BoiTracker",
+		description: "This is a tracker-like visualization of MIDI input provided to ShaderBoi. It is available under GPLv3; see LICENSE for details.",
+		tags: [
+			"tracker, shaderboi, 2d, sdf, multipass, text, midi, visualization",
+		],
+	),
+	passes: {
+		// Handles tracker-like state information using the MIDI texture.
+		BufferA: (
+			inputs: [
+				(
+					asset: Misc(BufferA),
+					sampler: Custom((
+						filter: nearest,
+						wrap: clamp,
+						vflip: true,
+					)),
+				),
+				// MIDI texture.
+				(
+					asset: Music(XTrackTure),
+					sampler: Custom((
+						filter: nearest,
+						wrap: clamp,
+						vflip: true,
+					)),
+				),
+			],
+		),
+		// Draws the tracker window.
+		BufferB: (
+			inputs: [
+				(
+					asset: Misc(BufferA),
+					sampler: Custom((
+						filter: nearest,
+						wrap: clamp,
+						vflip: true,
+					)),
+				),
+				(
+					asset: Texture(Font1),
+					sampler: Custom((
+						filter: mipmap,
+						wrap: repeat,
+						vflip: true,
+					)),
+				),
+				// Placeholder texture - overridden by dictionary texture
+				(
+					asset: Texture(Font1),
+					sampler: Custom((
+						filter: linear,
+						wrap: repeat,
+						vflip: true,
+					)),
+				),
+			],
+		),
+		// Draws the fake operating system
+		Image: (
+			inputs: [
+				(
+					asset: Misc(BufferB),
+					sampler: Custom((
+						filter: linear,
+						wrap: clamp,
+						vflip: true,
+					)),
+				),
+				(
+					asset: Texture(Font1),
+					sampler: Custom((
+						filter: mipmap,
+						wrap: repeat,
+						vflip: true,
+					)),
+				),
+			],
+		),
+	},
+)

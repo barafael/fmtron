@@ -1,0 +1,9 @@
+(
+    accent: {
+        "": (
+            rules: {
+                r"\w+": {"Lower": {"Lower": {"Lower": {"Lower": {"Lower": {"Original": ()}}}}}},
+            },
+        ),
+    }
+)

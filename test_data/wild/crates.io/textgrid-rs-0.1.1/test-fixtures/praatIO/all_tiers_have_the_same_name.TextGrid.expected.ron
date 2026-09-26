@@ -1,0 +1,36 @@
+(
+    xmin: 0.0,
+    xmax: 1.0,
+    tiers: [
+        IntervalTier((
+            name: "Mary",
+            xmin: 0.0,
+            xmax: 1.0,
+            intervals: [
+                (xmin: 0.0, xmax: 0.06588581304037375, text: ""),
+                (xmin: 0.06588581304037375, xmax: 0.2342878321396945, text: "Mary"),
+                (xmin: 0.2342878321396945, xmax: 1.0, text: ""),
+            ],
+        )),
+        IntervalTier((
+            name: "Mary",
+            xmin: 0.0,
+            xmax: 1.0,
+            intervals: [
+                (xmin: 0.0, xmax: 0.19395201918177338, text: ""),
+                (xmin: 0.19395201918177338, xmax: 0.3341189692105493, text: "Maary"),
+                (xmin: 0.3341189692105493, xmax: 1.0, text: ""),
+            ],
+        )),
+        IntervalTier((
+            name: "Mary",
+            xmin: 0.0,
+            xmax: 1.0,
+            intervals: [
+                (xmin: 0.0, xmax: 0.4117654091545475, text: ""),
+                (xmin: 0.4117654091545475, xmax: 0.5186553134930385, text: "Bob"),
+                (xmin: 0.5186553134930385, xmax: 1.0, text: ""),
+            ],
+        )),
+    ],
+)

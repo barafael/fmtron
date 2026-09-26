@@ -1,0 +1,30 @@
+SkillLint(
+    id: "skill_name_invalid_format",
+    human_readable_name: "skill name is not valid kebab-case",
+    description: "The frontmatter `name` must be lowercase kebab-case: only lowercase letters, numbers, and single hyphens.",
+    lint_level: Deny,
+    reference_link: Some("https://agentskills.io/specification#name-field"),
+    query: r#"
+    {
+        Skill {
+            has_frontmatter @filter(op: "=", value: ["$true"])
+            name @filter(op: "is_not_null")
+                 @filter(op: "not_regex", value: ["$valid_name_pattern"])
+                 @output
+
+            skill_file_path @output
+
+            span_: name_span @optional {
+                filename @output
+                begin_line @output
+                end_line @output
+            }
+        }
+    }"#,
+    arguments: {
+        "true": true,
+        "valid_name_pattern": "^[a-z0-9]([a-z0-9-]*[a-z0-9])?$",
+    },
+    error_message: "The `name` field must be valid kebab-case: lowercase letters, numbers, and hyphens. Must not start or end with a hyphen, and must not contain consecutive hyphens.",
+    per_result_error_template: Some("{{skill_file_path}} has invalid name '{{name}}'"),
+)

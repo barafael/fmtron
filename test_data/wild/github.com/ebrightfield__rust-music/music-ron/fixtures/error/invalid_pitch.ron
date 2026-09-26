@@ -1,0 +1,6 @@
+// Error fixture: InvalidPitch (REQ-O37).
+// PitchCircle with pcs value > 11 triggers InvalidPitch at convert-time.
+(
+  kind: "PitchCircle",
+  pcs: [0, 4, 15],
+)

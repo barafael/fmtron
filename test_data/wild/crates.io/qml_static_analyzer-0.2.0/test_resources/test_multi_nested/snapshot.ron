@@ -1,0 +1,313 @@
+[
+    (
+        name: "Card",
+        base_type: "Rectangle",
+        id: Some("card"),
+        imports: [
+            "import QtQuick",
+        ],
+        signals: [
+            (
+                name: "cardClicked",
+                parameters: [],
+            ),
+        ],
+        properties: [
+            (
+                name: "cardTitle",
+                prop_type: String,
+                value: String("Card"),
+                accessed_properties: [],
+            ),
+            (
+                name: "cardBody",
+                prop_type: String,
+                value: String(""),
+                accessed_properties: [],
+            ),
+            (
+                name: "backgroundColor",
+                prop_type: Color,
+                value: String("white"),
+                accessed_properties: [],
+            ),
+            (
+                name: "elevated",
+                prop_type: Bool,
+                value: Bool(false),
+                accessed_properties: [],
+            ),
+        ],
+        functions: [
+            (
+                name: "setContent",
+                is_signal_handler: false,
+                parameters: [
+                    "title",
+                    "body",
+                ],
+                used_names: [
+                    (
+                        name: "cardTitle",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "title",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "cardBody",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "body",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [],
+    ),
+    (
+        name: "CardList",
+        base_type: "Item",
+        id: Some("cardList"),
+        imports: [
+            "import QtQuick",
+        ],
+        signals: [
+            (
+                name: "cardAdded",
+                parameters: [
+                    (
+                        param_type: "string",
+                        param_name: "title",
+                    ),
+                ],
+            ),
+            (
+                name: "cardRemoved",
+                parameters: [
+                    (
+                        param_type: "int",
+                        param_name: "index",
+                    ),
+                ],
+            ),
+        ],
+        properties: [
+            (
+                name: "cardCount",
+                prop_type: Int,
+                value: Int(0),
+                accessed_properties: [],
+            ),
+            (
+                name: "listTitle",
+                prop_type: String,
+                value: String("Cards"),
+                accessed_properties: [],
+            ),
+            (
+                name: "empty",
+                prop_type: Bool,
+                value: TooComplex,
+                accessed_properties: [
+                    "cardCount",
+                ],
+            ),
+        ],
+        functions: [
+            (
+                name: "addCard",
+                is_signal_handler: false,
+                parameters: [
+                    "title",
+                    "body",
+                ],
+                used_names: [
+                    (
+                        name: "cardCount",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "cardCount",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+            (
+                name: "removeCard",
+                is_signal_handler: false,
+                parameters: [
+                    "index",
+                ],
+                used_names: [
+                    (
+                        name: "cardCount",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "cardCount",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [
+            (
+                type_name: "Card",
+                id: Some("placeholderCard"),
+                properties: [
+                    (
+                        name: "placeholder",
+                        prop_type: Bool,
+                        value: Bool(true),
+                        accessed_properties: [],
+                    ),
+                ],
+                functions: [],
+                children: [],
+            ),
+        ],
+    ),
+    (
+        name: "Dashboard",
+        base_type: "Item",
+        id: Some("dashboard"),
+        imports: [
+            "import QtQuick",
+            "import QtQuick.Controls",
+        ],
+        signals: [
+            (
+                name: "userChanged",
+                parameters: [
+                    (
+                        param_type: "string",
+                        param_name: "username",
+                    ),
+                ],
+            ),
+        ],
+        properties: [
+            (
+                name: "currentUser",
+                prop_type: String,
+                value: String("guest"),
+                accessed_properties: [],
+            ),
+            (
+                name: "adminMode",
+                prop_type: Bool,
+                value: Bool(false),
+                accessed_properties: [],
+            ),
+            (
+                name: "totalCards",
+                prop_type: Int,
+                value: TooComplex,
+                accessed_properties: [
+                    "cardList",
+                ],
+            ),
+        ],
+        functions: [
+            (
+                name: "switchUser",
+                is_signal_handler: false,
+                parameters: [
+                    "username",
+                ],
+                used_names: [
+                    (
+                        name: "currentUser",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "username",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "adminMode",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+            (
+                name: "onCardAdded",
+                is_signal_handler: true,
+                parameters: [
+                    "title",
+                ],
+                used_names: [
+                    (
+                        name: "totalCards",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "cardList",
+                        accessed_item: Some("cardCount"),
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [
+            (
+                type_name: "CardList",
+                id: Some("cardList"),
+                properties: [
+                    (
+                        name: "owner",
+                        prop_type: String,
+                        value: TooComplex,
+                        accessed_properties: [
+                            "dashboard",
+                        ],
+                    ),
+                ],
+                functions: [],
+                children: [
+                    (
+                        type_name: "Card",
+                        id: Some("welcomeCard"),
+                        properties: [
+                            (
+                                name: "greeting",
+                                prop_type: String,
+                                value: String("Welcome"),
+                                accessed_properties: [],
+                            ),
+                        ],
+                        functions: [],
+                        children: [],
+                    ),
+                    (
+                        type_name: "Card",
+                        id: Some("infoCard"),
+                        properties: [
+                            (
+                                name: "info",
+                                prop_type: String,
+                                value: String("Info here"),
+                                accessed_properties: [],
+                            ),
+                        ],
+                        functions: [],
+                        children: [],
+                    ),
+                ],
+            ),
+        ],
+    ),
+]

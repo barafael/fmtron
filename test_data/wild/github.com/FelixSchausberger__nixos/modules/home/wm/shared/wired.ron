@@ -1,0 +1,145 @@
+(
+    // Maximum number of notifications
+    max_notifications: 10,
+
+    // Timeout for notifications in milliseconds
+    timeout_low: 4000,
+    timeout_normal: 8000,
+    timeout_critical: 0,
+
+    // Poll rate for checking if notification should close (in milliseconds)
+    poll_interval: 16,
+
+    // Default anchor positions
+    anchor: Top(Right),
+
+    // Padding around notifications
+    margin: (
+        top: 8,
+        bottom: 8,
+        left: 8,
+        right: 8,
+    ),
+
+    // Gap between notifications
+    gap: 6,
+
+    // Position from the edge
+    anchor_position: (
+        x: 8,
+        y: 8,
+    ),
+
+    // Layout configuration
+    layout_blocks: [
+        (
+            name: "root",
+            parent: "",
+            hook: Hook(parent_anchor: TL, self_anchor: TL),
+            offset: Vec2(x: 0.0, y: 0.0),
+            params: BlockParams(
+                border_width: 1.0,
+                border_rounding: 12.0,
+                background_color: Color(hex: "#383A3C", alpha: 0.9),
+                border_color: Color(hex: "#999394", alpha: 0.5),
+                gap: Vec2(x: 8.0, y: 8.0),
+                shadow: Some((
+                    offset: Vec2(x: 0.0, y: 8.0),
+                    blur_radius: 24.0,
+                    spread_radius: 0.0,
+                    color: Color(hex: "#000000", alpha: 0.5),
+                )),
+            ),
+        ),
+        (
+            name: "icon",
+            parent: "root",
+            hook: Hook(parent_anchor: ML, self_anchor: ML),
+            offset: Vec2(x: 0.0, y: 0.0),
+            params: BlockParams(
+                image: Image(
+                    image_type: Hint,
+                    border_rounding: 6.0,
+                    size: (width: 48, height: 48),
+                ),
+            ),
+        ),
+        (
+            name: "summary",
+            parent: "icon",
+            hook: Hook(parent_anchor: MR, self_anchor: TL),
+            offset: Vec2(x: 12.0, y: -8.0),
+            params: BlockParams(
+                text: Text(
+                    text: "%s",
+                    font: "JetBrainsMono Nerd Font 14",
+                    color: Color(hex: "#966166", alpha: 1.0),
+                    wrap: Word,
+                    weight: Bold,
+                ),
+            ),
+        ),
+        (
+            name: "body",
+            parent: "summary",
+            hook: Hook(parent_anchor: BL, self_anchor: TL),
+            offset: Vec2(x: 0.0, y: 4.0),
+            params: BlockParams(
+                text: Text(
+                    text: "%b",
+                    font: "JetBrainsMono Nerd Font 13",
+                    color: Color(hex: "#DBD3D3", alpha: 0.9),
+                    wrap: Word,
+                ),
+            ),
+        ),
+        (
+            name: "actions",
+            parent: "body",
+            hook: Hook(parent_anchor: BL, self_anchor: TL),
+            offset: Vec2(x: 0.0, y: 8.0),
+            params: BlockParams(
+                buttons: Buttons(
+                    actions: true,
+                    font: "JetBrainsMono Nerd Font 12",
+                    color: Color(hex: "#966166", alpha: 1.0),
+                    button: (
+                        background_color: Color(hex: "#966166", alpha: 0.2),
+                        border_color: Color(hex: "#999394", alpha: 0.5),
+                        border_width: 1.0,
+                        border_rounding: 6.0,
+                    ),
+                ),
+            ),
+        ),
+    ],
+
+    // Shortcuts
+    shortcuts: ShortcutsConfig(
+        notification_interact: 1,
+        notification_close: 2,
+        notification_closeall: 3,
+        notification_pause: 4,
+    ),
+
+    // Notification replacement behavior
+    replacing_enabled: true,
+    replacing_resets_timeout: false,
+
+    // Application-specific settings
+    filter: [
+        (
+            name: "critical",
+            urgency: Critical,
+            override_timeout: None,
+        ),
+        (
+            name: "low_priority",
+            urgency: Low,
+            override_timeout: Some(2000),
+        ),
+    ],
+
+    // Sound settings (disabled for now)
+    sound: None,
+)

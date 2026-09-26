@@ -1,0 +1,5 @@
+(
+  title: "capstone",
+  dimensions: Some((1024, 768)),
+  icon: Some("assets/logo.png"),
+)

@@ -1,0 +1,6 @@
+(
+    decision_interval: 5.0,
+    build_interval: 12.0,
+    aggression: 0.65,
+    nuclear_factory_threshold: 2,
+)

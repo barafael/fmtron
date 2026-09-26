@@ -1,0 +1,11 @@
+(
+    accent: {
+        "": (
+            rules: {
+                "a": {"Literal": "A"},
+                "o": {"Literal": "short"},
+                r"\d+": {"Literal": "veryLongStringaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1234123412344rhrkghsghkgshal;ghaslfnkhsgkshgshgsjdgjkdngkjgh"},
+            },
+        ),
+    }
+)

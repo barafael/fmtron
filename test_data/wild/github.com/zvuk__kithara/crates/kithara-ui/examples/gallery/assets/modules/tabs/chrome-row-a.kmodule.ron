@@ -1,0 +1,14 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "gallery-chrome-row-a",
+    chrome: Plain,
+    root: Column(
+        size: (w: Fill, h: Fill),
+        background: Bg,
+        pad: Some(14.0),
+        children: [
+            Text(id: "label", style: Section, label: "A / 12E REFERENCE"),
+        ],
+    ),
+)

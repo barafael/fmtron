@@ -1,0 +1,10 @@
+( 
+    name: "Ion Prop 10KN",
+    kind: Propulsion (
+        PropulsionDefinition (
+            max_thrust: 10000.0,
+            efficiency: 0.75,
+        )
+    ),
+    size: Micro,
+)

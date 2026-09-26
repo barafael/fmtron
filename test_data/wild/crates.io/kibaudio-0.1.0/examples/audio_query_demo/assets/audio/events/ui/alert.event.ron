@@ -1,0 +1,7 @@
+(
+    bus: "ui",
+    playlist: (sounds: [( file: "alert.ogg" )]),
+    max_instances: 2,
+    steal: Newest,
+    cooldown: 0.5,
+)

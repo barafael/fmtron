@@ -1,0 +1,70 @@
+// Ported from ncp/demos/shawshank-pac/room.json → dialogue_andy_first_meeting
+(
+    id: "dialogue_andy_first_meeting",
+    entry: "root",
+    nodes: {
+        "root": (
+            id: "root",
+            speaker: "Andy",
+            text: "You're Red. I've heard you're the man who knows how to get things.",
+            next: Some("red_response_1"),
+        ),
+        "red_response_1": (
+            id: "red_response_1",
+            speaker: "Red",
+            text: "(What do you say?)",
+            choices: [
+                (
+                    text: "Depends who's asking.",
+                    next: Some("andy_introduce"),
+                    side_effects: Some("set_int(\"andy_trust\", 5)"),
+                ),
+                (
+                    text: "I might be. What do you need?",
+                    next: Some("andy_request_direct"),
+                ),
+                (
+                    text: "I don't know you, fish.",
+                    next: Some("andy_patient"),
+                    side_effects: Some("set_int(\"andy_trust\", -5)"),
+                ),
+            ],
+        ),
+        "andy_introduce": (
+            id: "andy_introduce",
+            speaker: "Andy",
+            text: "Andy Dufresne. I used to be a banker. Now I'm... adjusting to new circumstances.",
+            next: Some("red_observation"),
+        ),
+        "andy_request_direct": (
+            id: "andy_request_direct",
+            speaker: "Andy",
+            text: "A rock hammer. Geology is a hobby of mine. Nothing dramatic — just something to keep the mind occupied.",
+            next: Some("red_observation"),
+        ),
+        "andy_patient": (
+            id: "andy_patient",
+            speaker: "Andy",
+            text: "Fair enough. Names don't mean much in here. Still — if you change your mind, I'll be around.",
+            next: Some("red_observation"),
+        ),
+        "red_observation": (
+            id: "red_observation",
+            speaker: "Red",
+            text: "You don't seem like the other fish. Too calm.",
+            next: Some("andy_explain"),
+        ),
+        "andy_explain": (
+            id: "andy_explain",
+            speaker: "Andy",
+            text: "Hope is a dangerous thing. But I find it's the only thing that keeps a man going in here.",
+            next: Some("exit"),
+        ),
+        "exit": (
+            id: "exit",
+            speaker: "Red",
+            text: "Hope. I'd forgotten what that word even meant.",
+            on_enter: Some("add_tag(\"State.Flag.MetAndy\"); add_tag(\"State.Flag.KnowsRedBusiness\")"),
+        ),
+    },
+)

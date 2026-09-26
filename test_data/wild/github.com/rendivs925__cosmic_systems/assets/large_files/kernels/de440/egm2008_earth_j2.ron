@@ -1,0 +1,7 @@
+(
+    // Degree-2 zonal coefficient extracted from EGM2008's normalized C20.
+    // J2 = -sqrt(5) * Cbar20; units follow the model's SI reference radius.
+    model_id: "EGM2008",
+    reference_radius_m: 6_378_136.3,
+    j2: 1.0826261738522227e-3,
+)

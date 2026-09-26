@@ -1,0 +1,275 @@
+{
+    // === REVELATION ===
+    "revelation_opening": Rule(
+        requires: ["fn:revelation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} set down {possessive} glass. {deliberate_action} {dialogue_tag}, \"There is something you should all know.\""),
+            (weight: 3, text: "The room fell silent as {subject} cleared {possessive} throat. {body_language}"),
+            (weight: 2, text: "{subject} looked at each of them in turn. {emotional_reaction}"),
+            (weight: 2, text: "It was {subject} who broke the silence. {social_observation}"),
+            (weight: 1, text: "Without warning, {subject} spoke the words that would change everything. {room_detail}"),
+            (weight: 2, text: "{subject} drew a breath and spoke. \"{dialogue_line}\" {emotional_reaction}"),
+            (weight: 2, text: "\"There is something I have been meaning to say,\" {subject} began. {body_language}"),
+        ],
+    ),
+    "revelation_body": Rule(
+        requires: ["fn:revelation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The truth hung in the air between them, undeniable and sharp. {emotional_reaction}"),
+            (weight: 2, text: "Every face in the room registered the shock differently. {body_language}"),
+            (weight: 2, text: "There was no taking it back now. The words had been said. {social_observation}"),
+            (weight: 2, text: "{subject} watched the realization dawn across their faces. {room_detail}"),
+            (weight: 1, text: "A confession, finally. {emotional_reaction} The weight of secrecy lifted."),
+            (weight: 2, text: "\"{dialogue_line}\" The words escaped before anyone could stop them. {body_language}"),
+            (weight: 2, text: "{object} set down {possessive} glass. \"How long have you known?\" {emotional_reaction}"),
+            (weight: 1, text: "{markov:social_drama:tense}"),
+        ],
+    ),
+    "revelation_closing": Rule(
+        requires: ["fn:revelation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Nothing would be the same after tonight. {room_detail}"),
+            (weight: 2, text: "The silence that followed said more than words ever could."),
+            (weight: 2, text: "{subject} exhaled slowly, as if releasing years of burden. {body_language}"),
+            (weight: 2, text: "And just like that, the careful architecture of their evening crumbled."),
+            (weight: 1, text: "Someone reached for the wine. It seemed the only sensible thing to do."),
+        ],
+    ),
+
+    // === CONFRONTATION ===
+    "confrontation_opening": Rule(
+        requires: ["fn:confrontation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} turned to face {object} directly. {deliberate_action}"),
+            (weight: 3, text: "The pretense of civility dissolved. {subject} stepped closer. {body_language}"),
+            (weight: 2, text: "{dialogue_tag}, {subject} said, \"We need to discuss this.\" {emotional_reaction}"),
+            (weight: 2, text: "It had been building all evening. {subject} could hold back no longer. {social_observation}"),
+            (weight: 1, text: "{room_detail} {subject} squared {possessive} shoulders and spoke."),
+            (weight: 2, text: "\"You cannot be serious.\" {subject} stared at {object}. {body_language}"),
+            (weight: 2, text: "{subject} leveled {possessive} gaze at {object}. \"That is not what I was told.\" {emotional_reaction}"),
+        ],
+    ),
+    "confrontation_body": Rule(
+        requires: ["fn:confrontation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Words cut through the careful veneer of the evening. {emotional_reaction}"),
+            (weight: 2, text: "{subject} held {possessive} ground, voice steady and deliberate. {body_language}"),
+            (weight: 2, text: "The other guests shifted uncomfortably. {social_observation}"),
+            (weight: 2, text: "Each accusation landed like a physical blow. {emotional_reaction}"),
+            (weight: 1, text: "{dialogue_tag}, the challenge hung in the air between them. {room_detail}"),
+            (weight: 2, text: "\"I beg your pardon?\" {object} replied. {subject} did not flinch. \"{dialogue_line}\""),
+            (weight: 2, text: "\"You owe me an explanation,\" {subject} said. {object} looked away. {body_language}"),
+            (weight: 1, text: "{markov:social_drama:tense}"),
+        ],
+    ),
+    "confrontation_closing": Rule(
+        requires: ["fn:confrontation"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The damage was done. {body_language} Someone would have to make the first move toward peace."),
+            (weight: 2, text: "{subject} turned away, the conversation clearly over. {room_detail}"),
+            (weight: 2, text: "An uneasy truce settled over the room. {social_observation}"),
+            (weight: 2, text: "The silence that followed was thick enough to cut. {emotional_reaction}"),
+            (weight: 1, text: "Somewhere, a clock ticked. No one spoke."),
+        ],
+    ),
+
+    // === BETRAYAL ===
+    "betrayal_opening": Rule(
+        requires: ["fn:betrayal"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} felt the ground shift beneath {possessive} feet. {emotional_reaction}"),
+            (weight: 2, text: "The realization came slowly, then all at once. {body_language}"),
+            (weight: 2, text: "{subject} stared at {object}, searching for some sign that this was a mistake. {social_observation}"),
+            (weight: 2, text: "Trust, once broken, makes a sound like crystal shattering. {room_detail}"),
+            (weight: 1, text: "It was the smile that gave it away. {subject} saw it and understood everything."),
+            (weight: 2, text: "{subject} turned to {object}. \"How could you?\" {emotional_reaction}"),
+            (weight: 2, text: "\"{dialogue_line}\" {subject}'s voice cracked on the last word. {body_language}"),
+        ],
+    ),
+    "betrayal_body": Rule(
+        requires: ["fn:betrayal"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Every shared confidence, every whispered secret, now cast in a different light. {emotional_reaction}"),
+            (weight: 2, text: "{subject} replayed every interaction, every kindness, looking for the lie. {body_language}"),
+            (weight: 2, text: "The others watched with a mixture of sympathy and morbid fascination. {social_observation}"),
+            (weight: 2, text: "How long had it been going on? {subject} couldn't bear to ask. {room_detail}"),
+            (weight: 1, text: "{dialogue_tag}, {subject} managed, \"How could you?\""),
+        ],
+    ),
+    "betrayal_closing": Rule(
+        requires: ["fn:betrayal"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} composed {possessive} expression with visible effort. {body_language}"),
+            (weight: 2, text: "The party continued around them, but something fundamental had broken."),
+            (weight: 2, text: "Some wounds run too deep for an evening's small talk to cover. {emotional_reaction}"),
+            (weight: 2, text: "{subject} excused {possessive} absence and stepped into the garden. {room_detail}"),
+            (weight: 1, text: "The wine tasted bitter now. Everything did."),
+        ],
+    ),
+
+    // === ALLIANCE ===
+    "alliance_opening": Rule(
+        requires: ["fn:alliance"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} caught {object}'s eye across the room. {body_language}"),
+            (weight: 2, text: "A moment of understanding passed between them, unspoken but clear. {social_observation}"),
+            (weight: 2, text: "{subject} moved closer to {object}, lowering {possessive} voice. {deliberate_action}"),
+            (weight: 2, text: "Sometimes, enemies of enemies make the best friends. {room_detail}"),
+            (weight: 1, text: "{dialogue_tag}, {subject} whispered, \"I think we can help each other.\""),
+            (weight: 2, text: "\"Perhaps we should all sit down,\" {subject} murmured to {object}. {social_observation}"),
+            (weight: 2, text: "{subject} leaned toward {object}. \"{dialogue_line}\" {body_language}"),
+        ],
+    ),
+    "alliance_body": Rule(
+        requires: ["fn:alliance"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The arrangement was delicate but mutually beneficial. {social_observation}"),
+            (weight: 2, text: "{subject} and {object} found unexpected common ground. {emotional_reaction}"),
+            (weight: 2, text: "A subtle nod, a shared look — the pact was sealed without a word. {body_language}"),
+            (weight: 2, text: "Together, they might navigate what neither could face alone. {room_detail}"),
+            (weight: 1, text: "{dialogue_tag}, they clinked glasses, a private toast to their new understanding."),
+            (weight: 1, text: "{markov:social_drama:warm}"),
+        ],
+    ),
+    "alliance_closing": Rule(
+        requires: ["fn:alliance"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} returned to the group with a new confidence. {body_language}"),
+            (weight: 2, text: "The balance of power in the room had shifted, though no one else knew it yet."),
+            (weight: 2, text: "{social_observation} An alliance forged in the margins of polite society."),
+            (weight: 2, text: "{subject} smiled. For the first time tonight, it was genuine. {emotional_reaction}"),
+            (weight: 1, text: "The evening was looking up. {room_detail}"),
+        ],
+    ),
+
+    // === COMIC RELIEF ===
+    "comic_relief_opening": Rule(
+        requires: ["fn:comic_relief"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} nearly choked on {possessive} drink. {body_language}"),
+            (weight: 2, text: "The timing was impeccable. {subject} couldn't help but laugh. {emotional_reaction}"),
+            (weight: 2, text: "Leave it to {subject} to find humor in the wreckage. {social_observation}"),
+            (weight: 2, text: "{dialogue_tag}, {subject} quipped, and the tension broke like a fever."),
+            (weight: 1, text: "An unexpected burst of laughter cut through the room. {room_detail}"),
+            (weight: 2, text: "\"{dialogue_line}\" {subject} said with a grin, and despite everything, someone laughed."),
+            (weight: 2, text: "\"Well,\" {subject} said, raising {possessive} glass, \"at least the wine is good.\" {emotional_reaction}"),
+        ],
+    ),
+    "comic_relief_body": Rule(
+        requires: ["fn:comic_relief"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "For a blessed moment, the weight of the evening lifted. {emotional_reaction}"),
+            (weight: 2, text: "Even {object} cracked a smile, despite everything. {body_language}"),
+            (weight: 2, text: "The absurdity of it all became suddenly, overwhelmingly apparent. {social_observation}"),
+            (weight: 2, text: "Laughter echoed off the high ceilings. {room_detail}"),
+            (weight: 1, text: "{subject} grinned. It was the kind of joke that only worked because everything else had gone so wrong."),
+            (weight: 1, text: "{markov:social_drama:gossip}"),
+        ],
+    ),
+    "comic_relief_closing": Rule(
+        requires: ["fn:comic_relief"],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The laughter faded, but the mood had shifted. {social_observation}"),
+            (weight: 2, text: "{subject} wiped {possessive} eyes. \"I needed that,\" {subject} admitted. {body_language}"),
+            (weight: 2, text: "Sometimes the only honest response to disaster is to laugh. {emotional_reaction}"),
+            (weight: 2, text: "The tension would return, of course. But for now, they breathed. {room_detail}"),
+            (weight: 1, text: "Even the candles seemed to flicker more cheerfully."),
+        ],
+    ),
+
+    // === SUPPORTING RULES ===
+    "deliberate_action": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject} placed {possessive} hands flat on the table."),
+            (weight: 2, text: "{subject} folded {possessive} napkin with unnecessary precision."),
+            (weight: 2, text: "{subject} set down the wine glass with exaggerated care."),
+            (weight: 2, text: "{subject} straightened {possessive} posture."),
+            (weight: 1, text: "{subject} adjusted {possessive} cufflinks, buying time."),
+        ],
+    ),
+    "emotional_reaction": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Something flickered behind {subject}'s composed expression."),
+            (weight: 2, text: "The emotion was brief but unmistakable."),
+            (weight: 2, text: "{subject}'s composure wavered, just for an instant."),
+            (weight: 2, text: "A flash of something raw crossed {subject}'s face."),
+            (weight: 1, text: "The mask slipped. Just for a moment. But everyone saw."),
+        ],
+    ),
+    "body_language": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "{subject}'s jaw tightened almost imperceptibly."),
+            (weight: 2, text: "{subject} clasped {possessive} hands together."),
+            (weight: 2, text: "A muscle twitched near {subject}'s eye."),
+            (weight: 2, text: "{subject} leaned back, creating distance."),
+            (weight: 1, text: "{subject}'s fingers drummed a quiet rhythm on the armrest."),
+        ],
+    ),
+    "dialogue_tag": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "With measured calm"),
+            (weight: 2, text: "Choosing each word carefully"),
+            (weight: 2, text: "In a voice that carried across the room"),
+            (weight: 2, text: "Barely above a whisper"),
+            (weight: 1, text: "With a coolness that surprised even {subject}"),
+        ],
+    ),
+    "social_observation": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "The dynamics of the room had shifted, and everyone felt it."),
+            (weight: 2, text: "A glance was exchanged between two guests at the far end of the table."),
+            (weight: 2, text: "The careful choreography of the evening had been disrupted."),
+            (weight: 2, text: "Alliances were being recalculated behind polite smiles."),
+            (weight: 1, text: "In rooms like this, silence spoke louder than words ever could."),
+        ],
+    ),
+    "room_detail": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "Candlelight flickered across the polished mahogany."),
+            (weight: 2, text: "The fire had burned low, casting long shadows across the room."),
+            (weight: 2, text: "Crystal glasses caught the light and scattered it like secrets."),
+            (weight: 2, text: "The grandfather clock in the hall marked the hour."),
+            (weight: 1, text: "Outside, the garden was dark. Inside, it was darker still."),
+        ],
+    ),
+    "dialogue_line": Rule(
+        requires: [],
+        excludes: [],
+        alternatives: [
+            (weight: 3, text: "I beg your pardon?"),
+            (weight: 2, text: "You cannot be serious."),
+            (weight: 2, text: "How long have you known?"),
+            (weight: 2, text: "That is not what I was told."),
+            (weight: 2, text: "Perhaps we should all sit down."),
+            (weight: 1, text: "I think we both know that is not entirely true."),
+            (weight: 1, text: "You will forgive me if I find that difficult to believe."),
+        ],
+    ),
+}

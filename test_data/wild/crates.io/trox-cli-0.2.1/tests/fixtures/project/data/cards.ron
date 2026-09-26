@@ -1,0 +1,9 @@
+[
+    (id: "radiant-echo", name: Tx("Radiant Echo")),
+    (id: "close", label: Tx(text: "Close deck browser", description: "Accessible button label that closes the deck browser.")),
+    (id: "deck-summary", label: Tx(
+        text: "Deck: {deck_name} ({count})",
+        description: "Deck label followed by its card count.",
+        placeholders: { "deck_name": Opaque, "count": Scalar },
+    )),
+]

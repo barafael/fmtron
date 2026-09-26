@@ -1,0 +1,32 @@
+(
+    accent: {
+        "": (
+            rules: {
+                "a": {"Weights": {1: {"Literal": "single"}}},
+                "o": {"Weights": {
+                    0: {"Weights": {1: {"Literal": "many variants"}}},
+                    1: {"Weights": {1: {"Literal": "1"}}},
+                    2: {"Weights": {1: {"Literal": "2"}}},
+                    3: {"Weights": {1: {"Literal": "3"}}},
+                    4: {"Weights": {1: {"Literal": "4"}}},
+                    5: {"Weights": {1: {"Literal": "5"}}},
+                    6: {"Weights": {1: {"Literal": "6"}}},
+                    7: {"Weights": {1: {"Literal": "7"}}},
+                    8: {"Weights": {1: {"Literal": "8"}}},
+                    9: {"Weights": {1: {"Literal": "9"}}},
+                    10: {"Weights": {1: {"Literal": "10"}}},
+                    11: {"Weights": {1: {"Literal": "11"}}},
+                    12: {"Weights": {1: {"Literal": "12"}}},
+                    13: {"Weights": {1: {"Literal": "13"}}},
+                    14: {"Weights": {1: {"Literal": "14"}}},
+                    15: {"Weights": {1: {"Literal": "15"}}},
+                    16: {"Weights": {1: {"Literal": "16"}}},
+                    17: {"Weights": {1: {"Literal": "17"}}},
+                    18: {"Weights": {1: {"Literal": "18"}}},
+                    19: {"Weights": {1: {"Literal": "19"}}},
+                    20: {"Weights": {1: {"Literal": "20"}}},
+                }},
+            },
+        ),
+    }
+)

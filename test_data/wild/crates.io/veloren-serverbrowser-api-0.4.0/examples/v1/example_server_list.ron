@@ -1,0 +1,24 @@
+GameServerList(
+    servers: [
+        GameServer(
+            name: "Official Veloren Server",
+            address: "server.veloren.net",
+            port: 14004,
+            description: "Welcome to the Veloren Pre-Alpha. Enjoy your journey!",
+            location: "DE",
+            auth_server: "https://auth.veloren.net",
+            channel: Some("weekly"),
+            official: true,
+            extra: {
+                "discord": (
+                    name: "Discord",
+                    content: url("https://discord.gg/ecUxc9N"),
+                ),
+                "owners": (
+                    name: "Server Owners",
+                    content: text("The Veloren core development team"),
+                ),
+            },
+        )
+    ]
+)

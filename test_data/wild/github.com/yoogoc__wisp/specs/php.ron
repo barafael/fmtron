@@ -1,0 +1,6 @@
+(
+    version: 1,
+    command: "php",
+    description: Some("Run the PHP interpreter"),
+    has_generate_spec: true,
+)

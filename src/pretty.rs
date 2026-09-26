@@ -31,6 +31,11 @@ pub enum Doc {
     },
     Nest(usize, Box<Doc>),
     Group(Box<Doc>),
+    /// `[open, child, close]`, e.g. `Some(` `(…)` `)`; see [`hug`].
+    Hug {
+        tab: usize,
+        parts: Box<[Doc; 3]>,
+    },
     Concat(Vec<Doc>),
 }
 
@@ -71,6 +76,19 @@ pub fn nest(n: usize, d: Doc) -> Doc {
 
 pub fn group(d: Doc) -> Doc {
     Doc::Group(Box::new(d))
+}
+
+/// `open child close` for a wrapper around a single container, such as
+/// `Some((…))`. Renders flat if it all fits. Otherwise, if `child` fits flat
+/// on a line of its own, it breaks like a container (`Some(` / child / `)`);
+/// if even that does not fit, it "hugs": `open` and `close` stay on the
+/// child's first and last lines and the child breaks inside (`Some((` … `))`),
+/// the layout `ron`'s own pretty-printer uses.
+pub fn hug(open: Doc, child: Doc, close: Doc, tab: usize) -> Doc {
+    Doc::Hug {
+        tab,
+        parts: Box::new([open, child, close]),
+    }
 }
 
 pub fn concat(docs: Vec<Doc>) -> Doc {
@@ -150,43 +168,77 @@ fn best(out: &mut Out, doc: &Doc, width: usize, indent: usize, col: usize, mode:
             Mode::Break => best(out, broken, width, indent, col, mode),
         },
         Doc::Nest(n, d) => best(out, d, width, indent.saturating_add(*n), col, mode),
-        Doc::Group(d) => {
-            // A group reached directly by `best` (not intercepted by the
-            // `Concat` arm) has no siblings to consider — it flattens iff its
-            // own flat form fits the remaining width.
-            if fits_rest(
-                width.saturating_sub(col),
-                Mode::Flat,
-                std::slice::from_ref(d),
-            ) {
-                best(out, d, width, indent, col, Mode::Flat)
-            } else {
-                best(out, d, width, indent, col, Mode::Break)
-            }
+        // A group or hug reached directly by `best` (not intercepted by
+        // `best_seq`) has no siblings to consider: it flattens iff its own
+        // flat form fits the remaining width.
+        Doc::Group(_) | Doc::Hug { .. } => {
+            best_seq(out, std::slice::from_ref(doc), width, indent, col, mode)
         }
-        Doc::Concat(docs) => {
-            let mut c = col;
-            let mut i = 0;
-            while i < docs.len() {
-                let d = &docs[i];
-                if let Doc::Group(inner) = d {
-                    // Decide the group from its *whole* share of the current
-                    // line: its own flat form plus whatever follows it up to
-                    // the next line break (e.g. the trailing comma of a
-                    // broken container, which would otherwise push the line
-                    // one character past the width).
-                    let fits = fits_rest(width.saturating_sub(c), mode, &docs[i..]);
-                    let m = if fits { Mode::Flat } else { Mode::Break };
-                    c = best(out, inner, width, indent, c, m);
-                    i += 1;
+        Doc::Concat(docs) => best_seq(out, docs, width, indent, col, mode),
+    }
+}
+
+/// Render `docs` in sequence. Each `Group`/`Hug` is decided from its *whole*
+/// share of the current line: its own flat form plus whatever follows it up
+/// to the next line break (e.g. the trailing comma of a broken container,
+/// which would otherwise push the line one character past the width).
+fn best_seq(
+    out: &mut Out,
+    docs: &[Doc],
+    width: usize,
+    indent: usize,
+    col: usize,
+    mode: Mode,
+) -> usize {
+    let mut c = col;
+    for (i, d) in docs.iter().enumerate() {
+        c = match d {
+            Doc::Group(inner) => {
+                let fits = fits_rest(width.saturating_sub(c), mode, &docs[i..]);
+                let m = if fits { Mode::Flat } else { Mode::Break };
+                best(out, inner, width, indent, c, m)
+            }
+            Doc::Hug { tab, parts } => {
+                let [open, child, close] = &**parts;
+                if fits_rest(width.saturating_sub(c), mode, &docs[i..]) {
+                    let c = best(out, open, width, indent, c, Mode::Flat);
+                    let c = best(out, child, width, indent, c, Mode::Flat);
+                    best(out, close, width, indent, c, Mode::Flat)
+                } else if child_fits_alone(child, width, indent + tab) {
+                    // Break around the child like a container: it then fits
+                    // flat on its own line, followed by a comma.
+                    let inner = indent + tab;
+                    best(out, open, width, indent, c, Mode::Break);
+                    out.break_line(inner);
+                    let c = best_seq(
+                        out,
+                        std::slice::from_ref(child),
+                        width,
+                        inner,
+                        inner,
+                        Mode::Break,
+                    );
+                    out.buf.push(',');
+                    out.break_line(indent);
+                    best(out, close, width, indent, c + 1, Mode::Break)
                 } else {
-                    c = best(out, d, width, indent, c, mode);
-                    i += 1;
+                    // Hug: the child breaks inside, sharing its first line
+                    // with `open` and its last with `close`.
+                    let c = best(out, open, width, indent, c, Mode::Break);
+                    best_seq(out, &parts[1..], width, indent, c, Mode::Break)
                 }
             }
-            c
-        }
+            _ => best(out, d, width, indent, c, mode),
+        };
     }
+    c
+}
+
+/// True if `child` renders flat, plus a trailing comma, on a fresh line
+/// indented by `indent`.
+fn child_fits_alone(child: &Doc, width: usize, indent: usize) -> bool {
+    let mut rem = width.saturating_sub(indent);
+    fits_probe(&mut rem, Mode::Flat, child) != Fit::Overflow && rem >= 1
 }
 
 /// Result of probing how one `Doc` renders on the current line.
@@ -234,16 +286,20 @@ fn fits_probe(rem: &mut usize, mode: Mode, d: &Doc) -> Fit {
         // A nested group is assumed to flatten while measuring the current
         // line; its own break decision is made separately when rendered.
         Doc::Group(d) => fits_probe(rem, Mode::Flat, d),
-        Doc::Concat(docs) => {
-            for x in docs {
-                match fits_probe(rem, mode, x) {
-                    Fit::Continue => {}
-                    other => return other,
-                }
-            }
-            Fit::Continue
+        Doc::Hug { parts, .. } => fits_seq(rem, Mode::Flat, &parts[..]),
+        Doc::Concat(docs) => fits_seq(rem, mode, docs),
+    }
+}
+
+/// `fits_probe` over a sequence: stops at the first overflow or line break.
+fn fits_seq(rem: &mut usize, mode: Mode, docs: &[Doc]) -> Fit {
+    for x in docs {
+        match fits_probe(rem, mode, x) {
+            Fit::Continue => {}
+            other => return other,
         }
     }
+    Fit::Continue
 }
 
 /// True if `docs` fit in `rem` remaining columns on the current line, where
@@ -261,6 +317,11 @@ fn fits_rest(rem: usize, mode: Mode, docs: &[Doc]) -> bool {
     for (i, d) in docs.iter().enumerate() {
         let fit = match d {
             Doc::Group(inner) if i > 0 => fits_probe(&mut rem, Mode::Break, inner),
+            // A following hug breaks right after its opener at the latest.
+            Doc::Hug { parts, .. } if i > 0 => match fits_probe(&mut rem, Mode::Break, &parts[0]) {
+                Fit::Continue => Fit::LineBreak,
+                other => other,
+            },
             _ => fits_probe(&mut rem, mode, d),
         };
         match fit {

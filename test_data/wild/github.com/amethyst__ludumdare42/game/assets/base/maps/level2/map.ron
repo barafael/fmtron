@@ -1,0 +1,5 @@
+(
+    name: "level2",
+    music_path: "maps/level2/audio.mp3",
+    audio_offset: 0.0,
+)

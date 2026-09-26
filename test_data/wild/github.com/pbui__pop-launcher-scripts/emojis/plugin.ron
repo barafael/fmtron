@@ -1,0 +1,12 @@
+(
+    name: "Emojis",
+    description: "Syntax: emoji <query>",
+    query: (
+        regex: "^(emoji|emo|e)\\s.*",
+        help: "emoji",
+        isolate: true,
+        no_sort: true
+    ),
+    bin: (path: "emojis"),
+    icon: Name("font-x-generic-symbolic")
+)

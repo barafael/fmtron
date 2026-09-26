@@ -1,0 +1,9 @@
+Config(
+      desktop_actions: true,
+      terminal: Some(Terminal(
+            command: "kitty",
+            args: "-e {}",
+            )
+      ),
+      max_entries: 30,
+)

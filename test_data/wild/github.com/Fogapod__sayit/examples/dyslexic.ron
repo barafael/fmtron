@@ -1,0 +1,60 @@
+(
+    accent: {
+        "words": (
+            rules: {
+                // swap 2 words
+                r"(\w+)\>(.*?)\<(\w+)": {"Weights": {
+                    9: {"Original": ()},
+                    1: {"Literal": "$3$2$1"},
+                }},
+            },
+        ),
+        "letters": (
+            rules: {
+                // swap 2 letters
+                r"([a-zA-Z])([a-zA-Z])": {"Weights": {
+                    9: {"Original": ()},
+                    1: {"Literal": "$2$1"},
+                }},
+            },
+        ),
+    },
+    intensities: {
+        1: Replace({
+            "words": (
+                rules: {
+                    r"(\w+)\>(.*?)\<(\w+)": {"Weights": {
+                        8: {"Original": ()},
+                        2: {"Literal": "$3$2$1"},
+                    }},
+                },
+            ),
+            "letters": (
+                rules: {
+                    r"([a-zA-Z])([a-zA-Z])": {"Weights": {
+                        8: {"Original": ()},
+                        2: {"Literal": "$2$1"},
+                    }},
+                },
+            ),
+        }),
+        2: Replace({
+            "words": (
+                rules: {
+                    r"(\w+)\>(.*?)\<(\w+)": {"Weights": {
+                        7: {"Original": ()},
+                        3: {"Literal": "$3$2$1"},
+                    }},
+                },
+            ),
+            "letters": (
+                rules: {
+                    r"([a-zA-Z])([a-zA-Z])": {"Weights": {
+                        7: {"Original": ()},
+                        3: {"Literal": "$2$1"},
+                    }},
+                },
+            ),
+        }),
+    }
+)

@@ -1,0 +1,118 @@
+MaterialsConfig(
+    default: (
+        // must match material pass layout
+        object_layout: [
+            WorldMatrix,
+            VertexBufferAddress,
+            MaterialOffset,
+        ],
+        object_instancing: true,
+        scene_layout: [
+            CameraPosition,
+            CameraViewProj,
+            LightDirection,
+            LightColor,
+            LightAmbientColor,
+        ],
+        vertex_attributes: "POSITION | COLOR | TEXTURE | NORMAL | TANGENT | BITANGENT",
+        color_format: R16g16b16a16Sfloat,
+        depth_format: D32Sfloat,
+    ),
+    materials: {
+        "gltf.texture": (
+            vertex_shader: "gltf.spv",
+            vertex_entry: "vertex_texture_main",
+            fragment_shader: "gltf.spv",
+            fragment_entry: "fragment_texture_main",
+            texture_indexing: true,
+            material_indexing: true,
+            material_layout: [
+                DiffuseColor,
+                DiffuseIndex,
+                NormalIndex,
+            ],
+            texture_layout: [
+                Diffuse
+            ]
+        ),
+        "gltf.texture.transparent": (
+            vertex_shader: "gltf.spv",
+            vertex_entry: "vertex_texture_main",
+            fragment_shader: "gltf.spv",
+            fragment_entry: "fragment_texture_main",
+            blend_mode: Alpha,
+            texture_indexing: true,
+            material_indexing: true,
+            material_layout: [
+                DiffuseColor,
+                DiffuseIndex,
+                NormalIndex,
+            ],
+            texture_layout: [
+                Diffuse
+            ]
+        ),
+        "gltf.texture.normal": (
+            vertex_shader: "gltf.spv",
+            vertex_entry: "vertex_texture_main",
+            fragment_shader: "gltf.spv",
+            fragment_entry: "fragment_texture_normal_main",
+            texture_indexing: true,
+            material_indexing: true,
+            material_layout: [
+                DiffuseColor,
+                DiffuseIndex,
+                NormalIndex,
+            ],
+            texture_layout: [
+                Diffuse,
+                Normal
+            ]
+        ),
+        "gltf.texture.transparent.normal": (
+            vertex_shader: "gltf.spv",
+            vertex_entry: "vertex_texture_main",
+            fragment_shader: "gltf.spv",
+            fragment_entry: "fragment_texture_normal_main",
+            blend_mode: Alpha,
+            texture_indexing: true,
+            material_indexing: true,
+            material_layout: [
+                DiffuseColor,
+                DiffuseIndex,
+                NormalIndex,
+            ],
+            texture_layout: [
+                Diffuse,
+                Normal
+            ]
+        ),
+        "gltf.color": (
+            vertex_shader: "gltf.spv",
+            vertex_entry: "vertex_color_light_main",
+            fragment_shader: "gltf.spv",
+            fragment_entry: "fragment_color_light_main",
+            texture_indexing: true,
+            material_indexing: true,
+            material_layout: [
+                DiffuseColor,
+                DiffuseIndex,
+                NormalIndex,
+            ]
+        ),
+         "gltf.color.transparent": (
+            vertex_shader: "gltf.spv",
+            vertex_entry: "vertex_color_light_main",
+            fragment_shader: "gltf.spv",
+            fragment_entry: "fragment_color_light_main",
+            blend_mode: Alpha,
+            texture_indexing: true,
+            material_indexing: true,
+            material_layout: [
+                DiffuseColor,
+                DiffuseIndex,
+                NormalIndex,
+            ]
+        ),
+   }
+)

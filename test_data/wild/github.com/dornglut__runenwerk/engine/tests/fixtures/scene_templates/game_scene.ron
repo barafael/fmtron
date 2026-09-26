@@ -1,0 +1,11 @@
+(
+  body: "Game Scene",
+  primary_button: Some((
+    label: "Resume",
+    on_click: Some(emit("resume")),
+  )),
+  secondary_button: Some((
+    label: "Main Menu",
+    on_click: Some(main_menu),
+  )),
+)

@@ -1,0 +1,15 @@
+(
+    name: "Zed Recent Projects",
+    description: "Open recent Zed projects",
+    bin: (
+        path: "zed",
+    ),
+    icon: Name("zed"),
+    query: (
+        isolate: true,
+        regex: "^zed.*",
+        help: "zed ",
+        no_sort: true,
+        priority: High,
+    ),
+)

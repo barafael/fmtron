@@ -1,0 +1,9 @@
+(
+    samples_per_pixel: 8,
+    image_scale: 25,
+    frame_delay_num: 1,
+    frame_delay_den: 15,
+    tonemapping: true,
+    exposure: 4.0,
+    annotations: true,
+)

@@ -1,0 +1,29 @@
+Analysis(
+    id: "subsystem_summary",
+    version: "1.0.0",
+    description: Some("Quarto-rendered HTML summary of spacecraft subsystem margins"),
+    image: "python:3.11-slim",
+    entrypoint: "sh run.sh",
+    inputs: [
+        // Mass equipment list with CBE/MEV totals
+        Input(key: "systems.mass_budget", required: true),
+        // Power draw by subsystem across operating modes
+        Input(key: "systems.power_budget", required: true),
+        // Power mode descriptions and totals
+        Input(key: "systems.power_modes", required: true),
+        // Solar array performance including EOL power
+        Input(key: "power.solar_array", required: true),
+    ],
+    outputs: [
+        Output(key: "subsystem_summary.html"),
+    ],
+    templates: [
+        Template(source: "subsystem_summary.qmd.j2", destination: "subsystem_summary.qmd"),
+    ],
+    static_files: ["run.sh"],
+    resources: Resources(
+        cpu_cores: 2.0,
+        memory_mb: 4096,
+        timeout_seconds: 600,
+    ),
+)

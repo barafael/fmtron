@@ -1,0 +1,13 @@
+Spell(
+    id: 5,
+    name: "Heal",
+    targeting: Targeting(shape: Single, filter: AllyOrSelf),
+    cooldown: 30.0,
+    effects: [
+        (Heal(5), None),
+    ],
+    caster_restriction: PlayerClass(
+        classes: [Cleric, Druid],
+        min_level: Some(1),
+    ),
+)

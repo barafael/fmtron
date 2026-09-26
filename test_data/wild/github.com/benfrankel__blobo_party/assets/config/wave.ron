@@ -1,0 +1,8 @@
+
+(
+    spawn_cadence: 4,
+    min_distance: 150.0,
+    max_distance: 180.0,
+    spawn_count_scale: 0.5,
+    spawn_cap: 8,
+)

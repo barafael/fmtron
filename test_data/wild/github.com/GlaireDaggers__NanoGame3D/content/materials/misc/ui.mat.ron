@@ -1,0 +1,13 @@
+#![enable(implicit_some)]
+(
+    shader: "content/shaders/imgui.toml",
+    transparent: true,
+    blend: true,
+    blend_src: SrcAlpha,
+    blend_dst: OneMinusSrcAlpha,
+    cull: Off,
+    depth_test: false,
+    depth_write: false,
+    params: {
+    }
+)

@@ -1,0 +1,39 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "app-menu-module-cell",
+    chrome: Plain,
+    parameters: ["module", "label"],
+    root: Pressable(
+        id: "cell",
+        press: Command(id: "ui.module.toggle", with: { "module": "$module" }),
+        child: Row(
+            size: (w: Fill, h: Fixed(20.0)),
+            pad_x: 5.0,
+            gap: 5.0,
+            frame: (top: true, right: true, bottom: true, left: true),
+            frame_color: Line,
+            active_frame_color: Accent,
+            active_background: BgSelect,
+            active: Model(id: "ui.module.on", with: { "module": "$module" }),
+            children: [
+                Row(
+                    id: "led",
+                    size: (w: Fixed(4.0), h: Fixed(4.0)),
+                    gap: 0.0,
+                    background: Line,
+                    active_background: Accent,
+                    active: Model(id: "ui.module.on", with: { "module": "$module" }),
+                    children: [],
+                ),
+                Text(
+                    id: "label",
+                    style: MicroLabel,
+                    active_color: Text,
+                    label: "$label",
+                    active: Model(id: "ui.module.on", with: { "module": "$module" }),
+                ),
+            ],
+        ),
+    ),
+)

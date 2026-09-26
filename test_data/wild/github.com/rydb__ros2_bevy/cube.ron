@@ -1,0 +1,135 @@
+(
+  resources: {},
+  entities: {
+    4: (
+      components: {
+        "ros2_bevy::serialization::components::Serializable": (),
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ros2_bevy::urdf::urdf_loader::BevyRobot": (
+          urdf_file: (
+            id: AssetPathId(((1066653297446655643), (8823233378563626002))),
+          ),
+          urdf_path: "example_bot/src/model_pkg/urdf/diff_bot.xml",
+          models_dir_path: "example_bot/src/model_pkg/models/",
+        ),
+      },
+    ),
+    21474836485: (
+      components: {
+        "ros2_bevy::serialization::components::Serializable": (),
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ros2_bevy::urdf::urdf_loader::BevyRobot": (
+          urdf_file: (
+            id: AssetPathId(((1066653297446655643), (8823233378563626002))),
+          ),
+          urdf_path: "example_bot/src/model_pkg/urdf/diff_bot.xml",
+          models_dir_path: "example_bot/src/model_pkg/models/",
+        ),
+      },
+    ),
+    21474836488: (
+      components: {
+        "ros2_bevy::serialization::components::ModelFlag": (
+          geometry: Primitive(Box(
+            size: (1.0, 1.0, 1.0),
+          )),
+          material: (
+            base_color: Rgba(
+              red: 1.0,
+              green: 0.08,
+              blue: 0.58,
+              alpha: 1.0,
+            ),
+            base_color_texture: None,
+            emissive: Rgba(
+              red: 0.0,
+              green: 0.0,
+              blue: 0.0,
+              alpha: 1.0,
+            ),
+            emissive_texture: None,
+            perceptual_roughness: 0.5,
+            metallic: 0.0,
+            metallic_roughness_texture: None,
+            reflectance: 0.5,
+            normal_map_texture: None,
+            flip_normal_map_y: false,
+            occlusion_texture: None,
+            double_sided: false,
+            unlit: false,
+            fog_enabled: true,
+            alpha_mode: Opaque,
+            depth_bias: 0.0,
+            depth_map: None,
+            parallax_depth_scale: 0.1,
+            parallax_mapping_method: Occlusion,
+            max_parallax_layer_count: 16.0,
+          ),
+        ),
+        "ros2_bevy::serialization::components::Serializable": (),
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -7.7400894,
+            y: 2.048509,
+            z: 20.048044,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+      },
+    ),
+    21474836491: (
+      components: {
+        "ros2_bevy::serialization::components::Serializable": (),
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          rotation: (0.0, 0.0, 0.0, 1.0),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "ros2_bevy::urdf::urdf_loader::BevyRobot": (
+          urdf_file: (
+            id: AssetPathId(((1066653297446655643), (8823233378563626002))),
+          ),
+          urdf_path: "example_bot/src/model_pkg/urdf/diff_bot.xml",
+          models_dir_path: "example_bot/src/model_pkg/models/",
+        ),
+      },
+    ),
+  },
+)

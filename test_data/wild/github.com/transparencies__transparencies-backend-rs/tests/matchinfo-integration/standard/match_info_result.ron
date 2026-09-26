@@ -1,0 +1,59 @@
+(
+	match_info: Some((
+		game_type: "Random Map",
+		rating_type: "1v1 Random Map",
+		match_size: G1v1,
+		match_status: Finished(1615410209),
+		map_name: "Arabia",
+		server: NotFound,
+		teams: ([
+			(
+				players: ([
+					(
+						rating: (
+							mmr: 2430,
+							rank: 10,
+							wins: 187,
+							losses: 102,
+							streak: 4,
+							win_rate: Some(64.70589),
+							highest_mmr: Some(2437),
+						),
+						player_number: 1,
+						team_number: 2,
+						name: "Ertug",
+						country: "tr",
+						civilisation: "Mayans",
+						requested: false,
+					),
+				]),
+				team_number: 2,
+				team_name: None,
+			),// [0]
+			(
+				players: ([
+					(
+						rating: (
+							mmr: 2415,
+							rank: 18,
+							wins: 556,
+							losses: 276,
+							streak: 3,
+							win_rate: Some(66.82692),
+							highest_mmr: Some(2510),
+						),
+						player_number: 4,
+						team_number: 1,
+						name: "TheViper",
+						country: "no",
+						civilisation: "Sicilians",
+						requested: true,
+					),
+				]),
+				team_number: 1,
+				team_name: None,
+			),
+		]),
+	)),
+	error_message: None,
+)

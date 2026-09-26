@@ -1,0 +1,10 @@
+GameConfig(
+	game_size: (10, 10),
+	number_of_mines: 10,
+	square_size: 32.0,
+	colors : (
+		square: (0, 191, 255),
+		selected_square: (100, 200, 255),
+		mine_square: (255, 50, 50),
+	),
+)

@@ -1,0 +1,13 @@
+Random(
+    num_mining_nodes: 100,
+    num_non_mining_nodes: 0,
+    link_latency: 200,
+    link_bandwidth: None,
+    node_bandwidth: 50,
+    connectivity: Full,
+    workload: (
+        num_clients: 1000,
+        client_startup_interval: 5,
+        transaction_interval: 0,
+    )
+)

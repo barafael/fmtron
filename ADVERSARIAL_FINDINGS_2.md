@@ -204,3 +204,82 @@ Checked and fine: tabs in strings count as wide and zero-width characters as
 zero, so neither causes wrong breaks. Output stays proportional to
 `depth² × tab` when the user explicitly raises `--max-depth`, which is
 expected.
+
+---
+
+# Round 5: real-world RON from the wild
+
+fmtron ran over RON files collected from public sources:
+
+- **GitHub:** code search for `extension:ron`, sampled across file sizes.
+- **GitLab.com and Codeberg:** project search, then repository trees.
+- **crates.io:** `.ron` files inside the published `.crate` archives of about
+  4,000 crates that depend on `ron`.
+
+Result: 15,603 files downloaded, **8,306 unique by content, from 2,555
+repositories and crates**. Every file got the same checks as before:
+acceptance vs. the `ron` oracle, value preservation, validity of the output,
+idempotency, and a strict content check (all non-whitespace, non-comma
+characters must survive in order).
+
+| Outcome | Files |
+|---|---|
+| Formatted faithfully | 7,942 |
+| Rejected by both fmtron and `ron` | 294 |
+| Git symlinks (the raw endpoint returns the link target, e.g. `../../x.ron`) | 53 |
+| Comment moved (see W1) | 9 |
+| Accepted by fmtron, rejected by `ron::Value` | 4 |
+| Not UTF-8 | 4 |
+
+There were **no crashes, no valid files rejected, no value changes, no
+invalid output and no idempotency failures** across the 8,306 files.
+
+The 294 both-rejects are not RON. That includes other formats named `.ron`
+(Helsinki-NLP's Romanian text, `starfederation/ron`), Git LFS pointer files,
+Rust `Debug` dumps, gitui themes with `$var` templates or shell `#` comments,
+templates with code after the value, intentionally invalid test fixtures,
+and 5 files with a UTF-8 BOM (`ron` rejects those too). The accepts-invalid
+cases are one fmtron fixture with an unknown extension, plus 3 Fyrox editor
+files that write `Some(code: KeyZ, …)`, which a typed `ron` target reads but
+`ron::Value` cannot.
+
+## Fixed
+
+| # | Kind | Finding | Fix |
+|---|---|---|---|
+| W1 | misformat | A comment between a key/field name and its value was mishandled. A field's `delay: /* seconds */ 5` became `/* seconds */` on its own line above the field. A map's `"delay": /* seconds */ 5` was split after the comment, with the value on the next line at the key's indentation | Block comments there stay inline after the colon (`delay: /* seconds */ 5`, also for `a /* c */ : 1`). Line comments move above the entry (`// Bb2` over `46: [[…]]`), the same for fields and maps. Stored as `Value::inline` so the public `Kind` API is unchanged |
+| W2 | misformat | One-element wrappers around a container broke in two levels: `Some(` / `(` / fields / `),` / `),`. RON writes `Option<Struct>` and newtypes as `Some((` … `))`, which `ron`'s own pretty-printer emits | New `pretty::hug` primitive. Flat if it all fits; if the child fits flat on its own line, break around it (`TupleNewtypeTupleStruct(` / `TupleStruct(4, false),` / `)`); only if the child must break anyway, hug: `Some((` … `))`, `Some(((` … `)))`, `Some(Some([` … `]))`. Atoms never hug. The layout-independence harness still passes, and one golden file (`ron_039`) now matches its author's `Some((` |
+| W3 | crash | `fmtron -d … \| head` panicked with `failed printing to stdout: Broken pipe` (exit 101) | stdout is written with explicit error handling. A closed pipe ends quietly with exit 0, and other write errors (e.g. a full disk) are a clean `unable to write to stdout` |
+
+## Open: subjective, needs a design decision
+
+- **S1: blank lines are always removed.** About 12% of files, from 34 of the
+  first 811 checked, use interior blank lines to group entries. rustfmt and
+  prettier keep one blank line. Keeping them conflicts with the layout-
+  independence invariant pinned by `tests/unformat.rs`, so it is your call.
+- **S2: hand-laid-out lists get squashed.** A list of small records written
+  one per line (`cnx: [(src: …, dst: …), (src: …, dst: …)]`) becomes one line
+  when it fits. That's correct for the width but discards the author's
+  layout, and has the same conflict as S1.
+
+## Corpus
+
+`test_data/wild/` holds the redistributable subset: 2,958 files from 1,102
+sources (about 7 MB of files plus a 0.9 MB manifest). A file is included
+when:
+
+- it is unique by content;
+- `ron` or fmtron accepts it;
+- its source declares a recognized open-source license (GitHub repository
+  license, GitLab project license, or crate `license` field);
+- it is at most 32 KiB, with at most 8 files per source.
+
+`test_data/wild/manifest.ron` records, per source, the host, repository or
+crate, commit or version, and license, plus each file's original path and
+source URL. It is itself formatted by fmtron. `tests/wild_corpus.rs` runs all
+the checks above over the corpus in about 6 s, and skips when the directory
+is missing. `Cargo.toml` excludes `test_data/wild` from the published crate.
+
+No Codeberg files made it in, because Codeberg's API reports no license and
+unlicensed sources were excluded. Out of 7,942 good files, 3,671 were left out
+for that reason.

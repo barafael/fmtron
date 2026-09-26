@@ -1,0 +1,120 @@
+// B9's textured-interior driver: head-walk.ron with the scan's own
+// albedo map in the subsurface color slot instead of the constant its
+// sibling carries. Everything else — rig, camera, mean free paths, film —
+// is that scene's. It exists because the other four walk drivers all take
+// the constant branch, and a branch nothing measures regresses quietly.
+//
+// Do NOT read the pair as the branch's cost: this one renders ~4% *faster*
+// than its sibling, because the map's albedo is lower and lower albedo
+// means shorter walks. Holding the albedo fixed and changing only how it
+// arrives, the branch costs +1.5% of the walk kernel and +0.5% of the
+// frame.
+//
+// The map is the pbrt-v4-scenes head's, referenced from the fetched source
+// rather than baked — the texture path decodes sRGB in hardware and
+// converts to the working space once, in the shader. Its single-scatter
+// albedo spans 0.72 to 0.96 in red, so this driver's walk lengths are a
+// distribution where its sibling's are one number.
+//
+// Requires the same derived asset as its sibling: `scenes/corpus/fetch.sh
+// head`, then `python3 scenes/corpus/curate-head.py`.
+(
+    version: 2,
+    ops: [
+        Settings((
+            name: "main",
+            resolution: Some((1280, 720)),
+            spp: Some(64),
+        )),
+        Camera((
+            name: "main",
+            position: Some((0.322839, 0.0534825, 0.504299)),
+            look_at: Some((-0.140808, -0.162727, -0.354936)),
+            up: Some((0.0355799, 0.964444, -0.261882)),
+            vfov_degrees: Some(30.0),
+        )),
+        Environment((
+            name: "sky",
+            path: Some(Some("../../crates/cenote/assets/kloofendal_puresky.exr")),
+            tint: Some((0.05, 0.05, 0.05)),
+        )),
+
+        Mesh((
+            name: "head",
+            source: Some(Ply(path: "../corpus/head-capped.ply")),
+        )),
+        Mesh((
+            name: "plane",
+            source: Some(Inline(
+                positions: [
+                    (-1.0, 0.0, -1.0), (-1.0, 0.0, 1.0), (1.0, 0.0, 1.0), (1.0, 0.0, -1.0),
+                ],
+                normals: Some([
+                    (0.0, 1.0, 0.0), (0.0, 1.0, 0.0), (0.0, 1.0, 0.0), (0.0, 1.0, 0.0),
+                ]),
+                uvs: Some([(0.0, 0.0), (0.0, 1.0), (1.0, 1.0), (1.0, 0.0)]),
+                triangles: [(0, 1, 2), (0, 2, 3)],
+            )),
+        )),
+        // The warm key, aimed at the face from camera-left; corners
+        // precomputed so no rotation transform is needed.
+        Mesh((
+            name: "key",
+            source: Some(Inline(
+                positions: [
+                    (0.2562, 0.1829, 0.4695), (0.219, 0.3171, 0.4137),
+                    (0.3438, 0.3171, 0.3305), (0.381, 0.1829, 0.3863),
+                ],
+                normals: Some([
+                    (-0.4963, -0.4467, -0.7444), (-0.4963, -0.4467, -0.7444),
+                    (-0.4963, -0.4467, -0.7444), (-0.4963, -0.4467, -0.7444),
+                ]),
+                uvs: Some([(0.0, 0.0), (0.0, 1.0), (1.0, 1.0), (1.0, 0.0)]),
+                triangles: [(0, 1, 2), (0, 2, 3)],
+            )),
+        )),
+
+        Material((
+            name: "skin1",
+            specular_ior: Some(1.33),
+            specular_roughness: Some(Constant(0.05)),
+            subsurface_weight: Some(Constant(1.0)),
+            subsurface_color: Some(Texture((
+                path: "../corpus/sources/pbrt-v4-scenes/head/textures/head_albedomap.png",
+                color_space: None,
+                channel: None,
+            ))),
+            subsurface_radius: Some(Constant(0.0012954)),
+            subsurface_radius_scale: Some(Constant((1.0, 0.735138, 0.518146))),
+        )),
+        Material((
+            name: "table",
+            base_color: Some(Constant((0.32, 0.30, 0.28))),
+            base_diffuse_roughness: Some(0.4),
+            specular_weight: Some(0.3),
+            specular_roughness: Some(Constant(0.25)),
+        )),
+        Material((
+            name: "warm-key",
+            emission_color: Some(Constant((1.0, 0.72, 0.45))),
+            emission_luminance: Some(25.0),
+        )),
+
+        Instance((
+            name: "head",
+            mesh: Some("head"),
+            material: Some("skin1"),
+        )),
+        Instance((
+            name: "table",
+            mesh: Some("plane"),
+            material: Some("table"),
+            transforms: Some([Trs(translate: (0.0, -0.31, 0.0), scale: (2.0, 1.0, 2.0))]),
+        )),
+        Instance((
+            name: "key",
+            mesh: Some("key"),
+            material: Some("warm-key"),
+        )),
+    ],
+)

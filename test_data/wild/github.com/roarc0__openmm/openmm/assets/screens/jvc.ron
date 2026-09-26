@@ -1,0 +1,17 @@
+(
+    id: "jvc",
+    elements: [
+        Video((
+            id: "vid_jvc",
+            position: (0.0, 0.0),
+            size: (640.0, 480.0),
+            z: 1,
+            video: "jvc",
+            skippable: true,
+            on_end: [
+                "SaveConfig(\"skip_intro\",\"true\")",
+                "LoadScreen(\"menu\")",
+            ],
+        )),
+    ],
+)

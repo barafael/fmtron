@@ -1,0 +1,64 @@
+{
+    "org.weave.character.ari_vale": {
+        "org.weave.projection.glasswind_lenses.narrative_role": (
+            decision: "accept",
+            lock: locked,
+            rationale: Some("Retain this reviewed fictional story function across ordinary rebalance previews."),
+        ),
+        "org.weave.projection.glasswind_lenses.personality": (
+            decision: "accept",
+            lock: unlocked,
+        ),
+        "org.weave.projection.glasswind_lenses.social_role": (
+            decision: "edit",
+            entry_id: "boundary_guide",
+            lock: unlocked,
+            rationale: "Select another eligible group prompt after editorial review.",
+        ),
+        "org.weave.projection.glasswind_lenses.vocation": (
+            decision: "reject",
+            rationale: "Do not publish a vocation prompt for this fixture character.",
+        ),
+    },
+    "org.weave.character.sable_reed": {
+        "org.weave.projection.glasswind_lenses.narrative_role": (
+            decision: "override",
+            entry_id: "turning_compass",
+            label: "Turning Compass",
+            lock: unlocked,
+            rationale: "Use an explicit original story function outside the ranked labels.",
+        ),
+        "org.weave.projection.glasswind_lenses.personality": (
+            decision: "withhold",
+            rationale: "Keep the lossy categorical display out of the published profile.",
+        ),
+        "org.weave.projection.glasswind_lenses.social_role": (
+            decision: "accept",
+            lock: unlocked,
+        ),
+        "org.weave.projection.glasswind_lenses.vocation": (
+            decision: "accept",
+            lock: unlocked,
+        ),
+    },
+    "org.weave.character.tavi_quill": {
+        "org.weave.projection.glasswind_lenses.narrative_role": (
+            decision: "accept",
+            lock: unlocked,
+        ),
+        "org.weave.projection.glasswind_lenses.personality": (
+            decision: "accept",
+            lock: unlocked,
+        ),
+        "org.weave.projection.glasswind_lenses.social_role": (
+            decision: "reject",
+            rationale: "Leave this group-role slot open after the edited allocation.",
+        ),
+        "org.weave.projection.glasswind_lenses.vocation": (
+            decision: "edit",
+            entry_id: "signal_crafter",
+            lock: unlocked,
+            rationale: "Choose the alternate eligible vocation as an explicit editorial decision.",
+        ),
+    },
+}

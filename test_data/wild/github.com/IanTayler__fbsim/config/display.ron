@@ -1,0 +1,5 @@
+(
+  title: "FBSim",
+  dimensions: Some((600, 600)),
+  resizable: false,
+)

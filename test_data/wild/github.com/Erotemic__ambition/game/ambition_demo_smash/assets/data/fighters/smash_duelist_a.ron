@@ -1,0 +1,6 @@
+// Robot v3's stand-in, as a platform fighter. It is the middleweight the stage
+// is tuned against, so its weight is the reference.
+(
+    character: "smash_duelist_a",
+    knockback_weight: Some(1.0),
+)

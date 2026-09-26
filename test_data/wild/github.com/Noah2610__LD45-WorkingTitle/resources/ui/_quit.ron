@@ -1,0 +1,43 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id:             "container_button_quit",
+        x:              0.0,
+        y:              0.0,
+        z:              2.0,
+        width:          32.0,
+        height:         32.0,
+        anchor:         TopRight,
+        pivot:          TopRight,
+        mouse_reactive: false,
+        percent:        false,
+        opaque:         false,
+    ),
+
+    background: SolidColor(0.0, 0.0, 0.0, 1.0),
+
+    children: [
+        Button(
+            transform: (
+                id:             "button_quit",
+                x:              0.0,
+                y:              -3.0,
+                z:              2.1,
+                width:          32.0,
+                height:         32.0,
+                anchor:         Middle,
+                pivot:          Middle,
+                mouse_reactive: true,
+                percent:        false,
+                opaque:         true,
+            ),
+            button: (
+                text:              "x",
+                font_size:         24.0,
+                font:              File("resources/fonts/undefined-medium.ttf", ("TTF", ())),
+                normal_text_color: (1.0, 1.0, 1.0, 1.0),
+                hover_text_color:  (1.0, 0.1, 0.1, 1.0),
+            ),
+        ),
+    ]
+)

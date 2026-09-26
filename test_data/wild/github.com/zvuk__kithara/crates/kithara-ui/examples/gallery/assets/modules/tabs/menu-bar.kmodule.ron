@@ -1,0 +1,13 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "gallery-menu-bar",
+    chrome: Plain,
+    root: Row(
+        size: (w: Fill, h: Fill),
+        background: Bg,
+        children: [
+            Include(id: "menu", source: "../app-menu.kmodule.ron"),
+        ],
+    ),
+)

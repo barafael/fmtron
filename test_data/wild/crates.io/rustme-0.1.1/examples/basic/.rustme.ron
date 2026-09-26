@@ -1,0 +1,14 @@
+Configuration(
+    files: {
+        "README.md": [
+            "header.md",
+            "content.md",
+            "https://github.com/khonsulabs/.github/raw/main/snippets/readme-footer.md",
+        ],
+    },
+    glossaries: [
+        Inline({
+            "HOMEPAGE": "https://khonsulabs.com/"
+        })
+    ],
+)

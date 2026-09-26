@@ -1,0 +1,79 @@
+(
+    name: "ChildrenItem",
+    base_type: "Item",
+    id: Some("root"),
+    imports: [
+        "import QtQuick",
+    ],
+    signals: [],
+    properties: [
+        (
+            name: "value",
+            prop_type: Int,
+            value: Int(10),
+            accessed_properties: [],
+        ),
+    ],
+    functions: [],
+    children: [
+        (
+            type_name: "Rectangle",
+            id: Some("childRect"),
+            properties: [
+                (
+                    name: "label",
+                    prop_type: String,
+                    value: String("child"),
+                    accessed_properties: [],
+                ),
+            ],
+            functions: [
+                (
+                    name: "doSomething",
+                    is_signal_handler: false,
+                    parameters: [],
+                    used_names: [
+                        (
+                            name: "label",
+                            accessed_item: None,
+                        ),
+                    ],
+                    declared_locals: [
+                        "x",
+                    ],
+                    member_assignments: [],
+                ),
+            ],
+            children: [],
+        ),
+        (
+            type_name: "Item",
+            id: Some("innerItem"),
+            properties: [
+                (
+                    name: "active",
+                    prop_type: Bool,
+                    value: Bool(false),
+                    accessed_properties: [],
+                ),
+            ],
+            functions: [],
+            children: [
+                (
+                    type_name: "Rectangle",
+                    id: Some("deepRect"),
+                    properties: [
+                        (
+                            name: "depth",
+                            prop_type: Int,
+                            value: Int(2),
+                            accessed_properties: [],
+                        ),
+                    ],
+                    functions: [],
+                    children: [],
+                ),
+            ],
+        ),
+    ],
+)

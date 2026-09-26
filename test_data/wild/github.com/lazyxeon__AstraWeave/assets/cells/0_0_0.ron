@@ -1,0 +1,126 @@
+// Sample World Partition Cell at origin (0, 0, 0)
+// Cell size: 100.0 units
+// Contains: Forest scene with trees, rocks, and a small pond
+(
+    coord: [0, 0, 0],
+    entities: [
+        // Pine Tree 1
+        (
+            position: [10.0, 0.0, 15.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [1.2, 1.5, 1.2],
+            mesh: "models/nature/pine_tree.glb",
+            material: 1,
+            components: {
+                "health": "100",
+                "vegetation_type": "pine",
+            },
+            name: Some("pine_tree_01"),
+        ),
+        // Pine Tree 2
+        (
+            position: [45.0, 0.0, 60.0],
+            rotation: [0.0, 0.785, 0.0, 1.0], // 45 degree rotation
+            scale: [1.0, 1.8, 1.0],
+            mesh: "models/nature/pine_tree.glb",
+            material: 1,
+            components: {
+                "health": "100",
+                "vegetation_type": "pine",
+            },
+            name: Some("pine_tree_02"),
+        ),
+        // Oak Tree
+        (
+            position: [75.0, 0.0, 30.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [1.5, 2.0, 1.5],
+            mesh: "models/nature/oak_tree.glb",
+            material: 2,
+            components: {
+                "health": "150",
+                "vegetation_type": "oak",
+            },
+            name: Some("oak_tree_01"),
+        ),
+        // Large Boulder
+        (
+            position: [25.0, 0.0, 40.0],
+            rotation: [0.0, 0.5, 0.0, 0.866],
+            scale: [2.0, 2.0, 2.0],
+            mesh: "models/nature/boulder_large.glb",
+            material: 3,
+            components: {
+                "health": "500",
+                "harvestable": "stone",
+            },
+            name: Some("boulder_01"),
+        ),
+        // Small Rock 1
+        (
+            position: [60.0, 0.0, 20.0],
+            rotation: [0.0, 0.2, 0.0, 0.98],
+            scale: [0.8, 0.8, 0.8],
+            mesh: "models/nature/rock_small.glb",
+            material: 3,
+            components: {
+                "health": "50",
+            },
+            name: Some("rock_01"),
+        ),
+        // Small Rock 2
+        (
+            position: [65.0, 0.0, 22.0],
+            rotation: [0.0, 0.9, 0.0, 0.436],
+            scale: [0.6, 0.6, 0.6],
+            mesh: "models/nature/rock_small.glb",
+            material: 3,
+            components: {
+                "health": "50",
+            },
+            name: Some("rock_02"),
+        ),
+        // Pond
+        (
+            position: [80.0, 0.0, 70.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [3.0, 1.0, 3.0],
+            mesh: "models/nature/water_plane.glb",
+            material: 4,
+            components: {
+                "water_depth": "0.5",
+            },
+            name: Some("pond_01"),
+        ),
+        // Grass Patch 1
+        (
+            position: [30.0, 0.0, 50.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [5.0, 1.0, 5.0],
+            mesh: "models/nature/grass_patch.glb",
+            material: 5,
+            components: {
+                "foliage_density": "high",
+            },
+            name: Some("grass_patch_01"),
+        ),
+    ],
+    assets: [
+        (path: "models/nature/pine_tree.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440001"),
+        (path: "models/nature/oak_tree.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440002"),
+        (path: "models/nature/boulder_large.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440003"),
+        (path: "models/nature/rock_small.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440004"),
+        (path: "models/nature/water_plane.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440005"),
+        (path: "models/nature/grass_patch.glb", kind: Mesh, guid: "550e8400-e29b-41d4-a716-446655440006"),
+        (path: "textures/nature/pine_bark.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440007"),
+        (path: "textures/nature/oak_bark.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440008"),
+        (path: "textures/nature/stone_granite.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440009"),
+        (path: "textures/nature/water_blue.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440010"),
+        (path: "textures/nature/grass_green.png", kind: Texture, guid: "550e8400-e29b-41d4-a716-446655440011"),
+    ],
+    metadata: {
+        "biome": "temperate_forest",
+        "elevation": "lowland",
+        "density": "medium",
+    },
+)

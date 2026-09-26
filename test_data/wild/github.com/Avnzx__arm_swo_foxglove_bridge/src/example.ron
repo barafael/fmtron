@@ -1,0 +1,16 @@
+(
+    port_conf: {
+        0: (
+            name: "text_logs",
+            typ: TEXT,
+        ),
+        1: (
+            name: "channel1",
+            typ: HEXDUMP,
+        ),
+        2: (
+            name: "speed",
+            typ: NUMERICAL(F32),
+        ),
+    },
+)

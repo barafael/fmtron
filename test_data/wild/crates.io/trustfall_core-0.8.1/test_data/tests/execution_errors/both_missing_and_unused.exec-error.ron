@@ -1,0 +1,8 @@
+MultipleErrors(DisplayVec([
+  MissingArguments([
+    "substr",
+  ]),
+  UnusedArguments([
+    "unused",
+  ]),
+]))

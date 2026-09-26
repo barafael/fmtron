@@ -1,0 +1,32 @@
+// Perpetual-showcase auto-seed (v0.863). Operator 2026-07-16: "just preload
+// everything with plants at different stages... Assume we're just making a
+// perpetual showcase." Whenever the world has ZERO crops (fresh boot, wiped
+// save, everything harvested), lib.rs::auto_seed_showcase replants every grow
+// surface at staggered growth stages so the garden always demonstrates the
+// full seed-to-harvest ladder. Crops persist in the save (v0.863), so this
+// only fires when the garden is genuinely empty.
+(
+    enabled: true,
+    // Crop planted per bed / tray / field / rack machine TYPE. Towers instead
+    // cycle their curated plantings from data/towers/aeroponic_configs.ron.
+    // Keys must be machine TYPE ids from the data/machines/home.ron catalog
+    // (a key that matches nothing is silently never planted; checked by
+    // tests/recipe_sources_lint.rs). Values are plants.csv ids.
+    bed_crops: {
+        "grain_field": "wheat",
+        "staple_grain_tray": "rice",
+        "legume_field": "bean",
+        "oilseed_field": "sunflower",
+        "oilseed_bed": "flax",
+        "tuber_field": "potato",
+        "potato_grow_bed": "potato",
+        "mushroom_rack": "oyster_mushroom",
+    },
+    // Staggered units sown per bed-type machine.
+    bed_units: 6,
+    // Whole-tower species overrides by INSTANCE id. ntower_0 is the
+    // strawberry hero tower for the landing-page screenshot.
+    tower_overrides: {
+        "ntower_0": "strawberry",
+    },
+)

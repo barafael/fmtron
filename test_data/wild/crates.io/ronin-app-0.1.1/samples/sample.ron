@@ -1,0 +1,10 @@
+// RONin sample document — edit me, then try the Format / Convert menus.
+Config(
+    name: "ronin",
+    retries: 3,
+    position: (1.0, 2.0, 3.0),     // a tuple (distinct from a list)
+    mode: Fast,                    // an enum variant
+    tags: ["editor", "ron", "rust"],
+    limits: { "soft": 10, "hard": 100 },
+    nickname: Some("ron"),
+)

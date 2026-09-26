@@ -1,0 +1,25 @@
+CciConfig(
+    presets: [
+        Python(PythonConfig(
+            version: "3.11",
+            linter: LinterConfig(
+                enabled: true,
+                tool: Ruff,
+            ),
+            formatter: FormatterConfig(
+                enabled: true,
+                tool: Black,
+            ),
+            type_check: true,
+        )),
+        Docker(DockerConfig(
+            image_name: "myorg/myapp",
+            registry: DockerHub,
+            dockerfile_path: "./Dockerfile",
+            build_context: ".",
+            build_args: [],
+            cache: true,
+            tags_only: false,
+        )),
+    ],
+)

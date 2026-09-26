@@ -1,0 +1,84 @@
+// =================================================================================================
+// SITE-67 STAFF — the people who work here.
+// Fiction and citations: docs/lore/2026-08-02-site-67-recommissioned.md §3.
+//
+// APPEND-ONLY. `site::people::CastId` is this file's index plus `knowledge::roster::ROSTER_SLOTS`,
+// and anything that keys per-person state keys on that. Reordering these entries silently reassigns
+// who is who — including, once Stage D lands, who is friends with whom. Adding to the END is safe.
+//
+// NO COORDINATES, DELIBERATELY. An entry states a `post` (an area), never a position. The spawn is
+// derived from the posted room's own rect by `people::post_positions`, which picks a walkable cell
+// clear of the authored furniture — the same derive-don't-author discipline `wall_panels`,
+// `corner_vertices` and `light_the_site` follow. Move the galley in `site67.ron` and the cook moves.
+//
+// TITLES ARE CANON. Every one is from the SCP Wiki's staff-title list or a canon specialist track;
+// `docs/lore/2026-07-12-scp-role-taxonomy.md` §5 is the reference and its instruction is to use them
+// verbatim. Clearance is a CEILING ON INFORMATION, not a rank and not an XP ladder — both confusions
+// are named amateur tells. Nobody here holds Level 4 (that is the Director, i.e. the player) and
+// nobody holds Level 5.
+//
+// THE THREE COMBAT TIERS ARE ALL PRESENT ON PURPOSE. Canon states the distinction as an analogy —
+// guards are military police, response teams are combat infantry, MTFs are special operations — and
+// collapsing them into one "soldier" is the tell this Site is arranged to avoid. Nowak is a
+// SecurityOfficer, Achebe is a TacticalResponseOfficer, and the player's five are MtfOperatives. You
+// can see all three in one visit.
+//
+// The people have been here MONTHS, not decades: Site-67 was abandoned after a breach and
+// recommissioned when the ASYNC aperture appeared. Nobody on this list was here for the breach, and
+// that is why the archivist cannot tell you what Psychiatric Evaluation Log 47721 said.
+// =================================================================================================
+[
+    // ── Research wing ─────────────────────────────────────────────────────────────────────────────
+    // Canon describes Senior Researchers as rare, so there is exactly one.
+    (name: "Dr. Halvorsen",  title: SeniorResearcher,        clearance: Level3, rig: Scientist,       post: Research),
+    (name: "Dr. Beck",       title: Researcher,              clearance: Level2, rig: Researcher,      post: Research),
+
+    // ── Containment wing ──────────────────────────────────────────────────────────────────────────
+    // Containment Specialists are engineers and technicians, explicitly NOT combat personnel — canon
+    // jokes that they carry a pipe wrench. The yellow suit and respirator is the most legible body in
+    // the Site and it is standing in the right room.
+    (name: "Ito",            title: ContainmentSpecialist,   clearance: Level2, rig: CipherHazmat,    post: Containment),
+
+    // ── Monitoring — the room that watches the cells ───────────────────────────────────────────────
+    // Level 1: works in proximity to contained anomalies with no access to them, which is exactly what
+    // a guard on a camera bank does. In a breach his job is to call for backup and evacuate.
+    (name: "Nowak",          title: SecurityOfficer,         clearance: Level1, rig: CipherField,     post: Monitoring),
+    // The middle tier everyone forgets exists.
+    (name: "Sgt. Achebe",    title: TacticalResponseOfficer, clearance: Level2, rig: Makarov,         post: Monitoring),
+
+    // ── Records ───────────────────────────────────────────────────────────────────────────────────
+    // RAISA. "Those [REDACTED] blocks have an author." She stands where SCP-9191's unattributed
+    // reports appear, and she is the one who cannot produce Log 47721.
+    (name: "Farrow",         title: Archivist,               clearance: Level2, rig: CipherStandard,  post: Records),
+
+    // ── Activities ────────────────────────────────────────────────────────────────────────────────
+    // Canon term: therapy for people who have seen things.
+    //
+    // ⚠️ This comment used to read "the game models FEAR on operatives who carry it between
+    // expeditions" and that was FALSE when it was written: `Drives` is run-scoped, is absent from
+    // `SaveGame`, and site avatars carry none at all, so fear reset to zero every expedition and
+    // there was nothing here for a therapist to treat. The post was decorating a room, which is
+    // precisely what it claimed not to be.
+    //
+    // It is true now, by a different mechanism. `knowledge::Knowledge::strain` persists in
+    // `SquadKnowledge`, accrues with every expedition survived, raises the operative's FEAR FLOOR in
+    // `coupling::apply_belief_fear`, and is spent in `site::activities` — the design doc §6.2
+    // counter-pressure to veteran lock-in. She has a job.
+    (name: "Dr. Lindqvist",  title: Paratherapist,           clearance: Level2, rig: CipherSenior,    post: Activities),
+
+    // ── Galley — DELIBERATELY UNSTAFFED, and it is a gap rather than a decision ────────────────────
+    //
+    // There was a cook here (Duyen, Logistics, Level 0) and she was cut on 2026-08-02 for a colour
+    // reason, not a fiction one. The only remaining rig was `fieldop`, which is a full ORANGE jumpsuit
+    // — and orange is D-Class. `docs/lore/2026-07-12-scp-color-language.md` §4 calls it one of the few
+    // genuinely load-bearing colours in the mythos, so a cook wearing it reads as a test subject
+    // wandering the galley unescorted, and it would spend the signal the D-Block depends on before the
+    // D-Block ships. Found by looking at a screenshot, not by a test.
+    //
+    // `fieldop` is now the D-CLASS body. Restoring the galley needs a rig nobody else wears, which is
+    // one archetype in the `scp_characters` project and no engine change at all — the roster is data.
+    //
+    // ⚠️ This leaves a real hole in the fiction, recorded so it is not mistaken for a choice: the
+    // taxonomy doc §5.8 is explicit that support staff are *what make a site feel like a workplace
+    // rather than a dungeon*, and Level 0 was the only unclassified person on the Site.
+]

@@ -157,3 +157,30 @@ fn raised_max_depth_does_not_overflow_the_stack() {
     assert!(stderr.contains("--max-depth"), "stderr: {stderr}");
     assert!(!stderr.contains("panicked"), "stderr: {stderr}");
 }
+
+// W3: a reader that stops early (`fmtron -d … | head`) is not an error; the
+// CLI used to panic with "failed printing to stdout: Broken pipe".
+#[test]
+fn closed_stdout_is_not_a_panic() {
+    use std::io::Read;
+    use std::process::Stdio;
+    let mut file = tempfile::NamedTempFile::new().expect("temp file");
+    write!(file, "[{}]", "1,".repeat(200_000)).expect("write temp file");
+    let mut child = Command::new(env!("CARGO_BIN_EXE_fmtron"))
+        .args(["-d", "-w", "5", "-i", file.path().to_str().unwrap()])
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .expect("run fmtron");
+    let mut first = [0u8; 16];
+    child.stdout.take().unwrap().read_exact(&mut first).unwrap();
+    // stdout is dropped here, closing the pipe mid-output.
+    let out = child.wait_with_output().unwrap();
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(!stderr.contains("panicked"), "stderr: {stderr}");
+    assert!(
+        out.status.success(),
+        "status {:?}, stderr: {stderr}",
+        out.status
+    );
+}

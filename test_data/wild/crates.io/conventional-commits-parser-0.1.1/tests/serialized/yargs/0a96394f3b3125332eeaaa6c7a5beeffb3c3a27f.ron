@@ -1,0 +1,8 @@
+(
+    body: None,
+    desc: "support options/sub-commands in zsh completion",
+    footer:[],
+    is_breaking_change: false,
+    scope: None,
+    ty: "fix"
+)

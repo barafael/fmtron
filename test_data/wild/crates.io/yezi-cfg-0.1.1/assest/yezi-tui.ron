@@ -1,0 +1,75 @@
+// # Yezi TUI Configuration File
+// **The configure system hasn't been fully completed yet.**
+// This file configures the user interface, buddy assistant, and visual theme.
+// Some fields are optional; use `None` to disable or fall back to defaults.
+
+(
+    // # User Configuration
+    // Information about the current user displayed in the interface.
+    user: (
+        // # User Name
+        // Display name shown in the status bar and user panel.
+        // Type: Option<String>
+        // Default: None
+        name: None,
+
+        // # User Intro
+        // Welcome message or personal introduction shown on startup.
+        // Type: Option<String>
+        // Default: None
+        intro: None,
+    ),
+
+    // # Buddy Assistant Configuration
+    // Settings for the AI companion that helps users navigate and learn.
+    buddy: (
+        // # Buddy Name
+        // Name of the buddy displayed in chat and help panels.
+        // Type: Option<String>
+        // Default: None (falls back to "Buddy")
+        name: None,
+        
+        // # Buddy Intro
+        // Assistant's personality description or greeting message.
+        // Type: Option<String>
+        // Default: None
+        intro: None,
+        // # Buddy Show
+        // Show the buddy
+        // Type: bool
+        // Default: false
+        show: false,
+    ),
+
+    // # Theme Configuration
+    // Color scheme for the terminal user interface.
+    // Both fields use the ratatui_core::style::Color enum.
+    theme: (
+        // # Background Color
+        // Background color for the main terminal area.
+        // `None` uses your terminal's default background color.
+        // Type: ratatui_core::style::Color
+        // Default: Rgb(47, 47, 47)
+        bg: Rgb(47, 47, 47),
+        
+        // # Foreground Color
+        // Foreground (text) color for the main content.
+        fg: (
+            // Type: ratatui_core::style::Color
+            // Default: Rgb(255, 255, 255)
+            err: Rgb(255, 0, 0),
+            // Type: ratatui_core::style::Color
+            // Default: Rgb(255, 255, 0)
+            warn: Rgb(255, 255, 0),
+            // Type: ratatui_core::style::Color
+            // Default: Rgb(255, 255, 255)
+            important: Rgb(255, 255, 255),
+            // Type: ratatui_core::style::Color
+            // Default: Rgb(191, 191, 191)
+            common: Rgb(191, 191, 191),
+            // Type: ratatui_core::style::Color
+            // Default: Rgb(127, 127, 127)
+            less: Rgb(127, 127, 127),
+        ),
+    ),
+)

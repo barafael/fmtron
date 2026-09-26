@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "snowflake",
+    protocol: "binary-tarpc",
+    description: "Manages Snowflake resources using the Snowflake Data Definition Language. Declaratively manage databases, schemas, tables, warehouses, file formats, and more.",
+    stability: "beta"
+)

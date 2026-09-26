@@ -1,0 +1,12 @@
+(
+    project: (
+        globs: [ "!**/*.gif"]
+    ),
+    retry_limit: 50,
+    context: (
+        ruskel: ["libtenx"]
+    ),
+    checks: (
+        enable: ["cargo-clippy"]
+    )
+)

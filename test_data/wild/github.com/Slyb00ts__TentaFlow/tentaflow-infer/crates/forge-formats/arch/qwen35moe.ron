@@ -1,0 +1,19 @@
+// ===== File: qwen35moe.ron — Qwen3.5/3.6 hybrid MoE tensor-role map =====
+// Hybrid stack: every 4th layer ((idx+1)%full_attention_interval==0) is
+// full (output-gated) attention with head_dim 256 + per-head QK-norm +
+// M-RoPE; the rest are Gated-DeltaNet linear-attention layers (causal conv +
+// recurrent state scan). Every trunk layer has routed experts (256, top-8)
+// plus a gated shared expert. The trailing nextn_predict_layers block is an
+// MTP/NextN head and is dropped. Detection + per-layer tensor resolution is
+// code-driven (arch.rs `build_qwen35moe`); only the globals live here.
+(
+    name: "qwen35moe",
+    gguf_arch: "qwen35moe",
+    hf_architectures: ["Qwen35MoeForCausalLM", "Qwen3NextForCausalLM"],
+    hf_model_types: ["qwen35moe", "qwen3_next"],
+    roles: [
+        (role: TokenEmbd, gguf: "token_embd.weight", hf: "model.embed_tokens.weight", per_layer: false, required: true),
+        (role: OutputNorm, gguf: "output_norm.weight", hf: "model.norm.weight", per_layer: false, required: true),
+        (role: LmHead, gguf: "output.weight", hf: "lm_head.weight", per_layer: false, required: false),
+    ],
+)

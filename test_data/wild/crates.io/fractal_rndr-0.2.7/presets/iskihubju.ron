@@ -1,0 +1,31 @@
+Frame((
+    img_width: 1920,
+    img_height: 1080,
+    zoom: 0.0108,
+    center_x: -1.00648,
+    center_y: -0.10581,
+    rotate: Some(0.22),
+    fractal: ComplexLogisticMapLike(
+        max_iter: 2000,
+        bailout: 4.0,
+        a_re: -0.999,
+        a_im: 0.1,
+    ),
+    coloring_mode: MinMaxNorm(
+        min: Custom(50.0),
+        max: Custom(1300.0),
+        map: Linear,
+    ),
+    gradient: [
+        (0.0, (255, 255, 255)),
+        (0.3, (250, 182, 210)),
+        (0.35, (213, 135, 193)),
+        (0.5, (60, 60, 90)),
+        (0.75, (105, 120, 198)),
+        (1.0, (220, 210, 220)),
+    ],
+    sampling: (
+        level: Exploration,
+        random_offsets: true,
+    ),
+))

@@ -1,0 +1,37 @@
+// Generated from tests/qa-harness/components.ts by tests/qa-harness/generate-checks.ts. Do not edit.
+//
+// Table, mounted alone on its own harness page. Outcomes for
+// this component share one native host; idempotent preparation keeps each
+// outcome reproducible by id against a fresh host as well.
+[
+    (
+        id: "table-page-paints",
+        group: "table",
+        what: "the Table page builds and paints",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:Table",
+        expect: PaintsNamed,
+    ),
+    (
+        id: "table-renders",
+        group: "table",
+        what: "Table renders a node of its own",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "fixture",
+        expect: Paints,
+    ),
+    (
+        id: "table-sorts",
+        group: "table",
+        what: "a sortable table column reports its next direction",
+        open: None,
+        hover: None,
+        click: Some("Name fixture"),
+        subject: "heading:Table sort:",
+        expect: NameChanges,
+    ),
+]

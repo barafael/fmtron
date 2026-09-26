@@ -1,0 +1,43 @@
+(
+    schema_version: 1,
+    deterministic_seed: 77,
+    signal_scale: (-1000, 1000),
+    fixtures: [
+        (
+            id: "signed_relay",
+            purpose: "signed attenuation, cancellation, saturation, and no-self reception",
+            topology: "chain",
+            roles: ["positive_manual_source", "relay", "negative_manual_source", "polarity_listeners"],
+            channels: [0, 1, 2, 3],
+        ),
+        (
+            id: "processor_ladder",
+            purpose: "one-tick-per-stage Cognocyte latency and all arithmetic/logic operations",
+            topology: "balanced_binary",
+            roles: ["manual_source", "cognocyte_all_operations", "positive_negative_magnitude_listeners"],
+            channels: [0, 1, 2, 3, 4, 5, 6, 7],
+        ),
+        (
+            id: "memory_feedback",
+            purpose: "Memorocyte integration, decay, polarity, reset, and deterministic feedback",
+            topology: "gameplay_mixed",
+            roles: ["oscillator_source", "memorocyte", "cognocyte", "listener"],
+            channels: [8, 9, 10, 11],
+        ),
+        (
+            id: "vascular_join",
+            purpose: "all-channel bidirectional inter-organism transport with vascular retention",
+            topology: "gameplay_mixed",
+            roles: ["organism_a_source", "vascular_road", "inter_organism_backbone", "organism_b_listener"],
+            channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        ),
+        (
+            id: "heat_chaos",
+            purpose: "deterministic independent signed heat screaming without brownout",
+            topology: "dense_mechanical_sparse_backbone",
+            roles: ["heat_stroked_emitters", "relay", "all_listener_modes"],
+            channels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        ),
+    ],
+)
+

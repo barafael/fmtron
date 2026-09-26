@@ -1,0 +1,10 @@
+{
+    "wood": Material(
+        pipeline: "/engine/simple/blinn_phong",
+        params: {
+            "base_colour": Texture("textures/worn_wood_alb"),
+            "normal": Texture("textures/worn_wood_nrm"),
+            "shininess": Constant(Float(32.0)),
+        },
+    ),
+}

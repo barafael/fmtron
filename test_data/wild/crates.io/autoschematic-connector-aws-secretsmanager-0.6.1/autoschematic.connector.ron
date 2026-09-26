@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/secretsmanager",
+    protocol: "binary-tarpc",
+    description: "Manages AWS SecretsManager secrets. Requires an Autoschematic keystore implementation to manage sealed secrets locally. Check back soon!",
+    stability: "preview"
+)

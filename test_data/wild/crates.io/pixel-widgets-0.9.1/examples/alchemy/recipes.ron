@@ -1,0 +1,9 @@
+#![enable(implicit_some)]
+[
+    (image: "air.png", name: "Air", unlocked: true),
+    (image: "earth.png", name: "Earth", unlocked: true),
+    (image: "water.png", name: "Water", unlocked: true),
+    (image: "fire.png", name: "Fire", unlocked: true),
+    (image: "pressure.png", name: "Pressure", unlocked: false, recipe: ("Air", "Air")),
+    (image: "steam.png", name: "Steam", unlocked: false, recipe: ("Fire", "Water")),
+]

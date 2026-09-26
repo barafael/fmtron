@@ -1,0 +1,9 @@
+// Happy-path ScaleDiagram fixture (REQ-O36, O29).
+(
+  kind: "ScaleDiagram",
+  scale: "major",
+  tuning: "standard",
+  start_fret: 0,
+  num_frets: 5,
+  orientation: "vertical",
+)

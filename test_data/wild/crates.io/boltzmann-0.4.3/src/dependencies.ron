@@ -1,0 +1,281 @@
+[
+  DependencySpec(
+    name: "are-we-dev",
+    version: "^1.0.0",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "uuid",
+    version: "^8.3.0",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "@hapi/iron",
+    version: "^6.0.0",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "es-main",
+    version: "^1.0.2",
+    kind: Normal,
+    preconditions: Some(When(
+      all_of: ["esm"],
+    ))
+  ),
+  DependencySpec(
+    name: "nunjucks",
+    version: "^3.2.1",
+    kind: Normal,
+    preconditions: Some(When(
+      all_of: ["templates"],
+    ))
+  ),
+  DependencySpec(
+    name: "oauth",
+    version: "^0.9.15",
+    kind: Normal,
+    preconditions: Some(When(
+      all_of: ["oauth"],
+    ))
+  ),
+  DependencySpec(
+    name: "mime",
+    version: "^2.4.6",
+    kind: Normal,
+    preconditions: Some(When(
+      any_of: ["esbuild", "staticfiles"],
+    ))
+  ),
+  DependencySpec(
+    name: "culture-ships",
+    version: "^1.0.0",
+    kind: Normal,
+    preconditions:  None
+  ),
+  DependencySpec(
+    name: "find-my-way",
+    version: "^3.0.4",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "bole",
+    version: "^4.0.0",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "jsonwebtoken",
+    version: "^8.5.1",
+    kind: Normal,
+    preconditions: Some(When(all_of: ["jwt"]))
+  ),
+  DependencySpec(
+    name: "jsonwebtoken",
+    version: "^8.5.1",
+    kind: Normal,
+    preconditions: Some(When(all_of: ["oauth"]))
+  ),
+  DependencySpec(
+    name: "ajv",
+    version: "^6.12.2",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "dotenv",
+    version: "^8.2.0",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "accepts",
+    version: "^1.3.7",
+    kind: Normal,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "csrf",
+    version: "^3.1.0",
+    kind: Normal,
+    preconditions: Some(When(all_of: ["csrf"]))
+  ),
+  DependencySpec(
+    name: "honeycomb-beeline",
+    version: "^2.1.1",
+    kind: Normal,
+    preconditions: Some(When(all_of: ["honeycomb"]))
+  ),
+  DependencySpec(
+    name: "on-headers",
+    version: "^1.0.2",
+    kind: Normal,
+    preconditions: Some(When(  all_of: ["honeycomb"]))
+  ),
+  DependencySpec(
+    name: "pg",
+    version: "^8.3.3",
+    kind: Normal,
+    preconditions: Some(When(  all_of: ["postgres"]))
+  ),
+  DependencySpec(
+    name: "handy-redis",
+    version: "^1.8.1",
+    kind: Normal,
+    preconditions: Some(When( all_of: ["redis"]))
+  ),
+  DependencySpec(
+    name: "redis",
+    version: "^3.0.2",
+    kind: Normal,
+    preconditions: Some(When(all_of: ["redis"]))
+  ),
+
+  DependencySpec(
+    name: "cookie",
+    version: "^0.4.1",
+    kind: Normal,
+    preconditions:None
+  ),
+
+  DependencySpec(
+    name: "esbuild",
+    version: "^0.8.6",
+    kind: Development,
+    preconditions: Some(When(all_of: ["esbuild"]))
+  ),
+  DependencySpec(
+    name: "tap",
+    version: "^14.10.7",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "stackman",
+    version: "^4.0.1",
+    kind: Development,
+    preconditions: Some(When(
+      all_of: ["templates"],
+    ))
+  ),
+  DependencySpec(
+    name: "ansi-escapes",
+    version: "^4.3.1",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "supports-hyperlinks",
+    version: "^2.1.0",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "get-function-location",
+    version: "^2.0.0",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "@hapi/shot",
+    version: "^5.0.4",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "bistre",
+    version: "^1.0.1",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "eslint",
+    version: "^7.1.0",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "@typescript-eslint/parser",
+    version: "^4.11.0",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "@typescript-eslint/eslint-plugin",
+    version: "^4.11.0",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "eslint-config-prettier",
+    version: "^6.11.0",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "eslint-plugin-prettier",
+    version: "^3.1.3",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "prettier",
+    version: "^2.0.5",
+    kind: Development,
+    preconditions: None
+  ),
+  DependencySpec(
+    name: "nodemon",
+    version: "^2.0.4",
+    kind: Development,
+    preconditions: None
+  ),
+
+  DependencySpec(
+    name: "ts-node",
+    version: "^9.1.1",
+    kind: Development,
+    preconditions: Some(When(
+      all_of: ["typescript"]
+    ))
+  ),
+
+  DependencySpec(
+    name: "typescript",
+    version: "^4.1.3",
+    kind: Development,
+    preconditions: Some(When(
+      all_of: ["typescript"]
+    ))
+  ),
+
+  DependencySpec(
+    name: "@tsconfig/node14",
+    version: "^1.0.0",
+    kind: Development,
+    preconditions: Some(When(
+      all_of: ["typescript"]
+    ))
+  ),
+
+  DependencySpec(
+    name: "@types/tap",
+    version: "^14.10.1",
+    kind: Development,
+    preconditions: Some(When(
+      all_of: ["typescript"]
+    ))
+  ),
+
+  DependencySpec(
+    name: "@types/hapi__shot",
+    version: "^4.1.1",
+    kind: Development,
+    preconditions: Some(When(
+      all_of: ["typescript"]
+    ))
+  ),
+]

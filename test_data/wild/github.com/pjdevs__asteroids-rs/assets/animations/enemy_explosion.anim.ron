@@ -1,0 +1,6 @@
+(
+    play_mode: OneShot,
+    start: 0,
+    end: 7,
+    duration: 0.3,
+)

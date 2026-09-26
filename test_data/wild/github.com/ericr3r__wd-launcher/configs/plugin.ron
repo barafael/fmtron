@@ -1,0 +1,10 @@
+(
+    name: "Find project based on path and launch terminal",
+    description: "wd ",
+    query: (
+        no_sort: true,
+        priority: Default 
+    ),
+    bin: (path: "wd-launcher"),
+    icon: Name("system-file-manager")
+)

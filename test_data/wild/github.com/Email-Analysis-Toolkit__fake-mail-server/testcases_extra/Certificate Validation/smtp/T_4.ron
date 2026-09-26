@@ -1,0 +1,11 @@
+(
+    capabilities: [StartTLS],
+
+    capabilities_tls: [Auth([Plain])],
+
+    cert: Cert(
+        crt_path: "certs/example.org-expired.pem",
+        key_path: "certs/example.org-expired-key.pem",
+    ),
+    implicit_tls: false,
+)

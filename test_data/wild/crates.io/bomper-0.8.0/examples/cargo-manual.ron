@@ -1,0 +1,4 @@
+(
+    // Updates all of the packages in the cargo workspace that match the given names
+    cargo: Some(Packages(["bomper"])),
+)

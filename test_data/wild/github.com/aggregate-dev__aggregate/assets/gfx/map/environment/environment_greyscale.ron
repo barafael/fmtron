@@ -1,0 +1,5 @@
+// Source line 2: # Global environment settings
+// Source line 4:  Saturation
+(schema_version: 1, entries: [
+    Property(key: "saturation_scale", operator: Assign, value: Number("0.0")),
+])

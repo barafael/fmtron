@@ -1,0 +1,242 @@
+(
+    config: (
+        output: "./images/comparisons/hero-4",
+        passes: 4,
+        threads: None,
+    ),
+    camera: {
+        "NaiveCamera": (
+            sampler: Random,
+            eye: (
+                x: 0,
+                y: 0,
+                z: 4,
+            ),
+            target: (
+                x: 0,
+                y: 0,
+                z: 0,
+            ),
+            up: (
+                x: 0,
+                y: 1,
+                z: 0,
+            ),
+            fov: 70,
+            resolution: (
+                x: 512,
+                y: 512,
+            ),
+        ),
+    },
+    integrator: {
+        "SpectralPath": (
+            max_depth: 8,
+            sampler: Random,
+            spectral_sampler: Hero,
+            direct_illum: All,
+        ),
+    },
+    scene: (
+        objects: [
+            // ceiling
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: -2.08,
+                            y: 2,
+                            z: -2.08,
+                        ),
+                        max: (
+                            x: 2.08,
+                            y: 2.08,
+                            z: 6,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "OrenNayar": (
+                                r: Color(White),
+                                sigma: 20,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // left wall
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: -2.08,
+                            y: -2.08,
+                            z: -2.08,
+                        ),
+                        max: (
+                            x: -2,
+                            y: 2.08,
+                            z: 6,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "OrenNayar": (
+                                r: Color(Red),
+                                sigma: 20,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // back wall
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: -2.08,
+                            y: -2.08,
+                            z: -2.08,
+                        ),
+                        max: (
+                            x: 2.08,
+                            y: 2.08,
+                            z: -2,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "OrenNayar": (
+                                r: Color(White),
+                                sigma: 20,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // right wall
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: 2,
+                            y: -2.08,
+                            z: -2.08,
+                        ),
+                        max: (
+                            x: 2.08,
+                            y: 2.08,
+                            z: 6,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "OrenNayar": (
+                                r: Color(Green),
+                                sigma: 20,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // front wall
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: -2.08,
+                            y: -2.08,
+                            z: 6,
+                        ),
+                        max: (
+                            x: 2.08,
+                            y: 2.08,
+                            z: 6.08,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "OrenNayar": (
+                                r: Color(White),
+                                sigma: 20,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // floor
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: -2.08,
+                            y: -2.08,
+                            z: -2.08,
+                        ),
+                        max: (
+                            x: 2.08,
+                            y: -2,
+                            z: 6,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "OrenNayar": (
+                                r: Color(White),
+                                sigma: 20,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // sphere
+            Receiver((
+                geometry: {
+                    "Sphere": (
+                        center: (
+                            x: 0.5,
+                            y: -1.5,
+                            z: 0.25,
+                        ),
+                        radius: 0.5,
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "OrenNayar": (
+                                r: Color(Blue),
+                                sigma: 20,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            Emitter((
+                geometry: {
+                    "Sphere": (
+                        center: (
+                            x: -1,
+                            y: 1,
+                            z: -1,
+                        ),
+                        radius: 0.5,
+                    ),
+                },
+                emission: MulColor(2, White),
+            )),
+        ],
+    ),
+)

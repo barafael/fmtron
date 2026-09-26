@@ -1,0 +1,13 @@
+(
+    id: "app-en",
+    schema: "kithara.text",
+    version: 1,
+    entries: {
+        "menu.modules": "Modules",
+        "menu.layout.single": "1 DECK",
+        "menu.layout.dual": "2 DECKS",
+        "menu.module.library": "LIBRARY",
+        "strip.eq.mode.three": "3 ПОЛОСЫ",
+        "strip.eq.mode.four": "4 ПОЛОСЫ",
+    },
+)

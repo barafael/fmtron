@@ -1,0 +1,10 @@
+[
+    SpawnTable(
+        name: "Default",
+        entries: [
+            SpawnTableEntry(name: "Dagger", weight: 3)
+            // SpawnTableEntry(name: "Red Enemy", weight: 10),
+            // SpawnTableEntry(name: "Blue Enemy", weight: 3)
+        ]
+    )
+]

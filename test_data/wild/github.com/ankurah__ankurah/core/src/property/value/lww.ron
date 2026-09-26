@@ -1,0 +1,41 @@
+BackendConfig(
+    backend_name: "LWWBackend",
+    namespace: "::ankurah::property::value::lww",
+    provided_wrapper_types: ["i16", "i32", "i64", "f64", "bool", "String", "Option<String>", "Option<i32>", "Option<i64>", "Option<f64>", "Vec<u8>", "Json"],
+    substitutions: {
+        "local": {
+            "PREFIX": "crate",
+        },
+        "external": {
+            "PREFIX": "::ankurah",
+        },
+    },
+    values: [
+        ValueConfig(
+            type_pattern: "LWW(?:<(.+)>)?",
+            fully_qualified_type: "{PREFIX}::property::value::LWW<{T}>",
+            accepts: ".*",
+            generic_params: ["T"],
+            materialized_pattern: "LWW{T}",
+            methods: [
+                Method(
+                    name: "set",
+                    args: [("value", "{T}")],
+                    return_type: "Result<(), {PREFIX}::property::PropertyError>",
+                ),
+                Method(
+                    name: "get", 
+                    args: [],
+                    return_type: "Result<{T}, {PREFIX}::property::PropertyError>",
+                ),
+                Method(
+                    name: "get_value",
+                    args: [],
+                    return_type: "Option<{PREFIX}::value::Value>",
+                    wasm: false,
+                    uniffi: false,
+                ),
+            ],
+        ),
+    ],
+)

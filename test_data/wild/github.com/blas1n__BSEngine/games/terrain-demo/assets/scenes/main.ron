@@ -1,0 +1,41 @@
+SceneDescriptor(entities: [
+    EntityDescriptor(
+        name: "Camera",
+        camera: true,
+        transform: Some((position: (20.0, 30.0, 72.0))),
+        look_at: Some((20.0, 2.0, 20.0)),
+    ),
+    EntityDescriptor(
+        name: "Sun",
+        directional_light: Some((direction: (-0.4, -0.8, -0.3), ambient: (0.25, 0.25, 0.28))),
+    ),
+    EntityDescriptor(
+        // The terrain entity itself. `Terrain` isn't one of `EntityDescriptor`'s
+        // own typed fields (like `primitive`/`camera`/`rigidbody`) -- it is
+        // authored the same way any other reflected component not covered by a
+        // typed field is (e.g. mini-arena's Camera `Bloom`/`ToneMap` entries):
+        // as a (type path, RON value) pair in `components:`. The type path is
+        // `Terrain`'s literal source module (`bsengine_scene::types`), matching
+        // every other example of this pattern in the codebase (`bsengine_core
+        // ::bloom::Bloom`, `bsengine_physics::components::CharacterBody`, ...).
+        // `chunk_count: (2, 2)` at `chunk_size: 20.0` makes this an 40x40 world
+        // -unit terrain -- wider on both axes than mini-arena's 20x20 floor and
+        // tilt-run's widest level (12x32) -- divided into 4 chunks, so a body
+        // walking or dropped near the middle of either axis actually crosses a
+        // chunk seam.
+        name: "Ground",
+        transform: Some((position: (0.0, 0.0, 0.0))),
+        components: [
+            ("bsengine_scene::types::Terrain", "(heightmap_path: \"assets/terrain/heightmap.png\", chunk_count: (2, 2), chunk_size: 20.0, height_scale: 6.0, layer0_texture_path: \"assets/terrain/grass.png\", layer1_texture_path: \"assets/terrain/rock.png\", layer2_texture_path: \"assets/terrain/dirt.png\", layer3_texture_path: \"assets/terrain/snow.png\", splatmap_path: None)"),
+        ],
+    ),
+    EntityDescriptor(
+        name: "Player",
+        primitive: Some(Sphere),
+        transform: Some((position: (20.0, 10.0, 20.0), scale: (0.5, 0.5, 0.5))),
+        color: Some((0.9, 0.3, 0.1)),
+        rigidbody: Some(Dynamic),
+        collider: Some((shape: Sphere(radius: 0.5), friction: 0.8)),
+        script: Some("assets/scripts/player.js"),
+    ),
+])

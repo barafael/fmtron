@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Fixed": [
+      "CI:  JSON formatting workflow now writes formatted code back to original file",
+    ],
+  },
+)

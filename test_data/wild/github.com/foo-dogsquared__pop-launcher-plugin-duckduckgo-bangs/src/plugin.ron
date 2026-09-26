@@ -1,0 +1,13 @@
+(
+    name: "Duckduckgo bangs",
+    description: "Syntax: ! <search query>... <bangs>...\nExample: ! hello world !ddg !yt",
+    query: (
+        regex: "^(!)+",
+        help: "! ",
+        isolate: true,
+        no_sort: true,
+    ),
+    bin: (path: "bangs"),
+    icon: Name("system-search")
+)
+

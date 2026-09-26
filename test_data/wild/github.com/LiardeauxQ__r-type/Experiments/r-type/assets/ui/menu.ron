@@ -1,0 +1,127 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "container_m_background",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 1.0,
+        height: 1.0,
+        z: 1,
+    ),
+    children: [
+
+        Image(
+            transform: (
+                id: "m_background",
+                width: 2000.,
+                height: 1475.,
+                anchor: Middle,
+                z: 1,
+            ),
+            image: Texture(File("stars.png", ("IMAGE", ()))),
+        ),
+
+        Container(
+            transform: (
+                id: "container_m_start",
+                y: 210,
+                width: 755.,
+                height: 150.,
+                anchor: Middle,
+                z: 3,
+            ),
+            background: SolidColor(1.0, 1.0, 1.0, 1.0),
+            children: [
+
+                Button(
+                    transform: (
+                        id: "m_start_game",
+                        width: 750.,
+                        height: 145.,
+                        tab_order: 1,
+                        anchor: Middle,
+                        mouse_reactive: true,
+                    ),
+                    button: (
+                        text: "START GAME",
+                        font: File("font/square.ttf", ("TTF", ())),
+                        font_size: 75.,
+                        normal_text_color: (1.0, 1.0, 1.0, 1.0),
+                        normal_image: SolidColor(0.0, 0.0, 0.0, 1.0),
+                        hover_image: SolidColor(0.0, 0.0, 0.05, 1.0),
+                        press_image: SolidColor(0.0, 0.2, 0.5, 1.0),
+                    )
+                ),
+            ]
+        ),
+
+        Container(
+            transform: (
+                id: "container_m_options",
+                y: 50,
+                width: 755.,
+                height: 150.,
+                anchor: Middle,
+                z: 3,
+            ),
+            background: SolidColor(1.0, 1.0, 1.0, 1.0),
+            children: [
+
+                Button(
+                    transform: (
+                        id: "m_options",
+                        width: 750.,
+                        height: 145.,
+                        tab_order: 2,
+                        anchor: Middle,
+                        mouse_reactive: true,
+                    ),
+                    button: (
+                        text: "OPTIONS",
+                        font: File("font/square.ttf", ("TTF", ())),
+                        font_size: 75.,
+                        normal_text_color: (1.0, 1.0, 1.0, 1.0),
+                        normal_image: SolidColor(0.0, 0.0, 0.0, 1.0),
+                        hover_image: SolidColor(0.0, 0.0, 0.05, 1.0),
+                        press_image: SolidColor(0.0, 0.2, 0.5, 1.0),
+                    )
+                ),
+            ]
+        ),
+
+        Container(
+            transform: (
+                id: "container_m_exit",
+                y: -110,
+                width: 755.,
+                height: 150.,
+                anchor: Middle,
+                z: 3,
+            ),
+            background: SolidColor(1.0, 1.0, 1.0, 1.0),
+            children: [
+
+                Button(
+                    transform: (
+                        id: "m_exit_game",
+                        width: 750.,
+                        height: 145.,
+                        tab_order: 3,
+                        anchor: Middle,
+                        mouse_reactive: true,
+                    ),
+                    button: (
+                        text: "EXIT GAME",
+                        font: File("font/square.ttf", ("TTF", ())),
+                        font_size: 75.,
+                        normal_text_color: (1.0, 1.0, 1.0, 1.0),
+                        normal_image: SolidColor(0.0, 0.0, 0.0, 1.0),
+                        hover_image: SolidColor(0.0, 0.0, 0.05, 1.0),
+                        press_image: SolidColor(0.0, 0.2, 0.5, 1.0),
+                    )
+                ),
+            ]
+        ),
+
+    ],
+)

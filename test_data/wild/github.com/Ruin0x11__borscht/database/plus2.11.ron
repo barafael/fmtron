@@ -1,0 +1,75 @@
+#![enable(implicit_some)]
+
+AnalysisConfig(
+    meta: (
+        variant_name: "Elona+",
+        version: "2.11",
+        ax_sha256: "b82e3803783cc2e5ed2f2817002eba9620b2701464bf5227159fca19eaab0c4b"
+    ),
+
+    includes: [
+    "database/plus2.10.ron"
+    ],
+
+    variable_groups: {
+        "chara_id": (
+            variables: [
+            ( name: "CREATURE_ID_CRIMSON_DARK_GUARDIAN", value: 1057 ),
+            ( name: "CREATURE_ID_BLUE_DARK_GUARDIAN", value: 1058 ),
+            ( name: "CREATURE_ID_GREEN_DARK_GUARDIAN", value: 1059 ),
+            ( name: "MAX_CREATURE_ID", value: 1062, code_value: "CREATURE_ID_GREEN_DARK_GUARDIAN + 3" ),
+            ]
+        ),
+        "item_id": (
+            variables: [
+            ( name: "ITEM_ID_COMMAND_WHISTLE", value: 1250 ),
+
+            ( name: "MAX_ITEM_ID", value: 1253, code_value: "ITEM_ID_COMMAND_WHISTLE + 3", exclude: true ),
+            ],
+        ),
+        "item_effect": (
+            variables: [
+            ( name: "EFFECT_COMMAND_WHISTLE", value: 126 ),
+            ]
+        ),
+        "skill_spact": (
+            variables: [
+            ( name: "SKILL_SPACT_INDIVIDUAL_LEADING", value: 840, ),
+
+            ( name: "MAX_SKILL", value: 841, code_value: "SKILL_SPACT_INDIVIDUAL_LEADING + 1" ),
+            ]
+        ),
+        "sound_id": (
+            variables: [
+            ( name: "SOUNDLIST_WHISTLE00", value: 300, ),
+
+            ( name: "SOUNDLIST_MAX", value: 301, code_value: "SOUNDLIST_WHISTLE00 + 1", exclude: true ),
+            ],
+        ),
+        "gdata": (
+            variables: [
+            ]
+        ),
+        "dbmode_flavor": (
+            variables: [
+            ( name: "DBMODE_FLAVOR_LEADING", value: 148 ),
+            ]
+        )
+    },
+
+    arrays: {},
+
+    expressions: {},
+
+    functions: {
+        "txtsetabyss": (
+            args: {
+                0: (name: "arg1", type: Int),
+            }
+        ),
+    },
+
+    labels: {},
+
+    files: {}
+)

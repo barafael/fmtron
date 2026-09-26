@@ -1,0 +1,41 @@
+// Reserved-range faker pools for en PII types (SSOT).
+// Transcribed verbatim from src/argus_redact/specs/fakers_en_reserved.py.
+// Pool ORDER is load-bearing for choice_index() — must match the Python tuples.
+EnFakerData(
+    // RESERVED_PERSON_NAMES_EN (tuple order preserved)
+    reserved_person_names_en: [
+        "John Doe", "Jane Doe", "Jane Roe", "John Roe", "Richard Roe",
+        "Mary Roe", "John Q. Public", "Alice Liddell", "Pat Roe", "Sandy Doe",
+    ],
+    // RESERVED_PERSON_NAMES_EN_ALIASES (zh transliterations)
+    reserved_person_names_en_aliases: {
+        "John Doe": ["约翰·多伊", "约翰多伊"],
+        "Jane Doe": ["简·多伊", "简多伊"],
+        "Jane Roe": ["简·罗", "简罗"],
+        "John Roe": ["约翰·罗", "约翰罗"],
+        "Richard Roe": ["理查德·罗", "理查德罗"],
+        "Mary Roe": ["玛丽·罗", "玛丽罗"],
+        "John Q. Public": ["约翰·Q·普布利克"],
+        "Alice Liddell": ["爱丽丝·利德尔", "爱丽丝利德尔"],
+        "Pat Roe": ["帕特·罗", "帕特罗"],
+        "Sandy Doe": ["桑迪·多伊", "桑迪多伊"],
+    },
+    // RESERVED_ADDRESSES_EN (tuple order preserved)
+    reserved_addresses_en: [
+        "1313 Mockingbird Lane, Springfield, USA",
+        "742 Evergreen Terrace, Springfield, USA",
+        "221B Baker Street, London, UK",
+        "12 Grimmauld Place, London, UK",
+        "1630 Revello Drive, Sunnydale, USA",
+        "31 Spooner Street, Quahog, USA",
+    ],
+    // RESERVED_ADDRESSES_EN_ALIASES (zh transliterations)
+    reserved_addresses_en_aliases: {
+        "1313 Mockingbird Lane, Springfield, USA": ["美国斯普林菲尔德嘲鸫巷1313号"],
+        "742 Evergreen Terrace, Springfield, USA": ["美国斯普林菲尔德常青露台742号"],
+        "221B Baker Street, London, UK": ["英国伦敦贝克街221B号"],
+        "12 Grimmauld Place, London, UK": ["英国伦敦格里莫广场12号"],
+        "1630 Revello Drive, Sunnydale, USA": ["美国阳光镇雷维洛大道1630号"],
+        "31 Spooner Street, Quahog, USA": ["美国奎霍格斯普纳街31号"],
+    },
+)

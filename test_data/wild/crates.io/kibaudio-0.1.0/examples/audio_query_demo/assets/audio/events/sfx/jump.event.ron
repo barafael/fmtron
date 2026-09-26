@@ -1,0 +1,14 @@
+(
+    playlist: (
+        mode: RandomNoRepeat,
+        sounds: [
+            ( file: "jump_01.ogg" ),
+            ( file: "jump_02.ogg" ),
+        ],
+    ),
+    pitch: ( base: 1.0, variance: (-0.03, 0.03) ),
+    volume: ( variance: (-1.0, 0.0) ),
+    max_instances: 1,
+    steal: Newest,
+    cooldown: 0.2,
+)

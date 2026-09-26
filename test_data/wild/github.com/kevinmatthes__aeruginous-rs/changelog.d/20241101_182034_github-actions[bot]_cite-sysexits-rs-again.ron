@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "CFF:  sorairolake/sysexits-rs",
+    ],
+  },
+)

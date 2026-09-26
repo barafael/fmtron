@@ -1,0 +1,46 @@
+// GEORGE BOO'L'S PLATFORM-FIGHTER FACET — his values, in the repository that
+// owns character-authored material.
+//
+//  this file MOVED here from `game/ambition_demo_smash/assets/fighters/` on
+// 2026-08-19, on the 2026-08-19 GPT review's finding: *"Smash should select
+// George; it should not own George's values."* The demo's own module called it
+// "THIS DEMO'S CHARACTER PACKAGE", which was the wrong physical owner for
+// exactly the reason this repository's README states — it owns
+// "game/ruleset-specific character FACET VALUES", and the Rust repo owns the
+// schema, preparation and runtime meaning those values conform to.
+//
+// His moves, grab and throws included, are in `smash_moveset.ron` beside this
+// file, with the reasoning that justified each number. They were composed Rust
+// (`george_booul_moveset.rs`) and a `capture` kit here until 2026-09-26, when
+// every fighter's moves became content (fast-iteration I2, AP53): one table per
+// fighter, and one home for a grab.
+//
+// The consuming pack is `game/ambition_demo_smash/assets/pack.ron`, which now
+// SELECTS this file by relative path rather than carrying a copy of it.
+
+// George Boo'l's platform-fighter facet — the excluded middle, as VALUES.
+//
+//  these numbers were Rust literals in `src/george_booul_moveset.rs` until
+// D166's first facet landed. They moved verbatim, with the reasoning that
+// justified them, because the reasoning is the character: a value with no reason
+// beside it is the thing that gets "balanced" by somebody who does not know what
+// it was for.
+(
+    character: "smash_george_booul",
+    // ⭐ HE IS THE HEAVY, and this is where he says so.
+    //
+    // ⛔ this number was a `match definition.id` arm in the Smash demo's own
+    // Rust until 2026-08-31 — a game-owned table writing `Vitals::knockback_
+    // weight`, an ordinary character fact the engine already owns, keyed by
+    // character id. `character-authoring-package.md` names that shape as a
+    // falsifier in as many words, and George is the one fighter this repository
+    // authors, so he is the one who stops being described from outside.
+    //
+    // ⭐ 1.35 IS A SPREAD, NOT AN ABSOLUTE. `scaled_knockback` DIVIDES the growth
+    // term by it, so 1.35 means a launch that sends the reference body 100px
+    // sends George 74. The stage is tuned against the middleweight at 1.0; his
+    // whole design is that he commits and then survives the punish, and a
+    // heavy that launches like everyone else has traded away his slow grab and
+    // his 0.42 down-throw for nothing.
+    knockback_weight: Some(1.35),
+)

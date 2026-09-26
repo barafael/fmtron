@@ -1,0 +1,41 @@
+// Body plans: the joints a model's parts hang from (ADR-0017).
+//
+// Pivots are measured from the ground under the body's centre, in milli-metres:
+// y = 0 is where the feet stand. -Z is forward, so a model faces -Z at rest.
+// Every part hung from a slot is merged into one mesh and turns about that
+// slot's pivot, so animation clips address slots, never parts — and one clip
+// serves every model built on the same plan.
+[
+    (
+        schema_version: 1,
+        id: "humanoid",
+        name: "Humanoid",
+        slots: [
+            (name: "torso", pivot: (x: 0, y: 950, z: 0)),     // the hips
+            (name: "head", pivot: (x: 0, y: 1540, z: 0)),     // the neck
+            (name: "arm-l", pivot: (x: -290, y: 1470, z: 0)), // shoulders
+            (name: "arm-r", pivot: (x: 290, y: 1470, z: 0)),
+            (name: "leg-l", pivot: (x: -115, y: 950, z: 0)),  // hips
+            (name: "leg-r", pivot: (x: 115, y: 950, z: 0)),
+        ],
+        // What every humanoid plays unless its model says otherwise.
+        animations: (
+            idle: Some("humanoid-idle"),
+            walk: Some("humanoid-walk"),
+            swing: Some("humanoid-swing"),
+            cast: Some("humanoid-cast"),
+            dodge: Some("humanoid-dodge"),
+        ),
+    ),
+    // A projectile's body: one joint at chest height, where bolts fly, so a
+    // bolt's parts are measured from the middle of the bolt itself. Nothing
+    // animates it; it turns nose first as it flies.
+    (
+        schema_version: 1,
+        id: "bolt",
+        name: "Bolt",
+        slots: [
+            (name: "core", pivot: (x: 0, y: 900, z: 0)),
+        ],
+    ),
+]

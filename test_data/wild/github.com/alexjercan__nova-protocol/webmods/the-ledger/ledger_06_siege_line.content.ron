@@ -1,0 +1,375 @@
+// Siege Line: independent activity; no carried campaign state.
+// Flight is live from spawn. Terrain bands leave the objective routes clear.
+[
+    Scenario((
+        id: "ledger_06_siege_line",
+        name: "Siege Line",
+        description: "A gunship assault on an outpost inside volcanic debris.",
+        cubemap: "dep://base/textures/cubemap.png",
+        thumbnail: Some("self://thumbnails/ledger_06_siege_line.png"),
+        watches: [(variable: "elapsed", query: Scenario((property: Elapsed)))],
+        events: [
+            (
+                name: OnStart,
+                once: true,
+                filters: [],
+                actions: [
+                    SpawnScenarioObject((
+                        base: (
+                            id: "player_spaceship",
+                            name: "Gunship",
+                            position: (0.0, 0.0, 0.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(
+                                id: "cargob",
+                                section_patches: {
+                                    "fuselage": (config: (health: Some(1200.0))),
+                                    "engine_port": (config: (health: Some(300.0))),
+                                    "engine_starboard": (config: (health: Some(300.0))),
+                                },
+                            ),
+                            controller: Player((
+                                input_mapping: {"turret_port": [Mouse(Left), Gamepad(RightTrigger2)], "turret_starboard": [Mouse(Left), Gamepad(RightTrigger2)], "pod_port": [Keyboard(KeyR), Gamepad(LeftTrigger2)], "pod_starboard": [Keyboard(KeyR), Gamepad(LeftTrigger2)]},
+                            )),
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(0.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "key",
+                            name: "Sun",
+                            position: (-600.0, 500.0, 600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 11000.0, color: Srgba((red: 1.0, green: 0.72, blue: 0.5, alpha: 1.0)), shadows: true, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "rim",
+                            name: "Rim",
+                            position: (300.0, 400.0, -800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 16000.0, color: Srgba((red: 0.62, green: 0.75, blue: 1.0, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "fill",
+                            name: "Fill",
+                            position: (700.0, -200.0, 400.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 2600.0, color: Srgba((red: 0.62, green: 0.72, blue: 0.95, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "primary",
+                            name: "Primary",
+                            position: (-6000.0, 1000.0, -8200.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: Volcanic,
+                            radius: 2400.0,
+                            seed: 8605,
+                            mass: Some(40000.0),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "moon",
+                            name: "Moon",
+                            position: (4700.0, -1800.0, -10700.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: BarrenRock,
+                            radius: 950.0,
+                            seed: 8606,
+                            mass: Some(10000.0),
+                        )),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "port_rocks_",
+                        count: 20,
+                        seed: 8615,
+                        region: Box(min: (-3900.0, -400.0, -9000.0), max: (-2400.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "port_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("carbon", 6), ("metal", 3), ("rock", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "starboard_rocks_",
+                        count: 20,
+                        seed: 8625,
+                        region: Box(min: (2400.0, -400.0, -9000.0), max: (3900.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "starboard_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("carbon", 6), ("metal", 3), ("rock", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "lower_rocks_",
+                        count: 14,
+                        seed: 8635,
+                        region: Box(min: (-1300.0, -1250.0, -9000.0), max: (1300.0, -900.0, -1800.0)),
+                        template: (
+                            base: (
+                                id: "lower_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 10.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((10.0, 30.0)),
+                        asteroid_kinds: [("carbon", 6), ("metal", 3), ("rock", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_shuttle",
+                            name: "Shuttle",
+                            position: (900.0, 450.0, -700.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "racer"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [
+                                    (900.0, 450.0, -700.0),
+                                    (1500.0, 450.0, -3200.0),
+                                    (900.0, 450.0, -4700.0),
+                                ],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_tug",
+                            name: "Tug",
+                            position: (-1200.0, -600.0, -1900.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_freighter"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [(-1200.0, -600.0, -1900.0), (-1200.0, -600.0, -4500.0)],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "approach_cover_left",
+                            name: "Asteroid",
+                            position: (-1400.0, -200.0, -3100.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 80.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "metal",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "approach_cover_right",
+                            name: "Asteroid",
+                            position: (1400.0, 400.0, -3700.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 75.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "carbon",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "outpost_backstop",
+                            name: "Asteroid",
+                            position: (0.0, 700.0, -7000.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 85.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "rock",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "outpost",
+                            name: "Outpost",
+                            position: (0.0, 0.0, -5200.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_platform"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                engage_range: Some(3800.0),
+                                pd_range: Some(450.0),
+                            )),
+                            allegiance: Some(Enemy),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "guard_a",
+                            name: "Outpost guard",
+                            position: (-1300.0, -100.0, -5500.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "cargoa_raider"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                engage_range: Some(2400.0),
+                                leash: Some(2400.0),
+                                patrol: [(-1300.0, -100.0, -5500.0), (-1600.0, -100.0, -6600.0)],
+                            )),
+                            allegiance: Some(Enemy),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "guard_b",
+                            name: "Outpost guard",
+                            position: (1600.0, 200.0, -6500.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "cargoa_raider"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                engage_range: Some(1900.0),
+                                leash: Some(2200.0),
+                                patrol: [(1600.0, 200.0, -6500.0), (1600.0, 200.0, -5000.0)],
+                            )),
+                            allegiance: Some(Enemy),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "wingman",
+                            name: "Wingman",
+                            position: (-800.0, 250.0, -800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "cargoa"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                engage_range: Some(2800.0),
+                                leash: Some(7500.0),
+                                patrol: [
+                                    (-800.0, 250.0, -800.0),
+                                    (-800.0, 250.0, -2800.0),
+                                    (-700.0, 250.0, -4500.0),
+                                ],
+                            )),
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    Objective((id: "outpost", message: "Disable the outpost.")),
+                    ObjectiveMarkerAttach((target_id: "outpost", label: "OUTPOST")),
+                    CinematicTitle((
+                        corner: TopRight,
+                        location: "SIEGE LINE",
+                        date: "FIELD TRIAL 6 / 6",
+                        note: "",
+                        seconds: 5.0,
+                    )),
+                ],
+            ),
+            (
+                name: OnDefeated,
+                once: true,
+                filters: [Entity((id: Some("outpost")))],
+                actions: [
+                    ObjectiveMarkerDetach((target_id: "outpost")),
+                    ObjectiveComplete((id: "outpost")),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(99.0)))))),
+                    Outcome((outcome: Victory, message: Some("Outpost disabled. Field trials complete."))),
+                ],
+            ),
+            (
+                name: OnDefeated,
+                once: true,
+                filters: [
+                    Entity((id: Some("player_spaceship"))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(98.0)))))),
+                    Outcome((outcome: Defeat, message: Some("Ship disabled."))),
+                    NextScenario((scenario_id: "ledger_06_siege_line", linger: true)),
+                ],
+            ),
+        ],
+    )),
+]

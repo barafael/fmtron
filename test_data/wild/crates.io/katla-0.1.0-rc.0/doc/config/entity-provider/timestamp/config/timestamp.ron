@@ -1,0 +1,54 @@
+#![enable(implicit_some)]
+(
+	name: "Timestamp",
+	description: "Timestamp",
+	appenders: [
+		(
+			type: "file",
+			name: "timestamp--appender",
+			fileName: "timestamp.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "timestamp",
+			name: "timestamp--entity-name",
+		),
+	],
+	entries: [
+		(
+			name: "timestamp--entry",
+			entity: "timestamp--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "timestamp--file-feed",
+			content: (
+				type: "katla",
+				inline: "{{ timestamp--entry/timestamp--field }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "timestamp--flow",
+			timeInterval: "R20000",
+			entries: [
+				"timestamp--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "timestamp--file-feed",
+					appender: "timestamp--appender",
+				),
+			],
+		),
+	],
+)

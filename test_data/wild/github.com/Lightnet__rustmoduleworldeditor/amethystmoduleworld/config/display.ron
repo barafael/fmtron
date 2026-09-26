@@ -1,0 +1,4 @@
+(
+  title: "amethystmoduleworld",
+  dimensions: Some((640, 480)),
+)

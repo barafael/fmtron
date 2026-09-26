@@ -1,0 +1,78 @@
+[
+    (
+        id: "revelation_of_matthias",
+        name: "The Revelation of Saint Matthias",
+        type: Discovery,
+        time_span: (start: 15, end: 15),
+        participants: [
+            (actor: "saint_matthias", role: Discoverer, sentiment: Transformative),
+        ],
+        state_changes: [
+            (entity: "saint_matthias", change: StatusChange(Transformed)),
+        ],
+        description: "Matthias interfaces with Archive terminal. Discovers Heliograph was terraforming tech, not divine.",
+    ),
+    (
+        id: "great_divide",
+        name: "The Great Divide",
+        type: Political,
+        time_span: (start: 15, end: 15),
+        caused_by: ["revelation_of_matthias"],
+        participants: [
+            (actor: "mirror_order", role: Participant, sentiment: Fractured),
+            (actor: "sand_engineers", role: Participant, sentiment: Vindicated),
+        ],
+        description: "Discovery of the First Archive splits survivor communities.",
+    ),
+    (
+        id: "purist_uprising",
+        name: "The Purist Uprising",
+        type: Political,
+        time_span: (start: 15, end: 16),
+        caused_by: ["great_divide"],
+        participants: [
+            (actor: "brother_halix", role: Leader, sentiment: Righteous),
+            (actor: "mirror_order", role: Instigator, sentiment: Fearful),
+        ],
+        state_changes: [
+            (entity: "iron_covenant", change: Founded),
+        ],
+        description: "Orthodox Monks reject Archive revelations. Violence erupts.",
+    ),
+    (
+        id: "battle_of_broken_glass",
+        name: "The Battle of Broken Glass",
+        type: Battle,
+        time_span: (start: 16, end: 16),
+        location: Some("havens_rest"),
+        caused_by: ["purist_uprising"],
+        participants: [
+            (actor: "ressa_vane", role: Attacker, sentiment: Determined),
+            (actor: "sand_engineers", role: Attacker, sentiment: Vindicated),
+            (actor: "brother_halix", role: Defender, sentiment: Defiant),
+            (actor: "mirror_order", role: Defender, sentiment: Desperate),
+        ],
+        state_changes: [
+            (entity: "brother_halix", change: StatusChange(Captured)),
+            (entity: "havens_rest", change: StatusChange(Evacuated)),
+        ],
+        description: "Three-day battle. Engineers deploy Null Field Generators. Halix captured.",
+    ),
+    (
+        id: "siege_of_silica",
+        name: "The Siege of Silica",
+        type: Siege,
+        time_span: (start: 20, end: 20),
+        location: Some("silica"),
+        caused_by: ["purist_uprising"],
+        participants: [
+            (actor: "kaine_durgan", role: Attacker, sentiment: Dutiful),
+            (actor: "iron_covenant", role: Attacker, sentiment: Righteous),
+            (actor: "mirror_order", role: Defender, sentiment: Desperate),
+        ],
+        state_changes: [
+            (entity: "silica", change: StatusChange(Destroyed)),
+        ],
+        description: "Iron Covenant besieges Silica. 12-day siege. Settlement destroyed by sonic resonance.",
+    ),
+]

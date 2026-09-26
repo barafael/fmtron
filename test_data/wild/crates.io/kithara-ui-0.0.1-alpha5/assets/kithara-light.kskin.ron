@@ -1,0 +1,37 @@
+// Paper: the same design on a light ground. Only the palette is restated —
+// every role keeps the meaning the dark skin gave it, so nothing below the
+// palette has to be written twice.
+(
+    schema: "kithara.skin",
+    version: 1,
+    id: "kithara-light",
+    base: "kithara-dark.kskin.ron",
+    palette: (
+        bg: "#f2f0ea",
+        bg_deep: "#e4e1d8",
+        bg_inset: "#e9e6dd",
+        bg_panel: "#fbfaf6",
+        bg_footer: "#eae7de",
+        bg_panel_2: "#ddd9cd",
+        bg_select: "#ded8c6",
+        line: "#bfb9a6",
+        line_dim: "#d9d5c8",
+        line_inner: "#d0ccbe",
+        line_soft: "#d0ccbe",
+        line_hi: "#9d9682",
+        line_pop: "#cbc5b4",
+        text: "#1d1c19",
+        text_dim: "#4d4b45",
+        muted: "#7d7a70",
+        accent: "#a8761c",
+        accent_strong: "#c68a22",
+        accent_soft: "#a8761c2e",
+        danger: "#c0392b",
+        success: "#3f8f3f",
+        warning: "#b8860b",
+        wave_low: "#c2185b",
+        wave_mid: "#b8860b",
+        wave_high: "#0277bd",
+        shadow: "#6b6559",
+    ),
+)

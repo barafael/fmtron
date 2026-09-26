@@ -1,0 +1,9 @@
+(
+  page_up: Some(( code: Char('j'), modifiers: "")),
+  page_own: Some(( code: Char('k'), modifiers: "")),
+  diff_hunk_prev: Some(( code: Char('l'), modifiers: "")),
+  diff_hunk_next: Some(( code: Char('h'), modifiers: "")),
+  commit: Some((code: Char('y'), modifiers: "CONTROL")),
+  exit: Some((code: Char('n'), modifiers: "CONTROL")),
+  open_help: Some((code: Char('?'), modifiers: ""))
+)

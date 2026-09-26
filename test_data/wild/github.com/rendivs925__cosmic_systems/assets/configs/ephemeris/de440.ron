@@ -1,0 +1,97 @@
+(
+    id: "naif-de440-egm2008-primary-v1",
+    kernel_root: "../../large_files/kernels/de440",
+    // The manifest intentionally advertises a conservative subset of DE440s.
+    // Requests outside this range fail rather than silently extrapolating.
+    coverage: (
+        start_julian_date_tdb: 2415020.5,
+        end_julian_date_tdb: 2469807.5,
+    ),
+    // Earth-orientation data is intentionally not fabricated. Until a pinned
+    // EOP dataset is provisioned, UT1 and polar-motion requests are unavailable.
+    unavailable_roles: [EarthOrientation],
+    kernels: [
+        (
+            file_name: "de440s.bsp",
+            role: Translation,
+            kind: Spk,
+            sha256: "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+            expected_size_bytes: 32726016,
+            source_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp",
+            coverage: Some((
+                start_julian_date: 2415020.5,
+                end_julian_date: 2469807.5,
+            )),
+            frame: SsbIcrfJ2000,
+            time_scale: Tdb,
+        ),
+        (
+            file_name: "pck00011.tpc",
+            role: Orientation,
+            kind: TextPck,
+            sha256: "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+            expected_size_bytes: 131226,
+            source_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+            coverage: Some((
+                start_julian_date: 2415020.5,
+                end_julian_date: 2469807.5,
+            )),
+            frame: IauBodyFixed,
+            time_scale: Tdb,
+        ),
+        (
+            // MOLA MEGR uses IAU2000_MARS. NAIF designed this PCK to load
+            // after pck00011.tpc without invalidating Mars-system orientation.
+            file_name: "mars_iau2000_v1.tpc",
+            role: MarsOrientationOverride,
+            kind: TextPck,
+            sha256: "07ba38b939ae92c085882752a523addd749fde0abb7a3468423099ed02bb3949",
+            expected_size_bytes: 12573,
+            source_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/mars_iau2000_v1.tpc",
+            coverage: Some((
+                start_julian_date: 2415020.5,
+                end_julian_date: 2469807.5,
+            )),
+            frame: IauBodyFixed,
+            time_scale: Tdb,
+        ),
+        (
+            file_name: "gm_de440.tpc",
+            role: GravitationalParameters,
+            kind: TextPck,
+            sha256: "924ddf4fb9ead9fe8a1aa55780bcabde40b09d00065d58226e24b68d8092f140",
+            expected_size_bytes: 12406,
+            source_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/gm_de440.tpc",
+            coverage: None,
+            frame: NotApplicable,
+            time_scale: NotApplicable,
+        ),
+        (
+            // EGM2008 degree-two extract. Its source record identifies the
+            // normalized C20 conversion and the model reference radius.
+            file_name: "egm2008_earth_j2.ron",
+            role: GravityHarmonics,
+            kind: GravityModel,
+            sha256: "c7ea04cd41460e52b5ef400f81164af6cf282ee024f2ee4e3cdf3e719512688a",
+            expected_size_bytes: 249,
+            source_url: "https://earth-info.nga.mil/index.php?dir=wgs84&action=egm2008",
+            coverage: None,
+            frame: NotApplicable,
+            time_scale: NotApplicable,
+        ),
+        (
+            file_name: "naif0012.tls",
+            role: LeapSeconds,
+            kind: LeapSeconds,
+            sha256: "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+            expected_size_bytes: 5257,
+            source_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+            coverage: Some((
+                start_julian_date: 2441317.5,
+                end_julian_date: 2457754.5,
+            )),
+            frame: NotApplicable,
+            time_scale: Utc,
+        ),
+    ],
+)

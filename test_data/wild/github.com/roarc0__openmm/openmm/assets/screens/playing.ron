@@ -1,0 +1,193 @@
+(
+    id: "playing",
+    kind: Hud,
+    keys: {
+        "Return": [
+            "EnterTurnBattle()",
+        ],
+        "A": [
+            "PlaySoundNamed(\"Pending\")",
+        ],
+        "S": [
+            "PlaySoundNamed(\"Pending\")",
+        ],
+        "Space": [
+            "PlaySoundNamed(\"Pending\")",
+        ],
+        "T": [
+            "ShowScreen(\"ingame_menu_calendar\")",
+        ],
+        "Z": [
+            "ShowScreen(\"reputation\")",
+        ],
+        "M": [
+            "ShowScreen(\"ingame_menu_map\")",
+        ],
+        "Q": [
+            "ShowScreen(\"quests\")",
+        ],
+        "R": [
+            "ShowScreen(\"ingame_menu_rest\")",
+        ],
+        "C": [
+            "ShowScreen(\"spellbook\")",
+        ],
+        // Character sheet shortcuts — ShowScreen("chdetails") + the desired tab
+        // in one batch so the tab is chosen by the entry point, not a default.
+        "I": [
+            "ShowScreen(\"chdetails\")",
+            "ShowScreen(\"chdetails_inventory\")",
+        ],
+    },
+    elements: [
+        Image((
+            id: "icons/BUTTBK1",
+            position: (495.0, 270.0),
+            size: (31.0, 72.0),
+            z: 14,
+            states: {
+                "clicked": (
+                    texture: "icons/BUTTBK1",
+                ),
+                "default": (
+                    texture: "",
+                ),
+            },
+            on_click: [
+            	"ShowScreen(\"quests\")",
+            ],
+            on_hover: [
+                "evt:Hint(\"Current Quests\")",
+            ],
+            bindings: {},
+        )),
+        Image((
+            id: "icons/COMPASS",
+            position: (538.0, 10.0),
+            size: (325.0, 9.0),
+            z: 2,
+            states: {
+                "default": (
+                    texture: "icons/COMPASS",
+                ),
+            },
+            on_click: [],
+            on_hover: [
+                "evt:Hint(\"$currentTime\")",
+            ],
+            bindings: {
+                "source": "compass",
+            },
+            crop_w: 38.0,
+            crop_h: 9.0,
+        )),
+        Image((
+            id: "minimap",
+            position: (468.0, 0.0),
+            size: (512.0, 512.0),
+            z: 1,
+            states: {
+                "default": (
+                    texture: "",
+                ),
+            },
+            on_click: [],
+            on_hover: [],
+            bindings: {
+                "source": "minimap",
+            },
+            crop_w: 172.0,
+            crop_h: 142.0,
+        )),
+        Image((
+            id: "icons/MAPDIR2",
+            position: (553.5, 87.5),
+            size: (7.0, 7.0),
+            z: 9,
+            states: {
+                "default": (
+                    texture: "icons/MAPDIR2",
+                ),
+            },
+            on_click: [],
+            on_hover: [],
+            bindings: {
+                "source": "arrow",
+            },
+            transparent_color: "black",
+        )),
+        Image((
+            id: "icons/BUTTBK2",
+            position: (526.0, 270.0),
+            size: (31.0, 71.0),
+            z: 14,
+            states: {
+                "clicked": (
+                    texture: "icons/BUTTBK2",
+                ),
+                "default": (
+                    texture: "",
+                ),
+            },
+            on_click: [
+            	"ShowScreen(\"autonotes\")",
+            ],
+            on_hover: [
+                "evt:Hint(\"Auto Notes\")",
+            ],
+            bindings: {},
+        )),
+        Image((
+            id: "icons/BUTTBK3",
+            position: (557.0, 270.0),
+            size: (32.0, 71.0),
+            z: 14,
+            states: {
+                "clicked": (
+                    texture: "icons/BUTTBK3",
+                ),
+                "default": (
+                    texture: "",
+                ),
+            },
+            on_click: [
+            	"ShowScreen(\"maps\")",
+            ],
+            on_hover: [
+                "evt:Hint(\"Maps\")",
+            ],
+            bindings: {},
+        )),
+        Image((
+            id: "icons/BUTTBK4",
+            position: (588.0, 270.0),
+            size: (31.0, 71.0),
+            z: 16,
+            states: {
+                "clicked": (
+                    texture: "icons/BUTTBK4",
+                ),
+                "default": (
+                    texture: "",
+                ),
+            },
+            on_click: [
+            	"ShowScreen(\"calendar\")",
+            ],
+            on_hover: [
+                "evt:Hint(\"Calendar\")",
+            ],
+            bindings: {},
+        )),
+    ],
+    editor: (
+        locked: [
+            "minimap",
+            "icons/MAPDIR2",
+            "icons/COMPASS",
+            "icons/BUTTBK3",
+            "icons/BUTTBK2",
+            "icons/BUTTBK1",
+        ],
+    ),
+)

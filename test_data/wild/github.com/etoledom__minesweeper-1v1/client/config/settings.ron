@@ -1,0 +1,4 @@
+(
+  title: "MinesBooMer",
+  dimensions: Some((800, 600)),
+)

@@ -1,0 +1,5 @@
+// default
+Config (
+    disable_notification: false,
+    highlight_color: "#facf89",
+)

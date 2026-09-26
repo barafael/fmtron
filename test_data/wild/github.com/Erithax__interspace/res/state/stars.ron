@@ -1,0 +1,581 @@
+[
+    (
+        update_time: "2023-08-31T18:22:20.552433100Z",
+        comp_id: 0,
+        comp_str_id: "Erithaxlangbridge",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:21.029513800Z",
+        comp_id: 1,
+        comp_str_id: "Gtk3rs",
+        repo: Some((
+            url: "https://github.com/gtk-rs/gtk3-rs",
+            stars: Some(487),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:21.029520Z",
+        comp_id: 2,
+        comp_str_id: "Erithaxui",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:21.320016600Z",
+        comp_id: 3,
+        comp_str_id: "Angular",
+        repo: Some((
+            url: "https://github.com/angular/angular",
+            stars: Some(89911),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:21.320022Z",
+        comp_id: 4,
+        comp_str_id: "Dom",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:21.584492900Z",
+        comp_id: 5,
+        comp_str_id: "Dioxus",
+        repo: Some((
+            url: "https://github.com/dioxuslabs/dioxus",
+            stars: Some(13650),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:21.974477200Z",
+        comp_id: 6,
+        comp_str_id: "Druid",
+        repo: Some((
+            url: "https://github.com/linebender/druid",
+            stars: Some(9080),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:22.277307100Z",
+        comp_id: 7,
+        comp_str_id: "Egui",
+        repo: Some((
+            url: "https://github.com/emilk/egui",
+            stars: Some(16255),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:22.566266100Z",
+        comp_id: 8,
+        comp_str_id: "Fltk",
+        repo: Some((
+            url: "https://github.com/fltk/fltk",
+            stars: Some(1258),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:22.859780Z",
+        comp_id: 9,
+        comp_str_id: "Flutter",
+        repo: Some((
+            url: "https://github.com/flutter/flutter",
+            stars: Some(156359),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:22.859787400Z",
+        comp_id: 10,
+        comp_str_id: "Gtk",
+        repo: Some((
+            url: "https://gitlab.gnome.org/GNOME/gtk",
+            stars: None,
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:23.205269900Z",
+        comp_id: 11,
+        comp_str_id: "Iced",
+        repo: Some((
+            url: "https://github.com/iced-rs/iced",
+            stars: Some(20418),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:23.630386300Z",
+        comp_id: 12,
+        comp_str_id: "Leptos",
+        repo: Some((
+            url: "https://github.com/leptos-rs/leptos",
+            stars: Some(11571),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:23.630395500Z",
+        comp_id: 13,
+        comp_str_id: "Qt",
+        repo: Some((
+            url: "https://code.qt.io/cgit/",
+            stars: None,
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:23.970857Z",
+        comp_id: 14,
+        comp_str_id: "React",
+        repo: Some((
+            url: "https://github.com/facebook/react",
+            stars: Some(212414),
+        )),
+    ),
+    (
+        update_time: "2023-08-27T23:01:25.443642Z",
+        comp_id: 15,
+        comp_str_id: "Scither",
+        repo: Some((
+            url: "https://github.com/sciter-sdk/rust-sciter",
+            stars: Some(783),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:24.569877100Z",
+        comp_id: 16,
+        comp_str_id: "Slint",
+        repo: Some((
+            url: "https://github.com/slint-ui/slint",
+            stars: Some(9402),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:24.870102900Z",
+        comp_id: 17,
+        comp_str_id: "Svelte",
+        repo: Some((
+            url: "https://github.com/sveltejs/svelte",
+            stars: Some(72159),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:24.870125600Z",
+        comp_id: 18,
+        comp_str_id: "SwiftUI",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.155230700Z",
+        comp_id: 19,
+        comp_str_id: "Vue",
+        repo: Some((
+            url: "https://github.com/vuejs/vue",
+            stars: Some(205086),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.434725500Z",
+        comp_id: 20,
+        comp_str_id: "Xilem",
+        repo: Some((
+            url: "https://github.com/linebender/xilem",
+            stars: Some(1894),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.718505400Z",
+        comp_id: 21,
+        comp_str_id: "Yew",
+        repo: Some((
+            url: "https://github.com/yewstack/yew",
+            stars: Some(28336),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.718513800Z",
+        comp_id: 22,
+        comp_str_id: "Erithaxlayout",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.718515200Z",
+        comp_id: 23,
+        comp_str_id: "Blink_ly",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.718516600Z",
+        comp_id: 24,
+        comp_str_id: "Flutter_ly",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.718518200Z",
+        comp_id: 25,
+        comp_str_id: "Gecko_ly",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.718519600Z",
+        comp_id: 26,
+        comp_str_id: "Servo_ly",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.718521100Z",
+        comp_id: 27,
+        comp_str_id: "Webkit_ly",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999766300Z",
+        comp_id: 28,
+        comp_str_id: "Taffy",
+        repo: Some((
+            url: "https://github.com/DioxusLabs/taffy",
+            stars: Some(1301),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999773Z",
+        comp_id: 29,
+        comp_str_id: "Erithaxpaint",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999774600Z",
+        comp_id: 30,
+        comp_str_id: "Blink_pa",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999776200Z",
+        comp_id: 31,
+        comp_str_id: "Flutter_pa",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999777800Z",
+        comp_id: 32,
+        comp_str_id: "Gecko_pa",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999779600Z",
+        comp_id: 33,
+        comp_str_id: "Servo_pa",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999781200Z",
+        comp_id: 34,
+        comp_str_id: "Webkit_pa",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999782900Z",
+        comp_id: 35,
+        comp_str_id: "Erithaxraster",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:25.999788100Z",
+        comp_id: 36,
+        comp_str_id: "Gecko",
+        repo: Some((
+            url: "https://hg.mozilla.org/",
+            stars: None,
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.260110300Z",
+        comp_id: 37,
+        comp_str_id: "Webrender",
+        repo: Some((
+            url: "https://github.com/servo/webrender",
+            stars: Some(2883),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.535047100Z",
+        comp_id: 38,
+        comp_str_id: "Webkit",
+        repo: Some((
+            url: "https://github.com/WebKit/WebKit",
+            stars: Some(6553),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.535056500Z",
+        comp_id: 39,
+        comp_str_id: "Xwindow",
+        repo: Some((
+            url: "https://gitlab.freedesktop.org/xorg",
+            stars: None,
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.535058600Z",
+        comp_id: 40,
+        comp_str_id: "Direct2d",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.535060500Z",
+        comp_id: 41,
+        comp_str_id: "Coregraphics",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.535063100Z",
+        comp_id: 42,
+        comp_str_id: "Gdk",
+        repo: Some((
+            url: "https://gitlab.gnome.org/GNOME/gtk/-/tree/main/gdk",
+            stars: None,
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.535065100Z",
+        comp_id: 43,
+        comp_str_id: "Cairo",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.795426100Z",
+        comp_id: 44,
+        comp_str_id: "Femtovg",
+        repo: Some((
+            url: "https://github.com/femtovg/femtovg",
+            stars: Some(630),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:26.795433400Z",
+        comp_id: 45,
+        comp_str_id: "Impeller",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.078948400Z",
+        comp_id: 46,
+        comp_str_id: "Piet",
+        repo: Some((
+            url: "https://github.com/linebender/piet",
+            stars: Some(1133),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.349656800Z",
+        comp_id: 47,
+        comp_str_id: "Skia",
+        repo: Some((
+            url: "https://github.com/google/skia",
+            stars: Some(7815),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.349663900Z",
+        comp_id: 48,
+        comp_str_id: "Slintcpu",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631090700Z",
+        comp_id: 49,
+        comp_str_id: "Vello",
+        repo: Some((
+            url: "https://github.com/linebender/vello",
+            stars: Some(1454),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631114800Z",
+        comp_id: 50,
+        comp_str_id: "Erithaxgfx",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631117200Z",
+        comp_id: 51,
+        comp_str_id: "Cpu",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631119400Z",
+        comp_id: 52,
+        comp_str_id: "Vulkan",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631121500Z",
+        comp_id: 53,
+        comp_str_id: "Opengl",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631123800Z",
+        comp_id: 54,
+        comp_str_id: "Opengles",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631126100Z",
+        comp_id: 55,
+        comp_str_id: "Webgl",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631128300Z",
+        comp_id: 56,
+        comp_str_id: "Webgpu",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631130600Z",
+        comp_id: 57,
+        comp_str_id: "D3d",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631132800Z",
+        comp_id: 58,
+        comp_str_id: "Metal",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.631135Z",
+        comp_id: 59,
+        comp_str_id: "Erithaxintergfx",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:27.911062700Z",
+        comp_id: 60,
+        comp_str_id: "Angle",
+        repo: Some((
+            url: "https://github.com/google/angle",
+            stars: Some(2997),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:28.194760900Z",
+        comp_id: 61,
+        comp_str_id: "Dawn",
+        repo: Some((
+            url: "https://github.com/google/angle",
+            stars: Some(2997),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:28.524743300Z",
+        comp_id: 62,
+        comp_str_id: "Dxvk",
+        repo: Some((
+            url: "https://github.com/doitsujin/dxvk",
+            stars: Some(10578),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:28.800113700Z",
+        comp_id: 63,
+        comp_str_id: "Glow",
+        repo: Some((
+            url: "https://github.com/grovesNL/glow",
+            stars: Some(932),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.210167700Z",
+        comp_id: 64,
+        comp_str_id: "Moltenvk",
+        repo: Some((
+            url: "https://github.com/KhronosGroup/MoltenVK",
+            stars: Some(4188),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622150600Z",
+        comp_id: 65,
+        comp_str_id: "Wgpu",
+        repo: Some((
+            url: "https://github.com/gfx-rs/wgpu",
+            stars: Some(8685),
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622158Z",
+        comp_id: 66,
+        comp_str_id: "Erithaxplatform",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622164100Z",
+        comp_id: 67,
+        comp_str_id: "Linux",
+        repo: Some((
+            url: "https://git.kernel.org",
+            stars: None,
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622167100Z",
+        comp_id: 68,
+        comp_str_id: "Windows",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622169700Z",
+        comp_id: 69,
+        comp_str_id: "Macos",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622173400Z",
+        comp_id: 70,
+        comp_str_id: "Android",
+        repo: Some((
+            url: "https://android.googlesource.com/",
+            stars: None,
+        )),
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622176200Z",
+        comp_id: 71,
+        comp_str_id: "Ios",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622178900Z",
+        comp_id: 72,
+        comp_str_id: "Chromeos",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622181500Z",
+        comp_id: 73,
+        comp_str_id: "Web",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622184100Z",
+        comp_id: 74,
+        comp_str_id: "Svg",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622186800Z",
+        comp_id: 75,
+        comp_str_id: "Pdf",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:29.622189500Z",
+        comp_id: 76,
+        comp_str_id: "Png",
+        repo: None,
+    ),
+    (
+        update_time: "2023-08-31T18:22:24.283646300Z",
+        comp_id: 15,
+        comp_str_id: "Sciter",
+        repo: Some((
+            url: "https://github.com/sciter-sdk/rust-sciter",
+            stars: Some(784),
+        )),
+    ),
+]

@@ -1,0 +1,41 @@
+// Ordering system configuration
+//
+// This file controls how diners decide which dishes to order.
+// Parameters affect satisfaction, budget behavior, and variety seeking.
+(
+    // Tolerance for "close enough" to desired satiation (fraction of diner's max)
+    // When remaining hunger <= tolerance × max_satiation, diner stops ordering
+    // Lower = pickier (orders to exact hunger), Higher = more flexible
+    satiation_tolerance: 0.05,
+
+    // Maximum number of different dishes one person can order in one visit
+    max_dishes_per_order: 4,
+
+    // Weight for taste/preference in dish scoring (0.0-1.0)
+    // Higher = diners prioritize dishes they like more
+    taste_weight: 0.6,
+
+    // Weight for quality in dish scoring (0.0-1.0)
+    // Higher = diners care more about dish quality
+    quality_weight: 0.4,
+
+    // Variety penalty factor (penalizes repeated dishes within same order)
+    // Higher = stronger penalty for ordering same dish multiple times
+    // 0.0 = no penalty, 1.0 = strong penalty
+    variety_beta: 0.6,
+
+    // Sigmoid steepness for taste score calculation
+    // Higher = sharper distinction between liked/disliked dishes
+    // Lower = smoother preference curves
+    sigmoid_k: 2.0,
+
+    // Maximum budget overspend factor
+    // 1.0 = strict budget, 1.3 = can spend up to 30% over budget
+    // Diners may exceed budget if they really want a dish
+    max_budget_overspend: 1.3,
+
+    // Base probability of accepting an over-budget dish (0.0-1.0)
+    // Actual acceptance depends on hunger, mood, and how much over budget
+    // Higher = diners more willing to overspend
+    overspend_base_prob: 0.3,
+)

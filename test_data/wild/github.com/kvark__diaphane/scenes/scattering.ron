@@ -1,0 +1,61 @@
+// Clean scattering: a one-way plane wave meets a metal sphere.
+//
+// The source is not a sheet but a total-field/scattered-field plane at
+// x = −24 mm: right of it lives the incident wave plus whatever the sphere
+// does to it; left of it lives *scattered field only*. Watch that left half.
+// It stays dark while the flat wave marches through the total region — the
+// injection is one-way to about −30 dB, limited by the finite cross-section,
+// not the cancellation — until the wave breaks over the sphere, and then the
+// backscatter comes through the plane as the only thing visible there.
+//
+// This is the configuration every scattering measurement is built on: what
+// the detector behind the source sees is the object, not the illumination.
+// A sheet source cannot do this — it radiates both ways, and its own
+// back-lobe buries the echo.
+//
+// Try:
+//   cargo viz --scene scenes/scattering.ron --warmup 400 --mode magnitude --log 10
+//   cargo render --scene scenes/scattering.ron --warmup 300 --frames 8 --steps 30 --mode magnitude --log 10
+
+Scene(
+    grid: Grid(
+        extent: Extent(x: 96, y: 56, z: 56),
+        cell_size: 0.001,
+        courant: 0.5,
+    ),
+    boundary: Absorbing(thickness: 10, target_reflection: 0.000001),
+    materials: MaterialTable(materials: [
+        Material(
+            relative_permittivity: 1.0,
+            relative_permeability: 1.0,
+            conductivity: 0.0,
+            magnetic_loss: 0.0,
+        ),
+        // A perfect conductor: the strongest possible scatterer, and the
+        // classic reference target.
+        Material(
+            relative_permittivity: 1.0,
+            relative_permeability: 1.0,
+            conductivity: inf,
+            magnetic_loss: 0.0,
+        ),
+    ]),
+    shapes: [
+        // r = 8 mm: comparable to the 20 mm wavelength, the resonant regime
+        // where the sphere neither blocks like a wall nor vanishes like dust.
+        Sphere(center: (0.004, 0.0, 0.0), radius: 0.008, material: 1),
+    ],
+    sources: [
+        Source(
+            // 14.99 GHz: λ₀ = 20 mm, 20 cells per wavelength.
+            shape: PlaneWave(axis: X, offset: -0.024),
+            polarization: Z,
+            waveform: GaussianPulse(
+                center_frequency: 14989622000.0,
+                duration_cycles: 3.0,
+                delay: 0.00000000040027692,
+            ),
+            amplitude: 1.0,
+        ),
+    ],
+)

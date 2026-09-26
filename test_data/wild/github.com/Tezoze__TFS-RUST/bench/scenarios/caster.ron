@@ -1,0 +1,14 @@
+(
+    name: "caster",
+    bots: 5,
+    duration_s: 60,
+    warmup_s: 5,
+    seed: 42,
+    walk_period_ms: 500,
+    say_period_ms: 2500,
+    waypoint_file: Some("bench/waypoints/cyclops_hunt_loop.csv"),
+    roles: [
+        (kind: Caster, weight: 1.0),
+    ],
+    spell_words: "exori vis",
+)

@@ -1,0 +1,10 @@
+Project(
+  name: "example",
+  version: "0.1.0",
+  language: "rust",
+  description: "An example project built with Arc (APM)",
+  dependencies: [
+    "mdotfive/arc/0.1.0@stable",
+    "rust-std"
+  ]
+)

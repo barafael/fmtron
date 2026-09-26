@@ -1,0 +1,24 @@
+Dir(
+    name: "sourcetrait_common",
+    children: [
+        Dir(
+            name: "packages",
+            children: [
+                Dir(
+                    name: "sourcetrait_ronx",
+                    children: [
+                        File(
+                            name: "SOURCETRAIT.md",
+                        ),
+                        File(
+                            name: "SOURCETRAIT",
+                            symlink: File(
+                                name: "SOURCETRAIT.md",
+                            ),
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    ],
+)

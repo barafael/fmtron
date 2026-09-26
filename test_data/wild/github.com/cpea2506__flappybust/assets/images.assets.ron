@@ -1,0 +1,54 @@
+({
+    "bird_soul": File (
+        path: "images/bird_soul.png"
+    ),
+    "blue_birds": Files (
+        paths: ["images/bird_blue_up.png", "images/bird_blue_mid.png", "images/bird_blue_down.png"],
+    ),
+    "red_birds": Files (
+        paths: ["images/bird_red_up.png", "images/bird_red_mid.png", "images/bird_red_down.png"],
+    ),
+    "yellow_birds": Files (
+        paths: ["images/bird_yellow_up.png", "images/bird_yellow_mid.png", "images/bird_yellow_down.png"],
+    ),
+    "green_pipe": File (
+        path: "images/pipe_green.png",
+    ),
+    "red_pipe": File (
+        path: "images/pipe_red.png",
+    ),
+    "bg_day": File (
+        path: "images/bg_day.png"
+    ),
+    "bg_night": File (
+        path: "images/bg_night.png"
+    ),
+    "base": File (
+        path: "images/base.png"
+    ),
+    "background": File (
+        path: "images/background.png"
+    ),
+    "bronze_medal": File (
+        path: "images/medal_bronze.png"
+    ),
+    "silver_medal": File (
+        path: "images/medal_silver.png"
+    ),
+    "gold_medal": File (
+        path: "images/medal_gold.png"
+    ),
+    "platinum_medal": File (
+        path: "images/medal_platinum.png"
+    ),
+    "ready_message": File (
+        path: "images/ready_message.png"
+    ),
+    "scoreboard": File (
+        path: "images/scoreboard.png"
+    ),
+    "restart_btn": File (
+        path: "images/restart_btn.png"
+    )
+})
+

@@ -1,0 +1,11 @@
+[
+    (
+        tag: "ModuleStart",
+        steps: [
+            LogText(
+                text: "Welcome to the Module, we got fun and games.",
+                color: Some((255, 0, 255)),
+            ),
+        ],
+    ),
+]

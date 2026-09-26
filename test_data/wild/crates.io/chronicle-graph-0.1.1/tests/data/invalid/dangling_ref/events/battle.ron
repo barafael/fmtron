@@ -1,0 +1,11 @@
+[
+    (
+        id: "some_battle",
+        name: "Some Battle",
+        type: Battle,
+        time_span: (start: 10, end: 10),
+        participants: [
+            (actor: "nonexistent_actor", role: Attacker, sentiment: Determined),
+        ],
+    ),
+]

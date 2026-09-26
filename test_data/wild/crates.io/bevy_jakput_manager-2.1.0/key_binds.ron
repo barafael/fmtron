@@ -1,0 +1,67 @@
+{
+    GamepadAxis(LeftStickRight): [
+        Right,
+    ],
+    Key(Character("g")): [
+        Right,
+    ],
+    MouseButton(Left): [
+        Left,
+    ],
+    GamepadButton(DPadRight): [
+        Right,
+    ],
+    GamepadButton(DPadDown): [
+        Down,
+    ],
+    Scroll(Down): [
+        Down,
+    ],
+    Key(Character("o")): [
+        Right,
+    ],
+    KeyCode(KeyD): [
+        Right,
+    ],
+    MouseButton(Right): [
+        Right,
+        Left,
+    ],
+    GamepadAxis(LeftStickDown): [
+        Down,
+    ],
+    Key(Character("j")): [
+        Right,
+    ],
+    Key(ArrowDown): [
+        Up,
+        Left,
+    ],
+    GamepadAxis(LeftStickUp): [
+        Up,
+    ],
+    GamepadButton(DPadUp): [
+        Up,
+    ],
+    KeyCode(KeyW): [
+        Up,
+    ],
+    GamepadButton(DPadLeft): [
+        Left,
+    ],
+    KeyCode(KeyS): [
+        Down,
+    ],
+    KeyCode(KeyA): [
+        Left,
+    ],
+    GamepadAxis(LeftStickLeft): [
+        Left,
+    ],
+    Scroll(Up): [
+        Up,
+    ],
+    KeyCode(Backspace): [
+        Clear,
+    ],
+}

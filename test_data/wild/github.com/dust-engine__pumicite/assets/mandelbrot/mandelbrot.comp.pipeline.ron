@@ -1,0 +1,39 @@
+ComputePipeline(
+    shader: (
+        path: "mandelbrot/mandelbrot.spv",
+        entry_point: "main",
+    ),
+    layout: Inline(
+        PipelineLayout(
+            push_constants: {
+                Compute: (0, 16)
+            },
+            sets: [
+                Inline(
+                    DescriptorSetLayout(
+                        bindings: [
+                            (
+                                binding: 0,
+                                ty: UniformBuffer,
+                                count: 1,
+                                stages: [Compute],
+                                update_after_bind_pool: false,
+                                push_descriptor: true,
+                            ),
+                            (
+                                binding: 1,
+                                ty: StorageImage,
+                                count: 1,
+                                stages: [Compute],
+                            ),
+                        ],
+                        update_after_bind_pool: false,
+                        push_descriptor: true,
+                    )
+                )
+            ]
+        )
+    ),
+    disable_optimization: false,
+    dispatch_base: false,
+)

@@ -1,0 +1,23 @@
+[
+    (
+        id: "early_battle",
+        name: "Early Battle",
+        type: Battle,
+        time_span: (start: 10, end: 10),
+        participants: [
+            (actor: "doomed_soldier", role: Participant, sentiment: Neutral),
+        ],
+        state_changes: [
+            (entity: "doomed_soldier", change: StatusChange(Dead)),
+        ],
+    ),
+    (
+        id: "later_battle",
+        name: "Later Battle",
+        type: Battle,
+        time_span: (start: 20, end: 20),
+        participants: [
+            (actor: "doomed_soldier", role: Attacker, sentiment: Determined),
+        ],
+    ),
+]

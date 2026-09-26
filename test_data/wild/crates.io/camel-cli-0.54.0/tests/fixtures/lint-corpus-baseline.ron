@@ -1,0 +1,325 @@
+// Baseline for `lint_corpus::corpus_zero_false_positives`.
+//
+// Format: a RON list of `(file_relative_path, [(code, severity), ...])`
+// tuples, where file_relative_path is relative to the workspace root and each
+// (code, severity) pair is the stable Display string of a DiagnosticCode +
+// the lowercase Severity string. The gate asserts set equality between the
+// emitted diagnostics and this baseline (every emitted entry is baselined AND
+// every baseline entry is emitted). Multiple diagnostics sharing the same
+// (code, severity) in one file collapse to a single entry.
+//
+// Every entry below is an AGREED real defect or an expected by-design note
+// (e.g. an `unverified-scheme` Info for a component intentionally skipped by
+// `register_builtin_components_for_lint`). Each carries a `//` justification.
+// Suspected false positives are NOT baselined - they are reported and the
+// rule is fixed/gated instead. See Task 3.2 of openspec/changes/add-camel-lint.
+//
+// FLAVOR PIN: this baseline is generated under the camel-cli DEFAULT
+// feature set (`flavor-regular`). Schemes registered only under
+// `flavor-full` (e.g. `containers`) emit by-design unverified-scheme Info
+// here — same accepted graceful degradation as feature-gated bridges
+// (rc-qsenm, kafka precedent above).
+[
+    // R-SCHEMA: remaining Apache-style forms not yet rewritten.
+    (
+        "examples/custom-component-bundle/routes/echo.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+    (
+        "examples/cxf-example/routes/soap-consumer.yaml",
+        [
+            // rc-m1mx fix: object-form `from` fall-through produced this.
+            // Stays after canonical rewrite (cxf:// still lacks required opts).
+            ("R-URI-known:missing-required-option", "error"),
+        ],
+    ),
+    (
+        "examples/hot-reload/routes/route.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+    (
+        "examples/wasm-source-webhook/routes/webhook.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+
+    (
+        "examples/file-pollenrich/routes.yaml",
+        [
+            ("R-URI-known:missing-required-option", "error"),
+            ("R-URI-known:unknown-option", "error"),
+        ],
+    ),
+    (
+        "examples/http-static-basic/routes/static.yaml",
+        [("R-URI-known:missing-required-option", "error")],
+    ),
+    (
+        "examples/http-static-spa/routes/static.yaml",
+        [("R-URI-known:missing-required-option", "error")],
+    ),
+
+    // R-URI-known:unknown-option — `showCorrelationId` on `log:` URIs. The
+    // log component's `LogConfig` declares showHeaders/showBody/maxChars/
+    // logMask/showStreamInfo/groupSize but NOT showCorrelationId, and the
+    // runtime `from_uri` does not parse it (silently ignored). Same pattern
+    // as the file-pollenrich entry above. Surfaced post-merge (main added
+    // these example files after the feature branch diverged).
+    (
+        "examples/resequencer/routes.yaml",
+        [("R-URI-known:unknown-option", "error")],
+    ),
+    (
+        "examples/sampling/routes.yaml",
+        [("R-URI-known:unknown-option", "error")],
+    ),
+    (
+        "examples/sort/routes.yaml",
+        [("R-URI-known:unknown-option", "error")],
+    ),
+
+    // R-URI-known:unverified-scheme Info — by-design. The scheme is not
+    // registered by `register_builtin_components_for_lint`, so the catalog
+    // cannot verify its options. Expected, not a defect.
+    (
+        "examples/env-interpolation/routes/routes.yaml",
+        [
+            ("R-URI-known:unverified-scheme", "info"),
+            // R-SCHEMA Info: route 2's defaulted env tokens collapse to one
+            // entry (rc-93wct).
+            ("R-SCHEMA", "info"),
+            // R-SCHEMA Error (rc-93wct rev 2): route 1 carries no-default
+            // tokens (`POLL_PERIOD_MS`/`LOG_PREFIX` embedded, `APP_NAME`/
+            // `GREET_TARGET` whole-scalar). Boot hard-fails on them without
+            // the variables, so the deterministic default-only lint Error
+            // is honest semantics, not a false positive.
+            ("R-SCHEMA", "error"),
+        ],
+    ),
+    (
+        "examples/wasm-source-webhook/routes/webhook.yaml",
+        [("R-URI-known:unverified-scheme", "info")],
+    ),
+
+    // R-SCHEMA Info — by-design substituted-default note (rc-93wct). The
+    // env placeholder with `:-default` is validated against its
+    // interpolated copy: one Info per file regardless of token count
+    // (baseline collapses duplicates).
+    (
+        "crates/camel-cli/tests/fixtures/lint-corpus/env-int-placeholder.yaml",
+        [
+            // `id: ${env:RC93WCT_ID:-demo-route}` — whole-scalar token on a
+            // string-typed field; the substituted leaf keeps STRING typing.
+            ("R-SCHEMA", "info"),
+        ],
+    ),
+
+    // Adjudication (rc-93wct rev 2, conductor ruling): `from:
+    // ${env:INBOUND}/in` is an embedded no-default token. The scenario
+    // harness sets INBOUND, so boot succeeds — but without the variable the
+    // boot would hard-fail, and the deterministic default-only lint must
+    // flag it. Honest deterministic-lint semantics, not a defect. The
+    // fixture itself is wave-E territory and stays untouched by this
+    // change.
+    (
+        "crates/camel-integration-test/tests/fixtures/inbound/routes/consumer.yaml",
+        [
+            ("R-SCHEMA", "error"),
+            // The URI scheme head is a placeholder the catalog cannot
+            // resolve, so unverified-scheme Info is by-design
+            // (harness-resolved at discovery).
+            ("R-URI-known:unverified-scheme", "info"),
+        ],
+    ),
+
+    // integration-testing example (ADR-0069 scenario tier). The partner
+    // URI is an env placeholder (`${env:PARTNER}/orders`), so the scheme
+    // cannot be verified at lint time. By-design, harness-resolved at
+    // boot. The R-SCHEMA Error (rc-93wct rev 2) flags the embedded
+    // no-default token: boot hard-fails on it without PARTNER, so the
+    // deterministic lint Error is honest semantics.
+    (
+        "examples/integration-testing/routes/bridge.yaml",
+        [
+            ("R-URI-known:unverified-scheme", "info"),
+            ("R-SCHEMA", "error"),
+        ],
+    ),
+
+    // intercepts-demo (declarative-intercepts, bd rc-7f0n). The `kafka:`
+    // scheme is not registered by `register_builtin_components_for_lint`,
+    // so unverified-scheme Info is by-design. The route file deliberately
+    // targets an unregistered `kafka:orders` — the test document diverts it
+    // to a mock, which is the example's teaching point. Matches the
+    // env-interpolation/wasm-webhook precedents.
+    (
+        "examples/yaml-dsl/config/intercepts-demo.yaml",
+        [
+            ("R-URI-known:unverified-scheme", "info"),
+            // R-MOCK-IN-PRODUCTION: ADR-0064 Stage C warn-phase lint.
+            ("R-MOCK-IN-PRODUCTION", "warning"),
+        ],
+    ),
+
+    // R-MOCK-IN-PRODUCTION — inline `mock:` send in a camel-run demo route;
+    // teaching fixture pending migration to test-doc intercepts (ADR-0064
+    // Stage C warn phase).
+    (
+        "examples/yaml-dsl/config/mock-demo.yaml",
+        [("R-MOCK-IN-PRODUCTION", "warning")],
+    ),
+    (
+        "examples/yaml-dsl/config/routes-eip-advanced.yaml",
+        [("R-MOCK-IN-PRODUCTION", "warning")],
+    ),
+    (
+        "examples/json-dsl/config/routes-eip-advanced.json",
+        [("R-MOCK-IN-PRODUCTION", "warning")],
+    ),
+
+    // parameters.json (added by add-endpoint-parameters Task 2.3). The
+    // `kafka:`/`db:` schemes are not registered by
+    // `register_builtin_components_for_lint`, so unverified-scheme Info is
+    // by-design, matching the env-interpolation/wasm-webhook precedents.
+    (
+        "examples/json-dsl/config/parameters.json",
+        [("R-URI-known:unverified-scheme", "info")],
+    ),
+
+
+    // R-SECRET: `authPassword` (catalog-secret http option) supplied as a
+    // literal via the sibling `parameters:` map instead of the query string.
+    // Span slices to the secret value — asserted by `secret_in_parameters_flagged`
+    // (crates/camel-lint/src/document.rs) — the merge-gate fixture from Task 3.2.
+    (
+        "crates/camel-cli/tests/fixtures/lint-corpus/parameters-secret.yaml",
+        [("R-SECRET", "warning")],
+    ),
+
+    // Blank cert_path + whitespace key_path are real defects: the runtime
+    // non_empty_path check rejects both, so the lint-side R-SCHEMA Error is
+    // honest semantics. Pinning the rejection end to end (rc-n3t73).
+    (
+        "crates/camel-cli/tests/fixtures/lint-corpus/mcp-tls-blank-paths.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+
+    // Blank server name (whitespace-only) + bind (empty string) are real
+    // defects: the runtime rejects both (lowering charset check on
+    // `name`, consumer-config `SocketAddr` parse on `bind`), so the
+    // lint-side R-SCHEMA Errors are honest semantics (rc-sghtz). Both
+    // diagnostics share one (code, severity) pair — the baseline is a
+    // set per file.
+    (
+        "crates/camel-cli/tests/fixtures/lint-corpus/mcp-blank-bind-name.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+
+    // Co-occurrence witness (rc-lys6a): blank cert_path + unknown
+    // rogue_key in the same tls map — the sibling additionalProperties
+    // defect must surface alongside the pattern leaf. Both are real
+    // boot failures (non_empty_path, deny_unknown_fields), hence
+    // baselined.
+    (
+        "crates/camel-cli/tests/fixtures/lint-corpus/mcp-tls-sibling-defects.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+
+    // permission value source contract — mirrors runtime
+    // yaml_source_to_value_source exactly-one (rc-gddb2, bd rc-lkbqi).
+    (
+        "crates/camel-cli/tests/fixtures/lint-corpus/permission-value-source-zero.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+    (
+        "crates/camel-cli/tests/fixtures/lint-corpus/permission-value-source-multi.yaml",
+        [("R-SCHEMA", "error")],
+    ),
+
+    // Outbound-bridge scenario fixture (integration-tier-contract, Task 3.2).
+    // The producer URI is `${env:PARTNER}/orders`: the scheme head is an
+    // interpolation placeholder, so the catalog cannot verify it and
+    // unverified-scheme Info is by-design. Same precedent as
+    // env-interpolation/routes.yaml. Carry-forward from the 3.2 fixture
+    // commit (caught by this gate when the CLI suite runs whole). The
+    // R-SCHEMA Error (rc-93wct rev 2) flags the embedded no-default token:
+    // boot hard-fails on it without PARTNER, so the deterministic lint
+    // Error is honest semantics.
+    (
+        "crates/camel-integration-test/tests/fixtures/outbound/routes/bridge.yaml",
+        [
+            ("R-URI-known:unverified-scheme", "info"),
+            ("R-SCHEMA", "error"),
+        ],
+    ),
+
+    // Flagship retry fixture (itest-partner-faults-and-asserts, Task 2.3).
+    // The producer URI is `${env:PARTNER_URL}/order`: the scheme head is
+    // an interpolation placeholder, so the catalog cannot verify it and
+    // unverified-scheme Info is by-design. Same precedent as the
+    // outbound-bridge fixture above. The R-SCHEMA Error (rc-93wct rev 2)
+    // flags the embedded no-default token: boot hard-fails on it without
+    // PARTNER_URL.
+    (
+        "crates/camel-integration-test/tests/fixtures/retry-route.yaml",
+        [
+            ("R-URI-known:unverified-scheme", "info"),
+            ("R-SCHEMA", "error"),
+        ],
+    ),
+
+    // Runnable retry example (itest-partner-faults-and-asserts, Task 2.4).
+    // Mirrors the flagship fixture: the producer URI is
+    // `${env:PARTNER_URL}/order`, an interpolation placeholder the
+    // catalog cannot verify. Same by-design unverified-scheme Info, plus
+    // the rc-93wct rev-2 R-SCHEMA Error for the embedded no-default
+    // token.
+    (
+        "examples/integration-testing/partner-retry.routes.yaml",
+        [
+            ("R-URI-known:unverified-scheme", "info"),
+            ("R-SCHEMA", "error"),
+        ],
+    ),
+
+    // Runnable multi-path partner example (scenario-tier-p3-sweep,
+    // rc-2miu). Same by-design class as partner-retry above: the two
+    // producer URIs are `${env:MOCK}/orders` and `${env:MOCK}/billing`,
+    // harness-injected bindVar placeholders the catalog cannot verify
+    // outside the scenario tier — unverified-scheme Info plus the
+    // no-default R-SCHEMA Error.
+    (
+        "examples/integration-testing/partner-multi-path.routes.yaml",
+        [
+            ("R-URI-known:unverified-scheme", "info"),
+            ("R-SCHEMA", "error"),
+        ],
+    ),
+
+    // R-MOCK-IN-PRODUCTION — inline `mock:` sends in the sequence-demo
+    // teaching route. Pre-existing main drift from wave-E's landed
+    // arrival-sequence example (8fcb14e8): the file reached main without a
+    // baseline row. Same class as mock-demo.yaml — the paired
+    // `sequence-demo.test.yaml` asserts against these endpoints, which is
+    // the example's teaching point (ADR-0064 Stage C warn phase).
+    (
+        "examples/yaml-dsl/config/sequence-demo.yaml",
+        [("R-MOCK-IN-PRODUCTION", "warning")],
+    ),
+
+    // container: schemes verify only under flavor-full (containers feature,
+    // dea5c9c7); the corpus gate runs flavor-regular by design (FLAVOR PIN
+    // note above). The routes themselves target the containers stack.
+    // kafka-precedent class: by-design unverified-scheme Info (rc-qsenm).
+    (
+        "examples/camel-cli-run/routes/jms.yaml",
+        [("R-URI-known:unverified-scheme", "info")],
+    ),
+    (
+        "examples/container-hot-reload/routes/route.yaml",
+        [("R-URI-known:unverified-scheme", "info")],
+    ),
+    (
+        "examples/container-nginx/routes/route.yaml",
+        [("R-URI-known:unverified-scheme", "info")],
+    ),
+]

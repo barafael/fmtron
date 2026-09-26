@@ -1,0 +1,9 @@
+NakamotoConsensus(
+    block_generation: Ouroboros(
+        slot_length: 1000,
+        epoch_length: 100,
+    ),
+    use_ghost: false,
+    max_block_size: 1_000_000,
+    commit_delay: 64,
+)

@@ -1,0 +1,52 @@
+#![enable(implicit_some)]
+(
+    // text_factor: 64.,
+    text_factor: 192.,
+    screen_dimens: (21.3333, 12.),
+    c_left: (
+        margin_left: 0.6667,
+        margin_right: 0.6667,
+        feed_padding: 0.25,
+        feed_item_max_height: 1.,
+        music_player: ((0.1667, 0.1667), (1.3333, 1.3333)),
+        music_text: ((1.6667, 0.6667), (1.3333, 1.3333)),
+        music_text_margin: 0.3333,
+        music: (
+            margin_bottom: 0.6667,
+            height: 1.3333,
+        ),
+        feed: (
+            margin_bottom: 0.6667,
+            margin_top: 0.6667,
+        ),
+    ),
+    c_mid: (
+        x: 7.3333,
+        width: 8.,
+        toasts: (
+            margin_bottom: 0.6667,
+            height: 0.6667,
+        ),
+        inventory: (
+            margin_bottom: 0.6667,
+            height: 2.3333,
+        ),
+    ),
+    c_right: (
+        margin_left: 0.6667,
+        margin_right: 0.6667,
+        combine_button: (
+            margin_bottom: 0.6667,
+            height: 1.3333,
+        ),
+        crafting: (
+            margin_bottom: 1.,
+            height: 3.
+        ),
+        hero: (
+            margin_bottom: 1.,
+            margin_top: 0.6667,
+        ),
+    ),
+    overseer_baseline: 0.5,
+)

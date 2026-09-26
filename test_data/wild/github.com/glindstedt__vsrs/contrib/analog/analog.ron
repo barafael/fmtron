@@ -1,0 +1,305 @@
+#![enable(implicit_some)]
+VolcaSample(
+    samples: {
+        0: Sample((
+            file: "sample1501361799412",
+        )),
+        1: Sample((
+            file: "sample1501361799415",
+        )),
+        2: Sample((
+            file: "sample1501361799417",
+        )),
+        3: Sample((
+            file: "sample1501361799419",
+        )),
+        4: Sample((
+            file: "sample1501361799421",
+        )),
+        5: Sample((
+            file: "sample1501361799423",
+        )),
+        6: Sample((
+            file: "sample1501361799424",
+        )),
+        7: Sample((
+            file: "sample1501361799426",
+        )),
+        8: Sample((
+            file: "sample1501361799428",
+        )),
+        9: Sample((
+            file: "sample1501361799429",
+        )),
+        10: Sample((
+            file: "sample1501361799430",
+        )),
+        11: Sample((
+            file: "sample1501361799440",
+        )),
+        12: Sample((
+            file: "sample1501361799441",
+        )),
+        13: Sample((
+            file: "sample1501361799442",
+        )),
+        14: Sample((
+            file: "sample1501361799444",
+        )),
+        15: Sample((
+            file: "sample1501361799445",
+        )),
+        16: Sample((
+            file: "sample1501361799446",
+        )),
+        17: Sample((
+            file: "sample1501361799447",
+        )),
+        18: Sample((
+            file: "sample1501361799448",
+        )),
+        19: Sample((
+            file: "sample1501361799449",
+        )),
+        20: Sample((
+            file: "sample1501361799455",
+        )),
+        21: Sample((
+            file: "sample1501361799456",
+        )),
+        22: Sample((
+            file: "sample1501361799463",
+        )),
+        23: Sample((
+            file: "sample1501361799465",
+        )),
+        24: Sample((
+            file: "sample1501361799475",
+        )),
+        25: Sample((
+            file: "sample1501361799476",
+        )),
+        26: Sample((
+            file: "sample1501361799477",
+        )),
+        27: Sample((
+            file: "sample1501361799478",
+        )),
+        28: Sample((
+            file: "sample1501361799479",
+        )),
+        29: Sample((
+            file: "sample1501361799480",
+        )),
+        30: Sample((
+            file: "sample1501361799481",
+        )),
+        31: Sample((
+            file: "sample1501361799482",
+        )),
+        32: Sample((
+            file: "sample1501361799560",
+        )),
+        33: Sample((
+            file: "sample1501361799561",
+        )),
+        34: Sample((
+            file: "sample1501361799562",
+        )),
+        35: Sample((
+            file: "sample1501361799563",
+        )),
+        36: Sample((
+            file: "sample1501361821407",
+        )),
+        37: Sample((
+            file: "sample1501361821408",
+        )),
+        38: Sample((
+            file: "sample1501361821409",
+        )),
+        39: Sample((
+            file: "sample1501361821410",
+        )),
+        40: Sample((
+            file: "sample1501361821412",
+        )),
+        41: Sample((
+            file: "sample1501361821413",
+        )),
+        42: Sample((
+            file: "sample1501361821414",
+        )),
+        43: Sample((
+            file: "sample1501361821417",
+        )),
+        44: Sample((
+            file: "sample1501361821419",
+        )),
+        45: Sample((
+            file: "sample1501361821421",
+        )),
+        46: Sample((
+            file: "sample1501361821423",
+        )),
+        47: Sample((
+            file: "sample1501361821424",
+        )),
+        48: Sample((
+            file: "sample1501361821425",
+        )),
+        49: Sample((
+            file: "sample1501362119239",
+        )),
+        50: Sample((
+            file: "sample1501362119241",
+        )),
+        51: Sample((
+            file: "sample1501362119243",
+        )),
+        52: Sample((
+            file: "sample1501362119244",
+        )),
+        53: Sample((
+            file: "sample1501362119245",
+        )),
+        54: Sample((
+            file: "sample1501362119246",
+        )),
+        55: Sample((
+            file: "sample1501362119247",
+        )),
+        56: Sample((
+            file: "sample1501362119248",
+        )),
+        57: Sample((
+            file: "sample1501362119250",
+        )),
+        58: Sample((
+            file: "sample1501362119251",
+        )),
+        59: Sample((
+            file: "sample1501362119252",
+        )),
+        60: Sample((
+            file: "sample1501362119253",
+        )),
+        61: Sample((
+            file: "sample1501362119254",
+        )),
+        62: Sample((
+            file: "sample1501362119255",
+        )),
+        63: Sample((
+            file: "sample1501362119256",
+        )),
+        64: Sample((
+            file: "sample1501362119257",
+        )),
+        65: Sample((
+            file: "sample1501362132455",
+        )),
+        66: Sample((
+            file: "sample1501362132456",
+        )),
+        67: Sample((
+            file: "sample1501362132458",
+        )),
+        68: Sample((
+            file: "sample1501362132459",
+        )),
+        69: Sample((
+            file: "sample1501362132460",
+        )),
+        70: Sample((
+            file: "sample1501362132461",
+        )),
+        71: Sample((
+            file: "sample1501362132462",
+        )),
+        72: Sample((
+            file: "sample1501362132463",
+        )),
+        73: Sample((
+            file: "sample1501362146741",
+        )),
+        74: Sample((
+            file: "sample1501362146743",
+        )),
+        75: Sample((
+            file: "sample1501362146744",
+        )),
+        76: Sample((
+            file: "sample1501362146746",
+        )),
+        77: Sample((
+            file: "sample1501362146747",
+        )),
+        78: Sample((
+            file: "sample1501362146748",
+        )),
+        79: Sample((
+            file: "sample1501362146750",
+        )),
+        80: Sample((
+            file: "sample1501362146751",
+        )),
+        81: Sample((
+            file: "sample1501362146752",
+        )),
+        82: Sample((
+            file: "sample1501362146753",
+        )),
+        83: Sample((
+            file: "sample1501362163539",
+        )),
+        84: Sample((
+            file: "sample1501362163540",
+        )),
+        85: Sample((
+            file: "sample1501362163541",
+        )),
+        86: Sample((
+            file: "sample1501362163542",
+        )),
+        87: Sample((
+            file: "sample1501362163543",
+        )),
+        88: Sample((
+            file: "sample1501362163544",
+        )),
+        89: Sample((
+            file: "sample1501362163545",
+        )),
+        90: Sample((
+            file: "sample1501362163546",
+        )),
+        91: Sample((
+            file: "sample1501362163548",
+        )),
+        92: Sample((
+            file: "sample1501362163549",
+        )),
+        93: Sample((
+            file: "sample1501362163550",
+        )),
+        94: Sample((
+            file: "sample1501362163551",
+        )),
+        95: Sample((
+            file: "sample1501362163552",
+        )),
+        96: Sample((
+            file: "sample1501362163652",
+        )),
+        97: Sample((
+            file: "sample1501362163653",
+        )),
+        98: Sample((
+            file: "sample1501362163654",
+        )),
+        99: Sample((
+            file: "sample1501362163655",
+        )),
+    }
+)

@@ -1,0 +1,12 @@
+Source(
+    name: "yt",
+    format: "flac",
+    kind: Shell(
+        cmd: "bash",
+        args: [
+            "-c",
+            "yt-dlp -x --audio-format flac --audio-quality 0 -o ${output} https://youtube.com/watch?v=${input} && mv ${output}.flac ${output}",
+        ]
+    )
+)
+

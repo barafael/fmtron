@@ -1,0 +1,61 @@
+(
+    version: 1,
+    width: 720,
+    height: 720,
+    fps: 30,
+    tone_map: aces,
+    nodes: {
+        "scene": (
+            type: "raymarch",
+            inputs: [],
+            params: {
+                "cam_z": 13.7,
+                "radius": 0.25,
+                "displacement": (
+                    feature: bass,
+                    scale: -10.74,
+                    bias: 3.555,
+                ),
+                "sky_top": [
+                    0.4,
+                    0.5,
+                    0.7,
+                    1.0,
+                ],
+                "sky_bottom": [
+                    0.12582271,
+                    0.07097755,
+                    0.059476253,
+                    1.0,
+                ],
+            },
+        ),
+        "glow": (
+            type: "bloom",
+            inputs: [
+                "scene",
+            ],
+            params: {
+                "threshold": -3.8,
+                "intensity": -0.25,
+                "radius": -4.4,
+            },
+        ),
+        "levels": (
+            type: "levels",
+            inputs: [
+                "scene",
+            ],
+            params: {},
+        ),
+        "displace": (
+            type: "displace",
+            inputs: [
+                "glow",
+                "levels",
+            ],
+            params: {},
+        ),
+    },
+    output: "scene",
+)

@@ -1,0 +1,7 @@
+// Error fixture: UnknownChordSymbol (REQ-O21, O37).
+(
+  kind: "ChordProgression",
+  chords: [
+    (symbol: "Xzz99"),
+  ],
+)

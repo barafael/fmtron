@@ -1,0 +1,12 @@
+{
+  "default": Profile(
+    username: "DefaultUser@dummy.com",
+    secret: Token(Mask(val: "tokenstring")),
+    host: "https://localhost:8081"
+  ),
+  "prod": Profile(
+    username: "DefaultUser@dummy.com",
+    secret: Pwd(Mask(val: "tokenstring")),
+    host: "https://dremio.prod.dummy.com:8081"
+  ),
+}

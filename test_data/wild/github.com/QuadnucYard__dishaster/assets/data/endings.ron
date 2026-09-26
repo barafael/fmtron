@@ -1,0 +1,11 @@
+{
+    "good_reputation": (
+        illustration: "endings/good_reputation.png",
+    ),
+    "bad_reputation": (
+        illustration: "endings/bad_reputation.png",
+    ),
+    "rectification": (
+        illustration: "endings/rectification.png",
+    ),
+}

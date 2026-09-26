@@ -1,0 +1,9 @@
+#![enable(implicit_some)]
+(
+    name: "Frisk",
+    collider_size: (x: 20.0, y: 12.0),
+    collider_offset: (x: 0.0, y: -9.0),
+    base_speed: 100.0,
+    animation_config: "overworld/characters/frisk/animations.animation_config.ron",
+    interaction_script: None,
+)

@@ -1,0 +1,4 @@
+(
+    strategy: Yield,
+    fps: 60,
+)

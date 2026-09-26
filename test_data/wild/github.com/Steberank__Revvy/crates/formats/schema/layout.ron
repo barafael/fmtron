@@ -1,0 +1,90 @@
+// Ejemplo canónico de TrackLayout.
+// El tipo Rust vive en crates/formats/src/layout.rs a partir de la fase 1.
+// Stub de forma: un elemento de cada lista, no una pista jugable.
+TrackLayout(
+    version: 1,
+    start_node: 0,
+    total_distance: 0.0,
+    start_grid: [
+        (pos: (x: 0.0, y: 0.5, z: 0.0), yaw: 0.0),
+    ],
+    zones: [
+        TrackZone(
+            id: 0,
+            center: (x: 0.0, y: 1.0, z: 0.0),
+            rotation: (x: 0.0, y: 0.0, z: 0.0, w: 1.0),
+            half_extents: (x: 8.0, y: 4.0, z: 6.0),
+        ),
+    ],
+    pos_nodes: [
+        PosNode(
+            id: 0,
+            position: (x: 0.0, y: 0.5, z: 0.0),
+            distance: 0.0,
+            prev: [],
+            next: [],
+        ),
+    ],
+    ai_nodes: [
+        AiNode(
+            id: 0,
+            left: (x: -4.0, y: 0.5, z: 0.0),
+            right: (x: 4.0, y: 0.5, z: 0.0),
+            racing_t: 0.5,
+            overtaking_t: 0.5,
+            prev: [],
+            next: [],
+            flags: Racing,
+            speed_limit: None,
+        ),
+    ],
+    pickups: [
+        PickupSpawn(
+            pos: (x: 12.0, y: 0.6, z: -4.0),
+            respawn_secs: 5.0,
+            odds: None,
+        ),
+    ],
+    pickup_odds: None,
+    force_fields: [
+        ForceField(
+            id: 0,
+            center: (x: 0.0, y: 2.0, z: 80.0),
+            rotation: (x: 0.0, y: 0.0, z: 0.0, w: 1.0),
+            half_extents: (x: 12.0, y: 8.0, z: 12.0),
+            kind: GravityScale(0.35),
+        ),
+    ],
+    surface_effects: None,
+    surface_volumes: [],
+    param_mods: [],
+    kill_volumes: [
+        KillVolume(
+            center: (x: 0.0, y: -20.0, z: 0.0),
+            rotation: (x: 0.0, y: 0.0, z: 0.0, w: 1.0),
+            half_extents: (x: 200.0, y: 5.0, z: 200.0),
+        ),
+    ],
+    // Cada objeto es una carpeta de `objects/` de la pista: object.toml + model.glb, o un
+    // auto sin conductor con car.toml.
+    objects: [
+        (object: "cono", pos: (x: 2.0, y: 0.1, z: 30.0), yaw: 0.0),
+        (
+            object: "pelota",
+            pos: (x: 8.0, y: 1.5, z: 40.0),
+            velocity: (x: -7.0, y: 3.0, z: 0.0),
+            spawn: Trigger(
+                center: (x: 0.0, y: 1.0, z: 34.0),
+                half_extents: (x: 6.0, y: 2.0, z: 1.0),
+                yaw: 0.0,
+                rearm: Some(8.0),
+            ),
+        ),
+        (
+            object: "puerta",
+            pos: (x: -1.0, y: 0.6, z: 50.0),
+            motion: Slide(offset: (x: -2.2, y: 0.0, z: 0.0), period: 4.0),
+        ),
+        (object: "carrito", pos: (x: 3.5, y: 0.3, z: 45.0), yaw: 1.57),
+    ],
+)

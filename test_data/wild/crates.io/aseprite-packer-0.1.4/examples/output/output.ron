@@ -1,0 +1,34 @@
+{
+    "big": (
+        width: 64,
+        height: 32,
+        basename: "big",
+        frame: 0,
+        x: 0,
+        y: 0,
+    ),
+    "small_0": (
+        width: 16,
+        height: 16,
+        basename: "small",
+        frame: 0,
+        x: 64,
+        y: 0,
+    ),
+    "small_1": (
+        width: 16,
+        height: 16,
+        basename: "small",
+        frame: 1,
+        x: 80,
+        y: 0,
+    ),
+    "small_2": (
+        width: 16,
+        height: 16,
+        basename: "small",
+        frame: 2,
+        x: 96,
+        y: 0,
+    ),
+}

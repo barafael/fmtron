@@ -1,0 +1,5 @@
+(
+	width: 1280.0,
+	height: 800.0,
+	fullscreen: false, // starting the game in fullscreen currently affects physics
+)

@@ -1,0 +1,30 @@
+SkillLint(
+    id: "skill_name_too_long",
+    human_readable_name: "skill name exceeds 64 characters",
+    description: "The frontmatter `name` must not exceed 64 characters.",
+    lint_level: Deny,
+    reference_link: Some("https://agentskills.io/specification#name-field"),
+    query: r#"
+    {
+        Skill {
+            has_frontmatter @filter(op: "=", value: ["$true"])
+            name @filter(op: "is_not_null")
+                 @filter(op: "regex", value: ["$too_long_pattern"])
+                 @output
+
+            skill_file_path @output
+
+            span_: name_span @optional {
+                filename @output
+                begin_line @output
+                end_line @output
+            }
+        }
+    }"#,
+    arguments: {
+        "true": true,
+        "too_long_pattern": "^.{65,}$",
+    },
+    error_message: "The `name` field exceeds the maximum length of 64 characters.",
+    per_result_error_template: Some("{{skill_file_path}} has name '{{name}}' exceeding 64 characters"),
+)

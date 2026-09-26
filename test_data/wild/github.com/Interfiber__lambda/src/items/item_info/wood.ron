@@ -1,0 +1,4 @@
+ItemInfo(
+    item_type: Wood,
+    item_texture: "assets/wood_item.png"
+)

@@ -1,0 +1,11 @@
+(
+    loader: "gui",
+    assets: [
+        ("frame", "nine_slice", "images/FrameSquare"),
+        ("button", "nine_slice", "images/FrameRounded"),
+        ("player", "", "images/Portrait"),
+        ("perk", "", "images/Perk1"),
+        ("add", "", "images/Add"),
+        ("sub", "", "images/Subtract"),
+    ]
+)

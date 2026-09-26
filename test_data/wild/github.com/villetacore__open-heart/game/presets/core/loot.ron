@@ -1,0 +1,69 @@
+{
+    "kill_drops": [
+        /*[0]*/ {
+            "chance": 0.3,
+            "kind": "ammo",
+        },
+        /*[1]*/ {
+            "chance": 0.14,
+            "id": "medkit",
+            "kind": "item",
+        },
+        /*[2]*/ {
+            "chance": 0.03,
+            "id": "heart_1up",
+            "kind": "item",
+        },
+        /*[3]*/ {
+            "chance": 0.08,
+            "id": "drone_core",
+            "kind": "item",
+        },
+        /*[4]*/ {
+            "chance": 0.04,
+            "id": "combat_injector",
+            "kind": "item",
+        },
+    ],
+    "room_items": [
+        /*[0]*/ {
+            "chance": 0.65,
+            "id": "medkit",
+        },
+        /*[1]*/ {
+            "chance": 0.5,
+            "id": "gold_coin",
+        },
+        /*[2]*/ {
+            "chance": 0.3,
+            "id": "gold_coin",
+        },
+        /*[3]*/ {
+            "chance": 0.25,
+            "id": "potion",
+        },
+        /*[4]*/ {
+            "chance": 0.15,
+            "id": "heart_1up",
+        },
+        /*[5]*/ {
+            "chance": 0.12,
+            "id": "combat_injector",
+        },
+        /*[6]*/ {
+            "chance": 0.18,
+            "id": "drone_core",
+        },
+        /*[7]*/ {
+            "chance": 0.06,
+            "id": "void_relic",
+        },
+    ],
+    "settings": {
+        "room_ammo_chances": [
+            /*[0]*/ 0.9,
+            /*[1]*/ 0.55,
+            /*[2]*/ 0.25,
+        ],
+    },
+}

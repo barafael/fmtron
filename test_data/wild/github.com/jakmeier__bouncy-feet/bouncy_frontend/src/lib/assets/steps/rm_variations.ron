@@ -1,0 +1,127 @@
+#![enable(implicit_some)]
+(
+  version: 0,
+  steps: [
+    (
+      name: "Reverse RM",
+      id: "reverse-rm-0",
+      variation: "right-first",
+      keyframes: [
+        (pose: "right-up", orientation: Right),
+        (pose: "left-forward", orientation: Right),
+        (pose: "left-up", orientation: Right),
+        (pose: "right-forward", orientation: Right),
+      ]
+    ),
+    (
+      name: "Reverse RM",
+      id: "reverse-rm-1",
+      variation: "left-first",
+      keyframes: [
+        (pose: "left-up", orientation: Right),
+        (pose: "right-forward", orientation: Right),
+        (pose: "right-up", orientation: Right),
+        (pose: "left-forward", orientation: Right),
+      ]
+    ),
+    (
+      name: "Kicking Reverse RM",
+      id: "kick-reverse-rm-0",
+      variation: "right-first",
+      keyframes: [
+        (pose: "right-up", orientation: Right),
+        (pose: "left-kick", orientation: Right),
+        (pose: "left-up", orientation: Right),
+        (pose: "right-kick", orientation: Right),
+      ]
+    ),
+    (
+      name: "Kicking Reverse RM",
+      id: "kick-reverse-rm-1",
+      variation: "left-first",
+      keyframes: [
+        (pose: "left-up", orientation: Right),
+        (pose: "right-kick", orientation: Right),
+        (pose: "right-up", orientation: Right),
+        (pose: "left-kick", orientation: Right),
+      ]
+    ),
+    (
+      name: "Double RM",
+      id: "drm-0",
+      variation: "right-forward",
+      keyframes: [
+        (pose: "right-forward", orientation: Right),
+        (pose: "left-up", orientation: Right),
+        (pose: "right-forward", orientation: Right),
+        (pose: "left-up", orientation: Right),
+      ]
+    ),
+    (
+      name: "Double RM",
+      id: "drm-1",
+      variation: "left-forward",
+      keyframes: [
+        (pose: "left-forward", orientation: Right),
+        (pose: "right-up", orientation: Right),
+        (pose: "left-forward", orientation: Right),
+        (pose: "right-up", orientation: Right),
+      ]
+    ),
+    (
+      name: "RM on Heels",
+      id: "hrm-0",
+      variation: "right-first",
+      keyframes: [
+        (pose: "right-forward-heel", orientation: Right),
+        (pose: "left-up", orientation: Right),
+        (pose: "left-forward-heel", orientation: Right),
+        (pose: "right-up", orientation: Right),
+      ]
+    ),
+    (
+      name: "RM on Heels",
+      id: "hrm-1",
+      variation: "left-first",
+      keyframes: [
+        (pose: "left-forward-heel", orientation: Right),
+        (pose: "right-up", orientation: Right),
+        (pose: "right-forward-heel", orientation: Right),
+        (pose: "left-up", orientation: Right),
+      ]
+    ),
+    (
+      name: "Open RM on Heels",
+      id: "open-rm-heels-0",
+      variation: "right-first",
+      keyframes: [
+        (pose: "t-closed-right", orientation: ToCamera),
+        (pose: "open-heel-rm-right", orientation: ToCamera),
+        (pose: "t-closed-left", orientation: ToCamera),
+        (pose: "open-heel-rm-left", orientation: ToCamera),
+      ]
+    ),
+    (
+      name: "Open RM on Heels",
+      id: "open-rm-heels-1",
+      variation: "left-first",
+      keyframes: [
+        (pose: "t-closed-left", orientation: ToCamera),
+        (pose: "open-heel-rm-left", orientation: ToCamera),
+        (pose: "t-closed-right", orientation: ToCamera),
+        (pose: "open-heel-rm-right", orientation: ToCamera),
+      ]
+    ),
+    (
+      name: "Gangsta RM",
+      id: "grm-0",
+      variation: "right-first",
+      keyframes: [
+        (pose: "right-forward-heel", orientation: Right),
+        (pose: "gangsta-left-up", orientation: Right),
+        (pose: "left-forward-heel", orientation: Right),
+        (pose: "gangsta-right-up", orientation: Right),
+      ]
+    ),
+  ]
+)

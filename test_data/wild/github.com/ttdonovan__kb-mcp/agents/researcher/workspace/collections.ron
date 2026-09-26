@@ -1,0 +1,30 @@
+// kb-mcp config for the researcher agent container.
+// Vault is volume-mounted at /workspace/vault.
+//
+// The researcher writes ONLY to drafts/ — a staging area for human or
+// agent review before promotion into the vault proper.
+(
+    collections: [
+        // Read-only — search across all vault content
+        (
+            name: "vault",
+            path: "/workspace/vault",
+            description: "AI agent memory knowledge vault (all sections)",
+            writable: false,
+            sections: [
+                (prefix: "concepts", description: "Memory models and retrieval strategies"),
+                (prefix: "patterns", description: "Knowledge keeper, session digests, shared memory"),
+                (prefix: "tools", description: "Retrieval tool landscape"),
+                (prefix: "research", description: "Papers, projects, reading list"),
+            ],
+        ),
+        // Read-only — search drafts to avoid duplicating in-progress work
+        (
+            name: "drafts",
+            path: "/workspace/vault/drafts",
+            description: "Staged research — pending review before vault promotion",
+            writable: true,
+            sections: [],
+        ),
+    ],
+)

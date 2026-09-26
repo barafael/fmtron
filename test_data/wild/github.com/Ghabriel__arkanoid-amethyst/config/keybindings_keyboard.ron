@@ -1,0 +1,10 @@
+(
+    axes: {
+        "paddle": Emulated(pos: Key(Right), neg: Key(Left)),
+    },
+    actions: {
+        "pause": [[Key(Return)]],
+        "menu_up": [[Key(Up)]],
+        "menu_down": [[Key(Down)]],
+    },
+)

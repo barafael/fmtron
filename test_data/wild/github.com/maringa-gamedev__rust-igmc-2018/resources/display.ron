@@ -1,0 +1,13 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+(
+  //dimensions: (800, 600),
+  dimensions: (960, 544),
+  max_dimensions: (1920, 1080),
+  min_dimensions: (480, 272),
+  fullscreen: false,
+  multisampling: 0,
+  title: "Naisu Kurimu",
+  visibility: true,
+  vsync: true,
+)

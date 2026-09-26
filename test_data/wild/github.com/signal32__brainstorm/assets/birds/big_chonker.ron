@@ -1,0 +1,8 @@
+BirdAsset (
+    name: "big chonker",
+    hunger: 10,
+    size: (300, 100),
+    sprite: "sprites/blue_bird.png",
+    velocity: 10.0,
+    on_feed_points: 10,
+)

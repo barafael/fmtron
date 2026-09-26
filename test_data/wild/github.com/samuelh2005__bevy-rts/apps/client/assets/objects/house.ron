@@ -1,0 +1,7 @@
+(
+  name: "Small House",
+  gltf: "objects/house/scene.gltf",
+  scale: (0.05, 0.05, 0.05),
+  hover_radius: 11.269108,
+  scene_offset_local: (-286.58517, -17.3125, -22.873013),
+)

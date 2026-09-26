@@ -1,0 +1,10 @@
+(
+    schema: "kithara.layout",
+    version: 1,
+    id: "micro",
+    root: Module(
+        instance: "deck-a",
+        source: "modules/deck-micro.kmodule.ron",
+        with: { "deck": "a" },
+    ),
+)

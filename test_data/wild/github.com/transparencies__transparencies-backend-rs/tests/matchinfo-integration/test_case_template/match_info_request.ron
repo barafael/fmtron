@@ -1,0 +1,6 @@
+(
+	language: Some("en"),
+	game: Some("aoe2de"),
+	id_type: "profile_id",
+	id_number: "196240",
+)

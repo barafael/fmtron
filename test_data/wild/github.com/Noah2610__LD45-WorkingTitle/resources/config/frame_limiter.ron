@@ -1,0 +1,5 @@
+(
+    fps: 60,
+    // https://docs.amethyst.rs/stable/amethyst_core/frame_limiter/#frame-rate-limiting-strategies
+    strategy: Yield,
+)

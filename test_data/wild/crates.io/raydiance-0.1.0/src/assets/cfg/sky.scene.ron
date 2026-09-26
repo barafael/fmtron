@@ -1,0 +1,93 @@
+[
+    (
+        name: "cycle",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(1.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+        ],
+        sky_elevation_deg: Keyframes([
+            (0.0, 0.0, CubicInOut),
+            (2.0, 90.0, CubicInOut),
+            (4.0, 0.0, CubicInOut),
+        ]),
+        sky_azimuth_deg: Keyframes([
+            (0.0, 0.0, CubicInOut),
+            (1.999, 0.0, CubicInOut),
+            (2.000, 180.0, CubicInOut),
+            (4.0, 180.0, CubicInOut),
+        ]),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [SkyParameters],
+    ),
+    (
+        name: "elevation",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(1.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+        ],
+        sky_elevation_deg: Keyframes([
+            (0.0, 0.0, CubicInOut),
+            (2.0, 90.0, CubicInOut),
+        ]),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [SkyParameters],
+    ),
+    (
+        name: "azimuth",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(1.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+        ],
+        sky_elevation_deg: Constant(22.5),
+        sky_azimuth_deg: Keyframes([
+            (0.0, 0.0, CubicInOut),
+            (2.0, 360.0, CubicInOut),
+        ]),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [SkyParameters],
+    ),
+    (
+        name: "turbidity",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(1.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+        ],
+        sky_elevation_deg: Constant(22.5),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Keyframes([
+            (0.0, 1.0, CubicInOut),
+            (2.0, 10.0, CubicInOut),
+        ]),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [SkyParameters],
+    ),
+    (
+        name: "albedo",
+        material_mappings: [
+            ("plane", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Constant(Scalar(0.25))),
+            ("cube", Metallic, Constant(Scalar(1.0))),
+            ("cube", Roughness, Constant(Scalar(0.0))),
+        ],
+        sky_elevation_deg: Constant(22.5),
+        sky_azimuth_deg: Constant(0.0),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Keyframes([
+            (0.0, (0.0, 0.0, 0.0), CubicInOut),
+            (2.0, (1.0, 0.26225, 0.0), CubicInOut),
+        ]),
+        text_annotations: [SkyParameters],
+    ),
+]

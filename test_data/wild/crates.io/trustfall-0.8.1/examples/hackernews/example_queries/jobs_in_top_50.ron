@@ -1,0 +1,13 @@
+InputQuery (
+    query: r#"
+{
+    Top(max: 50) {
+        ... on Job {
+            title @output
+            url @output
+            score @output
+        }
+    }
+}"#,
+    args: {},
+)

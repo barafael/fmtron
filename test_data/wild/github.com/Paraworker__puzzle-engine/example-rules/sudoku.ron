@@ -1,0 +1,111 @@
+(
+    name: "Sudoku",
+    board: (
+        rows: 7,
+        cols: 7,
+    ),
+    pieces: {
+        Cube: (
+            count: Infinite,
+            movement: False,
+            placement: Not(PosOccupied(ToPlaceRow, ToPlaceCol)),
+        ),
+        Sphere: (
+            count: Infinite,
+            movement: False,
+            placement: Not(PosOccupied(ToPlaceRow, ToPlaceCol)),
+        ),
+        Cylinder: (
+            count: Infinite,
+            movement: False,
+            placement: Not(PosOccupied(ToPlaceRow, ToPlaceCol)),
+        ),
+        Capsule: (
+            count: Infinite,
+            movement: False,
+            placement: Not(PosOccupied(ToPlaceRow, ToPlaceCol)),
+        ),
+        Cone: (
+            count: Infinite,
+            movement: False,
+            placement: Not(PosOccupied(ToPlaceRow, ToPlaceCol)),
+        ),
+        Torus: (
+            count: Infinite,
+            movement: False,
+            placement: Not(PosOccupied(ToPlaceRow, ToPlaceCol)),
+        ),
+        Tetrahedron: (
+            count: Infinite,
+            movement: False,
+            placement: Not(PosOccupied(ToPlaceRow, ToPlaceCol)),
+        ),
+    },
+    players: {
+        Purple: (
+            lose_condition: Or([
+                GreaterThan(
+                    CountPieceInRect(
+                        (ModelAtPos(LastActionRow, LastActionCol), ColorAtPos(LastActionRow, LastActionCol)),
+                        (LastActionRow, Const(0)),
+                        (LastActionRow, Const(6))
+                    ),
+                    Const(1)
+                ),
+                GreaterThan(
+                    CountPieceInRect(
+                        (ModelAtPos(LastActionRow, LastActionCol), ColorAtPos(LastActionRow, LastActionCol)),
+                        (Const(0), LastActionCol),
+                        (Const(6), LastActionCol)
+                    ),
+                    Const(1)
+                ),
+            ]),
+            win_condition: Equal(
+                CountInRect((Const(0), Const(0)), (Const(6), Const(6))),
+                Const(49)
+            ),
+        ),
+    },
+    initial_layout: [
+        (
+            model: Cube,
+            color: Purple,
+            pos: (0, 0),
+        ),
+        (
+            model: Sphere,
+            color: Purple,
+            pos: (1, 1),
+        ),
+        (
+            model: Cylinder,
+            color: Purple,
+            pos: (2, 2),
+        ),
+        (
+            model: Capsule,
+            color: Purple,
+            pos: (3, 3),
+        ),
+        (
+            model: Cone,
+            color: Purple,
+            pos: (4, 4),
+        ),
+        (
+            model: Torus,
+            color: Purple,
+            pos: (5, 5),
+        ),
+        (
+            model: Tetrahedron,
+            color: Purple,
+            pos: (6, 6),
+        ),
+    ],
+    game_over_condition: Or([
+        PlayerStateEqual(Purple, Won),
+        PlayerStateEqual(Purple, Lost),
+    ]),
+)

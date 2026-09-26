@@ -1,0 +1,8 @@
+ExtendedMaterial(
+    extension: ( near_start: 0.0 ),
+    base: StandardMaterial(
+        base_color: Srgba(( red: 0.025, green: 0.025, blue: 0.025, alpha: 1.0 )),
+        reflectance: 0.3,
+        perceptual_roughness: 0.0,
+    ),
+)

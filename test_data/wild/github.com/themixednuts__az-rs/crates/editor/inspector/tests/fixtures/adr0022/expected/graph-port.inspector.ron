@@ -1,0 +1,10 @@
+(
+    case: "graph_port",
+    schema: "azoth.phase0.GraphPortProjection",
+    type_label: "Graph Port",
+    category: None,
+    icon: None,
+    fields: [],
+    add_component: None,
+    behaviors: ["exact_schema_type", "input_direction", "single_capacity", "reflected_default"],
+)

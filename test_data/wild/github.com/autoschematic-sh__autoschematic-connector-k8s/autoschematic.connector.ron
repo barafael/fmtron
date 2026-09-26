@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "k8s",
+    protocol: "binary-tarpc",
+    description: "Manages API resources on a Kubernetes cluster, such as namespaces, deployments, roles, volumes, etc. Multi-cluster & expanded API support coming soon.",
+    stability: "preview"
+)

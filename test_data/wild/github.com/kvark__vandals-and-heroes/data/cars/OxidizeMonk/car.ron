@@ -1,0 +1,36 @@
+(
+    scale: 1.0,
+    density: 10.0,
+    // body.glb has two visible REAR wheels baked into the body mesh at
+    // chassis-local (+0.58, -0.275, ±0.34) — forward is -X, so those are
+    // rear. Procedural physics wheels are positioned to MATCH the GLB
+    // visuals so the front procedural meshes read as the same "family"
+    // of wheel as the baked-in rear pair:
+    //   * y = -0.275: matches the GLB rear wheel centre. This puts the
+    //     procedural wheel hub at the same height the player sees the
+    //     rear hubs at, rather than drooping 0.075 m below the body.
+    //   * Rear z = ±0.34: matches the GLB-baked rear wheels exactly.
+    //   * Front z = ±0.20: the front of the body is narrow (lower-body
+    //     z extends only to ±0.29 at x≈-0.6), so a ±0.34 front track
+    //     would stick past the cabin silhouette. ±0.20 tucks the front
+    //     wheels well inside the body, so they sit in the wheel-arch
+    //     spot a typical front-engine layout would have.
+    wheel_axis: (0.0, 0.0, 1.0),
+    wheels: [
+        // Rear (+X): z=±0.34 lines up with the GLB-baked visible rear wheels
+        // (we skip rendering the procedural mesh for these).
+        (position: ( 0.6, -0.275,  0.34), radius: 0.15),
+        (position: ( 0.6, -0.275, -0.34), radius: 0.15),
+        // Front (-X): track pulled in to ±0.20 so the procedural visible
+        // wheel sits inside the narrow front-cabin silhouette.
+        (position: (-0.6, -0.275,  0.20), radius: 0.15),
+        (position: (-0.6, -0.275, -0.20), radius: 0.15),
+    ],
+    // motor_max_force must exceed the wheel-ground static friction torque to actually
+    // drive the car. With effective radial gravity ~3 m/s² (see src/physics.rs::update_gravity)
+    // and a chassis mass ~17 kg (AABB estimate), per-wheel normal ~12 N, combined-friction
+    // coefficient ~2.0, friction torque cap per wheel ~3.6 N·m — pick the motor torque a
+    // few × above that so the wheels can overcome friction and accelerate the chassis.
+    motor_max_velocity: 20.0,
+    motor_max_force: 10.0,
+)

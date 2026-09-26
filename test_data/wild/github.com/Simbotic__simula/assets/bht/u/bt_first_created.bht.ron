@@ -1,0 +1,134 @@
+("➡ Sequencer", Sequencer((
+    random: false,
+)), [
+    ("Maybe something else", Debug((
+        message: (
+            prop: Value("a"),
+        ),
+        fail: (
+            prop: Value(false),
+        ),
+        duration: (
+            prop: Value(0.0),
+        ),
+    )), [], (
+        pos: (400.0, 0.0),
+    )),
+    ("👁 Debug", Debug((
+        message: (
+            prop: Value("b"),
+        ),
+        fail: (
+            prop: Value(false),
+        ),
+        duration: (
+            prop: Value(0.0),
+        ),
+    )), [], (
+        pos: (400.0, 200.0),
+    )),
+    ("⌛ Wait", Wait((
+        duration: (
+            prop: Value(5.0),
+        ),
+        fail: (
+            prop: Value(false),
+        ),
+    )), [], (
+        pos: (400.0, 400.0),
+    )),
+    ("❓ Selector", Selector((
+        random: false,
+    )), [
+        ("⌛ Delay", Delay((
+            duration: (
+                prop: Value(2.0),
+            ),
+        )), [
+            ("👁 Debug is cool", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(true),
+                ),
+                duration: (
+                    prop: Value(0.0),
+                ),
+            )), [], (
+                pos: (800.0, 600.0),
+            )),
+        ], (
+            pos: (600.0, 600.0),
+        )),
+        ("⌛ Delay", Delay((
+            duration: (
+                prop: Value(5.0),
+            ),
+        )), [
+            ("👁 Debug", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(true),
+                ),
+                duration: (
+                    prop: Value(0.0),
+                ),
+            )), [], (
+                pos: (800.0, 800.0),
+            )),
+        ], (
+            pos: (600.0, 800.0),
+        )),
+        ("⇉ All", All(()), [
+            ("⌛ Wait", Wait((
+                duration: (
+                    prop: Value(5.0),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+            )), [], (
+                pos: (800.0, 1000.0),
+            )),
+            ("⌛ Wait", Wait((
+                duration: (
+                    prop: Value(1.0),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+            )), [], (
+                pos: (800.0, 1200.0),
+            )),
+            ("⌛ Wait", Wait((
+                duration: (
+                    prop: Value(3.0),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+            )), [], (
+                pos: (800.0, 1400.0),
+            )),
+        ], (
+            pos: (600.0, 1000.0),
+        )),
+    ], (
+        pos: (400.0, 600.0),
+    )),
+    ("⌛ Wait", Wait((
+        duration: (
+            prop: Value(5.0),
+        ),
+        fail: (
+            prop: Value(false),
+        ),
+    )), [], (
+        pos: (400.0, 1600.0),
+    )),
+], (
+    pos: (200.0, 0.0),
+))

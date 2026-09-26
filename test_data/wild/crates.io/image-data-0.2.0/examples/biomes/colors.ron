@@ -1,0 +1,56 @@
+(
+    entries: [
+        (color: "#ffffff", name: "Polar / Alvar Desert"),
+        (color: "#c1c1be", name: "Polar / Alvar Dry Tundra"),
+        (color: "#bcc3c1", name: "Polar / Alvar Moist Tundra"),
+        (color: "#bbc6c6", name: "Polar / Alvar Wet Tundra"),
+        (color: "#becbd3", name: "Polar / Alvar Rain Tundra"),
+
+        (color: "#888981", name: "Dry Tundra"),
+        (color: "#6b8179", name: "Moist Tundra"),
+        (color: "#497979", name: "Wet Tundra"),
+        (color: "#337994", name: "Rain Tundra"),
+
+        (color: "#979883", name: "Boreal / Subalpine Desert"),
+        (color: "#a4a585", name: "Cool Temperate / Montane Desert"),
+        (color: "#b7b888", name: "Warm Temperate / Lower Montane Desert"),
+        (color: "#c6c68a", name: "Subtropical / Premontane Desert"),
+        (color: "#d4d28c", name: "Tropical Desert"),
+
+        (color: "#7d907d", name: "Boreal / Subalpine Dry Scrub"),
+        (color: "#889e80", name: "Cool Temperate / Montane Desert Scrub"),
+        (color: "#9fb385", name: "Warm Temperate / Lower Montane Desert Scrub"),
+        (color: "#abc186", name: "Subtropical / Premontane Desert Scrub"),
+        (color: "#bbd08b", name: "Tropical Desert Scrub"),
+
+        (color: "#6d9c81", name: "Cool Temperate / Montane Steppe"),
+        (color: "#80ad85", name: "Warm Temperate / Lower Montane Thorn Steppe / Woodland"),
+        (color: "#94be89", name: "Subtropical / Premontane Thorn Steppe / Woodland"),
+        (color: "#a5d28d", name: "Tropical Thorn Woodland"),
+
+        (color: "#8ad08d", name: "Tropical Very Dry Forest"),
+
+        (color: "#73ac84", name: "Warm Temperate / Lower Montane Dry Forest"),
+        (color: "#85bb87", name: "Subtropical / Premontane Dry Forest"),
+        (color: "#67ca81", name: "Tropical Dry Forest"),
+
+        (color: "#5c8d7a", name: "Boreal / Subalpine Moist Forest"),
+        (color: "#589b7f", name: "Cool Temperate / Montane Moist Forest"),
+        (color: "#60ac81", name: "Warm Temperate / Lower Montane Moist Forest"),
+        (color: "#71b885", name: "Subtropical / Premontane Moist Forest"),
+        (color: "#57c784", name: "Tropical Moist Forest"),
+
+        (color: "#438d79", name: "Boreal / Subalpine Wet Forest"),
+        (color: "#3d9a7d", name: "Cool Temperate / Montane Wet Forest"),
+        (color: "#48aa7e", name: "Warm Temperate / Lower Montane Wet Forest"),
+        (color: "#5eb787", name: "Subtropical / Premontane Wet Forest"),
+        (color: "#4ec386", name: "Tropical Wet Forest"),
+
+        (color: "#368892", name: "Boreal / Subalpine Rain Forest"),
+        (color: "#379790", name: "Cool Temperate / Montane Rain Forest"),
+        (color: "#3ba98d", name: "Warm Temperate / Lower Montane Rain Forest"),
+        (color: "#3eb68c", name: "Subtropical / Premontane Rain Forest"),
+        (color: "##3ebc8a", name: "Tropical Rain Forest"),
+        
+    ],
+)

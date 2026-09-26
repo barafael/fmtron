@@ -1,0 +1,156 @@
+// this file is used to color and hide data that you want
+ForesightView(
+    color_data: {
+        // this will look for data with the name "Cell"
+        "Cell": {
+            // this goes into zone 596
+            596: {
+                // this puts blue on id 1
+                Blue: [ 1 ],
+                // this put green on id 2 and 3
+                Green: [ 2, 3 ]
+                // everything not specified is either left uncolored or goes to the default color.
+            },
+            598: {
+                Blue: [ 0, 1 ],
+                Green: [ 2, 3, 4 ],
+                Yellow: [ 7 ]
+            },
+            599: {
+                Blue: [0, 1, 2, 3, 4],
+                Green: [11, 12],
+                Yellow: [5, 6]
+            },
+            602: {
+                Blue: [16, 21],
+                Green: [15, 8, 7, 6, 11, 14],
+            },
+            605: {
+                Green: [0, 1, 2]
+            },
+            606: {
+                Blue: [7, 8, 9],
+                Green: [5, 6, 4, 3, 1, 0, 2],
+            }
+        },
+        "CELL": {
+            600: {
+                Green: [0, 1, 2]
+            }
+        },
+        "Healthpack": {
+            598: {
+                Blue: [[0, 5]],
+                Green: [[6, 15]]
+            },
+            599: {
+                Blue: [[0, 5]],
+                Green: [[6, 15]],
+                Yellow: [[34, 39]]
+            },
+            603: {
+                Blue: [[0, 8]],
+                Green: [[13, 16]],
+                Yellow: [[9, 12]]
+            }
+        },
+        "Ammopack": {
+            598: {
+                Blue: [[0, 5]],
+                Green: [[6, 15]]
+            },
+            599: {
+                Blue: [[0, 5]],
+                Green: [[6, 14]],
+                Yellow: [[34, 39]]
+            },
+            603: {
+                Blue: [[0, 8]],
+                Green: [[13, 16]],
+                Yellow: [[9, 12]]
+            }
+        },
+        "ToolRefillpack": {
+            598: {
+                Blue: [[0, 5]],
+                Green: [[6, 15]]
+            },
+            599: {
+                Blue: [[0, 5]],
+                Green: [[6, 15]],
+                Yellow: [[34, 39]]
+            },
+            603: {
+                Blue: [[0, 8]],
+                Green: [[13, 16]],
+                Yellow: [[9, 12]]
+            }
+        }
+    },
+    // if the color is not specified then this color is used.
+    // this field can be ommited and the color will be default logger text color.
+    default_color: Red,
+    // these are just zones that are straight up ignored no matter what is in them.
+    ignore_zones: [ 601 ],
+    // these are pairs of data that get ignored.
+    // it means both the name and the zone must match.
+    ignore_pairs: { 
+        "Cell": [601, 603],
+        "Healthpack": [597, 600, 601, 602, 605, 606], 
+        "DisinfectPack": [597, 598, 599, 600, 601, 602, 603, 605, 606],
+        "Ammopack": [597, 600, 601, 602, 605, 606], 
+        "ToolRefillpack": [597, 600, 601, 602, 605, 606], 
+    },
+    // these are conditional ignores that only apply if the condition is triggered
+    conditional_ignores: [
+        (
+            condition: (
+                name: "Cell",
+                zone: 598,
+                // id: 3, // id also works but is not that useful most of the time
+            ),
+            // ignore_zones: [ 599 ],
+            // these are literally just ignore_pairs.
+            // written exactly the same and work exactly the same.
+            // to note if this field is not present it is ignored but the file works
+            // u can see this below where it is commented.
+            ignore_pairs: {
+                "Healthpack": [ 599 ],
+                "Ammopack": [ 599 ],
+                "ToolRefillpack": [ 599 ],
+            }
+        ),
+        (
+            condition: (
+                name: "Cell",
+                zone: 599,
+                // id: 3, // id also works but is not that useful most of the time
+            ),
+            // these are literally just ignore_zones.
+            // written exactly the same and work exactly the same.
+            // to note if this field is not present it is ignored but the file works
+            // u can see this above where it is commented.
+            ignore_zones: [ 598 ],
+            // ignore_pairs: {
+            //     "Healthpack": [ 598 ],
+            //     "Ammopack": [ 598 ],
+            //     "ToolRefillpack": [ 598 ],
+            // }
+        )
+    ],
+    // this field renames everything from the default to something else.
+    // BEWARE THAT THIS IS ONLY VISUAL.
+    // IT IS APPLIED LAST SO EVERY OTHER FEATURE IN THESE FILES WORKS
+    // WITH THE ACTUAL NAMES USED BY DEFAULT BY FORESIGHT
+    // this field is also entirely optional and can be missing.
+    rename: {
+        "Healthpack": "ResMEDI",
+        "Ammopack": "ResAMMO",
+        "ToolRefillpack": "ResTOOL",
+        "CELL": "Cell",
+    },
+    // this groups all the data found about the zone in a nice format
+    // so that it is more visible and easier to tell apart.
+    // my recommendation is using it on levels with collectables or resources
+    group_zones: [ 598, 599, 603 ],
+)

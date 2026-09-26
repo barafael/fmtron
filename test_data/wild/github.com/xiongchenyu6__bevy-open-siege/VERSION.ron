@@ -1,0 +1,8 @@
+(
+  product_name: "Bevy Open Siege",
+  version: "0.1.0",
+  release_channel: "release_candidate",
+  content_rating_note: "Fantasy undead combat with stylized non-realistic visuals.",
+  supported_languages: ["en", "zh"],
+  supported_platforms: ["linux-x86_64"],
+)

@@ -1,0 +1,244 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    address: "/home/pappanos/.config/mpd/socket",
+    cache_dir: Some("/tmp/rmpc/cache"),
+    lyrics_dir: "~/Music",
+    volume_step: 5,
+    scrolloff: 2,
+    max_fps: 60,
+    wrap_navigation: true,
+    theme: "def",
+    // theme: "def_old",
+    status_update_interval_ms: 1000,
+    enable_mouse: true,
+    enable_config_hot_reload: true,
+    album_art: (
+        method: Auto,
+        max_size_px: (width: 0, height: 0),
+        vertical_align: Top,
+        horizontal_align: Center,
+    ),
+    cava: (
+        framerate: 60,
+        autosens: true,
+        sensitivity: 130,
+        input: (
+            method: Fifo,
+            source: "/tmp/mpd.fifo",
+            sample_rate: 44100,
+            channels: 2,
+            samble_bits: 16,
+        ),
+        smoothing: (
+            noise_reduction: 25,
+            monstercat: false,
+            waves: false,
+        ),
+    ),
+    keybinds: (
+        global: {
+            "q":       Quit,
+            "~":       ShowHelp,
+            "O":       ShowOutputs,
+            "I":       ShowCurrentSongInfo,
+            "<C-p>":   ShowDecoders,
+            ":":       CommandMode,
+            ".":       VolumeUp,
+            ",":       VolumeDown,
+            "p":       TogglePause,
+            "s":       Stop,
+            ">":       NextTrack,
+            "<":       PreviousTrack,
+            "<Right>": NextTab,
+            "<Tab>":   NextTab,
+            "<Left>":  PreviousTab,
+            "<S-Tab>": PreviousTab,
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Directories"),
+            "3":       SwitchToTab("Artists"),
+            "4":       SwitchToTab("Album Artists"),
+            "5":       SwitchToTab("Albums"),
+            "6":       SwitchToTab("Playlists"),
+            "7":       SwitchToTab("Search"),
+            "z":       ToggleRepeat,
+            "x":       ToggleRandom,
+            "c":       ToggleSingle,
+            "f":       SeekForward,
+            "b":       SeekBack,
+        },
+        navigation: {
+            "<S-Up>":      PaneUp,
+            "<S-Down>":    PaneDown,
+            "<S-Left>":    PaneLeft,
+            "<S-Right>":   PaneRight,
+            "<C-u>":       UpHalf,
+            "N":           PreviousResult,
+            "a":           Add,
+            "A":           AddAll,
+            "r":           Rename,
+            "n":           NextResult,
+            "g":           Top,
+            "<Space>":     Select,
+            "G":           Bottom,
+            "h":           Left,
+            "<CR>":        Confirm,
+            "i":           FocusInput,
+            "J":           MoveDown,
+            "j":           Down,
+            "<C-d>":       DownHalf,
+            "/":           EnterSearch,
+            "<C-c>":       Close,
+            "<Esc>":       Close,
+            "K":           MoveUp,
+            "l":           Right,
+            "D":           Delete,
+            "k":           Up,
+            "B":           ShowInfo,
+        },
+        queue: {
+            "D":           DeleteAll,
+            "<CR>":        Play,
+            "<C-s>":       Save,
+            "a":           AddToPlaylist,
+            "X":       Shuffle,
+            "d":           Delete,
+        },
+    ),
+    search: (
+        case_sensitive: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "albumartist", label: "Album Artist"),
+            (value: "title",       label: "Title"),
+        ],
+    ),
+    tabs: [
+        (
+            name: "Queue",
+            border_type: None,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "30%",
+                        borders: "RIGHT",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "0.409090909r",
+                                    pane: Pane(AlbumArt),
+                                ),
+                                (
+                                    size: "100%",
+                                    pane: Pane(Lyrics)
+                                ),
+                            ],
+                        ),
+                    ),
+                    (
+                        size: "100%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "100%",
+                                    pane: Pane(Queue),
+                                ),
+                                (
+                                    borders: "TOP",
+                                    size: "20",
+                                    pane: Pane(Cava)
+                                ),
+                            ],
+                        ),
+                    )
+                ],
+            ),
+        ),
+        (
+            name: "Directories",
+            border_type: None,
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Artists",
+            border_type: None,
+            pane: Pane(Artists),
+        ),
+        (
+            name: "Album Artists",
+            border_type: None,
+            pane: Pane(AlbumArtists),
+        ),
+        (
+            name: "Albums",
+            border_type: None,
+            pane: Pane(Albums),
+        ),
+        (
+            name: "Playlists",
+            border_type: None,
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            border_type: None,
+            pane: Pane(Search),
+        ),
+        (
+            name: "Testing",
+            border_type: Single,
+            pane: Split(
+                direction: Horizontal,
+                panes: [
+                    (
+                        size: "40%",
+                        pane: Pane(Queue),
+                    ),
+                    (
+                        size: "60%",
+                        pane: Split(
+                            direction: Vertical,
+                            panes: [
+                                (
+                                    size: "50%",
+                                    pane: Pane(Directories),
+                                ),
+                                (
+                                    size: "50%",
+                                    pane: Split(
+                                        direction: Horizontal,
+                                        panes: [
+                                            (
+                                                size: "60%",
+                                                pane: Split(
+                                                    direction: Vertical,
+                                                    panes: [
+                                                        (
+                                                            size: "50%",
+                                                            pane: Pane(Albums),
+                                                        ),
+                                                        (
+                                                            size: "50%",
+                                                            pane: Pane(Artists),
+                                                        ),
+                                                    ],
+                                                ),
+                                            ),
+                                        ],
+                                    ),
+                                ),
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        ),
+    ],
+)

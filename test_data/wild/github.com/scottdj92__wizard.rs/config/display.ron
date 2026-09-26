@@ -1,0 +1,4 @@
+(
+  title: "wizard",
+  dimensions: Some((500, 500)),
+)

@@ -1,0 +1,64 @@
+(
+    name: "codex-agent-nono",
+    execution_platform: "oci",
+    isolation_mode: "sandboxed",
+    isolation_profile: Some("nono-default"),
+    volumes: [
+        (
+            name: "workspace",
+            driver: local((
+                source: managed,
+                ownership: user(uid: 1000, gid: 1000),
+            )),
+            access_mode: read_write_once,
+            binding_mode: wait_for_first_consumer,
+            reclaim_policy: retain,
+            capacity_mb: Some(1024),
+        ),
+    ],
+    execution: (
+        image: "mantissa/codex-sandbox:0.142.4",
+        resources: (
+            cpu_millis: 1000,
+            memory_mb: 1024,
+        ),
+        termination_grace_period_secs: Some(30),
+        secret_files: [
+            (
+                path: "/run/secrets/codex-api-key",
+                secret: (
+                    name: "openai-api-key",
+                    version: None,
+                ),
+                mode: Some(0o400),
+                ownership: user(uid: 1000, gid: 1000),
+                path_env_name: Some("CODEX_API_KEY_PATH"),
+            ),
+        ],
+    ),
+    workspace: (
+        mount: Some((
+            source: "workspace",
+            target: "/workspace",
+            read_only: false,
+        )),
+        working_directory: Some("/workspace"),
+        persistent: true,
+    ),
+    tools: (
+        allowed_tools: ["shell"],
+        allow_network: true,
+        allow_pty: false,
+        allow_write: true,
+    ),
+    interaction: (
+        require_user_input_between_runs: true,
+        max_turns_per_run: 1,
+    ),
+    deployment: (
+        progress_deadline_secs: 600,
+        healthy_deadline_secs: 600,
+        min_healthy_secs: 1,
+    ),
+    pending_input: Some("Inside the workspace, create a file named hello.txt containing a one-line greeting from Codex running inside a Mantissa nono sandbox, then print the file contents."),
+)

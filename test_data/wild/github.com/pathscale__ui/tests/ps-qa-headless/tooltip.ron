@@ -1,0 +1,37 @@
+// Generated from tests/qa-harness/components.ts by tests/qa-harness/generate-checks.ts. Do not edit.
+//
+// Tooltip, mounted alone on its own harness page. Outcomes for
+// this component share one native host; idempotent preparation keeps each
+// outcome reproducible by id against a fresh host as well.
+[
+    (
+        id: "tooltip-page-paints",
+        group: "tooltip",
+        what: "the Tooltip page builds and paints",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:Tooltip",
+        expect: Present,
+    ),
+    (
+        id: "tooltip-renders",
+        group: "tooltip",
+        what: "Tooltip renders a node of its own",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "fixture",
+        expect: Paints,
+    ),
+    (
+        id: "tooltip-opens",
+        group: "tooltip",
+        what: "hovering the tooltip trigger reveals its content",
+        open: None,
+        hover: Some("button:Tooltip target"),
+        click: None,
+        subject: "tooltip:Fixture tooltip",
+        expect: Present,
+    ),
+]

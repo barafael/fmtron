@@ -1,0 +1,54 @@
+SceneDescriptor(entities: [
+    EntityDescriptor(
+        name: "Cam",
+        camera: true,
+        camera_fov: Some(60.0),
+        transform: Some((position: (0.0, 5.0, 10.0))),
+        look_at: Some((0.0, 0.5, 0.0)),
+        // Hosts (server) or connects (client); see the file.
+        script: Some("main.js"),
+    ),
+    EntityDescriptor(
+        name: "Sun",
+        directional_light: Some((direction: (-0.4, -0.8, -0.4), color: (1.0, 0.95, 0.85), ambient: (0.2, 0.2, 0.22))),
+    ),
+    EntityDescriptor(
+        // Server-authoritative and clock-driven: the original demo motion, kept
+        // so the pre-existing replication path stays exercised beside the
+        // predicted one.
+        name: "ServerPlayer",
+        primitive: Some(Cube),
+        transform: Some((position: (-2.0, 0.5, 0.0))),
+        color: Some((0.2, 0.6, 1.0)),
+        components: [
+            // Without a NetworkId the send system's (&NetworkId, &Transform)
+            // query matches nothing and this demo replicates *nothing* -- which
+            // is what it did before this was authored.
+            ("bsengine_core::network_id::NetworkId", "(id: 1, authority: Server)"),
+        ],
+    ),
+    EntityDescriptor(
+        // Client-authoritative: this peer simulates it and reports where it is.
+        name: "ClientPlayer",
+        primitive: Some(Cube),
+        transform: Some((position: (2.0, 0.5, 0.0))),
+        color: Some((1.0, 0.3, 0.2)),
+        components: [
+            ("bsengine_core::network_id::NetworkId", "(id: 2, authority: Client(peer_id: 1))"),
+        ],
+    ),
+    EntityDescriptor(
+        // The predicted player: the client sends what it holds, the server
+        // simulates it from that input, and the client predicts locally so it
+        // responds without waiting for the round trip. The two above move on a
+        // clock and so have nothing to predict, which is why this one exists.
+        name: "PredictedPlayer",
+        primitive: Some(Cube),
+        transform: Some((position: (0.0, 0.5, -3.0))),
+        color: Some((0.3, 0.9, 0.4)),
+        script: Some("drive.js"),
+        components: [
+            ("bsengine_core::network_id::NetworkId", "(id: 3, authority: Predicted(peer_id: 1))"),
+        ],
+    ),
+])

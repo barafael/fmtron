@@ -1,0 +1,10 @@
+(
+    show_sun: true,
+    sun_color: (0.8307159, 0.7089912, 0.48764104),
+    sun_angular_radius: 0.05,
+    sun_intensity: 2.8,
+    sun_rotation_enabled: true,
+    sun_rotation_axis: (0.00000008742278, 0.0, -1.0),
+    sun_orbit_angle: 159.23485,
+    sun_rotation_speed: 0.017453292,
+)

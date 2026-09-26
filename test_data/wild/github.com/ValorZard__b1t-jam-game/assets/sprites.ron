@@ -1,0 +1,16 @@
+(
+    sprites: {
+        "Sprite-0001": (
+            path: "Sprite-0001.png",
+        ),
+        "cloud": (
+            path: "cloud.png",
+        ),
+        "jet": (
+            path: "jet.png",
+        ),
+        "sleeper": (
+            path: "sleeper.png",
+        ),
+    },
+)

@@ -1,0 +1,28 @@
+(
+  id: AuthoredId("runenwerk.editor.surface.viewport"),
+  root: Panel(
+    id: AuthoredId("root"),
+    availability: None,
+    children: [
+      Column(
+        id: AuthoredId("body"),
+        children: [
+          Panel(
+            id: AuthoredId("canvas"),
+            availability: None,
+            children: [
+              Column(
+                id: AuthoredId("canvas_content"),
+                children: [
+                  EmbedSlot(id: AuthoredId("viewport_canvas"), slot: (id: AuthoredId("viewport.expression_product"))),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  templates: [],
+  menus: [],
+)

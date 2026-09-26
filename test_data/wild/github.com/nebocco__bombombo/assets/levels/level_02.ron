@@ -1,0 +1,15 @@
+(
+    board_size: (7, 3),
+    objects: {
+        (x:1, y:1): Rock,
+        (x:2, y:1): BombSmall,
+        (x:5, y:1): Rock,
+
+    },
+    fire_coord: (x:2, y:1),
+    meta: (
+        name: "Place Items",
+        min_bombs: 1,
+        min_affected_cells: 13,
+    )
+)

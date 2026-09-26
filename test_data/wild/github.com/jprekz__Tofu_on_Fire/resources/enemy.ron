@@ -1,0 +1,23 @@
+#![enable(implicit_some)]
+Prefab (
+    entities: [
+        (
+            data: (
+                // transform: (translation: (560.0, 400.0, 0.0)),
+                rigidbody: (drag: 0.2),
+                sprite: (sprite_number: 3),
+                // player: (team: 1, weapon: 0, hp: 100.0),
+                ai: (),
+                collider: (tag: "Player", width: 16.0, height: 16.0),
+            ),
+        ),
+        (
+            parent: 0,
+            data: (
+                transform: (translation: (0.0, 0.0, 1.0)),
+                sprite: (sprite_number: 10),
+                shield: (),
+            ),
+        ),
+    ],
+)

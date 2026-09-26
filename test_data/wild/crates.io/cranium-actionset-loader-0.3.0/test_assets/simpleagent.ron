@@ -1,0 +1,27 @@
+ActionSet(
+    // An ActionSet is a named collection of ActionTemplates.
+    name: "test_actionset",
+    actions: [
+        ActionTemplate(
+            // An ActionTemplate is a registered name of an Action function...
+            action_key: "demo::run_foo",
+            // ...with a human-friendly identifier for debugging...
+            name: "Foobar",
+            // ...the data needed to turn it into a full-fledged Action...
+            context_fetcher: "demo::bar",
+            // ...and the data needed to score that Action:
+            priority: 1.0,
+            considerations: [
+                ConsiderationData(
+                    // Considerations used for scoring are also a name (of a Consideration function, duh)...
+                    consideration: "demo::bazify",
+                    // A min/max range for normalizing the return value from the function to a <0., 1.> range...
+                    min: 0.0,
+                    max: 2.0,
+                    // ...and a name of a Curve function that controls which values in <0., 1.> we prefer.
+                    curve: "Linear",
+                )
+            ],
+        )
+    ]
+)

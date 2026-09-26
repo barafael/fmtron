@@ -1,0 +1,5 @@
+(
+    base_speed: 100,
+    max_speed: 100,
+    health: 10,
+)

@@ -1,0 +1,17 @@
+// Basic actions - fundamental non-combat actions
+//
+// - Wait: Do nothing and pass the turn
+
+[
+    // Wait action
+    ActionProfile(
+        kind: Wait,
+        tags: [],
+        targeting: None,
+        base_cost: 100,
+        resource_costs: [],
+        effects: [],
+        requirements: [],
+        cooldown: None,
+    ),
+]

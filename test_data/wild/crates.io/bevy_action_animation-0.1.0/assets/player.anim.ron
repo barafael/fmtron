@@ -1,0 +1,40 @@
+(
+    {
+        Idle: (
+            clips: [
+                (
+                    clip: 0,
+                    rate: 1,
+                    mode: Repeating,
+                    attributes: [],
+                )
+            ]
+        ),
+        Run: (
+            clips: [
+                (
+                    clip: 1,
+                    rate: 0.1,
+                    mode: Once,
+                    attributes: [],
+                ),
+                (
+                    clip: 2,
+                    rate: 0.1,
+                    mode: Repeating,
+                    attributes: [],
+                )
+            ]
+        ),
+        Swing: (
+            clips: [
+                (
+                    clip: 3,
+                    rate: 0.05,
+                    mode: Once,
+                    attributes: [Trigger(SwingFinished)],
+                )
+            ]
+        ),
+    }
+)

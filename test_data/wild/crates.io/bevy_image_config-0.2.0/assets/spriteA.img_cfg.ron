@@ -1,0 +1,14 @@
+(
+    // all fields can be ellided for their default value
+    address_mode_u: ClampToEdge,
+    address_mode_v: ClampToEdge,
+    address_mode_w: ClampToEdge,
+    min_filter: Nearest,
+    mag_filter: Nearest,
+    mipmap_filter: Nearest,
+    lod_min_clamp: 0.,
+    lod_max_clamp:  3.40282347e+38,
+    compare: None,
+    anisotropy_clamp: None,
+    border_color: None,
+)

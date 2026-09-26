@@ -1,0 +1,40 @@
+(
+  knots: [
+    (
+      position: (0.0, 0.0),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: 0.0,
+        mode: Aligned,
+      ),
+      right_tangent: (
+        slope: 0.0,
+        mode: Aligned,
+      ),
+    ),
+    (
+      position: (0.3830273, 0.5604923),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: 0.0,
+        mode: Aligned,
+      ),
+      right_tangent: (
+        slope: 0.0,
+        mode: Aligned,
+      ),
+    ),
+    (
+      position: (1.0, 1.0),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: 0.0,
+        mode: Aligned,
+      ),
+      right_tangent: (
+        slope: 0.0,
+        mode: Aligned,
+      ),
+    ),
+  ]
+)

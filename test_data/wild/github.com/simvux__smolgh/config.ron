@@ -1,0 +1,8 @@
+Config(
+    port: 7818,
+    secret: "<WEBHOOK-SECRET>",
+    runtime_directory: "workdir",
+
+    // private_ssh_key: "...",
+    // private_ssh_key_pw: None,
+)

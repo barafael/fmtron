@@ -1,0 +1,72 @@
+// Baseline for the browser host under WebDriver (issue #905).
+//
+// The first recording of this scenario. Until now `phoenix-perf report`
+// correctly said "no baseline; nothing to compare" on every CI run, because
+// nobody had written one. Adopted from the perf-browser-capture the smoke job
+// uploaded on CI run 30688920069 — the green main build of e87c8711,
+// ubuntu-latest — which is the same runner that compares against it.
+//
+// WHAT THIS MEASURES, AND WHAT IT DOES NOT. Under WebDriver, `wasm_init` skips
+// the render, audio, glTF and gizmo plugins, because a headless runner has no
+// GPU for wgpu. `browser.frame` is therefore the ECS schedule and NOT
+// rendering. The capture records its runtime as `wasm-automation` rather than
+// `wasm-browser` precisely so it can never be silently compared against a real
+// session, and this baseline inherits that: it is a budget for the simulation
+// the page runs, not for the picture it draws. Measuring the real render path
+// would mean the SwiftShader route the `*.capture.js` aids use, which measures
+// a software rasteriser — a different thing again, and not obviously a better
+// proxy for a player's GPU.
+//
+// THIS SCENARIO DOES NOT GATE. Wall-clock on a shared runner fails the gating
+// rule in src/perf/mod.rs, and this one is worse than most: see the tolerances
+// below. Reviewed again post-demo.
+//
+// TOLERANCES ARE WIDE ON PURPOSE, and wider than vellum-perf's 0.25 / 1.0
+// defaults that the first recording gave them:
+//
+// - browser.frame is 0.8 ms at p95. A ratio against a sub-millisecond number
+//   is nearly meaningless — the clock's own resolution shows up as 0.1 ms
+//   steps, which is already a 12% "drift" — so the default warn of 0.25 would
+//   fire on quantisation. Held at 1.0 / 4.0: the reading worth having is "a
+//   frame now costs several times what it did", not "a frame moved by a tick
+//   of the clock".
+// - browser.boot is a SINGLE sample. One observation has no spread to
+//   calibrate against, so its tolerance is a guess and is set loose enough to
+//   admit one; tighten it when a run of green captures says what the spread
+//   actually is.
+//
+// Commentary belongs in this header: `phoenix-perf adopt` regenerates the RON
+// value below from a capture, so a comment written inside it would be deleted
+// by the next recording. See src/perf/baseline.rs.
+//
+// ── Recorded from a capture ─────────────────────────────────
+// Written by `phoenix-perf adopt` from a wasm-automation capture of scenario "browser-automation".
+// build: release   device: (unrecorded)
+// rev:   (unrecorded)
+//
+// Edit the prose ABOVE this block; re-recording rewrites from here down, and
+// carries every statistic and tolerance over unchanged. The numbers are the
+// capture's; the tolerances are yours.
+(
+    scenario: "browser-automation",
+    expectations: {
+        "browser.boot": (
+            unit: millis,
+            statistic: p95,
+            expected: 83.29999999998836,
+            tolerance: (
+                warn: 0.5,
+                fail: 2.0,
+            ),
+        ),
+        "browser.frame": (
+            unit: millis,
+            statistic: p95,
+            expected: 0.8000000000465661,
+            tolerance: (
+                warn: 1.0,
+                fail: 4.0,
+            ),
+        ),
+    },
+)

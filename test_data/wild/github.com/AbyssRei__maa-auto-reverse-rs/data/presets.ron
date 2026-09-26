@@ -1,0 +1,110 @@
+(
+    predefined_items: [
+        (
+            label: "变形同构体",
+            value: "变形同构体",
+        ),
+        (
+            label: "人事部文档",
+            value: "人事部文档",
+        ),
+        (
+            label: "随身身份牌",
+            value: "随身身份牌",
+        ),
+        (
+            label: "博士投影",
+            value: "博士投影",
+        ),
+        (
+            label: "拟态物质",
+            value: "拟态物质",
+        ),
+        (
+            label: "天马之盔",
+            value: "天马之盔",
+        ),
+        (
+            label: "天马之枪",
+            value: "天马之枪",
+        ),
+        (
+            label: "炎",
+            value: "炎国短刀",
+        ),
+        (
+            label: "叙拉古",
+            value: "叙拉古正装",
+        ),
+        (
+            label: "卡西米尔",
+            value: "卡西米尔竞技旗",
+        ),
+        (
+            label: "萨尔贡",
+            value: "萨尔贡浓茶",
+        ),
+        (
+            label: "维多利亚",
+            value: "维氏重锤",
+        ),
+        (
+            label: "谢拉格",
+            value: "谢拉格不融冰",
+        ),
+        (
+            label: "拉特兰",
+            value: "拉特兰桥夹",
+        ),
+        (
+            label: "阿戈尔",
+            value: "阿戈尔重刃",
+        ),
+        (
+            label: "奥术",
+            value: "奥术法阵",
+        ),
+        (
+            label: "坚守",
+            value: "坚守盾牌",
+        ),
+        (
+            label: "不屈",
+            value: "不屈弹射器",
+        ),
+        (
+            label: "精准",
+            value: "精准瞄准镜",
+        ),
+        (
+            label: "突袭",
+            value: "突袭手雷",
+        ),
+        (
+            label: "迅捷",
+            value: "迅捷作战粮",
+        ),
+    ],
+    predefined_buy_only_operators: [
+        (
+            label: "丰川祥子",
+            value: "丰川祥子",
+        ),
+        (
+            label: "缪尔赛思",
+            value: "缪尔赛思",
+        ),
+        (
+            label: "溯光星源",
+            value: "溯光星源",
+        ),
+        (
+            label: "望",
+            value: "望",
+        ),
+        (
+            label: "赤刃明霄陈",
+            value: "赤刃明霄陈",
+        ),
+    ],
+)

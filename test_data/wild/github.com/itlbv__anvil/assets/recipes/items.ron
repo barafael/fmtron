@@ -1,0 +1,14 @@
+[
+  (
+    id: "tool/hammer_wood_v1",
+    product: (kind: item, id: "hammer_wood", qty: 1),
+    ingredients: [
+      (kind: item, id: "wood_plank", qty: 2),
+      (kind: item, id: "stone_chunk", qty: 1),
+    ],
+    tools: [],
+    time_ms: 5_000,
+    tags: ["starter"],
+    flags: 0,
+  ),
+]

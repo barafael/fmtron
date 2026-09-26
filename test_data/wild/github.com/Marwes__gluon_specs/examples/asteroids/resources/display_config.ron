@@ -1,0 +1,4 @@
+(
+  title: "asteroids",
+  dimensions: Some((500, 500)),
+)

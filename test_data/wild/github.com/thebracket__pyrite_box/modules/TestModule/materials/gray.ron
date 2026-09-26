@@ -1,0 +1,9 @@
+(
+    name: "Gray",
+    index: 1,
+    material: Color(
+        r: 128,
+        g: 128,
+        b: 128,
+    )
+)

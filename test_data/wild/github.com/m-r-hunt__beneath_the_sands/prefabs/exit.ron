@@ -1,0 +1,12 @@
+Prefab(
+    name: "exit",
+    components: [
+	(name: "RenderComponent", properties: [
+            (name: "radius", value: "20.0"),
+            (name: "colour", value: "rgba!(0, 128, 128, 1.0)"),
+        ]),
+	(name: "Exit"),
+	(name: "HitBox", properties: [(name: "radius", value: "20.0")]),
+	(name: "LevelObject"),
+    ],
+)

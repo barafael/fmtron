@@ -1,0 +1,12 @@
+[
+    (
+        id: "duplicate_id",
+        name: "First Entity",
+        type: Character,
+    ),
+    (
+        id: "duplicate_id",
+        name: "Second Entity",
+        type: Character,
+    ),
+]

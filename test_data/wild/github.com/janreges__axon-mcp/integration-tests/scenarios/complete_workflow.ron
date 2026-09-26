@@ -1,0 +1,411 @@
+// Complete Axon MCP Workflow Test Scenario
+// Tests all 19 functions in realistic sequence for AI agent coordination
+
+TestScenario(
+    name: "complete_mcp_workflow",
+    description: "Test all 19 MCP functions in realistic agent coordination workflow",
+    
+    steps: [
+        // === 1. Server Health Check ===
+        Step(
+            name: "health_check",
+            function: "health_check",
+            params: {},
+            expect_success: true,
+            validate: [
+                FieldExists("status"),
+                FieldEquals("status", "healthy"),
+            ]
+        ),
+
+        // === 2. Workspace Setup - Get Setup Instructions ===
+        Step(
+            name: "get_setup_instructions",
+            function: "get_setup_instructions", 
+            params: {
+                "ai_tool_type": "claude-code"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("setup_steps"),
+                FieldExists("recommended_structure"),
+            ]
+        ),
+
+        // === 3. Workspace Setup - Get Workflow Description ===
+        Step(
+            name: "get_agentic_workflow_description",
+            function: "get_agentic_workflow_description",
+            params: {
+                "requested_agent_count": 3
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("workflow_description"),
+                FieldExists("recommended_agent_count"),
+                FieldEquals("recommended_agent_count", 3),
+            ]
+        ),
+
+        // === 4. Register First Agent ===
+        Step(
+            name: "register_agent_1",
+            function: "register_agent",
+            params: {
+                "agent_name": "task-coordinator",
+                "agent_type": "coordinator",
+                "capabilities": ["task-management", "coordination"],
+                "description": "Main coordinator agent for task orchestration"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("agent_name"),
+                FieldEquals("agent_name", "task-coordinator"),
+            ],
+            verify_files: [
+                FileExists(".claude/agents/task-coordinator.md")
+            ]
+        ),
+
+        // === 5. Register Second Agent ===
+        Step(
+            name: "register_agent_2", 
+            function: "register_agent",
+            params: {
+                "agent_name": "python-developer",
+                "agent_type": "developer",
+                "capabilities": ["python", "fastapi", "testing"],
+                "description": "Python specialist for backend development"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("agent_name"),
+                FieldEquals("agent_name", "python-developer"),
+            ],
+            verify_files: [
+                FileExists(".claude/agents/python-developer.md")
+            ]
+        ),
+
+        // === 6. Create Tasks ===
+        Step(
+            name: "create_task_1",
+            function: "create_task",
+            params: {
+                "code": "SETUP-001",
+                "name": "Initialize Python project structure",
+                "description": "Create FastAPI project with proper structure and dependencies",
+                "owner_agent_name": "task-coordinator"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("id"),
+                FieldEquals("code", "SETUP-001"),
+                FieldEquals("state", "Created"),
+                FieldEquals("owner_agent_name", "task-coordinator"),
+            ]
+        ),
+
+        Step(
+            name: "create_task_2",
+            function: "create_task", 
+            params: {
+                "code": "API-001",
+                "name": "Implement user authentication API",
+                "description": "Create JWT-based auth endpoints with FastAPI",
+                "owner_agent_name": null
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("id"),
+                FieldEquals("code", "API-001"),
+                FieldEquals("state", "Created"),
+                FieldEquals("owner_agent_name", null),
+            ]
+        ),
+
+        // === 7. Task Retrieval ===
+        Step(
+            name: "get_task_by_code",
+            function: "get_task_by_code",
+            params: {
+                "code": "SETUP-001"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("id"),
+                FieldEquals("code", "SETUP-001"),
+            ]
+        ),
+
+        Step(
+            name: "get_task_by_id", 
+            function: "get_task_by_id",
+            params: {
+                "id": "$create_task_1.id"  // Reference from previous step
+            },
+            expect_success: true,
+            validate: [
+                FieldEquals("code", "SETUP-001"),
+            ]
+        ),
+
+        // === 8. List Tasks ===
+        Step(
+            name: "list_all_tasks",
+            function: "list_tasks",
+            params: {},
+            expect_success: true,
+            validate: [
+                ArrayLength(2),  // Should have 2 tasks
+            ]
+        ),
+
+        Step(
+            name: "list_tasks_by_owner",
+            function: "list_tasks", 
+            params: {
+                "owner": "task-coordinator"
+            },
+            expect_success: true,
+            validate: [
+                ArrayLength(1),  // Should have 1 task owned by coordinator
+            ]
+        ),
+
+        // === 9. Multi-Agent Coordination - Work Discovery ===
+        Step(
+            name: "discover_work_python",
+            function: "discover_work",
+            params: {
+                "agent_name": "python-developer",
+                "capabilities": ["python", "fastapi"],
+                "max_tasks": 5
+            },
+            expect_success: true,
+            validate: [
+                ArrayMinLength(1),  // Should find at least 1 available task
+            ]
+        ),
+
+        // === 10. Claim Task ===
+        Step(
+            name: "claim_task",
+            function: "claim_task",
+            params: {
+                "task_id": "$create_task_2.id",
+                "agent_name": "python-developer"
+            },
+            expect_success: true,
+            validate: [
+                FieldEquals("owner_agent_name", "python-developer"),
+                FieldEquals("state", "InProgress"),
+            ]
+        ),
+
+        // === 11. Start Work Session ===
+        Step(
+            name: "start_work_session",
+            function: "start_work_session",
+            params: {
+                "task_id": "$create_task_2.id",
+                "agent_name": "python-developer"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("session_id"),
+                FieldExists("started_at"),
+            ]
+        ),
+
+        // === 12. Inter-Agent Messaging ===
+        Step(
+            name: "create_message_question",
+            function: "create_task_message",
+            params: {
+                "task_code": "API-001",
+                "author_agent_name": "python-developer",
+                "target_agent_name": "task-coordinator", 
+                "message_type": "question",
+                "content": "Should I use SQLAlchemy or plain SQL for database operations?"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("id"),
+                FieldEquals("message_type", "question"),
+                FieldEquals("target_agent_name", "task-coordinator"),
+            ]
+        ),
+
+        Step(
+            name: "create_message_response",
+            function: "create_task_message",
+            params: {
+                "task_code": "API-001",
+                "author_agent_name": "task-coordinator",
+                "target_agent_name": "python-developer",
+                "message_type": "solution", 
+                "content": "Use SQLAlchemy ORM for better maintainability and type safety.",
+                "reply_to_message_id": "$create_message_question.id"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("id"),
+                FieldEquals("message_type", "solution"),
+                FieldEquals("reply_to_message_id", "$create_message_question.id"),
+            ]
+        ),
+
+        // === 13. Get Messages ===
+        Step(
+            name: "get_task_messages_all",
+            function: "get_task_messages",
+            params: {
+                "task_code": "API-001"
+            },
+            expect_success: true,
+            validate: [
+                ArrayLength(2),  // Should have 2 messages
+            ]
+        ),
+
+        Step(
+            name: "get_messages_for_agent",
+            function: "get_task_messages",
+            params: {
+                "task_code": "API-001",
+                "target_agent_name": "python-developer"
+            },
+            expect_success: true,
+            validate: [
+                ArrayLength(1),  // Should have 1 message targeted to python-developer
+            ]
+        ),
+
+        // === 14. Update Task ===
+        Step(
+            name: "update_task",
+            function: "update_task",
+            params: {
+                "id": "$create_task_2.id",
+                "description": "Create JWT-based auth endpoints with FastAPI and SQLAlchemy ORM"
+            },
+            expect_success: true,
+            validate: [
+                FieldContains("description", "SQLAlchemy ORM"),
+            ]
+        ),
+
+        // === 15. Set Task State ===
+        Step(
+            name: "set_task_to_review",
+            function: "set_task_state",
+            params: {
+                "id": "$create_task_2.id",
+                "state": "Review"
+            },
+            expect_success: true,
+            validate: [
+                FieldEquals("state", "Review"),
+            ]
+        ),
+
+        // === 16. End Work Session ===
+        Step(
+            name: "end_work_session",
+            function: "end_work_session",
+            params: {
+                "session_id": "$start_work_session.session_id"
+            },
+            expect_success: true
+        ),
+
+        // === 17. Assign Task ===
+        Step(
+            name: "assign_task",
+            function: "assign_task",
+            params: {
+                "id": "$create_task_1.id",
+                "new_owner_agent_name": "python-developer"
+            },
+            expect_success: true,
+            validate: [
+                FieldEquals("owner_agent_name", "python-developer"),
+            ]
+        ),
+
+        // === 18. Complete Task ===
+        Step(
+            name: "complete_task",
+            function: "set_task_state", 
+            params: {
+                "id": "$create_task_2.id",
+                "state": "Done"
+            },
+            expect_success: true,
+            validate: [
+                FieldEquals("state", "Done"),
+            ]
+        ),
+
+        // === 19. Archive Task ===
+        Step(
+            name: "archive_task",
+            function: "archive_task",
+            params: {
+                "id": "$create_task_2.id"
+            },
+            expect_success: true,
+            validate: [
+                FieldEquals("state", "Archived"),
+                FieldExists("done_at"),
+            ]
+        ),
+
+        // === 20. Release Task (demonstrate release functionality) ===
+        Step(
+            name: "release_task",
+            function: "release_task",
+            params: {
+                "task_id": "$create_task_1.id",
+                "agent_name": "python-developer"
+            },
+            expect_success: true,
+            validate: [
+                FieldEquals("state", "Created"),
+                FieldEquals("owner_agent_name", null),
+            ]
+        ),
+
+        // === 21. Workspace Setup - Create Main AI File ===
+        Step(
+            name: "get_main_ai_file_instructions",
+            function: "get_instructions_for_main_ai_file",
+            params: {
+                "file_type": "CLAUDE.md"
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("instructions"),
+                FieldExists("template_content"),
+            ]
+        ),
+
+        Step(
+            name: "create_main_ai_file",
+            function: "create_main_ai_file",
+            params: {
+                "content": "# FastAPI Project\n\nThis is a test AI coordination file for our FastAPI project."
+            },
+            expect_success: true,
+            validate: [
+                FieldExists("file_path"),
+                FieldExists("created_at"),
+            ],
+            verify_files: [
+                FileExists("CLAUDE.md"),
+                FileContains("CLAUDE.md", "FastAPI Project")
+            ]
+        ),
+    ]
+)

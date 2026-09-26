@@ -1,0 +1,24 @@
+#![enable(implicit_some)]
+(
+    sprite_source: "overworld",
+    states: {
+        "Idle": Directional(
+            up: "characters/frisk/walk/up/0.png",
+            down: "characters/frisk/walk/down/0.png",
+            left: "characters/frisk/walk/side/0.png",
+            right: (path: "characters/frisk/walk/side/0.png", flip_x: true),
+        ),
+        "Walk": Directional(
+            up: "characters/frisk/walk/up",
+            down: "characters/frisk/walk/down",
+            left: "characters/frisk/walk/side",
+            right: (path: "characters/frisk/walk/side", flip_x: true),
+        ),
+        "Run": Directional(
+            up: "characters/frisk/run/up",
+            down: "characters/frisk/run/down",
+            left: "characters/frisk/run/side",
+            right: (path: "characters/frisk/run/side", flip_x: true),
+        ),
+    }
+)

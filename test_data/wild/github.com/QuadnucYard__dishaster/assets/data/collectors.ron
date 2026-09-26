@@ -1,0 +1,10 @@
+[
+    (
+        id: "main_dish_return",
+        size: (width: 1.5, height: 0.8),
+        reception_area: (min: (-1.0, -0.0), max: (1.0, 0.9)),
+        capacity: 80,
+        processing_capacity: 15.0,
+        display: (res: "furnishings/main_dish_return")
+    ),
+]

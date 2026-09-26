@@ -1,0 +1,15 @@
+(
+    assets: [
+    ("Bevy Logo", "All rights reserved by the Bevy Foundation, permission granted for splash screen use when unmodified" ),
+    ("Menu Music", "smnbl-green-emrace\nfree to bevy community, CC0" ),
+    ("Background Music", "smnbl-rush-through-the-fields\nfree to bevy community, CC0" ),
+    ("Button hover/press sounds, step sounds", "smnbl records\ngifted to rust community, CC0" ),
+    ("Scene assets", "olekspickle\ngifted to rust community, CC0" ),
+    ("Textures", "https://www.texturecan.com/details/290, https://www.texturecan.com/details/283, CC0" ),
+    ("icons", "khusmeen, CC4" ),
+    ("font", "Not Jam, CC0" ),
+    ],
+    devs: [
+    ( "olekspickle", "compiled different bevy crates to have a consistent template covering stuff average 3D RPG game needs"),
+    ]
+)

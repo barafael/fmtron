@@ -1,0 +1,16 @@
+BindingsConfig (
+    axes: {
+        "run": Emulated(
+            pos: Key(D),
+            neg: Key(A),
+        ),
+    },
+    actions: {
+        "jump": [
+            [Key(Space)]
+        ],
+        "crouch": [
+            [Key(S)]
+        ]
+    }
+)

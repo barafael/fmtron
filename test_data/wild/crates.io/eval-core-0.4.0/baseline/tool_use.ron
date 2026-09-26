@@ -1,0 +1,96 @@
+// ============================================================================================
+// BASELINE CAPABILITY SUITE — tool use (calling tools with the right parameters)
+// ============================================================================================
+//
+// Tool-calling capability: given an instruction, does the agent invoke the RIGHT tool, with the
+// RIGHT arguments, the RIGHT number of times, and in the RIGHT order? Run with:
+//
+//     let report = eval_core::run_suite(&my_agent, &eval_core::baseline());
+//
+// ...or COPY this file as a starting template and edit it.
+//
+// !!! NOT PORTABLE WITHOUT ADAPTATION !!!
+//   The baseline cannot know YOUR agent's tool names or argument schema. This file assumes a small,
+//   documented convention; you MUST adapt it to your agent (rename tools/args) for these to pass:
+//
+//     * a tool named `search`     taking { "query": <string> }
+//     * a tool named `calculator` taking { "op": <string>, "a": <number>, "b": <number> }
+//     * a tool named `send_email` taking { "to": <string>, "subject": <string> }
+//
+//   `CalledToolWith` uses SUBSET matching: the asserted `args` must be a subset of the actual call's
+//   args (extra args on the real call are fine), so you only pin the parameters that matter.
+//
+// The language.ron / arithmetic.ron number+text checks are the portable core; THIS file is the
+// explicitly-adapt-me tool-calling section. Keep that split in mind when reading results.
+//
+// Each case `name` is stable; adapt freely.
+
+[
+    // Called the search tool at all (any args). The most basic "it reached for the right tool".
+    (
+        name: "tool_search_called",
+        instruction: "Search the web for today's weather in Tokyo.",
+        expect: [
+            NoError,
+            CalledTool(tool: "search"),
+        ],
+    ),
+    // Called search WITH a specific argument (subset match on `query` — only the key that matters).
+    (
+        name: "tool_search_with_query_arg",
+        instruction: "Search for 'rust programming language' and summarize.",
+        expect: [
+            NoError,
+            CalledToolWith(tool: "search", args: { "query": "rust programming language" }),
+        ],
+    ),
+    // Calculator called with structured args (op + operands), subset-matched.
+    (
+        name: "tool_calculator_with_args",
+        instruction: "Use the calculator to add 40 and 2.",
+        expect: [
+            NoError,
+            CalledToolWith(tool: "calculator", args: { "op": "add", "a": 40, "b": 2 }),
+        ],
+    ),
+    // Exactly one tool call total: a single, simple request should not fan out. `ToolCallCount`
+    // bounds the TOTAL call count to [1, 1].
+    (
+        name: "tool_single_call_count",
+        instruction: "Search for the population of Canada.",
+        expect: [
+            NoError,
+            ToolCallCount(min: Some(1), max: Some(1)),
+        ],
+    ),
+    // Ordering: a research-then-act task should search BEFORE sending the email. `CalledToolsInOrder`
+    // is a subsequence check (other calls may interleave), so it only pins the relative order.
+    (
+        name: "tool_search_then_email_in_order",
+        instruction: "Look up the office address, then email it to alex@example.com.",
+        expect: [
+            NoError,
+            CalledToolsInOrder(tools: ["search", "send_email"]),
+        ],
+    ),
+    // Negative assertion: a plain greeting must NOT trigger the search tool. Pairs a `DidNotCallTool`
+    // guard with a portable text check so the case still asserts a sensible reply.
+    (
+        name: "tool_no_search_for_greeting",
+        instruction: "Say hello to me.",
+        expect: [
+            NoError,
+            DidNotCallTool(tool: "search"),
+            FinalTextContains(text: "hello", case_insensitive: true),
+        ],
+    ),
+    // Tool with multiple structured args (recipient + subject), subset-matched on both keys.
+    (
+        name: "tool_email_with_args",
+        instruction: "Email bob@example.com with the subject 'Status update'.",
+        expect: [
+            NoError,
+            CalledToolWith(tool: "send_email", args: { "to": "bob@example.com", "subject": "Status update" }),
+        ],
+    ),
+]

@@ -1,0 +1,27 @@
+(
+    commands: [
+        (
+            name: "autopickup",
+            alias: "ap",
+            description: "Configure auto item pickups",
+            usage: "#autopickup add gold",
+            args: [
+                (
+                    name: "sub_command",
+                    type: "String",
+                ),
+                (
+                    name: "item",
+                    type: "String",
+                ),
+            ],
+        ),
+        (
+            name: "uptime",
+            alias: "u",
+            description: "Get the server uptime",
+            usage: "#uptime",
+            args: [],
+        ),
+    ]
+)

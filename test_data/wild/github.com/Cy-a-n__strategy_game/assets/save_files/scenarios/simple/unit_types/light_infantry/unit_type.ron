@@ -1,0 +1,4 @@
+UnitType (
+    attack: 16,
+    defense: 16,
+)

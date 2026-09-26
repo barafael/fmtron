@@ -1,0 +1,437 @@
+Config
+(
+    // The sax type. Supported values are: Alto, Tenor, Baritone, Soprano, Bass, CMelody, Contrabass, 
+    // Sopranino, Subcontrabass, and Sopranissimo. This is used only for note transposition.
+    transposition_type: Tenor,
+
+    // The output path. If this is a non-existent directory, will attempt to create.
+    output_path: "./out",
+
+    // The output format. May use `Tracks`, `Rows`, or `Separate`. `Tracks` outputs charts for each midi 
+    // track as a single file. `Rows` splits tracks up into multiple files each containing a horizontal 
+    // row of notes. `Separate` outputs each individual note as a separate file.
+    output_format: Tracks,
+
+    // The visual spacing between consecutive notes. Not applicable when using `Separate` output format.
+    spacing: 10,
+
+    // The number of notes per row. Not applicable when using `Separate` output format.
+    notes_per_row: 18,
+
+    /*
+    The last field defines the fingerings for each individual note. The actual note images are generated 
+    at runtime based on input from this file. All of the information you need to make changes to the 
+    particular notes available and the fingering for each one is in this file.
+
+    The following is a complete list of usable key constants:
+    Octave,     Left1,    Left2,     Left3,
+    FrontF,     Bis,      PalmD,     PalmEflat,
+    PalmF,      Gsharp,   LowCsharp, LowB,
+    LowBflat,   Right1,   Right2,    Right3,
+    Fsharp,     SideE,    SideC,     SideBis,
+    HighFsharp, LowEflat, LowC,      LowA
+
+    And the following is a chart containing the midi byte constant for each note (may not look right if
+    not using a monospaced font):
+    ┏━━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━┳━━━━━┳━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━┳━━━━━━━┳━━━━━┓
+    ┃ Octave ┃  C  ┃ Cs/Db ┃  D  ┃ Ds/Eb ┃  E  ┃  F  ┃ Fs/Gb ┃  G  ┃ Gs/Ab ┃  A  ┃ As/Bb ┃  B  ┃
+    ┡━━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━╇━━━━━╇━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━╇━━━━━━━╇━━━━━┩
+    │   -1   │  0  │   1   │  2  │   3   │  4  │  5  │   6   │  7  │   8   │  9  │  10   │ 11  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   0    │ 12  │  13   │ 14  │  15   │ 16  │ 17  │  18   │ 19  │  20   │ 21  │  22   │ 23  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   1    │ 24  │  25   │ 26  │  27   │ 28  │ 29  │  30   │ 31  │  32   │ 33  │  34   │ 35  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   2    │ 36  │  37   │ 38  │  39   │ 40  │ 41  │  42   │ 43  │  44   │ 45  │  46   │ 47  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   3    │ 48  │  49   │ 50  │  51   │ 52  │ 53  │  54   │ 55  │  56   │ 57  │  58   │ 59  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   4    │ 60  │  61   │ 62  │  63   │ 64  │ 65  │  66   │ 67  │  68   │ 69  │  70   │ 71  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   5    │ 72  │  73   │ 74  │  75   │ 76  │ 77  │  78   │ 79  │  80   │ 81  │  82   │ 83  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   6    │ 84  │  85   │ 86  │  87   │ 88  │ 89  │  90   │ 91  │  92   │ 93  │  94   │ 95  │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   7    │ 96  │  97   │ 98  │  99   │ 100 │ 101 │  102  │ 103 │  104  │ 104 │  106  │ 107 │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   8    │ 108 │  109  │ 110 │  111  │ 112 │ 113 │  114  │ 115 │  116  │ 117 │  118  │ 119 │
+    ├────────┼─────┼───────┼─────┼───────┼─────┼─────┼───────┼─────┼───────┼─────┼───────┼─────┤
+    │   9    │ 120 │  121  │ 122 │  123  │ 124 │ 125 │  126  │ 127 │       │     │       │     │
+    └────────┴─────┴───────┴─────┴───────┴─────┴─────┴───────┴─────┴───────┴─────┴───────┴─────┘
+    */
+    notes:
+    {
+        46: // Bb2
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3,
+                LowEflat,
+                LowBflat
+            ]
+        ],
+        47: // B2
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3,
+                LowB,
+                LowC
+            ]
+        ],
+        48: // C3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3,
+                LowC
+            ]
+        ],
+        49: // Db3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3,
+                LowC,
+                LowCsharp
+            ]
+        ],
+        50: // D3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3
+            ]
+        ],
+        51: // Eb3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3,
+                LowEflat
+            ]
+        ],
+        52: // E3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2
+            ]
+        ],
+        53: // F3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1
+            ]
+        ],
+        54: // Gb3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right2
+            ]
+        ],
+        55: // G3
+        [
+            [
+                Left1,
+                Left2,
+                Left3
+            ]
+        ],
+        56: // Ab3
+        [
+            [
+                Left1,
+                Left2,
+                Left3,
+                Gsharp
+            ]
+        ],
+        57: // A3
+        [
+            [
+                Left1,
+                Left2
+            ],
+            [
+                Left1,
+                Left2,
+                Gsharp
+            ]
+        ],
+        58: // Bb3
+        [
+            [
+                Left1,
+                Right1
+            ],
+            [
+                Left1,
+                Left2,
+                SideBis
+            ],
+            [
+                Left1,
+                Bis
+            ]
+        ],
+        59: // B3
+        [
+            [
+                Left1
+            ],
+            [
+                Left1,
+                SideBis
+            ]
+        ],
+        60:  // C4
+        [
+            [
+                Left2
+            ],
+            [
+                Left1,
+                SideC
+            ]
+        ],
+        61:  // Db4
+        [
+            [],
+            [
+                Octave,
+                Left3
+            ]
+        ],
+        62: // D4
+        [
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3
+            ],
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3,
+                LowB
+            ]
+        ],
+        63: // Eb4
+        [
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2,
+                Right3,
+                LowEflat
+            ]
+        ],
+        64: // E4
+        [
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Right2
+            ]
+        ],
+        65: // F4
+        [
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3,
+                Right1
+            ]
+        ],
+        66: // Gb4
+        [
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3,
+                Right2
+            ],
+            [
+                Left1,
+                Left2,
+                Left3,
+                Right1,
+                Fsharp
+            ]
+        ],
+        67: // G4
+        [
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3
+            ]
+        ],
+        68: // Ab4
+        [
+            [
+                Octave,
+                Left1,
+                Left2,
+                Left3,
+                Gsharp
+            ]
+        ],
+        69: // A4
+        [
+            [
+                Octave,
+                Left1,
+                Left2
+            ]
+        ],
+        70: // Bb4
+        [
+            [
+                Octave,
+                Left1,
+                Right1
+            ],
+            [
+                Octave,
+                Left1,
+                Left2,
+                SideBis
+            ],
+            [
+                Octave,
+                Left1,
+                Bis
+            ]
+        ],
+        71: // B4
+        [
+            [
+                Octave,
+                Left1
+            ]
+        ],
+        72: // C5
+        [
+            [
+                Octave,
+                Left2
+            ],
+            [
+                Octave,
+                Left1,
+                SideC
+            ]
+        ],
+        73: // Db5
+        [
+            [
+                Octave
+            ],
+            [
+                Octave,
+                Right1,
+                Right2
+            ]
+        ],
+        74: // D5
+        [
+            [
+                Octave,
+                PalmD
+            ]
+        ],
+        75: // Eb5
+        [
+            [
+                Octave,
+                PalmEflat,
+                PalmD
+            ]
+        ],
+        76: // E5
+        [
+            [
+                Octave,
+                SideE,
+                PalmEflat,
+                PalmD
+            ],
+            [
+                Octave,
+                FrontF,
+                Left2,
+                Left3
+            ]
+        ],
+        77: // F5
+        [
+            [
+                Octave,
+                SideE,
+                PalmF,
+                PalmEflat,
+                PalmD
+            ],
+            [
+                Octave,
+                FrontF,
+                Left2
+            ]
+        ],
+        // Altissimo from here beyond: 
+        // 78 // Gb5 
+        // [[...]]
+    }
+)

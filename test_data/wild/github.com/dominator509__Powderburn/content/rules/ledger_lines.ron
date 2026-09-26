@@ -1,0 +1,22 @@
+[
+    (
+        id: "ledger_companion",
+        applies_to: "companion",
+        lines: (
+            "They rode under our name, and the name is poorer without them.",
+            "I set down what courage cost, so no one may call it cheap.",
+            "The fire has one less voice tonight. We will carry it forward.",
+        ),
+        default_index: 1,
+    ),
+    (
+        id: "ledger_combatant",
+        applies_to: "combatant",
+        lines: (
+            "They came against us and did not leave the field.",
+            "A name belongs in the account, even when it stood on the other side.",
+            "The frontier kept another debt today, and no victory settled it.",
+        ),
+        default_index: 1,
+    ),
+]

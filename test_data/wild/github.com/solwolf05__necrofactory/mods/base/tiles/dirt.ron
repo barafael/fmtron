@@ -1,0 +1,6 @@
+(
+    id: "dirt",
+    sprite_path: "mods://base/assets/dirt.png",
+    friction: 0.25,
+    restitution: 0.0,
+)

@@ -1,0 +1,5 @@
+Config (
+    show_description: false,
+    max_entries: 7,
+    highlight_color: "#facf89",
+)

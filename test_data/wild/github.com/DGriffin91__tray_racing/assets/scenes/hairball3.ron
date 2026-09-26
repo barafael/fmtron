@@ -1,0 +1,10 @@
+(
+    model_path: "assets/large_obj/hairball.obj",
+    camera: (
+        eye: (-7.0, 0.0, 0.0),
+        look_at: (0.0, 0.0, 0.0),
+        fov: 90.0,
+        exposure: 0.0,
+    ),
+    sun_direction: (0.22, -1.0, -0.2),
+)

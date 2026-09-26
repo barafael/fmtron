@@ -1,0 +1,152 @@
+{
+    "lion": Material(
+        pipeline: "/engine/simple/lambertian",
+        params: {
+            "base_colour": Texture("textures/lion"),
+        },
+    ),
+    "background": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/background"),
+        },
+    ),
+    "material__47": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Constant(RGB(255, 255, 255)),
+        },
+    ),
+    "vase_plant": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/vase_plant"),
+        },
+    ),
+    "arch": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/arch_diff"),
+        },
+    ),
+    "bricks": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/bricks_diff"),
+        },
+    ),
+    "ceiling": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/ceiling_diff"),
+        },
+    ),
+    "chain": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/chain_diff"),
+        },
+    ),
+    "column_a": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/column_a_diff"),
+        },
+    ),
+    "column_b": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/column_b_diff"),
+        },
+    ),
+    "column_c": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/column_c_diff"),
+        },
+    ),
+    "details": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/details_diff"),
+        },
+    ),
+    "fabric_red": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/fabric_red_diff"),
+        },
+    ),
+    "curtain_red": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/curtain_red_diff"),
+        },
+    ),
+    "fabric_green": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/fabric_green_diff"),
+        },
+    ),
+    "curtain_green": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/curtain_green_diff"),
+        },
+    ),
+    "fabric_blue": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/fabric_blue_diff"),
+        },
+    ),
+    "curtain_blue": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/curtain_blue_diff"),
+        },
+    ),
+    "flagpole": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/flagpole_diff"),
+        },
+    ),
+    "floor": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/floor_diff"),
+        },
+    ),
+    "leaf": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/leaf_diff"),
+        },
+    ),
+    "roof": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/roof_diff"),
+        },
+    ),
+    "vase": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/vase_diff"),
+        },
+    ),
+    "vase_hanging": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/vase_hanging_diff"),
+        },
+    ),
+    "vase_round": Material(
+        pipeline: "/engine/simple/unlit",
+        params: {
+            "base_colour": Texture("textures/vase_round_diff"),
+        },
+    ),
+}

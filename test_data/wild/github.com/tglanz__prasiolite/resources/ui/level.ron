@@ -1,0 +1,13 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        anchor: Middle,
+        width: 1.,
+        height: 1.,
+        percent: true,
+    ),
+    background: SolidColor(.1, .1, .1, 1.),
+    children: [
+        
+    ]
+)

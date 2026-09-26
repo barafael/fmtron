@@ -1,0 +1,46 @@
+(
+    id: "weapon_shop",
+    kind: Modal,
+    elements: [
+        Image((
+            id: "placeholder",
+            position: (200.0, 150.0),
+            size: (240.0, 180.0),
+            z: 5,
+            states: {
+                "default": (
+                    texture: "icons/pending",
+                ),
+            },
+            on_click: [],
+            on_hover: [],
+            bindings: {},
+            transparent_color: "cyan",
+        )),
+        Image((
+            id: "icons/BUTTESC1",
+            position: (527.0, 308.0),
+            size: (61.0, 28.0),
+            z: 7,
+            states: {
+                "clicked": (
+                    texture: "icons/BUTTESC2",
+                ),
+                "default": (
+                    texture: "icons/BUTTESC1",
+                ),
+            },
+            on_click: [
+                "CloseWindow()",
+            ],
+            on_hover: [
+                "evt:Hint(\"close\")",
+            ],
+            bindings: {},
+            transparent_color: "cyan",
+        )),
+    ],
+    keys: {
+        "Escape": ["CloseWindow()"],
+    },
+)

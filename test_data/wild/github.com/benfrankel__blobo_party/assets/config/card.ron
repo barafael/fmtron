@@ -1,0 +1,374 @@
+
+(
+    // Deck:
+    deck_cap: 10,
+
+    // Cards:
+    card_height: Vw(9.0),
+    card_background_map: {
+        "blue": CardBackground (
+            texture: "image/card/background/blue.png",
+            texture_atlas_grid: TextureAtlasGrid(
+                tile_size: UVec2(16, 16),
+                columns: 2,
+                rows: 1,
+            ),
+        ),
+        "pink": CardBackground (
+            texture: "image/card/background/pink.png",
+            texture_atlas_grid: TextureAtlasGrid(
+                tile_size: UVec2(16, 16),
+                columns: 2,
+                rows: 1,
+            ),
+        ),
+        "green": CardBackground (
+            texture: "image/card/background/green.png",
+            texture_atlas_grid: TextureAtlasGrid(
+                tile_size: UVec2(16, 16),
+                columns: 2,
+                rows: 1,
+            ),
+        ),
+        "yellow": CardBackground (
+            texture: "image/card/background/yellow.png",
+            texture_atlas_grid: TextureAtlasGrid(
+                tile_size: UVec2(16, 16),
+                columns: 2,
+                rows: 1,
+            ),
+        ),
+    },
+    card_icon_map: {
+        "step": CardIcon(texture: "image/card/icon/step.png"),
+        "splits": CardIcon(texture: "image/card/icon/splits.png"),
+        "ballet": CardIcon(texture: "image/card/icon/ballet.png"),
+        "cartwheel": CardIcon(texture: "image/card/icon/cartwheel.png"),
+        "moonwalk": CardIcon(texture: "image/card/icon/moonwalk.png"),
+
+        "eighth_note": CardIcon(texture: "image/card/icon/eighth_note.png"),
+        "quarter_note": CardIcon(texture: "image/card/icon/quarter_note.png"),
+        "half_note": CardIcon(texture: "image/card/icon/half_note.png"),
+        "whole_note": CardIcon(texture: "image/card/icon/whole_note.png"),
+        "pair": CardIcon(texture: "image/card/icon/pair.png"),
+        "triplet": CardIcon(texture: "image/card/icon/triplet.png"),
+        "chord": CardIcon(texture: "image/card/icon/chord.png"),
+        "cluster": CardIcon(texture: "image/card/icon/cluster.png"),
+        "cacophony": CardIcon(texture: "image/card/icon/cacophony.png"),
+
+        "eighth_rest": CardIcon(texture: "image/card/icon/eighth_rest.png"),
+        "quarter_rest": CardIcon(texture: "image/card/icon/quarter_rest.png"),
+        "half_rest": CardIcon(texture: "image/card/icon/half_rest.png"),
+        "whole_rest": CardIcon(texture: "image/card/icon/whole_rest.png"),
+
+        "sharp_flat": CardIcon(texture: "image/card/icon/sharp_flat.png"),
+        "natural": CardIcon(texture: "image/card/icon/natural.png"),
+        "fermata": CardIcon(texture: "image/card/icon/fermata.png"),
+        "bass_clef": CardIcon(texture: "image/card/icon/bass_clef.png"),
+    },
+    // TODO: "contact damage" -> something more thematic?
+    card_map: {
+        /********/
+        /* Move */
+        /********/
+
+        "step": Card(
+            name: "Simple Step",
+            description: "Step forwards for 8 contact damage.\n\n\"fancy footwork starts here\"",
+            background: "blue",
+            icon: "step",
+            max_level: 4,
+            weight: 0.8,
+
+            play_sfx: "audio/sfx/444407__mootmcnoodles__slap.ogg",
+            action: Move,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 5,
+                movement: Movement(speed: 80.0),
+                contact_damage: 8,
+                contact_beats: 5,
+                immunity: 0.15,
+            ),
+        ),
+        // TODO: This would fit better as Breakdance if I could draw the icon for it :zany_face:
+        "splits": Card(
+            name: "Splits",
+            description: "Duck in place for 45 contact damage.\n\n\"can a blobo do the splits?\"",
+            background: "blue",
+            icon: "splits",
+            weight: 0.3,
+
+            play_sfx: "audio/sfx/444407__mootmcnoodles__slap.ogg",
+            action: Move,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 16,
+                movement: Movement(speed: 0),
+                contact_damage: 45,
+                contact_beats: 16,
+                immunity: 0.9,
+            ),
+        ),
+        "ballet": Card(
+            name: "Pirouette",
+            description: "Leap forwards for 12 contact damage.\n\n\"this card is pirouette good\"",
+            background: "blue",
+            icon: "ballet",
+            min_level: 3,
+            weight: 0.8,
+
+            play_sfx: "audio/sfx/444407__mootmcnoodles__slap.ogg",
+            action: Move,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 6,
+                movement: Movement(speed: 120.0),
+                contact_damage: 12,
+                contact_beats: 6,
+                immunity: 0.3,
+            ),
+        ),
+        "cartwheel": Card(
+            name: "Cartwheel",
+            description: "Flip to the left for 40 contact damage.\n\n\"round and round, let the city turn!\"",
+            background: "blue",
+            icon: "cartwheel",
+            min_level: 5,
+            weight: 0.8,
+
+            play_sfx: "audio/sfx/444407__mootmcnoodles__slap.ogg",
+            action: Move,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 4,
+                movement: Movement(speed: 160.0, direction: 0.25),
+                contact_damage: 40,
+                contact_beats: 7,
+                immunity: 0.4,
+            ),
+        ),
+        "moonwalk": Card(
+            name: "Moonwalk",
+            description: "Slide backwards for 60 contact damage.\n\n\"that's one small step for man...\"",
+            // vscode-ron syntax highlighting breaks without this: '
+            background: "blue",
+            icon: "moonwalk",
+            min_level: 7,
+
+            play_sfx: "audio/sfx/444407__mootmcnoodles__slap.ogg",
+            action: Move,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 12,
+                movement: Movement(speed: 50.0, direction: 0.5),
+                contact_damage: 60,
+                contact_beats: 12,
+                immunity: 0.9,
+            ),
+        ),
+
+        /**********/
+        /* Attack */
+        /**********/
+
+        "eighth_note": Card(
+            name: "Eighth Note",
+            description: "Sing an eighth note.",
+            background: "pink",
+            icon: "eighth_note",
+            max_level: 1,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 0,
+                attack: Attack(projectile: Some("eighth_note")),
+            ),
+        ),
+        "quarter_note": Card(
+            name: "Quarter Note",
+            description: "Sing a quarter note.",
+            background: "pink",
+            icon: "quarter_note",
+            max_level: 3,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 0,
+                attack: Attack(projectile: Some("quarter_note")),
+            ),
+        ),
+        "half_note": Card(
+            name: "Half Note",
+            description: "Sing a half note.",
+            background: "pink",
+            icon: "half_note",
+            min_level: 3,
+            max_level: 6,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 0,
+                attack: Attack(projectile: Some("half_note")),
+            ),
+        ),
+        "whole_note": Card(
+            name: "Whole Note",
+            description: "Sing a whole note.",
+            background: "pink",
+            icon: "whole_note",
+            min_level: 5,
+            max_level: 8,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 0,
+                attack: Attack(projectile: Some("whole_note")),
+            ),
+        ),
+        "pair": Card(
+            name: "Pair",
+            description: "Sing a pair of eighth notes.\n\n\"two beats, rapid fire!\"",
+            background: "pink",
+            icon: "pair",
+            max_level: 2,
+            weight: 0.5,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 4,
+                attack: Attack(projectile: Some("eighth_note")),
+            ),
+        ),
+        "triplet": Card(
+            name: "Triplet",
+            description: "Sing a triplet of eighth notes.\n\n\"...three beats, rapid fire!\"",
+            background: "pink",
+            icon: "triplet",
+            max_level: 3,
+            weight: 0.4,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 8,
+                attack: Attack(projectile: Some("eighth_note")),
+                attack_on_beat: 3,
+            ),
+        ),
+        "cacophony": Card(
+            name: "Cacophony",
+            description: "Sing a whole bunch of eighth notes.\n\n\"how's my volume?\"",
+            // vscode-ron syntax highlighting breaks without this: '
+            background: "pink",
+            icon: "cacophony",
+            min_level: 3,
+            max_level: 8,
+            weight: 0.25,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 6,
+                attack: Attack(
+                    projectile: Some("eighth_note"),
+                    multi_shot: Some(MultiShot([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])),
+                ),
+                attack_on_beat: 2,
+            ),
+        ),
+        "major_chord": Card(
+            name: "Major Chord",
+            description: "Sing a triad of whole notes.\n\n\"this card strikes a major chord :)\"",
+            background: "pink",
+            icon: "chord",
+            min_level: 6,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 0,
+                attack: Attack(
+                    projectile: Some("whole_note"),
+                    multi_shot: Some(MultiShot([0.05, -0.05])),
+                ),
+            ),
+        ),
+        "cluster_chord": Card(
+            name: "Cluster Chord",
+            description: "Sing a tetrad of whole notes.\n\n\"it's getting clusterphobic in here...\"",
+            // vscode-ron syntax highlighting breaks without this: '
+            background: "pink",
+            icon: "cluster",
+            min_level: 6,
+            weight: 0.8,
+
+            action: Attack,
+            action_modifier: CardActionModifier(
+                remove_on_beat: 0,
+                attack: Attack(
+                    projectile: Some("whole_note"),
+                    multi_shot: Some(MultiShot([0.25, 0.375, 0.75])),
+                ),
+            ),
+        ),
+
+        /********/
+        /* Heal */
+        /********/
+
+        "eighth_rest": Card(
+            name: "Eighth Rest",
+            description: "Restore 5 health.",
+            background: "green",
+            icon: "eighth_rest",
+            max_level: 4,
+
+            action: Heal,
+            action_modifier: CardActionModifier(
+                heal_flat: 5,
+                immunity: 0.15,
+                attack: Attack(projectile: Some("eighth_rest"), offset: 8.0),
+            ),
+        ),
+        "quarter_rest": Card(
+            name: "Quarter Rest",
+            description: "Restore 10 health.",
+            background: "green",
+            icon: "quarter_rest",
+            min_level: 3,
+            max_level: 7,
+            weight: 0.7,
+
+            action: Heal,
+            action_modifier: CardActionModifier(
+                heal_flat: 10,
+                immunity: 0.25,
+                attack: Attack(projectile: Some("quarter_rest"), offset: 8.0),
+            ),
+        ),
+        "half_rest": Card(
+            name: "Half Rest",
+            description: "Restore 25% of missing health.",
+            background: "green",
+            icon: "half_rest",
+            min_level: 5,
+            max_level: 9,
+            weight: 0.6,
+
+            action: Heal,
+            action_modifier: CardActionModifier(
+                heal_percent_missing: 25,
+                immunity: 0.4,
+                attack: Attack(projectile: Some("half_rest"), offset: 8.0),
+            ),
+        ),
+        "whole_rest": Card(
+            name: "Whole Rest",
+            description: "Restore 50% of missing health.",
+            background: "green",
+            icon: "whole_rest",
+            min_level: 8,
+            weight: 0.5,
+
+            action: Heal,
+            action_modifier: CardActionModifier(
+                heal_percent_missing: 50,
+                immunity: 0.65,
+                attack: Attack(projectile: Some("whole_rest"), offset: 7.0),
+            ),
+        ),
+    }
+)

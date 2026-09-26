@@ -1,0 +1,10 @@
+Ron(
+    plugin: Plugin(
+        name: "test_asset",
+        version: "1.0.0",
+        authors: Some(["chrispaig3"]),
+        description: Some("A test plugin"),
+        license: Some("MIT"),
+        path: Some("/path/to/test_asset"),
+    ),
+)

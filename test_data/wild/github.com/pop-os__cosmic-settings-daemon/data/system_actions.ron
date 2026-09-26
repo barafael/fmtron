@@ -1,0 +1,58 @@
+{
+    /// Opens the application library
+    AppLibrary: "cosmic-app-library",
+    /// Decreases screen brightness
+    BrightnessDown: "busctl --user call com.system76.CosmicSettingsDaemon /com/system76/CosmicSettingsDaemon com.system76.CosmicSettingsDaemon DecreaseDisplayBrightness",
+    /// Increases screen brightness
+    BrightnessUp: "busctl --user call com.system76.CosmicSettingsDaemon /com/system76/CosmicSettingsDaemon com.system76.CosmicSettingsDaemon IncreaseDisplayBrightness",
+    /// Toggles display mode
+    DisplayToggle: "cosmic-osd display",
+    /// Switch between input sources
+    InputSourceSwitch: "busctl --user call com.system76.CosmicSettingsDaemon /com/system76/CosmicSettingsDaemon com.system76.CosmicSettingsDaemon InputSourceSwitch",
+    /// Opens the home folder in a system default file browser
+    HomeFolder: "xdg-open ~",
+    /// Logs out
+    LogOut: "cosmic-osd log-out",
+    /// Decreases keyboard brightness
+    // KeyboardBrightnessDown,
+    /// Increases keyboard brightness
+    // KeyboardBrightnessUp,
+    /// Opens the launcher
+    Launcher: "cosmic-launcher",
+    /// Locks the screen
+    LockScreen: "loginctl lock-session",
+    /// Mutes the active output device
+    Mute: "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    /// Mutes the active microphone
+    MuteMic: "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+    /// Plays and Pauses audio
+    PlayPause: "playerctl play-pause",
+    /// Goes to the next track
+    PlayNext: "playerctl next",
+    /// Goes to the previous track
+    PlayPrev: "playerctl previous",
+    /// Power off handler
+    PowerOff: "cosmic-osd shutdown",
+    /// Takes a screenshot
+    Screenshot: "cosmic-screenshot",
+    /// Suspend the system
+    Suspend: "systemctl suspend",
+    /// Toggles the screen reader
+    ScreenReader: "busctl --user call com.system76.CosmicSettingsDaemon /com/system76/CosmicSettingsDaemon com.system76.CosmicSettingsDaemon ScreenReader",
+    /// Opens the system default terminal
+    Terminal: "cosmic-term",
+    /// Toggles touchpad on/off
+    TouchpadToggle: "cosmic-osd touchpad",
+    /// Lowers the volume of the active output device
+    VolumeLower: "busctl --user call com.system76.CosmicSettingsDaemon /com/system76/CosmicSettingsDaemon com.system76.CosmicSettingsDaemon VolumeDown",
+    /// Raises the volume of the active output device
+    VolumeRaise: "busctl --user call com.system76.CosmicSettingsDaemon /com/system76/CosmicSettingsDaemon com.system76.CosmicSettingsDaemon VolumeUp",
+    /// Opens the system default web browser
+    WebBrowser: "xdg-open http://",
+    /// Opens the (alt+tab) window switcher
+    WindowSwitcher: "cosmic-launcher alt-tab",
+    /// Opens the (alt+shift+tab) window switcher
+    WindowSwitcherPrevious: "cosmic-launcher shift-alt-tab",
+    /// Opens the workspace overview
+    WorkspaceOverview: "cosmic-workspaces",
+}

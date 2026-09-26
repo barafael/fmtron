@@ -1,0 +1,124 @@
+(
+    version: 0,
+    steps: [
+        (
+            id: "step-096391",
+            name: "Jump In",
+            keyframes: [
+                (
+                    pose: "pose-a13ffea4",
+                    orientation: Right,
+                ),
+                (
+                    pose: "pose-33c47f90",
+                    orientation: ToCamera,
+                    jump_height: Some(5.0),
+                ),
+                (
+                    pose: "pose-6f1ec40b",
+                    orientation: ToCamera,
+                ),
+            ],
+        ),
+        (
+            id: "step-223437",
+            name: "Wave",
+            keyframes: [
+                (
+                    pose: "pose-6f1ec40b",
+                    orientation: ToCamera,
+                ),
+                (
+                    pose: "pose-a46788ff",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-5233c47f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-a46788ff",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-5233c47f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-6f1ec40b",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+            ],
+        ),
+        (
+            id: "step-064996",
+            name: "Point",
+            keyframes: [
+                (
+                    pose: "pose-a919e23f",
+                    orientation: ToCamera,
+                ),
+                (
+                    pose: "pose-548cf11f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-a919e23f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-548cf11f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-a919e23f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-a919e23f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-548cf11f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+                (
+                    pose: "pose-a919e23f",
+                    orientation: ToCamera,
+                    jump_height: Some(0.0),
+                ),
+            ],
+        ),
+        (
+            id: "step-657582",
+            name: "Jump wave",
+            keyframes: [
+                (
+                    pose: "pose-6f1ec40b",
+                    orientation: ToCamera,
+                ),
+                (
+                    pose: "pose-8cf11fe4",
+                    orientation: ToCamera,
+                    jump_height: Some(2.0),
+                ),
+                (
+                    pose: "pose-46788ff2",
+                    orientation: ToCamera,
+                    jump_height: Some(2.0),
+                ),
+            ],
+        ),
+    ],
+)

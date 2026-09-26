@@ -1,0 +1,17 @@
+InitialInputs([
+    Event(
+        frame: 5,
+        ty: Released,
+        buttons: [Up, Down, Left, Right, A, B, Select, Start],
+    ),
+    Event(
+        frame: 10,
+        ty: Pressed,
+        buttons: [A, B, Select, Start],
+    ),
+    Event(
+        frame: 15,
+        ty: Released,
+        buttons: [A, B, Select, Start],
+    ),
+])

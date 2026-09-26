@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/elb",
+    protocol: "binary-tarpc",
+    description: "Manages AWS Elastic Load Balancer resources, such as application load balancers, target groups, and listeners.",
+    stability: "preview"
+)

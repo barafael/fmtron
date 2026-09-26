@@ -1,0 +1,7 @@
+(
+    volume: 50,
+    notification: true,
+    notify_message: "Device: ${devnode}",
+    connect_sound: "./example/connect.wav",
+    disconnect_sound: "./example/disconnect.wav",
+)

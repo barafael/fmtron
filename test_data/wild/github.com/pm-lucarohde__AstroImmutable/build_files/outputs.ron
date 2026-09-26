@@ -1,0 +1,52 @@
+(
+    config: {
+        [
+            (
+                connector: "DP-1",
+                make: "Microstep",
+                model: "MAG274QRF-QD",
+            ),
+            (
+                connector: "DP-2",
+                make: "Philips Consumer Electronics Company",
+                model: "27M1N5500ZA",
+            ),
+        ]: [
+            (
+                mode: ((2560, 1440), Some(120000)),
+                vrr: r#false,
+                scale: 1.0,
+                transform: Normal,
+                position: (2560, 0),
+                enabled: r#true,
+                xwayland_primary: false,
+            ),
+            (
+                mode: ((2560, 1440), Some(120000)),
+                vrr: r#true,
+                scale: 1.0,
+                transform: Normal,
+                position: (0, 0),
+                enabled: r#true,
+                xwayland_primary: true,
+            ),
+        ],
+        [
+            (
+                connector: "DP-2",
+                make: "Philips Consumer Electronics Company",
+                model: "27M1N5500ZA",
+            ),
+        ]: [
+            (
+                mode: ((2560, 1440), Some(120000)),
+                vrr: r#true,
+                scale: 1.0,
+                transform: Normal,
+                position: (0, 0),
+                enabled: r#true,
+                xwayland_primary: true,
+            ),
+        ],
+    },
+)

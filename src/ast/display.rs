@@ -1,6 +1,6 @@
 use super::{Attribute, Field, HeaderItem, Kind, RonFile, Value};
 use crate::pretty::{
-    Doc, comma, concat, group, hard_line, line, nest, render_with_newline, soft_line, text,
+    Doc, comma, concat, group, hard_line, hug, line, nest, render_with_newline, soft_line, text,
 };
 use std::fmt::{self, Display, Formatter};
 
@@ -52,7 +52,7 @@ impl Display for AttributeDisplay<'_> {
 /// breaks), otherwise a leading/trailing comment would collide with sibling
 /// layout.
 fn subtree_has_comments(v: &Value) -> bool {
-    if !v.leading.is_empty() || !v.trailing.is_empty() {
+    if !v.leading.is_empty() || !v.inline.is_empty() || !v.trailing.is_empty() {
         return true;
     }
     match &v.kind {
@@ -119,6 +119,30 @@ fn leading_doc(v: &Value) -> Doc {
     concat(parts)
 }
 
+/// Line comments between a key/name and its value, hoisted onto their own
+/// lines before the entry: each must end its line, and the value belongs on
+/// the key's line.
+fn hoisted_doc(v: &Value) -> Doc {
+    let mut parts: Vec<Doc> = Vec::new();
+    for c in v.inline.iter().filter(|c| !c.starts_with("/*")) {
+        parts.push(text(c.clone()));
+        parts.push(hard_line());
+    }
+    concat(parts)
+}
+
+/// Block comments between a key/name and its value, kept inline after the
+/// colon: `delay: /* seconds */ 5`.
+fn inline_doc(v: &Value) -> Doc {
+    concat(
+        v.inline
+            .iter()
+            .filter(|c| c.starts_with("/*"))
+            .map(|c| text(format!("{c} ")))
+            .collect(),
+    )
+}
+
 /// Trailing comments, inline after the value/comma.
 fn trailing_doc(v: &Value) -> Doc {
     concat(v.trailing.iter().map(|c| text(format!(" {c}"))).collect())
@@ -155,9 +179,10 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                     item_doc(
                         vec![
                             leading_doc(k),
+                            hoisted_doc(val),
                             kind_doc(k, tab),
                             text(": "),
-                            leading_doc(val),
+                            inline_doc(val),
                             kind_doc(val, tab),
                         ],
                         val,
@@ -174,6 +199,14 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             values,
             dangling,
         } => {
+            if let Some(only) = hug_target(values, dangling) {
+                return hug(
+                    text(open_ident(ident.as_deref())),
+                    kind_doc(only, tab),
+                    text(")"),
+                    tab,
+                );
+            }
             let force = force_break(dangling, values);
             let n = values.len();
             let items: Vec<Doc> = values
@@ -207,7 +240,9 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                     item_doc(
                         vec![
                             leading_doc(value),
+                            hoisted_doc(value),
                             text(format!("{name}: ")),
+                            inline_doc(value),
                             kind_doc(value, tab),
                         ],
                         value,
@@ -225,6 +260,25 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 tab,
             )
         }
+    }
+}
+
+/// The sole element of a one-element tuple or tuple variant that should be
+/// hugged when it must break (see [`hug`]): `Some((…))` or `Some([…])` then
+/// breaks inside the element, as `ron`'s own pretty-printer writes it. Only a
+/// container element hugs (an atom such as a long string still breaks onto
+/// its own line), and only when no comment sits at the joins.
+fn hug_target<'a>(values: &'a [Value], dangling: &[String]) -> Option<&'a Value> {
+    match values {
+        [only]
+            if dangling.is_empty()
+                && only.leading.is_empty()
+                && only.trailing.is_empty()
+                && !matches!(only.kind, Kind::Atom(_)) =>
+        {
+            Some(only)
+        }
+        _ => None,
     }
 }
 

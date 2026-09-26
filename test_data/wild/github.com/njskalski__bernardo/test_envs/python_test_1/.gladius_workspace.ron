@@ -1,0 +1,9 @@
+(
+    scopes: [
+        (
+            lang_id: PYTHON3,
+            path: "",
+            handler_id_op: Some("python3"),
+        ),
+    ],
+)

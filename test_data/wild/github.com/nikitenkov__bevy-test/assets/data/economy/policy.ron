@@ -1,0 +1,257 @@
+(
+    required_resource_selectors: [
+        "fresh_harvest_food",
+        "renewable_raw_food",
+        "finite_raw_food",
+        "renewable_crop_food",
+        "fishing_tool",
+        "hunting_tool",
+        "cultivation_tool",
+    ],
+    resource_selectors: [
+        (
+            id: "fresh_harvest_food",
+            query: AllConceptProviders(
+                "fresh_harvest_food",
+            ),
+        ),
+        (
+            id: "renewable_raw_food",
+            query: SingleConcept(
+                "renewable_raw_food",
+            ),
+        ),
+        (
+            id: "finite_raw_food",
+            query: SingleConcept(
+                "finite_raw_food",
+            ),
+        ),
+        (
+            id: "renewable_crop_food",
+            query: SingleConcept(
+                "threshable_grain",
+            ),
+        ),
+        (
+            id: "fishing_tool",
+            query: SingleConcept(
+                "fishing_tool",
+            ),
+        ),
+        (
+            id: "hunting_tool",
+            query: SingleConcept(
+                "hunting_tool",
+            ),
+        ),
+        (
+            id: "cultivation_tool",
+            query: SingleConcept(
+                "cultivation_tool",
+            ),
+        ),
+    ],
+    production_support_activities: [
+        (
+            id: "fishing",
+            demand_source: ResourceNodeRole(
+                "fishing_source",
+            ),
+        ),
+        (
+            id: "berry_gathering",
+            demand_source: ResourceNodeRole(
+                "berry_source",
+            ),
+        ),
+        (
+            id: "hunting",
+            demand_source: HuntableFauna,
+        ),
+        (
+            id: "woodcutting",
+            demand_source: ResourceNodeRole(
+                "woodcutting_source",
+            ),
+        ),
+        (
+            id: "grain_preparation",
+            demand_source: ResourceNodeRole(
+                "grain_source",
+            ),
+        ),
+    ],
+    node_presentation_families: [
+        (
+            id: "loose_pile",
+            title: ResourceNode,
+            placeholder_profile: "loose_pile",
+        ),
+        (
+            id: "apple_tree",
+            title: ResourceNode,
+            placeholder_profile: "apple_tree",
+        ),
+        (
+            id: "berry_bush",
+            title: ResourceNode,
+            placeholder_profile: "berry_bush",
+        ),
+        (
+            id: "wild_barley_patch",
+            title: ResourceNode,
+            placeholder_profile: "wild_barley_patch",
+        ),
+        (
+            id: "fishing_spot",
+            title: ResourceNode,
+            placeholder_profile: "fishing_spot",
+        ),
+        (
+            id: "stick_scrub",
+            title: ResourceNode,
+            placeholder_profile: "stick_scrub",
+        ),
+        (
+            id: "fallen_timber",
+            title: ResourceNode,
+            placeholder_profile: "fallen_timber",
+        ),
+        (
+            id: "timber_tree",
+            title: ResourceNode,
+            placeholder_profile: "timber_tree",
+            forest_stage_profiles: Some(
+                (
+                    stump_placeholder_profile: "timber_tree_stump",
+                    sapling_placeholder_profile: "timber_tree_sapling",
+                ),
+            ),
+        ),
+        (
+            id: "stone_outcrop",
+            title: ResourceNode,
+            placeholder_profile: "stone_outcrop",
+        ),
+        (
+            id: "deer_carcass",
+            title: Carcass,
+            placeholder_profile: "deer_carcass",
+        ),
+        (
+            id: "wild_pig_carcass",
+            title: Carcass,
+            placeholder_profile: "wild_pig_carcass",
+        ),
+    ],
+    spoilage_loss_categories: [
+        (
+            category: "food",
+            query: Family("food"),
+        ),
+    ],
+    food_consumption: (
+        tier_priority: [
+            "fresh",
+            "preserved",
+            "last_resort",
+        ],
+        comparable_spoilage: SoonestDeadlineFirst,
+        local_output_meals: no_fetchable_ready_meals,
+    ),
+    resource_taxonomy: (
+        semantic_groups: [
+            (
+                id: "food_profile",
+                semantics: [
+                    "raw_ingredient",
+                    "fresh_edible",
+                    "preserved_edible",
+                    "last_resort_edible",
+                ],
+            ),
+            (
+                id: "direct_consumability",
+                semantics: [
+                    "fresh_edible",
+                    "preserved_edible",
+                    "last_resort_edible",
+                ],
+            ),
+            (
+                id: "consumption_preference",
+                semantics: [
+                    "fresh_edible",
+                    "preserved_edible",
+                    "last_resort_edible",
+                ],
+            ),
+            (
+                id: "consumable_food",
+                semantics: [
+                    "fresh_edible",
+                    "preserved_edible",
+                    "last_resort_edible",
+                ],
+            ),
+            (
+                id: "food_source_role",
+                semantics: [
+                    "renewable_food",
+                    "finite_food",
+                ],
+            ),
+            (
+                id: "food_source",
+                semantics: [
+                    "renewable_food",
+                    "finite_food",
+                ],
+            ),
+            (
+                id: "recipe_input_role",
+                semantics: ["raw_ingredient"],
+            ),
+            (
+                id: "storage_stability",
+                semantics: ["stable_food_store"],
+            ),
+            (
+                id: "convertible_food_potential",
+                semantics: [
+                    "convertible_food_potential",
+                ],
+            ),
+            (
+                id: "material_source",
+                semantics: ["harvest_material"],
+            ),
+            (
+                id: "world_harvest_role",
+                semantics: [
+                    "renewable_food",
+                    "finite_food",
+                    "harvest_material",
+                ],
+            ),
+        ],
+        exclusive_semantic_groups: [
+            "consumption_preference",
+            "world_harvest_role",
+        ],
+        required_group_combinations: [
+            (
+                when_group: "food_source_role",
+                require_any_of_groups: [
+                    "direct_consumability",
+                    "convertible_food_potential",
+                ],
+            ),
+            (
+                when_group: "storage_stability",
+                require_any_of_groups: ["direct_consumability"],
+            ),
+        ],
+    ),
+)

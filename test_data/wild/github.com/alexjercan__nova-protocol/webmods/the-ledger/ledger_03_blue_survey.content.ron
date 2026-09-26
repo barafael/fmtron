@@ -1,0 +1,574 @@
+// Blue Survey: independent activity; no carried campaign state.
+// Flight is live from spawn. Terrain bands leave the objective routes clear.
+[
+    Scenario((
+        id: "ledger_03_blue_survey",
+        name: "Blue Survey",
+        description: "Survey scattered instruments above an ice belt.",
+        cubemap: "dep://base/textures/cubemap_alt.png",
+        thumbnail: Some("self://thumbnails/ledger_03_blue_survey.png"),
+        watches: [(variable: "elapsed", query: Scenario((property: Elapsed)))],
+        events: [
+            (
+                name: OnStart,
+                once: true,
+                filters: [],
+                actions: [
+                    SpawnScenarioObject((
+                        base: (
+                            id: "player_spaceship",
+                            name: "Racer",
+                            position: (0.0, 0.0, 0.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(
+                                id: "racer",
+                                section_patches: {
+                                    "fuselage": (config: (health: Some(800.0))),
+                                    "engine_port": (config: (health: Some(300.0))),
+                                    "engine_starboard": (config: (health: Some(300.0))),
+                                },
+                            ),
+                            controller: Player((input_mapping: {})),
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "surveyed", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "scan_left", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "scan_due", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "site_a_done", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "site_b_done", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "site_c_done", expression: Term(Factor(Literal(Number(0.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "key",
+                            name: "Sun",
+                            position: (-600.0, 500.0, 600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 11000.0, color: Srgba((red: 0.82, green: 0.94, blue: 1.0, alpha: 1.0)), shadows: true, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "rim",
+                            name: "Rim",
+                            position: (300.0, 400.0, -800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 16000.0, color: Srgba((red: 0.55, green: 0.7, blue: 1.0, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "fill",
+                            name: "Fill",
+                            position: (700.0, -200.0, 400.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 2600.0, color: Srgba((red: 0.62, green: 0.72, blue: 0.95, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "primary",
+                            name: "Primary",
+                            position: (5100.0, -1300.0, -7600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: IceWorld,
+                            radius: 2200.0,
+                            seed: 8302,
+                            mass: Some(40000.0),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "moon",
+                            name: "Moon",
+                            position: (-4300.0, 1800.0, -9800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: Temperate,
+                            radius: 800.0,
+                            seed: 8303,
+                            mass: Some(10000.0),
+                        )),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "port_rocks_",
+                        count: 20,
+                        seed: 8312,
+                        region: Box(min: (-3400.0, -400.0, -7600.0), max: (-1900.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "port_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("ice", 7), ("rock", 2), ("carbon", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "starboard_rocks_",
+                        count: 20,
+                        seed: 8322,
+                        region: Box(min: (1900.0, -400.0, -7600.0), max: (3400.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "starboard_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("ice", 7), ("rock", 2), ("carbon", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "lower_rocks_",
+                        count: 14,
+                        seed: 8332,
+                        region: Box(min: (-1300.0, -1250.0, -7600.0), max: (1300.0, -900.0, -1800.0)),
+                        template: (
+                            base: (
+                                id: "lower_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 10.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((10.0, 30.0)),
+                        asteroid_kinds: [("ice", 7), ("rock", 2), ("carbon", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_shuttle",
+                            name: "Shuttle",
+                            position: (900.0, 450.0, -700.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "racer"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [
+                                    (900.0, 450.0, -700.0),
+                                    (1500.0, 450.0, -3200.0),
+                                    (900.0, 450.0, -4700.0),
+                                ],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_tug",
+                            name: "Tug",
+                            position: (-1200.0, -600.0, -1900.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_freighter"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [(-1200.0, -600.0, -1900.0), (-1200.0, -600.0, -4500.0)],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "ice_ridge_a",
+                            name: "Asteroid",
+                            position: (-300.0, -350.0, -2900.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 50.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "ice",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "ice_ridge_b",
+                            name: "Asteroid",
+                            position: (1000.0, 650.0, -4700.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 50.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "ice",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "instrument_bus",
+                            name: "Instrument bus",
+                            position: (-850.0, -100.0, -5500.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_freighter"),
+                            controller: None,
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    Objective((
+                        id: "survey",
+                        message: "Scan all three sites. Stay within 700 m for 6 seconds at each.",
+                    )),
+                    HudReadout((
+                        slot: "surveyed",
+                        variable: "surveyed",
+                        format: Integer,
+                        label: Some("SITES"),
+                        visible: true,
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "site_a",
+                            name: "SITE A",
+                            position: (-850.0, 200.0, -1900.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "SITE A",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(700.0),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "site_b",
+                            name: "SITE B",
+                            position: (850.0, -150.0, -3500.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "SITE B",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(700.0),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "site_c",
+                            name: "SITE C",
+                            position: (-850.0, 350.0, -5300.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "SITE C",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(700.0),
+                        )),
+                    )),
+                    CinematicTitle((
+                        corner: TopRight,
+                        location: "BLUE SURVEY",
+                        date: "FIELD TRIAL 3 / 6",
+                        note: "",
+                        seconds: 5.0,
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: false,
+                filters: [
+                    Entity((id: Some("site_a"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("site_a_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    TimerStart((key: "site_a", seconds: Term(Factor(Literal(Number(6.0)))))),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(1.0)))))),
+                    VariableSet((key: "scan_left", expression: Term(Factor(Literal(Number(6.0)))))),
+                    VariableSet((
+                        key: "scan_due",
+                        expression: Add(Factor(Name("elapsed")), Term(Factor(Literal(Number(6.0))))),
+                    )),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: true,
+                    )),
+                ],
+            ),
+            (
+                name: OnExit,
+                once: false,
+                filters: [
+                    Entity((id: Some("site_a"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("site_a_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    TimerCancel((key: "site_a")),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(0.0)))))),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: false,
+                    )),
+                ],
+            ),
+            (
+                name: OnTimerEnd,
+                once: true,
+                filters: [
+                    Timer((key: "site_a")),
+                    Expression((Equal(Term(Factor(Name("site_a_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "site_a_done", expression: Term(Factor(Literal(Number(1.0)))))),
+                    VariableSet((
+                        key: "surveyed",
+                        expression: Add(Factor(Name("surveyed")), Term(Factor(Literal(Number(1.0))))),
+                    )),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(0.0)))))),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: false,
+                    )),
+                    DespawnScenarioObject((id: "site_a")),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: false,
+                filters: [
+                    Entity((id: Some("site_b"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("site_b_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    TimerStart((key: "site_b", seconds: Term(Factor(Literal(Number(6.0)))))),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(1.0)))))),
+                    VariableSet((key: "scan_left", expression: Term(Factor(Literal(Number(6.0)))))),
+                    VariableSet((
+                        key: "scan_due",
+                        expression: Add(Factor(Name("elapsed")), Term(Factor(Literal(Number(6.0))))),
+                    )),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: true,
+                    )),
+                ],
+            ),
+            (
+                name: OnExit,
+                once: false,
+                filters: [
+                    Entity((id: Some("site_b"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("site_b_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    TimerCancel((key: "site_b")),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(0.0)))))),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: false,
+                    )),
+                ],
+            ),
+            (
+                name: OnTimerEnd,
+                once: true,
+                filters: [
+                    Timer((key: "site_b")),
+                    Expression((Equal(Term(Factor(Name("site_b_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "site_b_done", expression: Term(Factor(Literal(Number(1.0)))))),
+                    VariableSet((
+                        key: "surveyed",
+                        expression: Add(Factor(Name("surveyed")), Term(Factor(Literal(Number(1.0))))),
+                    )),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(0.0)))))),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: false,
+                    )),
+                    DespawnScenarioObject((id: "site_b")),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: false,
+                filters: [
+                    Entity((id: Some("site_c"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("site_c_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    TimerStart((key: "site_c", seconds: Term(Factor(Literal(Number(6.0)))))),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(1.0)))))),
+                    VariableSet((key: "scan_left", expression: Term(Factor(Literal(Number(6.0)))))),
+                    VariableSet((
+                        key: "scan_due",
+                        expression: Add(Factor(Name("elapsed")), Term(Factor(Literal(Number(6.0))))),
+                    )),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: true,
+                    )),
+                ],
+            ),
+            (
+                name: OnExit,
+                once: false,
+                filters: [
+                    Entity((id: Some("site_c"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("site_c_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    TimerCancel((key: "site_c")),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(0.0)))))),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: false,
+                    )),
+                ],
+            ),
+            (
+                name: OnTimerEnd,
+                once: true,
+                filters: [
+                    Timer((key: "site_c")),
+                    Expression((Equal(Term(Factor(Name("site_c_done"))), Term(Factor(Literal(Number(0.0))))))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "site_c_done", expression: Term(Factor(Literal(Number(1.0)))))),
+                    VariableSet((
+                        key: "surveyed",
+                        expression: Add(Factor(Name("surveyed")), Term(Factor(Literal(Number(1.0))))),
+                    )),
+                    VariableSet((key: "scanning", expression: Term(Factor(Literal(Number(0.0)))))),
+                    HudReadout((
+                        slot: "scan",
+                        variable: "scan_left",
+                        format: Time,
+                        label: Some("SCAN"),
+                        visible: false,
+                    )),
+                    DespawnScenarioObject((id: "site_c")),
+                ],
+            ),
+            (
+                name: OnUpdate,
+                once: false,
+                filters: [
+                    Expression((Equal(Term(Factor(Name("scanning"))), Term(Factor(Literal(Number(1.0))))))),
+                ],
+                actions: [
+                    VariableSet((
+                        key: "scan_left",
+                        expression: Subtract(Factor(Name("scan_due")), Term(Factor(Name("elapsed")))),
+                    )),
+                ],
+            ),
+            (
+                name: OnUpdate,
+                once: true,
+                filters: [
+                    Expression((GreaterThan(Term(Factor(Name("surveyed"))), Term(Factor(Literal(Number(2.0))))))),
+                ],
+                actions: [
+                    ObjectiveComplete((id: "survey")),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(99.0)))))),
+                    Outcome((outcome: Victory, message: Some("Survey complete."))),
+                    NextScenario((scenario_id: "ledger_04_cold_patrol", linger: true)),
+                ],
+            ),
+            (
+                name: OnDefeated,
+                once: true,
+                filters: [
+                    Entity((id: Some("player_spaceship"))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(98.0)))))),
+                    Outcome((outcome: Defeat, message: Some("Ship disabled."))),
+                    NextScenario((scenario_id: "ledger_03_blue_survey", linger: true)),
+                ],
+            ),
+        ],
+    )),
+]

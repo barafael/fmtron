@@ -1,0 +1,14 @@
+AttackAsset(
+    name: "Kick",
+    description: "Kick",
+    tags: [],
+    categories: [
+        "Melee"
+    ],
+
+    attack_damage_base: {
+        Crushing: 15.,
+    },
+    attack_duration_secs: 2.,
+
+)

@@ -1,0 +1,602 @@
+GameReplayData(
+    inputs: [
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: SoftDrop,
+            ),
+            frame: 150,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveLeft,
+            ),
+            frame: 180,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveLeft,
+            ),
+            frame: 200,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 201,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 208,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 227,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 233,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveRight,
+            ),
+            frame: 236,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: Hold,
+            ),
+            frame: 247,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveLeft,
+            ),
+            frame: 253,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: Hold,
+            ),
+            frame: 254,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveRight,
+            ),
+            frame: 257,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveLeft,
+            ),
+            frame: 263,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 269,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 275,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveLeft,
+            ),
+            frame: 301,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: RotateRight,
+            ),
+            frame: 311,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: RotateRight,
+            ),
+            frame: 320,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveLeft,
+            ),
+            frame: 350,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: Hold,
+            ),
+            frame: 365,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveRight,
+            ),
+            frame: 368,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveRight,
+            ),
+            frame: 371,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: RotateLeft,
+            ),
+            frame: 372,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: Hold,
+            ),
+            frame: 373,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveRight,
+            ),
+            frame: 376,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: RotateLeft,
+            ),
+            frame: 378,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveRight,
+            ),
+            frame: 380,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveRight,
+            ),
+            frame: 385,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveRight,
+            ),
+            frame: 387,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: Hold,
+            ),
+            frame: 415,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveRight,
+            ),
+            frame: 417,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: Hold,
+            ),
+            frame: 424,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveRight,
+            ),
+            frame: 430,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: Hold,
+            ),
+            frame: 446,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: Rotate180,
+            ),
+            frame: 453,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: Hold,
+            ),
+            frame: 459,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: Rotate180,
+            ),
+            frame: 462,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveRight,
+            ),
+            frame: 481,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: Hold,
+            ),
+            frame: 484,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: RotateRight,
+            ),
+            frame: 491,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: Hold,
+            ),
+            frame: 495,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: RotateRight,
+            ),
+            frame: 502,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveRight,
+            ),
+            frame: 504,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveLeft,
+            ),
+            frame: 527,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveLeft,
+            ),
+            frame: 545,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: MoveLeft,
+            ),
+            frame: 563,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: MoveLeft,
+            ),
+            frame: 577,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 586,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 591,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 596,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 600,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 605,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 609,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 614,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 619,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 632,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 635,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 642,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 646,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 652,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 655,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 660,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 665,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 670,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 675,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 680,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 685,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 692,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 696,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Press,
+                key: HardDrop,
+            ),
+            frame: 703,
+        ),
+        GameInputEvent(
+            action: InputAction(
+                kind: Release,
+                key: HardDrop,
+            ),
+            frame: 705,
+        ),
+    ],
+    metadata: {
+        "player": "Stacker",
+        "seed": 1480717909,
+        "version": "Alpha V0.15.5",
+        "date": "2021/07/10 20:10:10",
+        "mod": [],
+        "mode": "master_phantasm",
+        "setting": {
+            "shakeFX": 0,
+            "splashFX": 0,
+            "das": 6,
+            "highCam": true,
+            "smooth": true,
+            "warn": true,
+            "dropcut": 0,
+            "ghost": 0.6,
+            "atkFX": 0,
+            "nextPos": true,
+            "block": true,
+            "text": true,
+            "ihs": true,
+            "face": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+            ],
+            "score": true,
+            "irs": true,
+            "center": 1,
+            "sdarr": 0,
+            "moveFX": 0,
+            "dropFX": 0,
+            "ims": true,
+            "lockFX": 0,
+            "arr": 0,
+            "swap": true,
+            "bagLine": true,
+            "skin": [
+                1,
+                7,
+                11,
+                3,
+                14,
+                4,
+                9,
+                1,
+                7,
+                2,
+                6,
+                10,
+                2,
+                13,
+                5,
+                9,
+                15,
+                10,
+                11,
+                3,
+                10,
+                2,
+                16,
+                8,
+                4,
+                10,
+                13,
+                2,
+                8,
+            ],
+            "grid": 0.4,
+            "dascut": 0,
+            "sddas": 0,
+            "RS": "TRS",
+            "clearFX": 0,
+        },
+    },
+)

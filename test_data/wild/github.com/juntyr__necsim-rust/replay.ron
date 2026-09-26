@@ -1,0 +1,12 @@
+(
+    log: EventLog(
+        segments: [ "event-log/**/*" ],
+    ),
+
+    reporters: [
+        Plugin(
+            library: "target/release/deps/libnecsim_plugins_common.so",
+            reporters: [Biodiversity(), Execution(), Progress()],
+        ),
+    ],
+)

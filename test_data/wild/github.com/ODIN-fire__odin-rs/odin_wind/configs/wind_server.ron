@@ -1,0 +1,5 @@
+ServerConfig(
+    sock_addr: "127.0.0.1:9010",
+    tls: None
+    // no heartbeats
+)

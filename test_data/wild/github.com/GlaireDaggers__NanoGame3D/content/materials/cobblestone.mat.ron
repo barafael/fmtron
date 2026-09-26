@@ -1,0 +1,12 @@
+#![enable(implicit_some)]
+(
+    shader: "content/shaders/map_shader.toml",
+    params: {
+        "mainTexture": Texture ((
+            texture: "content/textures/cobblestone.basis",
+            filter: true,
+            wrap_s: true,
+            wrap_t: true,
+        ))
+    }
+)

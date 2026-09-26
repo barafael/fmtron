@@ -1,0 +1,6 @@
+Prefab(
+    name: "dummy",
+    components: [
+        (name: "Transform"),
+    ],
+)

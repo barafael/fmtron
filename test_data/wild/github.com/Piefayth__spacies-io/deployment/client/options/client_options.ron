@@ -1,0 +1,15 @@
+(
+    listen_addr: "127.0.0.1",
+    listen_port: 0,
+    server_addr: "127.0.0.1",
+    server_port: 12025,
+    conditioner: (
+        incoming_latency_ms: 0,
+        incoming_jitter_ms: 0,
+        incoming_loss: 0.0,
+    ),
+    correction_ticks_factor: 2.0,
+    min_delay_ms: 25,
+    certificate_digest: None,
+    asset_path: "./assets"
+)

@@ -1,0 +1,213 @@
+// Falcon 9 launch scene for pyrotechnique.
+//
+// Units: meters, seconds. Rocket frame: base center at origin, +Y up (the GLB
+// is auto-normalized to `target_height`). Emitter position/direction are in
+// the rocket frame and mirror Elodin's `thruster` KDL schema.
+SceneConfig(
+    model: ModelConfig(
+        path: "models/spacex_falcon_9_block_4.5.glb",
+        target_height: 70.0,
+    ),
+    environment: EnvironmentConfig(
+        sun_azimuth_deg: 300.0,
+        sun_elevation_deg: 38.0,
+        sun_illuminance: 100000.0,
+        exposure_ev100: 13.5,
+        bloom_intensity: 0.28,
+        ground_radius: 20000.0,
+        ground_color: (0.20, 0.22, 0.18),
+    ),
+    emitters: [
+        // Bell-exit plane sits below the entity origin (engine plane); spawn
+        // here so the plume root is not born inside the octaweb/hull.
+        EmitterConfig(
+            name: "merlin_core",
+            effect: "effects/falcon9/merlin_core.effect",
+            position: (0.0, -1.2, 0.0),
+            direction: (0.0, -1.0, 0.0),
+            intensity: 1.0,
+            // Dim during the rcs-flip pulse window so cold-gas darts read clearly.
+            activity: [(0.0, 1.0), (35.5, 1.0), (35.7, 0.12), (39.6, 0.12), (39.8, 1.0)],
+        ),
+        EmitterConfig(
+            name: "merlin_flame",
+            effect: "effects/falcon9/merlin_flame.effect",
+            position: (0.0, -1.2, 0.0),
+            direction: (0.0, -1.0, 0.0),
+            intensity: 1.0,
+            activity: [(0.0, 1.0), (35.5, 1.0), (35.7, 0.12), (39.6, 0.12), (39.8, 1.0)],
+        ),
+        EmitterConfig(
+            name: "exhaust_smoke",
+            effect: "effects/falcon9/exhaust_smoke.effect",
+            position: (0.0, -8.0, 0.0),
+            direction: (0.0, -1.0, 0.0),
+            intensity: 1.0,
+            // Smoke thins out as the booster leaves the dense atmosphere.
+            activity: [(0.0, 1.0), (35.0, 1.0), (55.0, 0.45), (80.0, 0.2)],
+        ),
+        EmitterConfig(
+            name: "pad_smoke",
+            effect: "effects/falcon9/pad_smoke.effect",
+            // World-fixed at the pad; clouds keep churning as the rocket
+            // climbs away, exactly like the target lift-off photo.
+            attach: "world",
+            position: (0.0, 2.0, 0.0),
+            direction: (0.0, -1.0, 0.0),
+            intensity: 1.0,
+            // Ground clouds only while the exhaust still hits the pad.
+            activity: [(0.0, 1.0), (5.0, 1.0), (9.0, 0.3), (12.0, 0.0)],
+        ),
+        // Cold-gas RCS at interstage station ~46 m (Y-up rocket frame).
+        // Positions/directions match Elodin body-frame thrusters after the
+        // GLB's Z=-90 body remap. Pulsed for the rcs-flip scenario.
+        EmitterConfig(
+            name: "rcs_0",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (-1.83, 46.0, 0.0),
+            direction: (0.0, 0.0, -1.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (36.0, 0.0), (36.2, 1.0), (38.5, 1.0), (38.7, 0.0)],
+        ),
+        EmitterConfig(
+            name: "rcs_1",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (-1.83, 46.0, 0.0),
+            direction: (0.0, 0.0, 1.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (36.5, 0.0), (36.7, 1.0), (37.8, 1.0), (38.0, 0.0)],
+        ),
+        EmitterConfig(
+            name: "rcs_2",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (1.83, 46.0, 0.0),
+            direction: (0.0, 0.0, -1.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (37.0, 0.0), (37.2, 1.0), (38.8, 1.0), (39.0, 0.0)],
+        ),
+        EmitterConfig(
+            name: "rcs_3",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (1.83, 46.0, 0.0),
+            direction: (0.0, 0.0, 1.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (36.0, 0.0), (36.2, 1.0), (37.5, 1.0), (37.7, 0.0)],
+        ),
+        EmitterConfig(
+            name: "rcs_4",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (-1.83, 46.0, 0.0),
+            direction: (1.0, 0.0, 0.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (36.3, 0.0), (36.5, 1.0), (38.2, 1.0), (38.4, 0.0)],
+        ),
+        EmitterConfig(
+            name: "rcs_5",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (-1.83, 46.0, 0.0),
+            direction: (-1.0, 0.0, 0.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (37.2, 0.0), (37.4, 1.0), (39.0, 1.0), (39.2, 0.0)],
+        ),
+        EmitterConfig(
+            name: "rcs_6",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (1.83, 46.0, 0.0),
+            direction: (-1.0, 0.0, 0.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (36.8, 0.0), (37.0, 1.0), (38.6, 1.0), (38.8, 0.0)],
+        ),
+        EmitterConfig(
+            name: "rcs_7",
+            effect: "effects/falcon9/rcs_dart.effect",
+            position: (1.83, 46.0, 0.0),
+            direction: (1.0, 0.0, 0.0),
+            intensity: 1.0,
+            activity: [(0.0, 0.0), (37.5, 0.0), (37.7, 1.0), (39.2, 1.0), (39.4, 0.0)],
+        ),
+    ],
+    // Simplified gravity-turn profile: vertical rise, pitch-over downrange (+X).
+    flight: FlightConfig(
+        keyframes: [
+            FlightKey(t: 0.0, pos: (0.0, 0.0, 0.0)),
+            FlightKey(t: 5.0, pos: (0.0, 60.0, 0.0)),
+            FlightKey(t: 10.0, pos: (2.0, 260.0, 0.0)),
+            FlightKey(t: 20.0, pos: (60.0, 1200.0, 0.0)),
+            FlightKey(t: 30.0, pos: (300.0, 2900.0, 0.0)),
+            FlightKey(t: 45.0, pos: (1400.0, 6500.0, 0.0)),
+            FlightKey(t: 60.0, pos: (3800.0, 11000.0, 0.0)),
+            FlightKey(t: 80.0, pos: (9500.0, 17500.0, 0.0)),
+        ],
+    ),
+    cameras: [
+        CameraPreset(
+            name: "pad",
+            pos: (-45.0, 42.0, 150.0),
+            look_at: (0.0, 68.0, 0.0),
+            fov_deg: 42.0,
+        ),
+        // Chase framing: offset rides with the rocket so the vehicle+plume
+        // fill the frame at any flight time (a real tracker zooming).
+        CameraPreset(
+            name: "tracker_close",
+            pos: (-150.0, -60.0, 210.0),
+            look_at: (0.0, -30.0, 0.0),
+            fov_deg: 24.0,
+            track_rocket: true,
+            follow_pos: true,
+        ),
+        CameraPreset(
+            name: "tracker_far",
+            pos: (-520.0, -220.0, 780.0),
+            look_at: (0.0, -60.0, 0.0),
+            fov_deg: 10.0,
+            track_rocket: true,
+            follow_pos: true,
+        ),
+        CameraPreset(
+            name: "wide",
+            pos: (-2300.0, 150.0, 3000.0),
+            look_at: (700.0, 2900.0, 0.0),
+            fov_deg: 50.0,
+        ),
+    ],
+    scenarios: [
+        ScenarioConfig(
+            name: "lift-off",
+            camera: "pad",
+            capture_time: 5.0,
+            reference: Some("targets/falcon9/lift-off.jpeg"),
+        ),
+        ScenarioConfig(
+            name: "ascent",
+            camera: "tracker_close",
+            capture_time: 25.0,
+            reference: Some("targets/falcon9/ascent.jpeg"),
+        ),
+        ScenarioConfig(
+            name: "max-q",
+            camera: "tracker_far",
+            capture_time: 60.0,
+            reference: Some("targets/falcon9/maxq.jpeg"),
+            exposure_ev100: Some(15.0),
+        ),
+        ScenarioConfig(
+            name: "mid-flight",
+            camera: "tracker_close",
+            capture_time: 45.0,
+            reference: Some("targets/falcon9/mid-flight.webp"),
+        ),
+        ScenarioConfig(
+            name: "smoke-trail",
+            camera: "wide",
+            capture_time: 40.0,
+            reference: Some("targets/falcon9/smoke-trail.png"),
+            exposure_ev100: Some(14.2),
+        ),
+        ScenarioConfig(
+            name: "rcs-flip",
+            camera: "tracker_close",
+            capture_time: 37.5,
+        ),
+    ],
+)

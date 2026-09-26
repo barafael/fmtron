@@ -1,0 +1,16 @@
+{
+    "card-subtype.warrior": (
+        description: "Warrior card subtype.",
+        value: "Warrior",
+        forms: {
+            "counted": Number([One("Warrior"), Other("Warriors")]),
+        },
+    ),
+    "card-subtype.relic": (
+        description: "Relic card subtype.",
+        value: "Relic",
+        forms: {
+            "counted": Number([One("Relic"), Other("Relics")]),
+        },
+    ),
+}

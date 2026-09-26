@@ -1,0 +1,25 @@
+(
+    compiler: "gcc",
+    cflags: [ "-Wall", "-Werror", "-pthread", ],
+    libs: [ "pthread", "rt", ],
+    targets: [
+        (
+            name: "nifty",
+            cflags: [ "-fPIE", "-O3", ],
+            ldflags: [ "-O3", ],
+            sources: [
+                "main.c",
+                "greeter.c",
+            ],
+        ),
+        (
+            name: "nifty_debug",
+            cflags: [ "-fPIE", "-O0", "-g", ],
+            ldflags: [ "-O0", "-g", ],
+            sources: [
+                "main.c",
+                "greeter.c",
+            ],
+        ),
+    ],
+)

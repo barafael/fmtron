@@ -1,0 +1,47 @@
+// Minimal Empath Configuration
+//
+// Bare minimum setup for quick testing.
+//
+// Usage:
+//   cp examples/config/minimal.ron empath.config.ron
+//   just run
+
+Empath(
+    // Single SMTP listener on port 1025
+    smtp_controller: (
+        listeners: [
+            {
+                socket: "[::]:1025",
+                context: {},
+                timeouts: (
+                    command_secs: 300,
+                    data_init_secs: 120,
+                    data_block_secs: 180,
+                    data_termination_secs: 600,
+                    connection_secs: 1800,
+                ),
+                extensions: [],
+            },
+        ],
+    ),
+
+    // No modules loaded
+    modules: [],
+
+    // Spool to temporary directory
+    spool: (
+        path: "/tmp/empath-spool",
+    ),
+
+    // Default delivery settings
+    delivery: (
+        scan_interval_secs: 30,
+        process_interval_secs: 10,
+        max_attempts: 25,
+        accept_invalid_certs: false,
+        domains: {},
+    ),
+
+    // Control socket for runtime management
+    control_socket: "/tmp/empath.sock",
+)

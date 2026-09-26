@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "allow deletions in command mode",
+      "``:insert``, ``:view`` commands",
+    ],
+  },
+)

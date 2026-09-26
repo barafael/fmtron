@@ -1,0 +1,36 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    theme: None,
+    album_art: (
+        method: None,
+    ),
+    keybinds: (
+        global: {
+            "1": SwitchToTab("Queue"),
+            "2": SwitchToTab("Directories"),
+            "3": SwitchToTab("Playlists"),
+            "4": SwitchToTab("Search"),
+            "?": ShowHelp,
+        },
+    ),
+    tabs: [
+        (
+            name: "Queue",
+            pane: Pane(Queue),
+        ),
+        (
+            name: "Directories",
+            pane: Pane(Directories),
+        ),
+        (
+            name: "Playlists",
+            pane: Pane(Playlists),
+        ),
+        (
+            name: "Search",
+            pane: Pane(Search),
+        ),
+    ],
+)

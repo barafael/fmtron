@@ -1,0 +1,6 @@
+GoesrSatelliteInfo(
+    sat_id: 60133,
+    name: "G19",
+    description: "GOES East",
+    show: true,
+)

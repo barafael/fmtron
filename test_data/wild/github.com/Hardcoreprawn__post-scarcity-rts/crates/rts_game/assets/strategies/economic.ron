@@ -1,0 +1,30 @@
+// Economic Strategy
+// Focus on economy, powerful late game with tech advantage
+Strategy(
+    name: "Economic",
+    description: "Focus on economy, powerful late game with tech and superior units",
+    build_order: [
+        Unit("harvester"),
+        Building("supply_depot"),
+        Unit("harvester"),
+        Building("barracks"),
+        Unit("harvester"),
+        WaitForResources(2000),
+        Building("tech_lab"),
+        Unit("ranger"),
+        Unit("ranger"),
+    ],
+    attack_timing: 18000,  // 300 seconds (5 minutes) at 60 tps
+    attack_interval: 6000, // 100 seconds between attacks
+    composition: {
+        "infantry": 0.3,
+        "ranger": 0.4,
+        "harvester": 0.3,
+    },
+    economy: EconomyTargets(
+        target_harvesters: 4,
+        target_supply_depots: 2,
+        expand_at_resources: 1500,
+    ),
+    aggression: 0.3,
+)

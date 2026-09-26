@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "deny editing last visible characters of overlong lines",
+    ],
+  },
+)

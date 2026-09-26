@@ -1,0 +1,88 @@
+(
+    version: 2,
+    entities: [
+        /*[0]*/ (
+            id: 1,
+            display_name: "Graybox",
+            parent: None,
+            transform: (
+                translation: (
+                    0.0,
+                    0.0,
+                    0.0,
+                ),
+                rotation: (
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                ),
+                scale: (
+                    1.0,
+                    1.0,
+                    1.0,
+                ),
+            ),
+            primitive: (
+                kind: Box,
+                box_half_extents: (
+                    0.5,
+                    0.5,
+                    0.5,
+                ),
+                sphere_radius: 0.6,
+                capsule_radius: 0.35,
+                capsule_half_height: 0.75,
+            ),
+        ),
+        /*[1]*/ (
+            id: 2,
+            display_name: "Ground Plane",
+            parent: None,
+            transform: (
+                translation: (
+                    0.0,
+                    -0.55,
+                    0.0,
+                ),
+                rotation: (
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                ),
+                scale: (
+                    1.0,
+                    1.0,
+                    1.0,
+                ),
+            ),
+            primitive: (
+                kind: Plane,
+                box_half_extents: (
+                    8.0,
+                    0.02,
+                    8.0,
+                ),
+                sphere_radius: 0.6,
+                capsule_radius: 0.35,
+                capsule_half_height: 0.75,
+            ),
+        ),
+    ],
+    material_assignments: (
+        source_revision: 1,
+        palette_slots: [
+            /*[0]*/ (
+                slot_id: 1,
+                palette_entry_id: 1,
+                display_name: "Default Material",
+                source_ref: None,
+                material_asset_id: None,
+                is_default: true,
+            ),
+        ],
+        sdf_primitive_assignments: [],
+        model_mesh_assignments: [],
+    ),
+)

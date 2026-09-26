@@ -1,0 +1,68 @@
+(
+    name: "NXT Gladiator",
+    pid: 512,
+    vid: 8989,
+
+    mappings: (
+        buttons: {
+            // Main buttons
+            South: (17, Bit(1)),
+            East: (17, Bit(2)),
+            North: (17, Bit(4)),
+            West: (17, Bit(8)),
+            LeftTrigger: (17, Bit(16)),
+            RightTrigger: (19, Bit(16)),
+            Select: (19, Bit(32)),
+
+            // Three base-plate function buttons
+            Other(1): (48, Bit(32)),
+            Other(2): (48, Bit(64)),
+            Other(3): (48, Bit(16)),
+
+            // DPad 1
+            DPadUp: (17, Bit(32)),
+            DPadRight: (17, Bit(64)),
+            DPadDown: (17, Bit(128)),
+            DPadLeft: (18, Bit(1)),
+            Mode: (18, Bit(2)),
+
+            // DPad 2
+            Other(10): (18, Bit(4)),
+            Other(11): (18, Bit(8)),
+            Other(12): (18, Bit(16)),
+            Other(13): (18, Bit(32)),
+            Other(14): (18, Bit(64)),
+
+            // DPad 3
+            Other(20): (18, Bit(128)),
+            Other(21): (19, Bit(1)),
+            Other(22): (19, Bit(2)),
+            Other(23): (19, Bit(4)),
+            Other(24): (19, Bit(8)),
+
+            // HatSwitch
+            Other(30): (33, Eq(0)),
+            Other(31): (33, Eq(1)),
+            Other(32): (33, Eq(2)),
+            Other(33): (33, Eq(3)),
+            Other(34): (33, Eq(4)),
+            Other(35): (33, Eq(5)),
+            Other(36): (33, Eq(6)),
+            Other(37): (33, Eq(7)),
+            Other(38): (49, Bit(16))
+        },
+        axes: {
+            // Joystick
+            LeftStickX: (fine: 1, coarse: 2, octaves: 16, inverted: false, abs: false),
+            LeftStickY: (fine: 3, coarse: 4, octaves: 16, inverted: false, abs: false),
+            RightStickX: (fine: 5, coarse: 6, octaves: 8, inverted: false, abs: false),
+
+            // Thumbstick
+            RightStickY: (fine: 9, coarse: 10, octaves: 4, inverted: false, abs: false),
+            Other(2): (fine: 11, coarse: 12, octaves: 4, inverted: false, abs: false),
+
+            // Throttle ('abs' set to true ensures this axis is in the range 0..1). 
+            Other(1): (fine: 7, coarse: 8, octaves: 8, inverted: true, abs: true),
+        }
+    )
+)

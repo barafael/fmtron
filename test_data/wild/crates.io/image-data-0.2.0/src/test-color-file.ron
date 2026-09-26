@@ -1,0 +1,7 @@
+(
+    entries: [
+        (color: "#123abc", name: "thing1"),
+        (color: "#abc123", name: "thing2"),
+        (color: "#ff0000", name: "red"),
+    ],
+)

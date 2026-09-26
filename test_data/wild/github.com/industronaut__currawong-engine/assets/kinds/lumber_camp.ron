@@ -1,0 +1,74 @@
+// The lumber camp building — wood deposit target for hauling pawns.
+// "Stockpile" semantics live in the sim (the camp is the deposit point);
+// the kind itself is the building.
+(
+    id: "currawong:lumber_camp",
+    // Single deposit tile on the building's local -X face. With the example
+    // placing the camp at Facing::ZERO (forward = +X) in the +X +Y corner,
+    // this puts the drop-off point one tile west of the building — between
+    // the camp and the lumberjacks' workspace. `Facing` so the offset
+    // rotates with the building if/when the example reorients it.
+    interaction: (type: "Facing", offsets: [(2, 1, 0), (2, 0, 0), (2, 2, 0)]),
+    // Placement footprint — the 2×2 block of ground tiles the building
+    // occupies when placed. Visualised in `lumber_editor` as orange
+    // X-marked squares; sim consumers (terrain reservation, picking) will
+    // follow.
+    footprint: [(0, 0), (1, 0), (0, 1), (1, 1), (0, 2), (1, 2)],
+    render: (
+    shape: "building",
+    mesh: "lumber/base_2.glb",
+    albedo: "textures/buildings/wood_planks.png",
+    metallic: 0.0,
+    roughness: 0.85,
+    bounds_min: (-0.60947907, -0.49123797, -0.0000000030008227),
+    bounds_max: (1.5033582, 2.5087621, 2.2308686),
+    nodes: [
+        (
+            id: 0,
+            name: "mesh_0",
+            parent: None,
+            transform: (
+                translation: (0.0, 0.0, 0.0),
+                rotation: (0.0, 0.0, 0.0, 1.0),
+                scale: (1.0, 1.0, 1.0),
+            ),
+            kind: "mesh",
+            mesh: Some((
+                mesh: "lumber/base_2.glb",
+                albedo: None,
+                metallic: 0.0,
+                roughness: 0.85,
+            )),
+        ),
+        (
+            id: 1,
+            name: "node_1",
+            parent: Some(0),
+            transform: (
+                translation: (0.0, 0.0, 0.0),
+                rotation: (0.0, 0.0, 0.0, 1.0),
+                scale: (1.0, 1.0, 1.0),
+            ),
+            kind: "empty",
+            mesh: None,
+        ),
+        (
+            id: 3,
+            name: "logs.glb",
+            parent: Some(1),
+            transform: (
+                translation: (1.13, 0.0, 0.05),
+                rotation: (0.0, 0.0, 0.0, 1.0),
+                scale: (1.0, 1.0, 1.0),
+            ),
+            kind: "mesh",
+            mesh: Some((
+                mesh: "lumber/logs.glb",
+                albedo: None,
+                metallic: 0.0,
+                roughness: 0.85,
+            )),
+        ),
+    ],
+),
+)

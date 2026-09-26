@@ -1,0 +1,83 @@
+(
+    batch_request_format_version: 1,
+    id: "org.weave.character.assistance.glasswind_batch",
+    collection_id: "org.weave.character.collection.glasswind",
+    expected_collection_sha256: "cc61f604b3694dc8c604786b293ac44dfd8380a1e19e51011ba90bb5c9f9ce7d",
+    template: (
+        id: "org.weave.character.assistance.glasswind_development",
+        version: "1.0.0",
+        sha256: "0959fd155d4f00d00ec18fd514601f5926200420974f87fd4211904deda40c71",
+    ),
+    provider: (
+        adapter_id: "org.weave.character.assistance.offline",
+        adapter_version: "1.0.0",
+        engine_id: "glasswind_scaffold_v1",
+        mode: offline,
+        supports_seed: true,
+        credential_required: false,
+    ),
+    fields: [
+        biography,
+        motivation,
+    ],
+    included_inputs: [
+        display_name,
+    ],
+    settings: (
+        candidates_per_field: 1,
+        language: "en-US",
+        creativity_micros: 350000,
+        maximum_output_chars: 200000,
+        provider_parameters: {
+            "quality": (
+                kind: symbol,
+                value: "balanced",
+            ),
+        },
+    ),
+    seed: Some(20260825),
+    filter: (
+        character_ids: [],
+        id_prefixes: [
+            "org.weave.character",
+        ],
+        fields_missing_suggestions: [
+            biography,
+        ],
+    ),
+    budget: (
+        maximum_characters: 64,
+        maximum_provider_calls: 128,
+        maximum_candidates: 4096,
+        maximum_input_chars: 1048576,
+    ),
+    retry: (
+        maximum_retries_per_character: 2,
+        retryable_codes: [
+            rate_limited,
+            timeout,
+        ],
+    ),
+    rate_limit_calls_per_resume: 1,
+    cache_policy: job_local,
+    provenance: (
+        sources: [
+            (
+                id: "assistance_batch_request_original",
+                kind: original,
+                url: "https://weave.dev/character/assistance",
+                revision: "1",
+                license: "MIT",
+                license_url: "https://opensource.org/license/mit/",
+                attribution: "Original synthetic assistance batch request fixture.",
+                modified: false,
+            ),
+        ],
+        transformations: [],
+        claims: {
+            "batch_request": [
+                "assistance_batch_request_original",
+            ],
+        },
+    ),
+)

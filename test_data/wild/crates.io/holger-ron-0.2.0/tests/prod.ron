@@ -1,0 +1,31 @@
+(
+    exposed_endpoints: [
+        (
+            ron_name: "prod",
+            ron_url: "https://localhost:8443",
+            ron_cert: "/home/rickard/RustroverProjects/holger/holger-ron/tests/certs/cert.pem",
+            ron_key: "/home/rickard/RustroverProjects/holger/holger-ron/tests/certs/key.pem"
+        ),
+    ],
+
+    storage_endpoints: [
+        (
+            ron_name: "artifact-prod",
+            ron_storage_type: "znippy",
+            ron_path: "/var/lib/holger/rust-prod/",
+        ),
+    ],
+
+    repositories: [
+        (
+            ron_name: "rust-prod",
+            ron_repo_type: "rust",
+            ron_upstreams: [],
+            ron_in: None,
+            ron_out: Some((
+                ron_storage_endpoint: "artifact-prod",
+                ron_exposed_endpoint: "prod",
+            )),
+        ),
+    ],
+)

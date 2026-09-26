@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/apigatewayv2",
+    protocol: "binary-tarpc",
+    description: "Manages AWS API Gateway V2 resources, such as APIs, routes, integrations, and more.",
+    stability: "preview"
+)

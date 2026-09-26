@@ -1,0 +1,8 @@
+(
+    buses: {
+        "master": (children: {
+            "sfx": (),
+            "ui": (),
+        }),
+    },
+)

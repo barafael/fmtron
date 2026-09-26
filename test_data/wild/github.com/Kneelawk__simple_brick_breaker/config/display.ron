@@ -1,0 +1,4 @@
+(
+  title: "Simple Brick Breaker",
+  dimensions: Some((1280, 720)),
+)

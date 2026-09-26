@@ -1,0 +1,5 @@
+Snowball(
+    acceptance_threshold: 10,
+    sample_size_weighted: 0.25,
+    query_threshold_weighted: 0.6,
+)

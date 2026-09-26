@@ -1,0 +1,147 @@
+// The thicket — the first slide where being in the middle of a crowd is not the best place to be.
+//
+// `soup.ron` is the control condition and this is the experiment. Four settings differ, and all
+// four come out of `transport_probe`; the reasoning is in the probe's own header, in
+// `docs/FEEDING.md` and in `docs/STIFFNESS.md`. Read them together, because **none of the four
+// does anything on its own** — that is the single most important thing about this file.
+//
+//   mm-cli run scenarios/the_thicket.ron --genome genomes/ancestor.mm --ticks 50000 --check
+//
+// ---------------------------------------------------------------- 1. carbon near the knee
+//
+// `docs/CHEMISTRY.md` §6 measured the carbon seeding and found the population flat across the
+// top forty-fold and then a cliff — 985 cells at 400 units a square, 1032 at 10, 347 at 4. The
+// soup seeds 400, two orders of magnitude above where it starts to bind, so **in every run this
+// project has ever made the structural monomer has been effectively infinite**. An infinite
+// resource cannot be locally depleted however slowly it moves, and that is why every measurement
+// of a pack's interior has come back flat.
+//
+// 40 units a square: just above the knee. Scarce enough to be consumed faster than it arrives,
+// abundant enough that the population is not culled to reach the point.
+//
+// ---------------------------------------------------------------- 2. water that is not stirred
+//
+// `fluid_interval: 8`. The fluid steps once every eight ticks instead of every tick, so transport
+// runs eight times slower against a metabolism that is unchanged.
+//
+// SPEC §17.8 named this and did not test it: "the cause is a rate mismatch, not a missing
+// mechanism ... on the timescale a cell lives at, the fluid is a well-stirred bath". Measured,
+// there is a clean regime change at exactly this value. Below it the inner-to-outer carbon
+// contrast is noise wider than any signal; at and above it the core holds consistently half to
+// two-thirds the carbon of the rind, in every seed — and **the population does not change**,
+// 297-307 against 312. A real gradient for nothing.
+//
+// It is also cheaper: the fluid is the piece furthest from its performance gate and this is
+// seven eighths of its work not done.
+//
+// ---------------------------------------------------------------- 3. light that runs out
+//
+// The one that took the longest to find, because the two obvious candidates were both wrong.
+//
+// Slowing the water gives the pack a carbon gradient and does *not* make the middle a worse
+// place. Starving the waste makes the middle a **better** place — mean energy inside the pack
+// goes from 118% of outside to 169% — because respiration exhales what photosynthesis eats, so a
+// crowd is its own atmosphere and the scarcer the waste in the water the more valuable it is to
+// be surrounded by cells breathing it out. The porosity term SPEC §17.8 proposes would do the
+// same thing for the same reason, which is the argument against building it.
+//
+// The core can only be hostile if something the cells **cannot manufacture** runs out there, and
+// light is the only such thing in this world: energy enters as light and nothing else, and no
+// cell can make it, store it or take it from a neighbour.
+//
+// `light_occlusion` at `Q10/8` = 128 is the measured value, and it is measured rather than
+// chosen: it is the only setting that removes the burial advantage — mean energy inside the pack
+// falls from 118% of outside to **100% [99-103]** — and pushing harder does not push further.
+// At a quarter and above the figure climbs back to 103-110, because a shaded cell photosynthesises
+// less, grows less, presses less hard on its neighbours and therefore shades them less. It is a
+// self-limiting feedback rather than a dial, which is worth knowing before anyone turns it up.
+//
+// ---------------------------------------------------------------- 4. cells that cannot shrink away
+//
+// Occlusion on its own gets to parity and stops, and the reason is that the escape route is
+// *size*: a shaded cell grows less, shrinks, overlaps its neighbours less and is therefore shaded
+// less. Turning occlusion up does not help, because it feeds the same loop harder.
+//
+// `rigidity_gain` closes it. Turgor is charged for everywhere in this engine and buys nothing;
+// here it buys stiffness, so a cell that is holding solute keeps a larger incompressible core.
+// The mechanism is narrower than "stiff cells resist crowding": `pressure` is normalised against
+// the band between touching and the core, so a rigid cell — whose band is narrow — reads
+// near-maximum pressure the moment it touches anything. **Stiffness turns `pressure` from a
+// measure of depth into a measure of count**, and a count of neighbours does not fall when a cell
+// shrinks. Neither does turgor: `osmotic_load` is what a cell holds, and interior capacity does
+// not scale with mass.
+//
+// Measured, at occlusion `Q10/8`:
+//
+//     gain    population   carbon contrast   buried
+//     off      263             98%            100% [99-103]
+//     4x       262             67%             99% [98-100]
+//     16x      281             20%             96% [92- 98]
+//
+// At 16x every seed is below 100 and the carbon gradient has sharpened five-fold. **This is the
+// first slide in the project's history where the middle of a crowd is a worse place to be than
+// the rind**, which is what SPEC §17.8 set out to produce.
+//
+// The gain is large because the wall term is normalised against the *largest* membrane a cell
+// could build and the ancestors build 24 of a possible 255, so most of the dial is spent
+// compensating for that. That is calibration and M8 owns it; the number here is the measured one,
+// not the tidy one.
+//
+// It does not work without occlusion — at `light_occlusion: 0` the same sweep only moves `buried`
+// from 118% to 109% — and it does not work with *more* occlusion either. All four settings in
+// this file are one setting.
+//
+// **A dormant middle, not yet a dead core.** SPEC §17.8 wants a growing rind, a dormant middle
+// and a dead core. This slide has the first two.
+(
+    name: "the thicket",
+    seed: 20250809,
+    width: 64,
+    height: 64,
+
+    light: Uniform(intensity: 1024),
+    current: Still,
+
+    // See 2 above. The one number in this file with a measured regime change behind it.
+    fluid_interval: 8,
+
+    // Waste and oxidant as the soup has them — deliberately. Starving either was measured and
+    // made the interior *more* attractive, not less.
+    seeding: [
+        Uniform(chemical: 11, per_square: 409600),
+        // The carbonate system (`docs/CHEMISTRY.md` §11). Carbonate matched to the dissolved
+        // CO2 above, so the slide starts at pH 7 and every move from there is something the
+        // cells did. Calcium is then *not* free: the pair precipitates on the product of the
+        // two, so this is set to put `sqrt(calcium * carbonate)` a little over
+        // `minerals.calcite_saturation` — near enough to equilibrium that the pH decides which
+        // way it goes, which is the whole point of the coupling.
+        Uniform(chemical: 18, per_square: 409600),
+        Uniform(chemical: 17, per_square: 3461),
+        Uniform(chemical: 14, per_square: 409600),
+        // 40 units a square rather than the soup's 400. See 1 above.
+        Uniform(chemical: 4, per_square: 40960),
+        // The three minerals nothing in the engine produces (`docs/CHEMISTRY.md` §8): seeding is
+        // the only way in, and without them a nucleus, an enzyme or a shell cannot be built at
+        // all. At the Redfield proportion of this world's own carbon — 16/106 nitrogen, 1/106
+        // phosphorus rounded up — and half that again in silicon, matching the fresh slide.
+        Uniform(chemical: 5, per_square: 6144),
+        Uniform(chemical: 6, per_square: 1024),
+        // The inert pool a diazosome cracks. Four times the bioavailable nitrogen: a
+        // young world is mostly locked up, and unlocking it is what the organelle is for.
+        Uniform(chemical: 16, per_square: 24576),
+        Uniform(chemical: 7, per_square: 20480),
+    ],
+    barriers: [],
+
+    // See 3 and 4 above. Off everywhere else, including in `BiologyConfig::default`, because it
+    // changes what every existing measurement means and M8 owns balancing.
+    //
+    // Named rather than written out, so that any other world can be run under the same economy —
+    // `mm-cli balance --ruleset rival_light` is the sweep this file's findings ask for and could
+    // not express while the two numbers lived here. `rulesets/rival_light.ron` carries them and
+    // the argument for why they are one setting rather than two.
+    //
+    // The carbon seeding of 1 above stays here, and the split is the general rule: a ruleset says
+    // what a cell may do, a scenario says what is in the world and where.
+    ruleset: "rival_light",
+)

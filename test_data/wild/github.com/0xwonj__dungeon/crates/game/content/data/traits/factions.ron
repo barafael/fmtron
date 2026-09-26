@@ -1,0 +1,5 @@
+// Faction trait layer presets
+// Each faction defines group allegiance/loyalty traits (0-15 per trait)
+{
+    "none": [],  // Default empty faction
+}

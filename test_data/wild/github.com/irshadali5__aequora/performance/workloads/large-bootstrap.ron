@@ -1,0 +1,15 @@
+(
+    format_version: 1,
+    name: "large-bootstrap-v1",
+    profile: LargeBootstrap,
+    benchmark_kind: Component,
+    seed: 19003,
+    tenants: 1,
+    clients_per_tenant: 1,
+    operations: 1000000,
+    payload_bytes_p50: 1024,
+    payload_bytes_p99: 16384,
+    max_dependency_edges: 1,
+    max_runtime_seconds: 3600,
+    durable: true,
+)

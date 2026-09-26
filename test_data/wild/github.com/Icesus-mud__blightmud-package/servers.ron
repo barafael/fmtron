@@ -1,0 +1,8 @@
+{
+    "Icesus": (
+        host: "icesus.org",
+        port: 4443,
+        tls: true,
+        verify_cert: true,
+    ),
+}

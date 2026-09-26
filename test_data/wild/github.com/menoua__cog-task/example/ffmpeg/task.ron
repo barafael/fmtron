@@ -1,0 +1,130 @@
+//@ ffmpeg
+
+(
+    name: "Using ffmpeg backend",
+    version: "0.1",
+
+    config: (
+        volume: 0.75,
+        blocks_per_row: 3,
+        stream_backend: ffmpeg,
+    ),
+
+    blocks: [
+        /* Pulling samples doesn't yet work with the ffmpeg backend
+        (
+            name: "Cached Video",
+            tree: seq(([
+                video((src: "../audio_video/data/earth-4sec.mp4")),
+                video((src: "../audio_video/data/earth-4sec.mp4", width: Some(200))),
+                video((src: "../audio_video/data/earth-4sec.mp4", width: Some(300))),
+                video((src: "../audio_video/data/earth-4sec.mp4", width: Some(600))),
+                timeout((15, video((src: "../audio_video/data/giphy.gif", width: Some(600), looping: true)))),
+            ]))
+        ),
+        */
+
+        (
+            name: "Short Video",
+            tree: seq(([
+                stream((src: "../audio_video/data/earth-4sec.mp4", width: Some(200))),
+                stream((src: "../audio_video/data/earth-4sec.mp4", width: Some(300))),
+                stream((src: "../audio_video/data/earth-4sec.mp4", width: Some(600))),
+            ]))
+        ),
+
+        (
+            name: "Medium Video",
+            tree: seq(([
+                instruction((text: "This is a 2-minute video...")),
+                stream((src: "../audio_video/data/video.webm", background: black)),
+                instruction((
+                    text: "This is the same video, but cached. Note that cached videos don't have sound.",
+                )),
+                video((src: "../audio_video/data/video.mpg")),
+            ]))
+        ),
+
+        (
+            name: "Long Video",
+            tree: seq(([
+                instruction((
+                    text: "What comes next is a static video repeated 4 times.\nQuickly press Escape twice to cancel the experiment block.",
+                )),
+                stream((src: "../audio_video/data/big_buck_bunny_720_stereo-720p.mp4", width: Some(1920))),
+                stream((src: "../audio_video/data/big_buck_bunny_720_stereo-720p.mp4")),
+                stream((src: "../audio_video/data/big_buck_bunny_720_stereo-720p.mp4")),
+                stream((src: "../audio_video/data/big_buck_bunny_720_stereo-720p.mp4")),
+            ]))
+        ),
+
+        (
+            name: "Medium Video with Trigger",
+            tree: seq(([
+                instruction((
+                    text: "What comes next is a static video repeated 4 times.\nQuickly press Escape twice to cancel the experiment block.",
+                )),
+                par(([
+                    stream((src: "../audio_video/data/video.mono.mov", channel: left)),
+                ], [
+                    audio((src: "../audio_video/data/video.mono.trig.wav", channel: right))
+                ])),
+                par(([
+                    stream((src: "../audio_video/data/video.mono.mov", channel: left)),
+                ], [
+                    audio((src: "../audio_video/data/video.mono.trig.wav", channel: right))
+                ])),
+                par(([
+                    stream((src: "../audio_video/data/video.mono.mov", channel: left)),
+                ], [
+                    audio((src: "../audio_video/data/video.mono.trig.wav", channel: right))
+                ])),
+                par(([
+                    stream((src: "../audio_video/data/video.mono.mov", channel: left)),
+                ], [
+                    audio((src: "../audio_video/data/video.mono.trig.wav", channel: right))
+                ])),
+            ]))
+        ),
+
+        (
+            name: "Looping Video",
+            tree: timeout((
+            12.0,
+            video((src: "../audio_video/data/earth-4sec.mp4", looping: true))
+            ))
+        ),
+
+        (
+            name: "Streamed Audio",
+            tree: seq(([
+                stream((src: "../audio_video/data/sample-6s.wav")),
+                stream((src: "../audio_video/data/sample-6s.wav", volume: 0.75)),
+                stream((src: "../audio_video/data/sample-6s.wav", volume: 0.5)),
+                stream((src: "../audio_video/data/sample-6s.wav", volume: 0.25)),
+            ]))
+        ),
+
+        (
+            name: "Backend error",
+            config: (
+                stream_backend: none
+            ),
+            tree: timeout((
+            15.0,
+            video((src: "../audio_video/data/earth-4sec.mp4", looping: true)),
+            ))
+        ),
+
+        (
+            name: "Looping Streams",
+            tree: timeout((
+            15.0,
+            par(([
+                stream((src: "../audio_video/data/sample-6s.wav", looping: true)),
+                stream((src: "../audio_video/data/earth-4sec.mp4", looping: true)),
+            ])),
+            ))
+        ),
+    ]
+)

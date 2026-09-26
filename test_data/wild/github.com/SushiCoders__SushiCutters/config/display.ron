@@ -1,0 +1,4 @@
+(
+  title: "SushiCutters",
+  dimensions: Some((500, 500)),
+)

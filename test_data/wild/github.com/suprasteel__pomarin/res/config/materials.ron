@@ -1,0 +1,35 @@
+[
+    Texture((
+        name:"default",
+        diffuse_texture:("d_default"),
+        normal_texture:("n_default")
+    )),
+    Texture((
+        name:"wall",
+        diffuse_texture:("d_wall"),
+        normal_texture:("n_wall")
+    )),
+    Texture((
+        name:"sea",
+        diffuse_texture:("d_sea"),
+        normal_texture:("n_sea")
+    )),
+    Color((
+        name:"color_001",
+        ambient:(0.1,0.2,0.3),
+        diffuse:(0.5,0.6,0.7),
+        specular:(0.5,0.5,0.5)
+    )),
+    Color((
+        name:"grey",
+        ambient:(0.1,0.1,0.1),
+        diffuse:(0.2,0.2,0.2),
+        specular:(0.3,0.3,0.3)
+    )),
+    Color((
+        name:"white",
+        ambient:(0.2,0.2,0.2),
+        diffuse:(0.5,0.5,0.5),
+        specular:(0.8,0.8,0.8)
+    ))
+]

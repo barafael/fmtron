@@ -1,0 +1,259 @@
+(
+    hot_reload: true,
+    style_dirs: ["demos/styles"],
+    default_style: Some("mk8d_btn_gray"),
+    clear_color: Some((r: 0.12, g: 0.12, b: 0.12, a: 1.0)),
+    start_root: "title",
+    roots: [
+
+        // ── Title Screen ──────────────────────────────────────────────────────
+        (
+            name: "title",
+            labels: [
+                ( id: "title_logo",    x: -420.0, y: -220.0, text: "MARIO KART 8 DELUXE", size: 72.0, color: Some((r: 1.0,  g: 0.95, b: 0.20, a: 1.0)) ),
+                ( id: "title_prompt",  x: -200.0, y:   60.0, text: "Press A to Start",     size: 34.0, color: Some((r: 1.0,  g: 1.0,  b: 1.0,  a: 0.90)) ),
+                ( id: "title_copy",    x: -240.0, y:  470.0, text: "© Nintendo",           size: 20.0, color: Some((r: 0.75, g: 0.75, b: 0.75, a: 0.70)) ),
+            ],
+            buttons: [
+                (
+                    id: "title_any_key",
+                    x: 0.0, y: 0.0, width: 1920.0, height: 1080.0,
+                    text: "",
+                    tooltip: None,
+                    on_press: SwitchRoot("main"),
+                    nav_default: true,
+                    style: Some("mk8d_btn_gray"),
+                ),
+            ],
+        ),
+
+        // ── Main Menu ─────────────────────────────────────────────────────────
+        (
+            name: "main",
+            labels: [
+                ( id: "main_logo", x: -380.0, y: -440.0, text: "MARIO KART 8 DELUXE", size: 48.0, color: Some((r: 1.0, g: 0.95, b: 0.20, a: 1.0)) ),
+            ],
+            buttons: [
+                // 2×2 grid of parallelogram buttons
+                // Top-left: Single Player (red)
+                (
+                    id: "btn_single",
+                    x: -600.0, y: -100.0, width: 500.0, height: 100.0,
+                    text: "Single Player",
+                    tooltip: None,
+                    on_press: SwitchRoot("single_player"),
+                    nav_default: true,
+                    style: Some("mk8d_btn_red"),
+                ),
+                // Top-right: Multiplayer (blue)
+                (
+                    id: "btn_multi",
+                    x: -600.0, y: -220.0, width: 500.0, height: 100.0,
+                    text: "Multiplayer",
+                    tooltip: None,
+                    on_press: Custom("multiplayer"),
+                    style: Some("mk8d_btn_blue"),
+                ),
+                // Bottom-left: Online Play (green)
+                (
+                    id: "btn_online",
+                    x: -600.0, y:  20.0, width: 500.0, height: 100.0,
+                    text: "Online Play",
+                    tooltip: None,
+                    on_press: Custom("online_play"),
+                    style: Some("mk8d_btn_green"),
+                ),
+                // Bottom-right: My Nintendo (yellow)
+                (
+                    id: "btn_nintendo",
+                    x: -600.0, y: 140.0, width: 500.0, height: 100.0,
+                    text: "My Nintendo",
+                    tooltip: None,
+                    on_press: Custom("my_nintendo"),
+                    style: Some("mk8d_btn_yellow"),
+                ),
+                // Options (gray pill, below grid)
+                (
+                    id: "btn_options",
+                    x: -530.0, y: 310.0, width: 320.0, height: 60.0,
+                    text: "Options",
+                    tooltip: None,
+                    on_press: SwitchRoot("options"),
+                    style: Some("mk8d_btn_gray"),
+                ),
+            ],
+            bars: [
+                (
+                    id: "main_hint_bar",
+                    edge: Some(Bottom),
+                    thickness: 52.0,
+                    pad: 32.0,
+                    gap: 48.0,
+                    style: Some("mk8d_bar"),
+                    items: [
+                        Label(( id: "hint_a", text: "A  Select", size: 22.0, color: Some((r: 1.0, g: 1.0, b: 1.0, a: 0.90)), width: 160.0 )),
+                        Label(( id: "hint_b", text: "B  Back",   size: 22.0, color: Some((r: 1.0, g: 1.0, b: 1.0, a: 0.90)), width: 140.0 )),
+                    ],
+                ),
+            ],
+        ),
+
+        // ── Single Player ─────────────────────────────────────────────────────
+        (
+            name: "single_player",
+            labels: [
+                ( id: "sp_title", x: -180.0, y: -380.0, text: "Single Player", size: 48.0, color: Some((r: 1.0, g: 1.0, b: 1.0, a: 1.0)) ),
+            ],
+            buttons: [
+                (
+                    id: "btn_gp",
+                    x: 0.0, y: -200.0, width: 560.0, height: 120.0,
+                    text: "Grand Prix",
+                    tooltip: None,
+                    on_press: Custom("grand_prix"),
+                    nav_default: true,
+                    style: Some("mk8d_btn_red"),
+                ),
+                (
+                    id: "btn_tt",
+                    x: 0.0, y: -60.0, width: 560.0, height: 120.0,
+                    text: "Time Trial",
+                    tooltip: None,
+                    on_press: Custom("time_trial"),
+                    style: Some("mk8d_btn_blue"),
+                ),
+                (
+                    id: "btn_vs",
+                    x: 0.0, y: 80.0, width: 560.0, height: 120.0,
+                    text: "VS Race",
+                    tooltip: None,
+                    on_press: Custom("vs_race"),
+                    style: Some("mk8d_btn_green"),
+                ),
+                (
+                    id: "btn_battle",
+                    x: 0.0, y: 220.0, width: 560.0, height: 120.0,
+                    text: "Battle",
+                    tooltip: None,
+                    on_press: Custom("battle"),
+                    style: Some("mk8d_btn_yellow"),
+                ),
+                (
+                    id: "btn_sp_back",
+                    x: 0.0, y: 370.0, width: 280.0, height: 56.0,
+                    text: "Back",
+                    tooltip: None,
+                    on_press: SwitchRoot("main"),
+                    style: Some("mk8d_btn_gray"),
+                ),
+            ],
+            bars: [
+                (
+                    id: "sp_hint_bar",
+                    edge: Some(Bottom),
+                    thickness: 52.0,
+                    pad: 32.0,
+                    gap: 48.0,
+                    style: Some("mk8d_bar"),
+                    items: [
+                        Label(( id: "sp_hint_a", text: "A  Select", size: 22.0, color: Some((r: 1.0, g: 1.0, b: 1.0, a: 0.90)), width: 160.0 )),
+                        Label(( id: "sp_hint_b", text: "B  Back",   size: 22.0, color: Some((r: 1.0, g: 1.0, b: 1.0, a: 0.90)), width: 140.0 )),
+                    ],
+                ),
+            ],
+        ),
+
+        // ── Options ───────────────────────────────────────────────────────────
+        (
+            name: "options",
+            labels: [
+                ( id: "opt_title",         x: -120.0, y: -400.0, text: "Options",        size: 48.0, color: Some((r: 1.0,  g: 1.0,  b: 1.0,  a: 1.0)) ),
+                ( id: "opt_lbl_music",     x: -460.0, y: -220.0, text: "Music Volume",   size: 26.0, color: Some((r: 0.90, g: 0.90, b: 0.90, a: 1.0)) ),
+                ( id: "opt_lbl_sfx",       x: -460.0, y: -120.0, text: "SFX Volume",     size: 26.0, color: Some((r: 0.90, g: 0.90, b: 0.90, a: 1.0)) ),
+                ( id: "opt_lbl_lang",      x: -460.0, y:   60.0, text: "Language",       size: 26.0, color: Some((r: 0.90, g: 0.90, b: 0.90, a: 1.0)) ),
+            ],
+            sliders: [
+                (
+                    id: "sld_music",
+                    x: 100.0, y: -220.0, width: 480.0, height: 40.0,
+                    min: 0.0, max: 100.0, value: 80.0,
+                    step: Some(5.0),
+                    tooltip: None,
+                    style_track: "mk8d_btn_gray",
+                    style_thumb: "mk8d_btn_blue",
+                    on_change: Custom("music_volume"),
+                ),
+                (
+                    id: "sld_sfx",
+                    x: 100.0, y: -120.0, width: 480.0, height: 40.0,
+                    min: 0.0, max: 100.0, value: 80.0,
+                    step: Some(5.0),
+                    tooltip: None,
+                    style_track: "mk8d_btn_gray",
+                    style_thumb: "mk8d_btn_green",
+                    on_change: Custom("sfx_volume"),
+                ),
+            ],
+            toggles: [
+                (
+                    id: "tog_motion",
+                    x: -100.0, y: -20.0, width: 360.0, height: 56.0,
+                    text: "Motion Controls",
+                    tooltip: None,
+                    checked: false,
+                    style_off: "mk8d_btn_gray",
+                    style_on: "mk8d_btn_blue",
+                    on_change: Custom("motion_controls"),
+                ),
+                (
+                    id: "tog_rumble",
+                    x: -100.0, y:  50.0, width: 360.0, height: 56.0,
+                    text: "TV Rumble",
+                    tooltip: None,
+                    checked: true,
+                    style_off: "mk8d_btn_gray",
+                    style_on: "mk8d_btn_blue",
+                    on_change: Custom("tv_rumble"),
+                ),
+            ],
+            dropdowns: [
+                (
+                    id: "dd_lang",
+                    x: 100.0, y: 60.0, width: 320.0, height: 52.0,
+                    options: ["English", "Spanish", "French", "German", "Japanese"],
+                    selected: 0,
+                    tooltip: None,
+                    style: Some("mk8d_btn_gray"),
+                    style_list: Some("mk8d_btn_gray"),
+                    style_item: Some("mk8d_btn_gray"),
+                    on_change: Custom("language"),
+                ),
+            ],
+            buttons: [
+                (
+                    id: "btn_opt_back",
+                    x: 0.0, y: 380.0, width: 280.0, height: 56.0,
+                    text: "Back",
+                    tooltip: None,
+                    on_press: SwitchRoot("main"),
+                    nav_default: true,
+                    style: Some("mk8d_btn_gray"),
+                ),
+            ],
+            bars: [
+                (
+                    id: "opt_hint_bar",
+                    edge: Some(Bottom),
+                    thickness: 52.0,
+                    pad: 32.0,
+                    gap: 48.0,
+                    style: Some("mk8d_bar"),
+                    items: [
+                        Label(( id: "opt_hint_a", text: "A  Confirm", size: 22.0, color: Some((r: 1.0, g: 1.0, b: 1.0, a: 0.90)), width: 180.0 )),
+                        Label(( id: "opt_hint_b", text: "B  Back",    size: 22.0, color: Some((r: 1.0, g: 1.0, b: 1.0, a: 0.90)), width: 140.0 )),
+                    ],
+                ),
+            ],
+        ),
+    ],
+)

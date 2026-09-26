@@ -1,0 +1,5 @@
+// src/settings/general_settings.rs
+#![enable(implicit_some)]
+(
+    text_scroll_delay_ms: 18,
+)

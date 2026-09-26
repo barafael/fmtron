@@ -1,0 +1,79 @@
+// Reputation system configuration
+//
+// This file controls how feedback affects reputation and how frequently
+// feedback is displayed to the player.
+
+(
+    // Base reputation impact values for each feedback topic
+    // Positive values increase reputation, negative values decrease it
+    base_impacts: {
+        praise: 0.2,       // Increased to reward good service more
+        appeal: -0.05,      // No appealing dishes available
+        queue: -3.0,        // Queue too long
+        tableware: -0.01,   // Missing tray/chopsticks
+        quality: -0.05,     // Dish quality below expectation
+        price: -0.05,       // Pricing complaints
+        hygiene: -0.25,      // Still most severe
+        taste: -0.05,       // Bad taste
+        hunger: -0.1,      // Still hungry after meal
+        crab: 0.0,
+    },
+
+    // Probability of displaying feedback bubble (reduces visual noise)
+    // With 500 diners/day, lower values prevent overwhelming the player
+    display_probabilities: {
+        praise: 0.2,
+        appeal: 0.25,
+        queue: 0.35,
+        tableware: 1.0,
+        quality: 0.25,
+        price: 0.40,
+        hygiene: 1.0,
+        taste: 0.25,
+        hunger: 0.15,
+        crab: 1.0,
+    },
+
+    // Probability of applying reputation impact (forgiveness mechanism)
+    // Lower values make the game more forgiving by ignoring some complaints
+    impact_probabilities: {
+        praise: 1.0,
+        appeal: 0.35,
+        queue: 0.50,
+        tableware: 0.05,
+        quality: 0.2,
+        price: 0.25,
+        hygiene: 0.5,
+        taste: 0.2,
+        hunger: 0.25,
+        crab: 1.0,
+    },
+
+    // Thresholds for triggering different types of feedback
+    feedback_thresholds: (
+        min_appealing_score: -0.3,      // Below this triggers NoAppealingDish
+        contamination_threshold: 0.01,  // Minimum contamination to detect (lowered drastically to trigger)
+        bad_taste_threshold: -0.5,      // Below this triggers BadTaste (require very poor satisfaction)
+        still_hungry_threshold: 0.15,   // Above this triggers StillHungry
+        base_quality_tolerance: 0.2,    // Quality mismatch tolerance
+        memory_weight: 0.6,             // Weight for historical memory
+        base_quality_weight: 0.4,       // Weight for dish base quality
+        max_price_ratio: 1.6,           // Maximum price/base_price ratio (60% markup needed)
+        praise_threshold: 0.15,         // Minimum satisfaction to trigger praise feedback (lowered to trigger more)
+    ),
+
+    // How much player trial responses affect reputation impact (0.0-1.0)
+    // 0.6 means responses can reduce damage by up to 60% or boost benefits by 60%
+    response_factor: 0.6,
+
+    // Maximum reputation change from a single feedback event
+    max_single_change: 8.0,
+
+    // Maximum total reputation change in one day (prevents catastrophic drops)
+    max_daily_change: 12.0,
+
+    // FSRI (Food Safety Risk Index) incident probability calculation
+    // incident_probability = min(fsri × multiplier, max_incident_probability)
+    fsri_incident_multiplier: 0.0015,   // At FSRI=10: 1.5% chance/day
+    max_incident_probability: 0.25,     // Cap at 25% even with very high FSRI
+)

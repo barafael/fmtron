@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/s3",
+    protocol: "binary-tarpc",
+    description: "Manages AWS S3 buckets, including policies & ACLs.",
+    stability: "preview"
+)

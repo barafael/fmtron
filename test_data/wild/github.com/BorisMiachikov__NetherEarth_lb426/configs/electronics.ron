@@ -1,0 +1,8 @@
+(
+    accuracy_bonus: 0.3,
+    fire_rate_bonus: 0.2,
+    radar_range: 20.0,
+    capture_time_reduction: 0.3,
+    cost_electronics: 20,
+    cost_general: 10,
+)

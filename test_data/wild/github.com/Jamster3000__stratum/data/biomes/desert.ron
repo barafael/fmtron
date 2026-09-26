@@ -1,0 +1,47 @@
+(
+    id: 1,
+    name: "desert",
+
+    // Terrain generation parameters
+    height_scale: 24.0,
+    height_offset: 48.0,
+    noise_scale: 0.06,
+    noise_octaves: 3,
+    noise_persistence: 0.5,
+    noise_lacunarity: 2.0,
+
+    // Environment
+    temperature: 30.0,
+    humidity: 0.1,
+    weather_chance: {
+        "clear": 0.95,
+        "sandstorm": 0.05,
+    },
+
+    block_layers: [
+        "sand",
+        "sandstone",
+        "stone",
+    ],
+
+    ores: [],
+
+    structures: [
+        (
+            name: "desert_ruin",
+            function: false,
+            density: 0.002,
+        ),
+    ],
+
+    vegetation_density: 0.02,
+    tree_density: 0.0,
+    cave_density: 0.02,
+
+    mobs: [
+        (
+            name: "sand_worm",
+            spawn_weight: 1,
+        ),
+    ],
+)

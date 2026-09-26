@@ -1,0 +1,14 @@
+(
+    body: Some("This is a longer commit message"),
+    desc: "rename footer-specific",
+    footer:[
+        (
+            token: "Fixes",
+            separator: SpaceHashTag,
+            value: "123"
+        )
+    ],
+    is_breaking_change: false,
+    scope: Some("parser"),
+    ty: "refactor"
+)

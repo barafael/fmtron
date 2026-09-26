@@ -1,0 +1,8 @@
+ItemDef(
+    name: "Red Flower",
+    description: "Roses are red...",
+    kind: Ingredient(
+        kind: "Flower",
+    ),
+    quality: Common,
+)

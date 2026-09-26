@@ -1,0 +1,50 @@
+(
+    animations: [
+        (
+            name: "no_sprite",
+            default_delay_ms: Some(1000),
+            sprite_ids: [0],
+        ),
+        (
+            name: "single_sprite",
+            default_delay_ms: Some(1000),
+            sprite_ids: [13],
+        ),
+        (
+            name: "idle",
+            default_delay_ms: Some(500),
+            sprite_ids: [13, 14],
+        ),
+        (
+            name: "walk",
+            default_delay_ms: Some(100),
+            sprite_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12],
+        ),
+        (
+            name: "jump",
+            // default_delay_ms: Some(200),
+            // sprite_ids: [22, 15,  16,  17,  18,  19,  20,  21,  22],
+            sprite_ids: [19,  20,  21,  22,  ],
+            delays_ms:  Some(
+                        [100, 100, 100, 100, ]
+            ),
+        ),
+        (
+            name: "fall",
+            default_delay_ms: Some(500),
+            sprite_ids: [18],
+        ),
+        (
+            // Same as "walk"
+            name: "hover",
+            default_delay_ms: Some(100),
+            sprite_ids: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12],
+        ),
+        (
+            name: "dash",
+            default_delay_ms: Some(200),
+            sprite_ids: [23, 24, 25, 26],
+        ),
+    ],
+    current: Some("no_sprite"),
+)

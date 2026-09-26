@@ -1,0 +1,39 @@
+// Palettes: the colours models are painted from (ADR-0017).
+//
+// sRGB, 0-255 per channel, picked the way an artist would; the runtime converts
+// to linear once. One compact palette for the slice, per PROJECT_CONTEXT §11:
+// variation comes from palettes and silhouettes, not from detail.
+[
+    (
+        schema_version: 1,
+        id: "cinderwake",
+        name: "Cinderwake",
+        swatches: {
+            "skin": (222, 176, 140),
+            "skin-dark": (150, 105, 80),
+            "hair": (70, 45, 30),
+            "tunic": (182, 84, 42),
+            "cloak": (92, 52, 36),
+            "leather": (112, 74, 46),
+            "trousers": (66, 56, 48),
+            "boot": (52, 40, 32),
+            "steel": (172, 177, 186),
+            "steel-dark": (96, 99, 110),
+            "ember": (255, 140, 40),
+            "ash": (104, 100, 98),
+            "ash-dark": (62, 60, 59),
+            "bone": (208, 198, 172),
+            "corruption": (112, 60, 122),
+            "corruption-glow": (196, 92, 214),
+            "resin": (204, 142, 48),
+            "bark": (98, 68, 42),
+            "bark-dark": (62, 44, 30),
+            "moss": (82, 122, 56),
+            "leaf": (112, 154, 72),
+            "eye": (255, 214, 120),
+            "warden-blue": (56, 92, 142),
+            "warden-trim": (204, 182, 122),
+            "robe": (72, 98, 74),
+        },
+    ),
+]

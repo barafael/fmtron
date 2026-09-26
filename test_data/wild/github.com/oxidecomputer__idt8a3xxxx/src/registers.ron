@@ -1,0 +1,587 @@
+{
+    "HW_REVISION": (
+        base: [ 0x8180 ],
+        registers: [
+            (0x7a, "HW_REVISION_REV_ID", Byte),
+        ]
+    ),
+    "RESET_CTRL": (
+        base: [ 0xc000 ],
+        registers: [
+            (0x12, "SM_RESET", Byte),
+        ]
+    ),
+    "GENERAL_STATUS": (
+        base: [ 0xc014 ],
+        registers: [
+            (0x04, "OTP_STATUS", Word32),
+            (0x08, "EEPROM_STATUS", Word),
+            (0x10, "MAJ_REL", Byte),
+            (0x11, "MIN_REL", Byte),
+            (0x12, "HOTFIX_REL", Byte),
+            (0x1c, "JTAG_DEVICE_ID", Word),
+            (0x1e, "PRODUCT_ID", Word),
+            (0x22, "OTP_SCSR_CONFIG_SELECT", Byte),
+            (0x23, "OTP_CONFIG_STATUS", Byte),
+            (0x24, "OTP_CSR_CONFIG_STATUS", Byte),
+            (0x26, "EEPROM_CONFIG_STATUS", Byte),
+        ]
+    ),
+    "STATUS": (
+        base: [ 0xc03c ],
+        registers: [
+            (0x00, "I2CM_STATUS", Byte),
+            (0x02, "SER0_STATUS", Byte),
+            (0x03, "SER0_SPI_STATUS", Byte),
+            (0x04, "SER0_I2C_STATUS", Byte),
+            (0x05, "SER1_STATUS", Byte),
+            (0x06, "SER1_SPI_STATUS", Byte),
+            (0x07, "SER1_I2C_STATUS", Byte),
+            (0x08, "IN0_MON_STATUS", Byte),
+            (0x09, "IN1_MON_STATUS", Byte),
+            (0x0a, "IN2_MON_STATUS", Byte),
+            (0x0b, "IN3_MON_STATUS", Byte),
+            (0x0c, "IN4_MON_STATUS", Byte),
+            (0x0d, "IN5_MON_STATUS", Byte),
+            (0x0e, "IN6_MON_STATUS", Byte),
+            (0x0f, "IN7_MON_STATUS", Byte),
+            (0x10, "IN8_MON_STATUS", Byte),
+            (0x11, "IN9_MON_STATUS", Byte),
+            (0x12, "IN10_MON_STATUS", Byte),
+            (0x13, "IN11_MON_STATUS", Byte),
+            (0x14, "IN12_MON_STATUS", Byte),
+            (0x15, "IN13_MON_STATUS", Byte),
+            (0x16, "IN14_MON_STATUS", Byte),
+            (0x17, "IN15_MON_STATUS", Byte),
+            (0x18, "DPLL0_STATUS", Byte),
+            (0x19, "DPLL1_STATUS", Byte),
+            (0x1a, "DPLL2_STATUS", Byte),
+            (0x1b, "DPLL3_STATUS", Byte),
+            (0x1c, "DPLL4_STATUS", Byte),
+            (0x1d, "DPLL5_STATUS", Byte),
+            (0x1e, "DPLL6_STATUS", Byte),
+            (0x1f, "DPLL7_STATUS", Byte),
+            (0x20, "DPLL_SYS_STATUS", Byte),
+            (0x21, "SYS_APLL_STATUS", Byte),
+            (0x22, "DPLL0_REF_STAT", Byte),
+            (0x23, "DPLL1_REF_STAT", Byte),
+            (0x24, "DPLL2_REF_STAT", Byte),
+            (0x25, "DPLL3_REF_STAT", Byte),
+            (0x26, "DPLL4_REF_STAT", Byte),
+            (0x27, "DPLL5_REF_STAT", Byte),
+            (0x28, "DPLL6_REF_STAT", Byte),
+            (0x29, "DPLL7_REF_STAT", Byte),
+            (0x2a, "DPLL_SYS_REF_STAT", Byte),
+            (0x44, "DPLL0_FILTER_STATUS", Word48),
+            (0x4c, "DPLL1_FILTER_STATUS", Word48),
+            (0x54, "DPLL2_FILTER_STATUS", Word48),
+            (0x5c, "DPLL3_FILTER_STATUS", Word48),
+            (0x64, "DPLL4_FILTER_STATUS", Word48),
+            (0x6c, "DPLL5_FILTER_STATUS", Word48),
+            (0x74, "DPLL6_FILTER_STATUS", Word48),
+            (0x7c, "DPLL7_FILTER_STATUS", Word48),
+            (0x84, "DPLL_SYS_FILTER_STATUS", Word48),
+            (0x8a, "USER_GPIO0_TO_7_STATUS", Byte),
+            (0x8b, "USER_GPIO8_TO_15_STATUS", Byte),
+            (0x8c, "IN0_MON_FREQ_STATUS", Word),
+            (0x8e, "IN1_MON_FREQ_STATUS", Word),
+            (0x90, "IN2_MON_FREQ_STATUS", Word),
+            (0x92, "IN3_MON_FREQ_STATUS", Word),
+            (0x94, "IN4_MON_FREQ_STATUS", Word),
+            (0x96, "IN5_MON_FREQ_STATUS", Word),
+            (0x98, "IN6_MON_FREQ_STATUS", Word),
+            (0x9a, "IN7_MON_FREQ_STATUS", Word),
+            (0x9c, "IN8_MON_FREQ_STATUS", Word),
+            (0x9e, "IN9_MON_FREQ_STATUS", Word),
+            (0xa0, "IN10_MON_FREQ_STATUS", Word),
+            (0xa2, "IN11_MON_FREQ_STATUS", Word),
+            (0xa4, "IN12_MON_FREQ_STATUS", Word),
+            (0xa6, "IN13_MON_FREQ_STATUS", Word),
+            (0xa8, "IN14_MON_FREQ_STATUS", Word),
+            (0xaa, "IN15_MON_FREQ_STATUS", Word),
+            (0xac, "OUTPUT_TDC_CFG_STATUS", Byte),
+            (0xad, "OUTPUT_TDC0_STATUS", Byte),
+            (0xae, "OUTPUT_TDC1_STATUS", Byte),
+            (0xaf, "OUTPUT_TDC2_STATUS", Byte),
+            (0xb0, "OUTPUT_TDC3_STATUS", Byte),
+            (0xb4, "OUTPUT_TDC0_MEASUREMENT", Word48),
+            (0xc4, "OUTPUT_TDC1_MEASUREMENT", Word48),
+            (0xcc, "OUTPUT_TDC2_MEASUREMENT", Word48),
+            (0xd4, "OUTPUT_TDC3_MEASUREMENT", Word48),
+            (0xdc, "DPLL0_PHASE_STATUS", Word40),
+            (0xe4, "DPLL1_PHASE_STATUS", Word40),
+            (0xec, "DPLL2_PHASE_STATUS", Word40),
+            (0xf4, "DPLL3_PHASE_STATUS", Word40),
+            (0xfc, "DPLL4_PHASE_STATUS", Word40),
+            (0x104, "DPLL5_PHASE_STATUS", Word40),
+            (0x10c, "DPLL6_PHASE_STATUS", Word40),
+            (0x114, "DPLL7_PHASE_STATUS", Word40),
+            (0x11c, "DPLL0_PHASE_PULL_IN_STATUS", Byte),
+            (0x11d, "DPLL1_PHASE_PULL_IN_STATUS", Byte),
+            (0x11e, "DPLL2_PHASE_PULL_IN_STATUS", Byte),
+            (0x11f, "DPLL3_PHASE_PULL_IN_STATUS", Byte),
+            (0x120, "DPLL4_PHASE_PULL_IN_STATUS", Byte),
+            (0x121, "DPLL5_PHASE_PULL_IN_STATUS", Byte),
+            (0x122, "DPLL6_PHASE_PULL_IN_STATUS", Byte),
+            (0x123, "DPLL7_PHASE_PULL_IN_STATUS", Byte),
+        ]
+    ),
+    "GPIO_USER_CONTROL": (
+        base: [ 0xc160 ],
+        registers: [
+            (0x00, "GPIO_USER_CONTROL_GPIO0_TO_7_OUT", Byte),
+            (0x01, "GPIO_USER_CONTROL_GPIO8_TO_15_OUT", Byte),
+        ]
+    ),
+    "STICKY_STATUS_CLEAR": (
+        base: [ 0xc164 ],
+        registers: [
+            (0x00, "IN0_TO_7_MON_STICKY_STATUS_CLEAR", Byte),
+            (0x01, "IN8_TO_15_MON_STICKY_STATUS_CLEAR", Byte),
+            (0x02, "DPLL_STICKY_STATUS_CLEAR", Byte),
+            (0x03, "DPLL_SYS_STICKY_STATUS_CLEAR", Byte),
+            (0x04, "SYS_APLL_STICKY_STATUS_CLEAR", Byte),
+            (0x05, "ALL_STICKY_STATUS_CLEAR", Byte),
+        ]
+    ),
+    "GPIO_TOD_NOTIFICATION_CLEAR": (
+        base: [ 0xc16c ],
+        registers: [
+            (0x00, "GPIO0_TO_7_CLEAR", Byte),
+            (0x01, "GPIO8_TO_15_CLEAR", Byte),
+        ]
+    ),
+    "ALERT_CFG": (
+        base: [ 0xc188 ],
+        registers: [
+            (0x00, "IN1_0_MON_ALERT_MASK", Byte),
+            (0x01, "IN3_2_MON_ALERT_MASK", Byte),
+            (0x02, "IN5_4_MON_ALERT_MASK", Byte),
+            (0x03, "IN7_6_MON_ALERT_MASK", Byte),
+            (0x04, "IN9_8_MON_ALERT_MASK", Byte),
+            (0x05, "IN11_10_MON_ALERT_MASK", Byte),
+            (0x06, "IN13_12_MON_ALERT_MASK", Byte),
+            (0x07, "IN15_14_MON_ALERT_MASK", Byte),
+            (0x08, "DPLL3_2_1_0_ALERT_MASK", Byte),
+            (0x09, "DPLL7_6_5_3_ALERT_MASK", Byte),
+            (0x0a, "SYS_ALERT_MASK", Byte),
+        ]
+    ),
+    "SYS_DPLL_XO": (
+        base: [ 0xc194 ],
+        registers: [
+            (0x00, "XO_FREQ", Frequency),
+        ]
+    ),
+    "SYS_APLL": (
+        base: [ 0xc19c ],
+        registers: [
+            (0x00, "SYS_APLL_CP_SS_CURRENT_1", Byte),
+            (0x01, "SYS_APLL_CP_SS_CURRENT_2", Byte),
+            (0x02, "SYS_APLL_CFG_1", Byte),
+            (0x03, "SYS_APLL_CFG_2", Byte),
+            (0x04, "SYS_APLL_VREG_CTRL", Byte),
+            (0x05, "SYS_APLL_CP_CTRL_0", Byte),
+            (0x06, "SYS_APLL_CP_CTRL_1", Byte),
+            (0x07, "SYS_APLL_CP_CTRL_2", Byte),
+            (0x08, "SYS_APLL_XTAL_FREQ", Frequency),
+            (0x10, "SYS_APLL_CTRL", Word),
+        ]
+    ),
+    "INPUT": (
+        base: [
+            0xc1b0, 0xc1c0, 0xc1d0, 0xc200, 0xc210, 0xc220, 0xc230, 0xc240,
+            0xc250, 0xc260, 0xc280, 0xc290, 0xc2a0, 0xc2b0, 0xc2c0, 0xc2d0, 
+        ],
+        registers: [
+            (0x00, "IN_FREQ", Frequency),
+            (0x08, "IN_DIV", Word),
+            (0x0a, "IN_PHASE", Word),
+            (0x0c, "IN_SYNC", Byte),
+            (0x0d, "IN_MODE", Byte),
+        ]
+    ),
+    "REF_MON": (
+        base: [
+            0xc2e0, 0xc2ec, 0xc300, 0xc30c, 0xc318, 0xc324, 0xc330, 0xc33c,
+            0xc348, 0xc354, 0xc360, 0xc36c, 0xc380, 0xc38c, 0xc398, 0xc3a4,
+        ],
+        registers: [
+            (0x00, "IN_MON_FREQ_CFG", Byte),
+            (0x01, "IN_MON_FREQ_VLD_INTV", Byte),
+            (0x02, "IN_MON_FREQ_TRANS_THRESHOLD", Word),
+            (0x04, "IN_MON_FREQ_TRANS_PERIOD", Word),
+            (0x06, "IN_MON_ACT_CFG", Byte),
+            (0x08, "IN_MON_ACT_LOS_TOLERANCE", Word),
+            (0x0a, "IN_MON_ACT_LOS_CFG", Byte),
+            (0x0b, "IN_MON_CFG", Byte),
+        ]
+    ),
+    "DPLL": (
+        base: [
+            0xc3b0, 0xc400, 0xc438, 0xc480, 0xc4b8, 0xc500, 0xc538, 0xc580,
+        ],
+        registers: [
+            (0x00, "DPLL_DCO_INC_DEC_SIZE", Word),
+            (0x02, "DPLL_CTRL_0", Byte),
+            (0x03, "DPLL_CTRL_1", Byte),
+            (0x04, "DPLL_CTRL_2", Byte),
+            (0x05, "DPLL_UPDATE_RATE_CFG", Byte),
+            (0x06, "DPLL_FILTER_STATUS_UPDATE_CFG", Byte),
+            (0x07, "DPLL_HO_ADVCD_HISTORY", Byte),
+            (0x08, "DPLL_HO_ADVCD_BW", Word),
+            (0x0a, "DPLL_HO_CFG", Byte),
+            (0x0b, "DPLL_LOCK_0", Byte),
+            (0x0c, "DPLL_LOCK_1", Byte),
+            (0x0d, "DPLL_LOCK_2", Byte),
+            (0x0e, "DPLL_LOCK_3", Byte),
+            (0x0f, "DPLL_REF_PRIORITY_0", Byte),
+            (0x10, "DPLL_REF_PRIORITY_1", Byte),
+            (0x11, "DPLL_REF_PRIORITY_2", Byte),
+            (0x12, "DPLL_REF_PRIORITY_3", Byte),
+            (0x13, "DPLL_REF_PRIORITY_4", Byte),
+            (0x14, "DPLL_REF_PRIORITY_5", Byte),
+            (0x15, "DPLL_REF_PRIORITY_6", Byte),
+            (0x16, "DPLL_REF_PRIORITY_7", Byte),
+            (0x17, "DPLL_REF_PRIORITY_8", Byte),
+            (0x18, "DPLL_REF_PRIORITY_9", Byte),
+            (0x19, "DPLL_REF_PRIORITY_10", Byte),
+            (0x1a, "DPLL_REF_PRIORITY_11", Byte),
+            (0x1b, "DPLL_REF_PRIORITY_12", Byte),
+            (0x1c, "DPLL_REF_PRIORITY_13", Byte),
+            (0x1d, "DPLL_REF_PRIORITY_14", Byte),
+            (0x1e, "DPLL_REF_PRIORITY_15", Byte),
+            (0x1f, "DPLL_REF_PRIORITY_16", Byte),
+            (0x20, "DPLL_REF_PRIORITY_17", Byte),
+            (0x21, "DPLL_REF_PRIORITY_18", Byte),
+            (0x22, "DPLL_TRANS_CTRL", Byte),
+            (0x23, "DPLL_FASTLOCK_CFG_0", Byte),
+            (0x24, "DPLL_FASTLOCK_CFG_1", Byte),
+            (0x25, "DPLL_MAX_FREQ_OFFSET", Byte),
+            (0x26, "DPLL_FASTLOCK_PSL", Byte),
+            (0x28, "DPLL_FASTLOCK_FSL", Byte),
+            (0x2a, "DPLL_FASTLOCK_BW", Byte),
+            (0x2c, "DPLL_WRITE_FREQ_TIMER", Byte),
+            (0x2e, "DPLL_WRITE_PHASE_TIMER", Byte),
+            (0x30, "DPLL_PRED_CFG", Byte),
+            (0x31, "DPLL_TOD_SYNC_CFG", Byte),
+            (0x32, "DPLL_COMBO_SLAVE_CFG_0", Byte),
+            (0x33, "DPLL_COMBO_SLAVE_CFG_1", Byte),
+            (0x34, "DPLL_SLAVE_REF_CFG", Byte),
+            (0x35, "DPLL_REF_MODE", Byte),
+            (0x36, "DPLL_PHASE_MEASUREMENT_CFG", Byte),
+            (0x37, "DPLL_MODE", Byte),
+        ]
+    ),
+    "SYS_DPLL": (
+        base: [ 0xc5b8 ],
+        registers: [
+            (0x00, "SYS_DPLL_CTRL_0", Byte),
+            (0x01, "SYS_DPLL_UPDATE_RATE_CFG", Byte),
+            (0x02, "SYS_DPLL_FILTER_STATUS_UPDATE_CFG", Byte),
+            (0x03, "SYS_DPLL_LOCK_0", Byte),
+            (0x04, "SYS_DPLL_LOCK_1", Byte),
+            (0x05, "SYS_DPLL_LOCK_2", Byte),
+            (0x06, "SYS_DPLL_LOCK_3", Byte),
+            (0x07, "SYS_DPLL_REF_PRIORITY_0", Byte),
+            (0x08, "SYS_DPLL_REF_PRIORITY_1", Byte),
+            (0x09, "SYS_DPLL_REF_PRIORITY_2", Byte),
+            (0x0a, "SYS_DPLL_REF_PRIORITY_3", Byte),
+            (0x0b, "SYS_DPLL_REF_PRIORITY_4", Byte),
+            (0x0c, "SYS_DPLL_REF_PRIORITY_5", Byte),
+            (0x0d, "SYS_DPLL_REF_PRIORITY_6", Byte),
+            (0x0e, "SYS_DPLL_REF_PRIORITY_7", Byte),
+            (0x0f, "SYS_DPLL_REF_PRIORITY_8", Byte),
+            (0x10, "SYS_DPLL_REF_PRIORITY_9", Byte),
+            (0x11, "SYS_DPLL_REF_PRIORITY_10", Byte),
+            (0x12, "SYS_DPLL_REF_PRIORITY_11", Byte),
+            (0x13, "SYS_DPLL_REF_PRIORITY_12", Byte),
+            (0x14, "SYS_DPLL_REF_PRIORITY_13", Byte),
+            (0x15, "SYS_DPLL_REF_PRIORITY_14", Byte),
+            (0x16, "SYS_DPLL_REF_PRIORITY_15", Byte),
+            (0x17, "SYS_DPLL_REF_PRIORITY_16", Byte),
+            (0x18, "SYS_DPLL_REF_PRIORITY_17", Byte),
+            (0x19, "SYS_DPLL_REF_PRIORITY_18", Byte),
+            (0x1b, "SYS_DPLL_REF_MODE", Byte),
+            (0x1c, "SYS_DPLL_MODE", Byte),
+        ]
+    ),
+    "DPLL_CTRL": (
+        base: [ 
+            0xc600, 0xc63c, 0xc680, 0xc6bc, 0xc700, 0xc73c, 0xc780, 0xc7bc,
+        ],
+        registers: [
+            (0x00, "DPLL_HS_TIE_RESET", Byte),
+            (0x01, "DPLL_MANU_REF_CFG", Byte),
+            (0x02, "DPLL_DAMPING", Byte),
+            (0x03, "DPLL_DECIMATOR_BW_MULT", Byte),
+            (0x04, "DPLL_BW", Word),
+            (0x06, "DPLL_PSL", Word),
+            (0x08, "DPLL_PRED0_DAMPING", Byte),
+            (0x09, "DPLL_PRED0_DECIMATOR_BW_MULT", Byte),
+            (0x0a, "DPLL_PRED0_BW", Word),
+            (0x0c, "DPLL_PRED0_PSL", Word),
+            (0x0e, "DPLL_PRED1_DAMPING", Byte),
+            (0x0f, "DPLL_PRED1_DECIMATOR_BW_MULT", Byte),
+            (0x10, "DPLL_PRED1_BW", Word),
+            (0x12, "DPLL_PRED1_PSL", Word),
+            (0x14, "DPLL_PHASE_OFFSET_CFG", Word40),
+            (0x19, "DPLL_HO_HISTORY_RESET", Byte),
+            (0x1a, "DPLL_FINE_PHASE_ADV_CFG", Word),
+            (0x1c, "DPLL_FOD_FREQ", Frequency),
+            (0x24, "DPLL_MASTER_DIV", Word32),
+            (0x28, "DPLL_COMBO_SW_VALUE_CNFG", Word48),
+            (0x30, "DPLL_MANUAL_HOLDOVER_VALUE", Word48),
+            (0x36, "DPLL_DCD_FILTER_CNFG", Word),
+            (0x38, "DPLL_COMBO_MASTER_BW", Word),
+            (0x3a, "DPLL_COMBO_MASTER_CFG", Byte),
+            (0x3b, "DPLL_FRAME_PULSE_SYNC", Byte),
+        ]
+    ),
+    "SYS_DPLL_CTRL": (
+        base: [ 0xc800 ],
+        registers: [
+            (0x00, "SYS_DPLL_MANU_REF_CFG", Byte),
+            (0x01, "SYS_DPLL_DAMPING", Byte),
+            (0x02, "SYS_DPLL_DECIMATOR_BW_MULT", Byte),
+            (0x04, "SYS_DPLL_BW", Word),
+            (0x06, "SYS_DPLL_PSL", Word),
+            (0x08, "SYS_DPLL_PRED0_DAMPING", Byte),
+            (0x09, "SYS_DPLL_PRED0_DECIMATOR_BW_MULT", Byte),
+            (0x0a, "SYS_DPLL_PRED0_BW", Word),
+            (0x0c, "SYS_DPLL_PRED0_PSL", Word),
+            (0x0e, "SYS_DPLL_PRED1_DAMPING", Byte),
+            (0x0f, "SYS_DPLL_PRED1_DECIMATOR_BW_MULT", Byte),
+            (0x10, "SYS_DPLL_PRED1_BW", Word),
+            (0x12, "SYS_DPLL_PRED1_PSL", Word),
+            (0x14, "SYS_DPLL_COMBO_MASTER_BW", Word),
+            (0x16, "SYS_DPLL_COMBO_MASTER_CFG", Byte),
+        ]
+    ),
+    "DPLL_PHASE": (
+        base: [
+            0xc818, 0xc81c, 0xc820, 0xc824, 0xc828, 0xc82c, 0xc830, 0xc834,
+        ],
+        registers: [
+            (0x00, "DPLL_WRITE_PH", Word32),
+        ]
+    ),
+    "DPLL_FREQ": (
+        base: [
+            0xc838, 0xc840, 0xc848, 0xc850, 0xc858, 0xc860, 0xc868, 0xc870,
+        ],
+        registers: [
+            (0x00, "DPLL_WR_FREQ", Word48),
+        ]
+    ),
+    "DPLL_PHASE_PULL_IN": (
+        base: [
+            0xc880, 0xc888, 0xc890, 0xc898, 0xc8a0, 0xc8a8, 0xc8b0, 0xc8b8, 
+        ],
+        registers: [
+            (0x00, "DPLL_PHASE_PULL_IN_OFFSET", Word32),
+            (0x04, "DPLL_PHASE_PULL_IN_SLOPE_LIMIT", Word24),
+            (0x07, "DPLL_PHASE_PULL_IN_CTRL", Byte),
+        ]
+    ),
+    "GPIO_CFG": (
+        base: [ 0xc8c0 ],
+        registers: [
+            (0x00, "GPIO_CFG_GBL", Byte),
+        ]
+    ),
+    "GPIO": (
+        base: [
+            0xc8c2, 0xc8d4, 0xc8e6, 0xc900, 0xc912, 0xc924, 0xc936, 0xc948,
+            0xc95a, 0xc980, 0xc992, 0xc9a4, 0xc9b6, 0xc9c8, 0xc9da, 0xca00, 
+        ],
+        registers: [
+            (0x00, "GPIO_DCO_INC_DEC", Byte),
+            (0x01, "GPIO_OUT_CTRL_0", Byte),
+            (0x02, "GPIO_OUT_CTRL_1", Byte),
+            (0x03, "GPIO_TOD_TRIG", Byte),
+            (0x04, "GPIO_DPLL_INDICATOR", Byte),
+            (0x05, "GPIO_LOS_INDICATOR", Byte),
+            (0x06, "GPIO_REF_INPUT_DSQ_0", Byte),
+            (0x07, "GPIO_REF_INPUT_DSQ_1", Byte),
+            (0x08, "GPIO_REF_INPUT_DSQ_2", Byte),
+            (0x09, "GPIO_REF_INPUT_DSQ_3", Byte),
+            (0x0a, "GPIO_MAN_CLK_SEL_0", Byte),
+            (0x0b, "GPIO_MAN_CLK_SEL_1", Byte),
+            (0x0c, "GPIO_MAN_CLK_SEL_2", Byte),
+            (0x0d, "GPIO_SLAVE", Byte),
+            (0x0e, "GPIO_ALERT_OUT_CFG", Byte),
+            (0x0f, "GPIO_TOD_NOTIFICATION_CFG", Byte),
+            (0x10, "GPIO_CTRL", Byte),
+        ]
+    ),
+    "OUT_DIV_MUX": (
+        base: [ 0xca12 ],
+        registers: [
+            (0x00, "OUT_DIV8_MUX", Byte),
+            (0x01, "OUT_DIV11_MUX", Byte),
+        ]
+    ),
+    "OUTPUT": (
+        base: [
+            0xca14, 0xca24, 0xca34, 0xca44, 0xca54, 0xca64,
+            0xca80, 0xca90, 0xcaa0, 0xcab0, 0xcac0, 0xcad0,
+        ],
+        registers: [
+            (0x00, "OUT_DIV", Word32),
+            (0x04, "OUT_DUTY_CYCLE_HIGH", Word32),
+            (0x08, "OUT_CTRL_0", Byte),
+            (0x09, "OUT_CTRL_1", Byte),
+            (0x0c, "OUT_PHASE_ADJ", Word32),
+        ]
+    ),
+    "SERIAL": (
+        base: [ 0xcae0 ],
+        registers: [
+            (0x00, "I2CM", Byte),
+            (0x02, "SER0", Byte),
+            (0x03, "SER0_SPI", Byte),
+            (0x04, "SER0_I2C", Byte),
+            (0x05, "SER1", Byte),
+            (0x06, "SER1_SPI", Byte),
+            (0x07, "SER1_I2C", Byte),
+            (0x08, "SER_APPLY_CONFIG", Byte),
+        ]
+    ),
+    "PWM_ENCODER": (
+        base: [
+            0xcb00, 0xcb08, 0xcb10, 0xcb18, 0xcb20, 0xcb28, 0xcb30, 0xcb38, 
+        ],
+        registers: [
+            (0x00, "PWM_ENCODER_ID", Byte),
+            (0x01, "PWM_ENCODER_CNFG", Byte),
+            (0x02, "PWM_ENCODER_SIGNATURE_0", Byte),
+            (0x03, "PWM_ENCODER_SIGNATURE_1", Byte),
+            (0x04, "PWM_ENCODER_CMD", Byte),
+        ]
+    ),
+    "PWM_DECODER": (
+        base: [
+            0xcb40, 0xcb48, 0xcb50, 0xcb58, 0xcb60, 0xcb68, 0xcb70, 0xcb80,
+            0xcb88, 0xcb90, 0xcb98, 0xcba0, 0xcba8, 0xcbb0, 0xcbb8, 0xcbc0, 
+        ],
+        registers: [
+            (0x00, "PWM_DECODER_CNFG", Byte),
+            (0x02, "PWM_DECODER_ID", Byte),
+            (0x03, "PWM_DECODER_SIGNATURE_0", Byte),
+            (0x04, "PWM_DECODER_SIGNATURE_1", Byte),
+            (0x05, "PWM_DECODER_CMD", Byte),
+        ]
+    ),
+    "PWM_USER_DATA": (
+        base: [ 0xcbc8 ],
+        registers: [
+            (0x00, "PWM_SRC_ENCODER_ID", Byte),
+            (0x01, "PWM_DST_DECODER_ID", Byte),
+            (0x02, "PWM_USER_DATA_SIZE", Byte),
+            (0x03, "PWM_USER_DATA_CMD_STS", Byte),
+        ]
+    ),
+    "TOD": (
+        base: [
+            0xcbcc, 0xcbce, 0xcbd0, 0xcbd2,
+        ],
+        registers: [
+            (0x00, "TOD_CFG", Byte),
+        ]
+    ),
+    "TOD_WRITE": (
+        base: [
+            0xcc00, 0xcc10, 0xcc20, 0xcc30, 
+        ],
+        registers: [
+            (0x00, "TOD_WRITE", TimeOfDay),
+            (0x0c, "TOD_WRITE_COUNTER", Byte),
+            (0x0d, "TOD_WRITE_SELECT_CFG_0", Byte),
+            (0x0f, "TOD_WRITE_CMD", Byte),
+        ]
+    ),
+    "TOD_READ_PRIMARY": (
+        base: [
+            0xcc40, 0xcc50, 0xcc60, 0xcc80, 
+        ],
+        registers: [
+            (0x00, "TOD_READ_PRIMARY", TimeOfDay),
+            (0x0b, "TOD_READ_PRIMARY_COUNTER", Byte),
+            (0x0c, "TOD_READ_PRIMARY_SEL_CFG_0", Byte),
+            (0x0d, "TOD_READ_PRIMARY_SEL_CFG_1", Byte),
+            (0x0e, "TOD_READ_PRIMARY_CMD", Byte),
+        ]
+    ),
+    "TOD_READ_SECONDARY": (
+        base: [
+            0xcc90, 0xcca0, 0xccb0, 0xccc0, 
+        ],
+        registers: [
+            (0x00, "TOD_READ_SECONDARY", TimeOfDay),
+            (0x0b, "TOD_READ_SECONDARY_COUNTER", Byte),
+            (0x0c, "TOD_READ_SECONDARY_SEL_CFG_0", Byte),
+            (0x0d, "TOD_READ_SECONDARY_SEL_CFG_1", Byte),
+            (0x0e, "TOD_READ_SECONDARY_CMD", Byte),
+        ]
+    ),
+    "OUTPUT_TDC_CFG": (
+        base: [ 0xccd0 ],
+        registers: [
+            (0x00, "OUTPUT_TDC_CFG_GBL_0", Word),
+            (0x02, "OUTPUT_TDC_CFG_GBL_1", Word),
+            (0x04, "OUTPUT_TDC_CFG_GBL_2", Byte),
+        ]
+    ),
+    "OUTPUT_TDC": (
+        base: [
+            0xcd08, 0xcd10, 0xcd18, 
+        ],
+        registers: [
+            (0x00, "OUTPUT_TDC_CTRL_0", Word),
+            (0x02, "OUTPUT_TDC_CTRL_1", Word),
+            (0x04, "OUTPUT_TDC_CTRL_2", Byte),
+            (0x05, "OUTPUT_TDC_CTRL_3", Byte),
+            (0x06, "OUTPUT_TDC_CTRL_4", Byte),
+        ]
+    ),
+    "INPUT_TDC": (
+        base: [ 0xcd20 ],
+        registers: [
+            (0x00, "INPUT_TDC_SDM_FRAC", Word),
+            (0x02, "INPUT_TDC_SDM_MOD", Word),
+            (0x04, "INPUT_TDC_FBD_CTRL", Byte),
+            (0x05, "INPUT_TDC_CTRL", Byte),
+        ]
+    ),
+    "SCRATCH": (
+        base: [ 0xcf50 ],
+        registers: [
+            (0x00, "SCRATCH0", Word32), 
+            (0x04, "SCRATCH1", Word32), 
+            (0x08, "SCRATCH2", Word32), 
+            (0x0c, "SCRATCH3", Word32), 
+        ]
+    ),
+    "EEPROM": (
+        base: [ 0xcf68 ],
+        registers: [
+            (0x00, "EEPROM_I2C_ADDR", Byte),
+            (0x01, "EEPROM_SIZE", Byte),
+            (0x02, "EEPROM_OFFSET", Word),
+            (0x04, "EEPROM_CMD", Word),
+        ]
+    ),
+    "OTP": (
+        base: [ 0xcf70 ],
+        registers: [
+            (0x00, "OTP_CMD", Word32),
+            (0x04, "OTP_CM_CTR", Word),
+            (0x06, "OTP_HOST_CTR", Word),
+        ]
+    ),
+    "BYTE": (
+        base: [ 0xcf80 ],
+        registers: []
+    ),
+}

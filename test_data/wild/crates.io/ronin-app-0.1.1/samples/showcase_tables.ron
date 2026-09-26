@@ -1,0 +1,55 @@
+// showcase_tables.ron — exercises the three table SectionShapes + nested cells.
+//
+// `scan_table_sections` walks the whole CST and reports every table-able section:
+//   * RecordList — a list of >0 same-named records (rows = elements, columns =
+//     union of fields; an absent field renders as a Blank cell);
+//   * RecordMap  — a map whose every value is a same-named record (a leading key
+//     column + the union of the value records' fields);
+//   * TupleList  — a list whose every element is a tuple of the same arity.
+// Nested collection cells (lists/maps) become NestedTable drill-ins; nested
+// structs/tuples become Nested cells. All shapes + nested sections fire here.
+(
+    // --- RecordList: 3 uniform `Ship` records; the third omits `armor` so its
+    //     `armor` cell is Blank (uniform lists tolerate a missing field). The
+    //     `crew` column holds nested lists -> NestedTable cells; the `origin`
+    //     column holds nested tuples -> Nested cells. There is at least one
+    //     scalar cell (`name`, `hp`) so the list is NOT all-nested. ---
+    ships: [
+        Ship(
+            name: "Interceptor",
+            hp: 100,
+            armor: 25,
+            crew: ["ann", "bob"],
+            origin: (0, 0),
+        ),
+        Ship(
+            name: "Frigate",
+            hp: 180,
+            armor: 40,
+            crew: ["cy", "dee", "ed"],
+            origin: (1, 2),
+        ),
+        Ship(
+            name: "Scout",
+            hp: 60,
+            // `armor` intentionally absent -> a Blank cell on this row.
+            crew: ["fay"],
+            origin: (3, 4),
+        ),
+    ],
+    // --- RecordMap: a map whose every value is a same-named `Hull` record. The
+    //     navigator renders a leading read-only key column + the union of fields.
+    //     The `cells` field holds a nested list -> NestedTable drill-in. ---
+    hulls: {
+        "alpha": Hull(class: "light", mass: 12, cells: [(0, 0), (1, 0)]),
+        "bravo": Hull(class: "heavy", mass: 30, cells: [(0, 0), (0, 1), (0, 2)]),
+        "charlie": Hull(class: "medium", mass: 21, cells: [(1, 1)]),
+    },
+    // --- TupleList: a list whose every element is a 2-tuple (same arity). ---
+    coords: [
+        (1, 2),
+        (3, 4),
+        (5, 6),
+        (7, 8),
+    ],
+)

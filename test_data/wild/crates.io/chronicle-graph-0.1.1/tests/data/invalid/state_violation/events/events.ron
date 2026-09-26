@@ -1,0 +1,19 @@
+[
+    (
+        id: "destruction",
+        name: "The Destruction",
+        type: Catastrophe,
+        time_span: (start: 5, end: 5),
+        location: Some("ruined_city"),
+        state_changes: [
+            (entity: "ruined_city", change: StatusChange(Destroyed)),
+        ],
+    ),
+    (
+        id: "impossible_market",
+        name: "Market at Ruins",
+        type: Political,
+        time_span: (start: 15, end: 15),
+        location: Some("ruined_city"),
+    ),
+]

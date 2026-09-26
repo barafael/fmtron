@@ -1,0 +1,11 @@
+(
+    id: "potion",
+    name: "Potion",
+    description: "Looks healthy. Maybe.",
+    stackable: true,
+    slot: None,
+    stats: None,
+    on_hit: [ Heal(amount: 10) ],
+    on_use: [],
+    consumable: true,
+)

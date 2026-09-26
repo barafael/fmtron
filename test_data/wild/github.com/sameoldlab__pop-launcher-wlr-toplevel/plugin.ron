@@ -1,0 +1,9 @@
+(
+    name: "Toplevels",
+    description: "Control open wayland window",
+    bin: (path: "toplevel"),
+    icon: Name("focus-windows-symbolic"),
+    query: (
+			priority: High
+		),
+)

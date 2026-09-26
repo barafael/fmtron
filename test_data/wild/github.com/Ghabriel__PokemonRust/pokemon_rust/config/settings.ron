@@ -1,0 +1,11 @@
+(
+    player_walking_speed: 160,
+    player_running_speed: 256,
+    text_delay: 0.005,
+    fade_duration: 0.3,
+    player_starting_map: "test_map",
+    player_starting_position: (24, 24),
+    play_bgm: true,
+    play_sfx: true,
+    show_fps: false,
+)

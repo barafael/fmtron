@@ -1,0 +1,96 @@
+(
+version: V1,
+meta: (
+name: Some("brandlogo"),
+next_script: None,
+),
+instructions: [
+(
+cmd: label,
+args: (
+name: "block_00000",
+),
+),
+(
+cmd: label,
+args: (
+name: "top",
+),
+),
+(
+cmd: label,
+args: (
+name: "label_skip",
+),
+),
+(
+cmd: custom,
+args: (
+tag: "brandlogo",
+data: {
+"wait": "200",
+"time": "500",
+"mode": "black",
+},
+),
+),
+(
+cmd: save_point,
+args: (
+id: "autosave",
+),
+),
+(
+cmd: save_point,
+args: (
+id: "autosave",
+),
+),
+(
+cmd: save_point,
+args: (
+id: "autosave",
+),
+),
+(
+cmd: save_point,
+args: (
+id: "autosave",
+),
+),
+(
+cmd: wait,
+args: (
+time_ms: 500,
+),
+),
+(
+cmd: custom,
+args: (
+tag: "brandlogo",
+data: {
+"wait": "500",
+"mode": "black",
+"time": "1000",
+},
+),
+),
+(
+cmd: custom,
+args: (
+tag: "keyskip",
+data: {},
+),
+),
+(
+cmd: custom,
+args: (
+tag: "brandlogo",
+data: {},
+),
+),
+(
+cmd: halt,
+),
+],
+)

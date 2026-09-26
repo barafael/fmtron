@@ -1,0 +1,6 @@
+// This is only here for development and will be removed in the final game.
+([
+  Pickup,
+  DropShadow,
+  Scene("models/cakeBirthday.glb#Scene0"),
+])

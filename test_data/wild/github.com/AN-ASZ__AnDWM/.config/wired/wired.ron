@@ -1,0 +1,86 @@
+(
+    max_notifications: 10,
+    timeout: 10000,  // faster dismiss
+    poll_interval: 16,
+    shortcuts: (
+        notification_interact: 2,
+        notification_close: 1,
+        notification_closeall: 3,
+    ),
+    history_length: 50,
+    replacing_resets_timeout: true,
+    min_window_width: 220,  // ultra-compact
+    layout_blocks: [
+        (
+            name: "root",
+            parent: "",
+            hook: (parent_anchor: TL, self_anchor: TL),
+            offset: (x: 25, y: 70),  // closer to top
+            params: NotificationBlock((
+                monitor: 0,
+                border_width: 1,
+                border_rounding: 10.0,
+                gap: (x: 0.0, y: 3.0),
+                background_color: (hex: "#2C3333"),
+                border_color: (hex: "#0E8388"),
+                notification_hook: (parent_anchor: BL, self_anchor: TL),
+                shadow: (offset_x: 0, offset_y: 1, blur_radius: 6, color: (hex: "#00000040")),
+            )),
+        ),
+        (
+            name: "summary",
+            parent: "root",
+            offset: (x: 0, y: 0),
+            hook: (parent_anchor: TR, self_anchor: TR),
+            params: TextBlock((
+                text: "%s",
+                padding: (left: 12.0, right: 12.0, top: 8.0, bottom: 2.0),
+                font: "Ubuntu Bold 12",
+                color: Color(hex: "#FFFFFF"),
+                dimensions: (
+                    width: (min: 220, max: 400),
+                    height: (min: 0, max: 50),
+                ),
+            )),
+        ),
+        (
+            name: "body",
+            parent: "summary",
+            offset: (x: 0, y: 1),
+            hook: (parent_anchor: BL, self_anchor: TL),
+            render_criteria: [ Body ],
+            render_anti_criteria: [ AppName("progress") ],
+            params: ScrollingTextBlock((
+                text: "%b",
+                padding: (left: 12.0, right: 12.0, top: 1, bottom: 8),
+                font: "Ubuntu 11",
+                color: (hex: "#E0E0E0"),
+                scroll_speed: 0.12,
+                lhs_dist: 4.0,
+                rhs_dist: 4.0,
+                scroll_t: 1.0,
+                width: (min: 220, max: 400),
+            )),
+        ),
+        (
+            name: "progress",
+            parent: "body",
+            offset: (x: 0, y: 3),
+            hook: (parent_anchor: BL, self_anchor: TL),
+            render_criteria: [ Progress ],
+            render_anti_criteria: [ Body ],
+            params: ProgressBlock((
+                padding: (left: 4.0, right: 4.0, top: 2.0, bottom: 4.0),
+                border_width: 0.0,
+                border_rounding: 8.0,
+                fill_rounding: 8.0,
+                background_color: (hex: "#1A1A1A"),
+                fill_color: (hex: "#3ABEFF"),
+                border_color: (hex: "#1A1A1A"),
+                width: 376,
+                height: 5.0,
+                shadow: (offset_x: 0, offset_y: 1, blur_radius: 4, color: (hex: "#00000030")),
+            )),
+        ),
+    ],
+)

@@ -1,0 +1,149 @@
+Config (
+    config: (
+        output: "spectral-direct-prism",
+        passes: 20000,
+        threads: None,
+    ),
+    camera: {
+        "NaiveCamera": Config ((
+            sampler: Random,
+            eye: (
+                x: 0,
+                y: 2,
+                z: 0,
+            ),
+            target: (
+                x: -2,
+                y: 1,
+                z: 0,
+            ),
+            up: (
+                x: 0,
+                y: 1,
+                z: 0,
+            ),
+            fov: 60,
+            resolution: (
+                x: 512,
+                y: 512,
+            ),
+        )),
+    },
+    integrator: {
+        "SpectralPath": (
+            max_depth: 8,
+            sampler: Random,
+            spectral_sampler: Hero,
+            direct_illum: All,
+        ),
+    },
+    scene: (
+        objects: [
+            // LEFT WALL
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: -2.08,
+                            y: -0.08,
+                            z: -2.08,
+                        ),
+                        max: (
+                            x: -2,
+                            y: 3.08,
+                            z: 2,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "LambertianReflection": (
+                                r: Color(White),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // FLOOR
+            Receiver((
+                geometry: {
+                    "Aabb": (
+                        min: (
+                            x: -2.08,
+                            y: -0.08,
+                            z: -2.08,
+                        ),
+                        max: (
+                            x: 2.08,
+                            y: 0,
+                            z: 2,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "LambertianReflection": (
+                                r: Color(White),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // PRISM
+            Receiver((
+                geometry: {
+                    "Mesh": Config((
+                        path: "./res/meshes/direct-prism.obj",
+                        scale: Some((
+                            x: 0.5,
+                            y: 0.5,
+                            z: 0.5,
+                        )),
+                        rotation: Some((
+                            mat: (
+                                x: (x:1, y: 0, z:0),
+                                y: (x:0, y: 0, z:1),
+                                z: (x:0, y:-1, z:0),
+                            )
+                        )),
+                        translation: Some((
+                            x: 0,
+                            y: 0.5,
+                            z: -0.7,
+                        )),
+                        shading_mode: Flat,
+                    )),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "FresnelSpecular": (
+                                r: Constant(1),
+                                t: Constant(1),
+                                fresnel: (
+                                    eta_i: Air,
+                                    eta_t: Linear(1.1, 1.6),
+                                ),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            Emitter((
+                geometry: {
+                    "Sphere": (
+                        center: (
+                            x: 2,
+                            y: 0.5,
+                            z: -1,
+                        ),
+                        radius: 0.25,
+                    ),
+                },
+                emission: Constant(8),
+            )),
+        ],
+    ),
+)

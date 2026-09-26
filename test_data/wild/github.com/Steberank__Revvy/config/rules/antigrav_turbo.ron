@@ -1,0 +1,13 @@
+// Preset: mismo set que default.ron, con el vector de turbo hacia arriba.
+// No hace falta recompilar para usarlo (fase 4).
+(
+    laps: 3,
+    allow_jump: false,
+    sim_authority: Client,
+    late_join_mode: Spectator,
+    disconnect_bot_replace: false,
+    reconnect_secs: 60,
+    turbo: (x: 0.0, y: 18.0, z: 0.0),
+    pickups_enabled: true,
+    pickup_odds: None,
+)

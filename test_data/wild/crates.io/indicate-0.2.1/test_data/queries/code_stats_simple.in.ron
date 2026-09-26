@@ -1,0 +1,20 @@
+FullQuery(
+    query: r#"
+{
+    RootPackage {
+        name @output
+        version @output
+        codeStats(ignoredPaths: [".git"]) {
+            language @output
+            files @output
+            lines @output
+            blanks @output
+            code @output
+            comments @output
+            commentsToCode @output
+        }
+    }
+}
+"#,
+    args: {}
+)

@@ -1,0 +1,10 @@
+(
+    model_path: "assets/large_obj/bistro.obj",
+    camera: (
+        eye: (-10.5, 1.7, -1.0),
+        look_at: (12.5, 1.7, -2.0),
+        fov: 100.0,
+        exposure: 0.0,
+    ),
+    sun_direction: (0.22, -1.0, -0.2),
+)

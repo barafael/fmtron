@@ -1,0 +1,566 @@
+[
+    Scenario((
+        id: "drill_stop",
+        name: "STOP practice",
+        description: "Stop on a mark, then move sideways onto a second one.",
+        cubemap: "self://textures/cubemap.png",
+        role: Lesson,
+        events: [
+            (
+                name: OnStart,
+                once: true,
+                actions: [
+                    SpawnScenarioObject((
+                        base: (
+                            id: "trainer",
+                            name: "Your ship",
+                            position: (
+                                0.0,
+                                0.0,
+                                0.0,
+                            ),
+                            rotation: (
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                            ),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(
+                                id: "block_picket",
+                                section_patches: {
+                                    "bridge": (
+                                        config: (
+                                            health: Some(1300.0),
+                                        ),
+                                    ),
+                                    "pdc": (
+                                        config: (
+                                            health: Some(1300.0),
+                                        ),
+                                    ),
+                                },
+                            ),
+                            controller: Player((
+                                input_mapping: {
+                                    "pdc": [
+                                        Mouse(Left),
+                                        Gamepad(RightTrigger2),
+                                    ],
+                                },
+                            )),
+                            capabilities: (
+                                goto_enabled: false,
+                                orbit_enabled: false,
+                                lock_enabled: false,
+                            ),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "drill_stop_key",
+                            name: "Key Light",
+                            position: (
+                                -1500.0,
+                                1250.0,
+                                -500.0,
+                            ),
+                            rotation: (
+                                -0.24307884,
+                                -0.36920026,
+                                -0.10068656,
+                                0.8913283,
+                            ),
+                        ),
+                        kind: Light(Directional(
+                            illuminance: 11000.0,
+                            color: Srgba((
+                                red: 1.0,
+                                green: 0.96,
+                                blue: 0.9,
+                                alpha: 1.0,
+                            )),
+                            shadows: true,
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "drill_stop_rim",
+                            name: "Rim Light",
+                            position: (
+                                750.0,
+                                1000.0,
+                                -4000.0,
+                            ),
+                            rotation: (
+                                -0.03875094,
+                                0.9604674,
+                                0.21369855,
+                                0.17416595,
+                            ),
+                        ),
+                        kind: Light(Directional(
+                            illuminance: 16000.0,
+                            color: Srgba((
+                                red: 0.72,
+                                green: 0.86,
+                                blue: 1.0,
+                                alpha: 1.0,
+                            )),
+                            shadows: false,
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "drill_stop_fill",
+                            name: "Fill Light",
+                            position: (
+                                1750.0,
+                                -500.0,
+                                -1000.0,
+                            ),
+                            rotation: (
+                                0.10489727,
+                                0.49822173,
+                                -0.060874246,
+                                0.8585255,
+                            ),
+                        ),
+                        kind: Light(Directional(
+                            illuminance: 2600.0,
+                            color: Srgba((
+                                red: 0.62,
+                                green: 0.72,
+                                blue: 0.95,
+                                alpha: 1.0,
+                            )),
+                            shadows: false,
+                        )),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "shallow_rock_",
+                        count: 30,
+                        seed: 433757351519980343,
+                        region: Box(
+                            min: (
+                                700.0,
+                                -500.0,
+                                -4400.0,
+                            ),
+                            max: (
+                                4300.0,
+                                500.0,
+                                -400.0,
+                            ),
+                        ),
+                        template: (
+                            base: (
+                                id: "shallow_rock_",
+                                name: "Shallow Belt Rock",
+                                position: (
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                ),
+                                rotation: (
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0,
+                                ),
+                            ),
+                            kind: Asteroid((
+                                radius: 10.0,
+                                texture: "self://textures/asteroid.png",
+                                kind: "rock",
+                                destroy_sound: Some("self://sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((
+                            10.0,
+                            30.0,
+                        )),
+                        asteroid_kinds: [
+                            (
+                                "rock",
+                                10,
+                            ),
+                            (
+                                "carbon",
+                                3,
+                            ),
+                            (
+                                "ice",
+                                2,
+                            ),
+                            (
+                                "metal",
+                                1,
+                            ),
+                        ],
+                        min_separation: Some(450.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "deep_rock_",
+                        count: 34,
+                        seed: 433757353748728849,
+                        region: Box(
+                            min: (
+                                -2800.0,
+                                -600.0,
+                                -8400.0,
+                            ),
+                            max: (
+                                3000.0,
+                                600.0,
+                                -5400.0,
+                            ),
+                        ),
+                        template: (
+                            base: (
+                                id: "deep_rock_",
+                                name: "Deep Belt Rock",
+                                position: (
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                ),
+                                rotation: (
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0,
+                                ),
+                            ),
+                            kind: Asteroid((
+                                radius: 15.0,
+                                texture: "self://textures/asteroid.png",
+                                kind: "rock",
+                                destroy_sound: Some("self://sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((
+                            15.0,
+                            40.0,
+                        )),
+                        asteroid_kinds: [
+                            (
+                                "rock",
+                                10,
+                            ),
+                            (
+                                "carbon",
+                                3,
+                            ),
+                            (
+                                "ice",
+                                2,
+                            ),
+                            (
+                                "metal",
+                                1,
+                            ),
+                        ],
+                        min_separation: Some(550.0),
+                    )),
+                    CreateScenarioArea((
+                        id: "range_boundary",
+                        name: "Range Boundary",
+                        position: (
+                            0.0,
+                            0.0,
+                            -2500.0,
+                        ),
+                        rotation: (
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0,
+                        ),
+                        radius: 7000.0,
+                    )),
+                    VariableSet((
+                        key: "beat",
+                        expression: Term(Factor(Literal(Number(1.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "mark_alpha",
+                            name: "ALPHA",
+                            position: (
+                                0.0,
+                                0.0,
+                                -900.0,
+                            ),
+                            rotation: (
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                            ),
+                        ),
+                        kind: Beacon((
+                            label: "ALPHA",
+                            radius: 20.0,
+                            color: Srgba((
+                                red: 0.3,
+                                green: 0.9,
+                                blue: 1.0,
+                                alpha: 1.0,
+                            )),
+                            area_radius: Some(300.0),
+                        )),
+                    )),
+                    ObjectiveMarkerAttach((
+                        target_id: "mark_alpha",
+                        label: "ALPHA",
+                    )),
+                    CreateScenarioArea((
+                        id: "mark_alpha_gate",
+                        name: "ALPHA Gate",
+                        position: (
+                            0.0,
+                            0.0,
+                            -900.0,
+                        ),
+                        rotation: (
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0,
+                        ),
+                        radius: 300.0,
+                    )),
+                    Objective((
+                        id: "rest",
+                        message: "Stop on mark ALPHA.",
+                    )),
+                    HintEmphasisSet((
+                        verb: "STOP",
+                    )),
+                    NarrativeCue((
+                        speaker: "Training",
+                        text: "Fly out to mark ALPHA and stop on it. STOP hands the ship to the flight computer, which turns the ship around and thrusts until your speed reads zero.",
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((
+                        id: Some("mark_alpha_gate"),
+                        other_id: Some("trainer"),
+                    )),
+                    Expression((Equal(
+                        Term(Factor(Name("beat"))),
+                        Term(Factor(Literal(Number(1.0)))),
+                    ))),
+                ],
+                actions: [
+                    VariableSet((
+                        key: "beat",
+                        expression: Term(Factor(Literal(Number(2.0)))),
+                    )),
+                    NarrativeCue((
+                        speaker: "Training",
+                        text: "You are on the mark but still moving. Use STOP and let the flight computer take your speed down to zero.",
+                    )),
+                ],
+            ),
+            (
+                name: OnStopComplete,
+                once: true,
+                filters: [
+                    Entity((
+                        id: Some("trainer"),
+                    )),
+                    Expression((Equal(
+                        Term(Factor(Name("beat"))),
+                        Term(Factor(Literal(Number(2.0)))),
+                    ))),
+                ],
+                actions: [
+                    ObjectiveComplete((
+                        id: "rest",
+                    )),
+                    VariableSet((
+                        key: "beat",
+                        expression: Term(Factor(Literal(Number(3.0)))),
+                    )),
+                    HintEmphasisClear((
+                        verb: "STOP",
+                    )),
+                    ObjectiveMarkerDetach((
+                        target_id: "mark_alpha",
+                    )),
+                    DespawnScenarioObject((
+                        id: "mark_alpha",
+                    )),
+                    DespawnScenarioObject((
+                        id: "mark_alpha_gate",
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "mark_bravo",
+                            name: "BRAVO",
+                            position: (
+                                350.0,
+                                0.0,
+                                -900.0,
+                            ),
+                            rotation: (
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                            ),
+                        ),
+                        kind: Beacon((
+                            label: "BRAVO",
+                            radius: 20.0,
+                            color: Srgba((
+                                red: 0.3,
+                                green: 0.9,
+                                blue: 1.0,
+                                alpha: 1.0,
+                            )),
+                            area_radius: Some(100.0),
+                        )),
+                    )),
+                    ObjectiveMarkerAttach((
+                        target_id: "mark_bravo",
+                        label: "BRAVO",
+                    )),
+                    CreateScenarioArea((
+                        id: "mark_bravo_gate",
+                        name: "BRAVO Gate",
+                        position: (
+                            350.0,
+                            0.0,
+                            -900.0,
+                        ),
+                        rotation: (
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0,
+                        ),
+                        radius: 100.0,
+                    )),
+                    Objective((
+                        id: "slide",
+                        message: "Use RCS to move onto mark BRAVO.",
+                    )),
+                    HintEmphasisSet((
+                        verb: "RCS",
+                    )),
+                    NarrativeCue((
+                        speaker: "Training",
+                        text: "Stopped. Now use the RCS thrusters: they move the ship sideways without turning it. Move onto mark BRAVO.",
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((
+                        id: Some("mark_bravo_gate"),
+                        other_id: Some("trainer"),
+                    )),
+                    Expression((Equal(
+                        Term(Factor(Name("beat"))),
+                        Term(Factor(Literal(Number(3.0)))),
+                    ))),
+                ],
+                actions: [
+                    HintEmphasisClear((
+                        verb: "RCS",
+                    )),
+                    ObjectiveMarkerDetach((
+                        target_id: "mark_bravo",
+                    )),
+                    DespawnScenarioObject((
+                        id: "mark_bravo",
+                    )),
+                    DespawnScenarioObject((
+                        id: "mark_bravo_gate",
+                    )),
+                    ObjectiveComplete((
+                        id: "slide",
+                    )),
+                    VariableSet((
+                        key: "beat",
+                        expression: Term(Factor(Literal(Number(90.0)))),
+                    )),
+                    NarrativeCue((
+                        speaker: "Training",
+                        text: "Both marks done. You stopped the ship with STOP and placed it with RCS.",
+                    )),
+                    Sequence((
+                        key: "drill_outro",
+                        steps: [
+                            (
+                                after: Some(3.0),
+                                actions: [
+                                    Outcome((
+                                        outcome: Victory,
+                                        message: Some("STOP practice complete."),
+                                    )),
+                                ],
+                            ),
+                        ],
+                    )),
+                ],
+            ),
+            (
+                name: OnDestroyed,
+                once: true,
+                filters: [
+                    Entity((
+                        id: Some("trainer"),
+                    )),
+                    Expression((LessThan(
+                        Term(Factor(Name("beat"))),
+                        Term(Factor(Literal(Number(90.0)))),
+                    ))),
+                ],
+                actions: [
+                    Outcome((
+                        outcome: Defeat,
+                        message: Some("Your ship was destroyed. Starting again."),
+                    )),
+                    NextScenario((
+                        scenario_id: "drill_stop",
+                        linger: true,
+                    )),
+                ],
+            ),
+            (
+                name: OnNeutralized,
+                once: true,
+                filters: [
+                    Entity((
+                        id: Some("trainer"),
+                    )),
+                    Expression((LessThan(
+                        Term(Factor(Name("beat"))),
+                        Term(Factor(Literal(Number(90.0)))),
+                    ))),
+                ],
+                actions: [
+                    Outcome((
+                        outcome: Defeat,
+                        message: Some("Your ship was destroyed. Starting again."),
+                    )),
+                    NextScenario((
+                        scenario_id: "drill_stop",
+                        linger: true,
+                    )),
+                ],
+            ),
+        ],
+    )),
+]

@@ -1,0 +1,20 @@
+// HumanityOS Ship Room: Bridge
+// Command center configuration with required crew stations.
+
+BridgeConfig(
+    stations: [
+        (name: "captain_chair",          position_m: (0.0, 0.0, 0.0),  role: "Command"),
+        (name: "helm_station",           position_m: (-2.0, 0.0, 1.0), role: "Navigation"),
+        (name: "tactical_station",       position_m: (2.0, 0.0, 1.0),  role: "Weapons"),
+        (name: "operations_station",     position_m: (-1.0, 0.0, 2.0), role: "Systems"),
+        (name: "communications_station", position_m: (1.0, 0.0, 2.0),  role: "Communication"),
+    ],
+    viewscreen: (
+        position_m: (0.0, 2.0, -3.0),
+        size_m: (4.0, 2.5),
+    ),
+    armor_rating: 3.0,
+    redundancy_systems: true,
+    emergency_power: true,
+    evacuation_pods: 2,
+)

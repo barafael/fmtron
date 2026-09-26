@@ -1,0 +1,8 @@
+[
+    (
+        id: "doomed_soldier",
+        name: "Doomed Soldier",
+        type: Character,
+        status: Dead,
+    ),
+]

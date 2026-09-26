@@ -1,0 +1,470 @@
+(
+    events: [
+        // F1: falta em F1, isolada pela chave 6. Duracao: 160 min.
+        (
+            at_min: 0.0,
+            bus: "F1",
+            action: Fault,
+        ),
+        (
+            at_min: 0.0,
+            bus: "6",
+            action: Open,
+        ),
+        (
+            at_min: 160.0,
+            bus: "F1",
+            action: Repair,
+        ),
+        (
+            at_min: 160.0,
+            bus: "6",
+            action: Close,
+        ),
+
+        // F2: falta em F2, isolada inicialmente pela chave 3. Duracao: 288 min.
+        (
+            at_min: 200.0,
+            bus: "F2",
+            action: Fault,
+        ),
+        (
+            at_min: 200.0,
+            bus: "3",
+            action: Open,
+        ),
+
+        // F2 + 50 min: transfere toda a carga a jusante da chave 6 para SD3.
+        (
+            at_min: 250.0,
+            bus: "6",
+            action: Open,
+        ),
+        (
+            at_min: 250.0,
+            bus: "NA6",
+            action: Close,
+        ),
+
+        // F2 + 80 min: transfere a carga remanescente a jusante da chave 4 para SD4.
+        (
+            at_min: 280.0,
+            bus: "4",
+            action: Open,
+        ),
+        (
+            at_min: 280.0,
+            bus: "NA8",
+            action: Close,
+        ),
+
+        // Fim da F2: repara a falta e restaura as manobras da F2.
+        (
+            at_min: 488.0,
+            bus: "F2",
+            action: Repair,
+        ),
+        (
+            at_min: 488.0,
+            bus: "3",
+            action: Close,
+        ),
+        (
+            at_min: 488.0,
+            bus: "6",
+            action: Close,
+        ),
+        (
+            at_min: 488.0,
+            bus: "NA6",
+            action: Open,
+        ),
+        (
+            at_min: 488.0,
+            bus: "4",
+            action: Close,
+        ),
+        (
+            at_min: 488.0,
+            bus: "NA8",
+            action: Open,
+        ),
+
+        // F3: falta em F3, isolada pela chave 15. Duracao: 162 min.
+        (
+            at_min: 500.0,
+            bus: "F3",
+            action: Fault,
+        ),
+        (
+            at_min: 500.0,
+            bus: "15",
+            action: Open,
+        ),
+        (
+            at_min: 662.0,
+            bus: "F3",
+            action: Repair,
+        ),
+        (
+            at_min: 662.0,
+            bus: "15",
+            action: Close,
+        ),
+
+        // F4: falta em F4, isolada inicialmente pela chave 28. Duracao: 180 min.
+        (
+            at_min: 700.0,
+            bus: "F4",
+            action: Fault,
+        ),
+        (
+            at_min: 700.0,
+            bus: "28",
+            action: Open,
+        ),
+
+        // F4 + 35 min: transfere a carga a jusante da chave 33 para SD1 via NA3.
+        (
+            at_min: 735.0,
+            bus: "NA3",
+            action: Close,
+        ),
+        (
+            at_min: 735.0,
+            bus: "33",
+            action: Open,
+        ),
+
+        // F4 + 45 min: transfere a carga a jusante da chave 29 para SD1 via NA7.
+        (
+            at_min: 745.0,
+            bus: "29",
+            action: Open,
+        ),
+        (
+            at_min: 745.0,
+            bus: "NA7",
+            action: Close,
+        ),
+
+        // Fim da F4: repara a falta e restaura as manobras da F4.
+        (
+            at_min: 880.0,
+            bus: "F4",
+            action: Repair,
+        ),
+        (
+            at_min: 880.0,
+            bus: "28",
+            action: Close,
+        ),
+        (
+            at_min: 880.0,
+            bus: "NA3",
+            action: Open,
+        ),
+        (
+            at_min: 880.0,
+            bus: "33",
+            action: Close,
+        ),
+        (
+            at_min: 880.0,
+            bus: "29",
+            action: Close,
+        ),
+        (
+            at_min: 880.0,
+            bus: "NA7",
+            action: Open,
+        ),
+
+        // F5: falta em F5, isolada pela chave 23. Duracao: 60 min.
+        (
+            at_min: 900.0,
+            bus: "F5",
+            action: Fault,
+        ),
+        (
+            at_min: 900.0,
+            bus: "23",
+            action: Open,
+        ),
+        (
+            at_min: 960.0,
+            bus: "F5",
+            action: Repair,
+        ),
+        (
+            at_min: 960.0,
+            bus: "23",
+            action: Close,
+        ),
+
+        // F6: falta logo apos a chave 44. Duracao: 80 min.
+        (
+            at_min: 1000.0,
+            bus: "F6",
+            action: Fault,
+        ),
+        (
+            at_min: 1000.0,
+            bus: "44",
+            action: Open,
+        ),
+
+        // F6 + 30 min: transfere a carga entre 45 e 49 para SD3 via NA9.
+        (
+            at_min: 1030.0,
+            bus: "45",
+            action: Open,
+        ),
+        (
+            at_min: 1030.0,
+            bus: "49",
+            action: Open,
+        ),
+        (
+            at_min: 1030.0,
+            bus: "NA9",
+            action: Close,
+        ),
+
+        // F6 + 50 min: transfere a carga a jusante de 49 para SD2 via NA10.
+        (
+            at_min: 1050.0,
+            bus: "NA10",
+            action: Close,
+        ),
+
+        // Fim da F6: repara a falta e restaura as manobras da F6.
+        (
+            at_min: 1080.0,
+            bus: "F6",
+            action: Repair,
+        ),
+        (
+            at_min: 1080.0,
+            bus: "44",
+            action: Close,
+        ),
+        (
+            at_min: 1080.0,
+            bus: "45",
+            action: Close,
+        ),
+        (
+            at_min: 1080.0,
+            bus: "49",
+            action: Close,
+        ),
+        (
+            at_min: 1080.0,
+            bus: "NA10",
+            action: Open,
+        ),
+        (
+            at_min: 1080.0,
+            bus: "NA9",
+            action: Open,
+        ),
+
+        // F7: falta em F7, isolada pela chave 59. Duracao: 240 min.
+        // Sem remanejamento na F7.
+        (
+            at_min: 1100.0,
+            bus: "F7",
+            action: Fault,
+        ),
+        (
+            at_min: 1100.0,
+            bus: "59",
+            action: Open,
+        ),
+        (
+            at_min: 1340.0,
+            bus: "F7",
+            action: Repair,
+        ),
+        (
+            at_min: 1340.0,
+            bus: "59",
+            action: Close,
+        ),
+
+        // F8: falta em F8, isolada inicialmente pela chave 53. Duracao: 150 min.
+        (
+            at_min: 1400.0,
+            bus: "F8",
+            action: Fault,
+        ),
+        (
+            at_min: 1400.0,
+            bus: "53",
+            action: Open,
+        ),
+
+        // F8 + 40 min: transfere para SD4 a carga entre as chaves 54 e 58 via NA11.
+        (
+            at_min: 1440.0,
+            bus: "54",
+            action: Open,
+        ),
+        (
+            at_min: 1440.0,
+            bus: "58",
+            action: Open,
+        ),
+        (
+            at_min: 1440.0,
+            bus: "NA11",
+            action: Close,
+        ),
+
+        // Fim da F8: repara a falta e restaura as manobras da F8.
+        (
+            at_min: 1550.0,
+            bus: "F8",
+            action: Repair,
+        ),
+        (
+            at_min: 1550.0,
+            bus: "53",
+            action: Close,
+        ),
+        (
+            at_min: 1550.0,
+            bus: "54",
+            action: Close,
+        ),
+        (
+            at_min: 1550.0,
+            bus: "58",
+            action: Close,
+        ),
+        (
+            at_min: 1550.0,
+            bus: "NA11",
+            action: Open,
+        ),
+
+        // F9: falta em F9, isolada inicialmente pela chave 64. Duracao: 180 min.
+        (
+            at_min: 1600.0,
+            bus: "F9",
+            action: Fault,
+        ),
+        (
+            at_min: 1600.0,
+            bus: "64",
+            action: Open,
+        ),
+
+        // F9 + 15 min: transfere para SD5 toda a carga a jusante da chave 65 via NA12.
+        (
+            at_min: 1615.0,
+            bus: "65",
+            action: Open,
+        ),
+        (
+            at_min: 1615.0,
+            bus: "NA12",
+            action: Close,
+        ),
+
+        // Fim da F9: repara a falta e fecha novamente a chave 64.
+        (
+            at_min: 1780.0,
+            bus: "F9",
+            action: Repair,
+        ),
+        (
+            at_min: 1780.0,
+            bus: "64",
+            action: Close,
+        ),
+
+        // Retorno da carga remanejada da F9: abre NA12 e fecha 65 20 min depois.
+        (
+            at_min: 1780.0,
+            bus: "NA12",
+            action: Open,
+        ),
+        (
+            at_min: 1800.0,
+            bus: "65",
+            action: Close,
+        ),
+        // F10: falta em F10, isolada pela chave 66. Duracao: 60 min.
+        // Sem remanejamento na F10.
+        (
+            at_min: 1820.0,
+            bus: "F10",
+            action: Fault,
+        ),
+        (
+            at_min: 1820.0,
+            bus: "66",
+            action: Open,
+        ),
+        (
+            at_min: 1880.0,
+            bus: "F10",
+            action: Repair,
+        ),
+        (
+            at_min: 1880.0,
+            bus: "66",
+            action: Close,
+        ),
+
+        // F11: falta em F11, isolada inicialmente pela chave 70. Duracao: 100 min.
+        (
+            at_min: 1900.0,
+            bus: "F11",
+            action: Fault,
+        ),
+        (
+            at_min: 1900.0,
+            bus: "70",
+            action: Open,
+        ),
+
+        // F11 + 30 min: transfere para SD5 toda a carga a jusante da chave 71 via NA13.
+        (
+            at_min: 1930.0,
+            bus: "71",
+            action: Open,
+        ),
+        (
+            at_min: 1930.0,
+            bus: "NA13",
+            action: Close,
+        ),
+
+        // Fim da F11: repara a falta e fecha novamente a chave 70.
+        (
+            at_min: 2000.0,
+            bus: "F11",
+            action: Repair,
+        ),
+        (
+            at_min: 2000.0,
+            bus: "70",
+            action: Close,
+        ),
+
+        // Retorno da carga remanejada da F11: abre NA13 e fecha 71 10 min depois.
+        (
+            at_min: 2000.0,
+            bus: "NA13",
+            action: Open,
+        ),
+        (
+            at_min: 2010.0,
+            bus: "71",
+            action: Close,
+        ),
+    ],
+)

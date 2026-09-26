@@ -1,0 +1,104 @@
+(
+    hot_reload: true,
+    background: Some("demos/painting.jpg"),
+    style_dirs: ["demos/styles"],
+    default_style: Some("app_icons"),
+    start_root: "home",
+
+    roots: [
+        (
+            name: "home",
+
+            // ── Status bar ────────────────────────────────────────────────
+            bars: [
+                (
+                    id: "status_bar",
+                    edge: Top,
+                    thickness: 44.0,
+                    pad: 16.0,
+                    gap: 0.0,
+                    style: None,
+                    items: [
+                        Label(( id: "time",   text: "9:41",  size: 17.0, color: Some((r:1.0, g:1.0, b:1.0, a:1.0)) )),
+                        Spacer,
+                        Label(( id: "signal", text: "●●●●○", size: 13.0, color: Some((r:1.0, g:1.0, b:1.0, a:0.8)) )),
+                        Label(( id: "wifi",   text: "WiFi",  size: 13.0, color: Some((r:1.0, g:1.0, b:1.0, a:0.8)) )),
+                        Label(( id: "batt",   text: "100%",  size: 13.0, color: Some((r:1.0, g:1.0, b:1.0, a:0.8)) )),
+                    ],
+                ),
+            ],
+
+            // ── App icon grid (5 × 6 = 30 apps) ──────────────────────────
+            // Cell stride: 170px horizontal, 160px vertical
+            // 5 cols centered: x = -400, -230, -60, 110, 280
+            // 6 rows centered: y = -450, -290, -130, 30, 190, 350
+            buttons: [
+
+                // ── Row 1 ─────────────────────────────────────────────────
+                ( id: "app_photos",    x: -400.0, y: -450.0, width: 120.0, height: 120.0, text: "Photos",    tooltip: None, on_press: Custom("open_photos")    ),
+                ( id: "app_camera",    x: -230.0, y: -450.0, width: 120.0, height: 120.0, text: "Camera",    tooltip: None, on_press: Custom("open_camera")    ),
+                ( id: "app_maps",      x:  -60.0, y: -450.0, width: 120.0, height: 120.0, text: "Maps",      tooltip: None, on_press: Custom("open_maps")      ),
+                ( id: "app_calendar",  x:  110.0, y: -450.0, width: 120.0, height: 120.0, text: "Calendar",  tooltip: None, on_press: Custom("open_calendar")  ),
+                ( id: "app_clock",     x:  280.0, y: -450.0, width: 120.0, height: 120.0, text: "Clock",     tooltip: None, on_press: Custom("open_clock")     ),
+
+                // ── Row 2 ─────────────────────────────────────────────────
+                ( id: "app_notes",     x: -400.0, y: -290.0, width: 120.0, height: 120.0, text: "Notes",     tooltip: None, on_press: Custom("open_notes")     ),
+                ( id: "app_reminders", x: -230.0, y: -290.0, width: 120.0, height: 120.0, text: "Reminders", tooltip: None, on_press: Custom("open_reminders") ),
+                ( id: "app_files",     x:  -60.0, y: -290.0, width: 120.0, height: 120.0, text: "Files",     tooltip: None, on_press: Custom("open_files")     ),
+                ( id: "app_mail",      x:  110.0, y: -290.0, width: 120.0, height: 120.0, text: "Mail",      tooltip: None, on_press: Custom("open_mail")      ),
+                ( id: "app_contacts",  x:  280.0, y: -290.0, width: 120.0, height: 120.0, text: "Contacts",  tooltip: None, on_press: Custom("open_contacts")  ),
+
+                // ── Row 3 ─────────────────────────────────────────────────
+                ( id: "app_safari",    x: -400.0, y: -130.0, width: 120.0, height: 120.0, text: "Safari",    tooltip: None, on_press: Custom("open_safari")    ),
+                ( id: "app_music",     x: -230.0, y: -130.0, width: 120.0, height: 120.0, text: "Music",     tooltip: None, on_press: Custom("open_music")     ),
+                ( id: "app_podcasts",  x:  -60.0, y: -130.0, width: 120.0, height: 120.0, text: "Podcasts",  tooltip: None, on_press: Custom("open_podcasts")  ),
+                ( id: "app_tv",        x:  110.0, y: -130.0, width: 120.0, height: 120.0, text: "TV",        tooltip: None, on_press: Custom("open_tv")        ),
+                ( id: "app_books",     x:  280.0, y: -130.0, width: 120.0, height: 120.0, text: "Books",     tooltip: None, on_press: Custom("open_books")     ),
+
+                // ── Row 4 ─────────────────────────────────────────────────
+                ( id: "app_news",      x: -400.0, y:   30.0, width: 120.0, height: 120.0, text: "News",      tooltip: None, on_press: Custom("open_news")      ),
+                ( id: "app_stocks",    x: -230.0, y:   30.0, width: 120.0, height: 120.0, text: "Stocks",    tooltip: None, on_press: Custom("open_stocks")    ),
+                ( id: "app_weather",   x:  -60.0, y:   30.0, width: 120.0, height: 120.0, text: "Weather",   tooltip: None, on_press: Custom("open_weather")   ),
+                ( id: "app_health",    x:  110.0, y:   30.0, width: 120.0, height: 120.0, text: "Health",    tooltip: None, on_press: Custom("open_health")    ),
+                ( id: "app_fitness",   x:  280.0, y:   30.0, width: 120.0, height: 120.0, text: "Fitness",   tooltip: None, on_press: Custom("open_fitness")   ),
+
+                // ── Row 5 ─────────────────────────────────────────────────
+                ( id: "app_settings",  x: -400.0, y:  190.0, width: 120.0, height: 120.0, text: "Settings",  tooltip: None, on_press: Custom("open_settings")  ),
+                ( id: "app_appstore",  x: -230.0, y:  190.0, width: 120.0, height: 120.0, text: "App Store", tooltip: None, on_press: Custom("open_appstore")  ),
+                ( id: "app_shortcuts", x:  -60.0, y:  190.0, width: 120.0, height: 120.0, text: "Shortcuts", tooltip: None, on_press: Custom("open_shortcuts") ),
+                ( id: "app_translate", x:  110.0, y:  190.0, width: 120.0, height: 120.0, text: "Translate", tooltip: None, on_press: Custom("open_translate") ),
+                ( id: "app_measure",   x:  280.0, y:  190.0, width: 120.0, height: 120.0, text: "Measure",   tooltip: None, on_press: Custom("open_measure")   ),
+            ],
+
+            // ── Page dots ─────────────────────────────────────────────────
+            labels: [
+                ( id: "page_dots", x: -20.0, y: 350.0, text: "● ○ ○", size: 14.0, color: Some((r:1.0, g:1.0, b:1.0, a:0.7)) ),
+            ],
+
+            // ── Dock ──────────────────────────────────────────────────────
+            // Frosted glass pill centered at bottom.
+            // Width: 6×120 + 5×20 gap + 2×28 pad = 876
+            scroll_panes: [
+                (
+                    id: "dock",
+                    x: -438.0, y: 370.0,
+                    width: 876.0, height: 136.0,
+                    pad_left: 28.0, pad_right: 28.0,
+                    pad_top: 8.0, pad_bottom: 8.0,
+                    gap: 20.0,
+                    horizontal: true,
+                    full_span: false,
+                    style: Some("frosted_glass"),
+                    items: [
+                        Button(( id: "dock_phone",    x: 0.0, y: 0.0, width: 120.0, height: 120.0, text: "Phone",    tooltip: None, on_press: Custom("open_phone")    )),
+                        Button(( id: "dock_messages", x: 0.0, y: 0.0, width: 120.0, height: 120.0, text: "Messages", tooltip: None, on_press: Custom("open_messages") )),
+                        Button(( id: "dock_safari",   x: 0.0, y: 0.0, width: 120.0, height: 120.0, text: "Safari",   tooltip: None, on_press: Custom("open_safari")   )),
+                        Button(( id: "dock_mail",     x: 0.0, y: 0.0, width: 120.0, height: 120.0, text: "Mail",     tooltip: None, on_press: Custom("open_mail")     )),
+                        Button(( id: "dock_music",    x: 0.0, y: 0.0, width: 120.0, height: 120.0, text: "Music",    tooltip: None, on_press: Custom("open_music")    )),
+                        Button(( id: "dock_settings", x: 0.0, y: 0.0, width: 120.0, height: 120.0, text: "Settings", tooltip: None, on_press: Custom("open_settings") )),
+                    ],
+                ),
+            ],
+        ),
+    ],
+)

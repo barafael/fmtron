@@ -1,0 +1,15 @@
+/* Khan, N., I. Ullah, and M. Al-Grafi. (2015). Dimensional synthesis of mechanical
+   linkages using artificial neural networks and Fourier descriptors. Mechanical
+   Sciences. 6(1): p. 29-34. */
+(
+   p1x: 0.0,
+   p1y: 0.0,
+   a: 0.0,
+   l1: 2.9587,
+   l2: 1.0,
+   l3: 3.4723,
+   l4: 3.5771,
+   l5: 3.3454,
+   g: 3.3771,
+   stat: c1b1
+)

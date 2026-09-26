@@ -1,0 +1,191 @@
+{
+    "normal": {
+        "q": ("Quit", [quit]),
+        "i": ("Revset Mode", [mode(revset)]),
+        esc: ("Reload Log", [reload_log]),
+        enter: (
+            "Accept",
+            [accept("{change:selected}")],
+        ),
+        "y": (
+            "Yank Change IDs",
+            [yank("{change:selected}")],
+        ),
+        "u": ("Undo", [jj(["undo"])]),
+        "@r": (
+            "Rebase working copy on selection...",
+            [],
+        ),
+        "@t": (
+            "Rebase working copy on trunk...",
+            [],
+        ),
+        "r": (
+            "Rebase focused on selection...",
+            [],
+        ),
+        "t": ("Rebase focused on trunk...", []),
+        "s": ("Squash...", []),
+        "rr": (
+            "Rebase revision on selected",
+            [jj(["rebase", "-r={change:focused}", "-d=all:{change:selected_revset}"])],
+        ),
+        "rs": (
+            "Rebase source on selected",
+            [jj(["rebase", "-s={change:focused}", "-d=all:{change:selected_revset}"])],
+        ),
+        "rb": (
+            "Rebase branch on selected",
+            [jj(["rebase", "-b={change:focused}", "-d=all:{change:selected_revset}"])],
+        ),
+        "tr": (
+            "Rebase revision (@) on trunk",
+            [jj(["rebase", "-r=@", "-d=trunk()"])],
+        ),
+        "ts": (
+            "Rebase source (@) on trunk",
+            [jj(["rebase", "-s=@", "-d=trunk()"])],
+        ),
+        "tb": (
+            "Rebase branch (@) on trunk",
+            [jj(["rebase", "-b=@", "-d=trunk()"])],
+        ),
+        "n": (
+            "New on selected",
+            [jj(["new", "all:{change:selected_revset}", ])],
+        ),
+        "tn": (
+            "New on trunk",
+            [jj(["new", "trunk()"])],
+        ),
+        "e": (
+            "Edit focused",
+            [jj(["edit", "{change:focused}"])],
+        ),
+        "d": (
+            "Describe focused",
+            [jji(["describe", "{change:focused}"])],
+        ),
+        "a": (
+            "Abandon selected",
+            [jj(["abandon", "{change:selected_revset}"])],
+        ),
+        "@rr": (
+            "Rebase wc revision on selected",
+            [jj(["rebase", "-r=@", "-d=all:{change:selected_revset}"])],
+        ),
+        "@rs": (
+            "Rebase wc source on selected",
+            [jj(["rebase", "-s=@", "-d=all:{change:selected_revset}"])],
+        ),
+        "@rb": (
+            "Rebase wc branch on selected",
+            [jj(["rebase", "-b=@", "-d=all:{change:selected_revset}"])],
+        ),
+        "@tr": (
+            "Rebase wc revision on trunk",
+            [jj(["rebase", "-r=@", "-d=trunk()"])],
+        ),
+        "@ts": (
+            "Rebase wc source on trunk",
+            [jj(["rebase", "-s=@", "-d=trunk()"])],
+        ),
+        "@tb": (
+            "Rebase wc branch on trunk",
+            [jj(["rebase", "-b=@", "-d=trunk()"])],
+        ),
+        "@n": (
+            "New on wc",
+            [jj(["new", "@"])],
+        ),
+        "@d": (
+            "Describe wc",
+            [jji(["describe", "@"])],
+        ),
+        "@a": (
+            "Abandon wc",
+            [jj(["abandon", "@"])],
+        ),
+        "S": ("Status", [jj(["status"])]),
+        "s-": (
+            "Squash into parent",
+            [jj(["squash", "--from={change:selected_revset}", "--into={change:focused}-"])],
+        ),
+        "si": (
+            "Squash selected into focused",
+            [jj(["squash", "--from={change:selected_revset}", "--into={change:focused}"])],
+        ),
+        "s@": (
+            "Squash selected into wc",
+            [jj(["squash", "--from={change:selected_revset}"])],
+        ),
+        "@s-": (
+            "Squash wc into parent",
+            [jj(["squash"])],
+        ),
+        "@si": (
+            "Squash wc into focused",
+            [jj(["squash", "--into={change:focused}"])],
+        ),
+        "gf": (
+            "Git fetch",
+            [jj(["git", "fetch"])],
+        ),
+        "gpp": (
+            "Git push (default)",
+            [jj(["git", "push"])],
+        ),
+        "gpc": (
+            "Git push (--change focused)",
+            [jj(["git", "push", "--change={change:focused}"])],
+        ),
+        "@-gpc": (
+            "Git push (--change @-)",
+            [jj(["git", "push", "--change=@-"])],
+        ),
+        " ": (
+            "Show focused",
+            [jjp(["--ignore-working-copy", "show", "{change:focused}"])],
+        ),
+        "@ ": (
+            "Show wc",
+            [jjp(["--ignore-working-copy", "show", "@"])],
+        ),
+        "@- ": (
+            "Show parent of wc",
+            [jjp(["--ignore-working-copy", "show", "@"])],
+        ),
+        "o": (
+            "Show obslog of focused",
+            [mode(obslog("{change:focused}"))],
+        ),
+        "@o": (
+            "Show obslog of wc",
+            [mode(obslog("@"))],
+        ),
+        "@-o": (
+            "Show obslog of wc's parent",
+            [mode(obslog("@-"))],
+        ),
+        "c": (
+            "Commit",
+            [jji(["commit", "--interactive"])],
+        ),
+    },
+    "revset": {
+        esc: ("Normal Mode", [mode(normal)]),
+        enter: ("Set Revset", [change_revset("{query}")]),
+    },
+    "obslog": {
+        "q": ("Quit", [quit]),
+        esc: ("Normal Mode", [mode(normal)]),
+        enter: (
+            "Accept",
+            [accept("{commit:select}")],
+        ),
+        "y": (
+            "Yank Commit IDs",
+            [yank("{commit:selected}")],
+        ),
+    },
+}

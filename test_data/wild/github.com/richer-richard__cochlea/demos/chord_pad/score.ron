@@ -1,0 +1,48 @@
+// Demo 2: harmony reads correctly. A I-IV-V-I progression in C major on
+// the chord_pad preset; the demo test asserts the probe's chroma/key
+// section reads (C, major).
+Score(
+    version: 1,
+    sample_rate: 48000,
+    ppq: 960,
+    time_signature: (4, 4),
+    tempo: [(tick: 0, bpm: 120.0)],
+    tracks: [
+        Track(
+            name: "pad",
+            instrument: Preset("chord_pad"),
+            notes: [
+                // I: C major
+                Note(at: (1, 1), dur: "1/1", pitch: "C4", vel: 90),
+                Note(at: (1, 1), dur: "1/1", pitch: "E4", vel: 90),
+                Note(at: (1, 1), dur: "1/1", pitch: "G4", vel: 90),
+                // IV: F major
+                Note(at: (2, 1), dur: "1/1", pitch: "C4", vel: 88),
+                Note(at: (2, 1), dur: "1/1", pitch: "F4", vel: 88),
+                Note(at: (2, 1), dur: "1/1", pitch: "A4", vel: 88),
+                // V: G major
+                Note(at: (3, 1), dur: "1/1", pitch: "B3", vel: 88),
+                Note(at: (3, 1), dur: "1/1", pitch: "D4", vel: 88),
+                Note(at: (3, 1), dur: "1/1", pitch: "G4", vel: 88),
+                // I: C major
+                Note(at: (4, 1), dur: "1/1", pitch: "C4", vel: 92),
+                Note(at: (4, 1), dur: "1/1", pitch: "E4", vel: 92),
+                Note(at: (4, 1), dur: "1/1", pitch: "G4", vel: 92),
+            ],
+        ),
+        Track(
+            name: "root",
+            instrument: Preset("square_bass"),
+            notes: [
+                Note(at: (1, 1), dur: "1/1", pitch: "C2", vel: 96),
+                Note(at: (2, 1), dur: "1/1", pitch: "F2", vel: 92),
+                Note(at: (3, 1), dur: "1/1", pitch: "G2", vel: 92),
+                Note(at: (4, 1), dur: "1/1", pitch: "C2", vel: 96),
+            ],
+        ),
+    ],
+    verify: [
+        TruePeakBelow(dbtp: -1.0),
+        SilentAfter(at: (6, 1)),
+    ],
+)

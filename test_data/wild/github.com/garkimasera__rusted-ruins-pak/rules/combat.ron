@@ -1,0 +1,6 @@
+(
+    throw_range_factor: 250,
+    throw_range_max: 5,
+    detection_range: 8,
+    detection_factor: 1.2,
+)

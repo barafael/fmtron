@@ -1,0 +1,41 @@
+[
+    (
+        fps: 20.0,
+        tile_size: (32.0, 32.0),
+        rows: 1,
+        columns: 11,
+        texture_path: "Main Characters/Mask Dude/Idle (32x32).png",
+    ),
+    (   
+        id: Some("Fall"),
+        fps: 1.,
+        tile_size: (32.0, 32.0),
+        rows: 1,
+        columns: 1,
+        texture_path: "Main Characters/Mask Dude/Fall (32x32).png",
+    ),
+    (
+        id: Some("Jump"),
+        fps: 1.,
+        tile_size: (32.0, 32.0),
+        rows: 1,
+        columns: 1,
+        texture_path: "Main Characters/Mask Dude/Jump (32x32).png",
+    ),
+    (
+        id: Some("DoubleJump"),
+        fps: 20.,
+        tile_size: (32.0, 32.0),
+        rows: 1,
+        columns: 6,
+        texture_path: "Main Characters/Mask Dude/Double Jump (32x32).png",
+    ),
+    (
+        id: Some("Run"),
+        fps: 20.,
+        tile_size: (32.0, 32.0),
+        rows: 1,
+        columns: 12,
+        texture_path: "Main Characters/Mask Dude/Run (32x32).png",
+    ),
+]

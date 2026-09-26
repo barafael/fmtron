@@ -1,0 +1,17 @@
+(
+    accent: {
+        "": (
+            rules: {
+                // use \w+ and \W+ to vary string lengths
+                r"\w+": {"Concat": (
+                    {"Original": ()},
+                    {"Original": ()},
+                )},
+                r"\W+": {"Concat": (
+                    {"Original": ()},
+                    {"Original": ()},
+                )},
+            },
+        ),
+    }
+)

@@ -1,0 +1,49 @@
+// Standard 1v1 Skirmish Scenario
+// Balanced starting positions for faction matchup testing
+Scenario(
+    name: "Standard 1v1 Skirmish",
+    description: "Balanced starting positions for faction matchup testing",
+    map_size: (512, 512),
+    factions: [
+        FactionSetup(
+            faction_id: "continuity",
+            ai_controller: Sandbox,
+            starting_units: [
+                UnitPlacement(kind: "scout", position: (64, 256), count: 2),
+                UnitPlacement(kind: "harvester", position: (80, 256), count: 1),
+            ],
+            starting_buildings: [
+                BuildingPlacement(kind: "command_center", position: (48, 256)),
+            ],
+            spawn_position: (48, 256),
+            starting_resources: 1000,
+        ),
+        FactionSetup(
+            faction_id: "collegium",
+            ai_controller: Sandbox,
+            starting_units: [
+                UnitPlacement(kind: "scout", position: (448, 256), count: 2),
+                UnitPlacement(kind: "harvester", position: (432, 256), count: 1),
+            ],
+            starting_buildings: [
+                BuildingPlacement(kind: "command_center", position: (464, 256)),
+            ],
+            spawn_position: (464, 256),
+            starting_resources: 1000,
+        ),
+    ],
+    victory_conditions: VictoryConditions(
+        elimination: true,
+        time_limit_ticks: Some(36000),
+        resource_threshold: None,
+    ),
+    initial_resources: ResourceSetup(
+        ore_nodes: [
+            OreNode(position: (128, 200), amount: 5000),
+            OreNode(position: (128, 312), amount: 5000),
+            OreNode(position: (384, 200), amount: 5000),
+            OreNode(position: (384, 312), amount: 5000),
+            OreNode(position: (256, 256), amount: 10000),
+        ],
+    ),
+)

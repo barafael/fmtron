@@ -1,0 +1,61 @@
+#![enable(implicit_some)]
+(
+    bounds: (
+        center: (0, 0, 0),
+        extents: (50, 50, 50)
+    ),
+    emitters: [
+        (
+            position: (0, 0, 0),
+            rotation: (0, 0, 0),
+            emit: (
+                max_particles: 64,
+                particles_per_burst: 1,
+                burst_interval: 0.05,
+                shape: Sphere (
+                    origin: (0, 0, 0),
+                    inner_radius: 0,
+                    outer_radius: 5,
+                ),
+            ),
+            init: (
+                lifetime_min: 1.5,
+                lifetime_max: 2,
+                angle_min: 0,
+                angle_max: 0,
+                angle_axis: (0, 0, 1),
+                angle_axis_spread: 0,
+                direction: (0, 0, 1),
+                direction_spread: 15,
+                velocity_min: 80,
+                velocity_max: 100,
+                angular_velocity_min: 0,
+                angular_velocity_max: 0,
+                scale_min: 5.0,
+                scale_max: 5.0,
+            ),
+            accel: (
+                gravity: (0, 0, -50),
+                linear_damp: 0,
+                angular_damp: 0,
+                radial_accel: 0,
+                orbit_accel: 0,
+                orbit_axis: (0, 0, 1),
+                noise: None,
+            ),
+            display: Sprite (
+                material: "content/materials/effects/glow.mat.ron",
+                billboard: FaceCamera,
+                sheet: None,
+                size: [
+                    ( time: 0.0, value: (1, 1) ),
+                ],
+                color: [
+                    ( time: 0.0, value: (255, 255, 255, 255) ),
+                    ( time: 1.0, value: (255, 255, 255, 0) ),
+                ],
+            ),
+            sub: [],
+        ),
+    ]
+)

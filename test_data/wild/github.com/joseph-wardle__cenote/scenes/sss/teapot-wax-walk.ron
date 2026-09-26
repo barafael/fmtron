@@ -1,0 +1,110 @@
+// B9's controlled SSS driver, wax tier, walk-authored: the same
+// teapot, rig, and interior as teapot-wax.ron, driven through the
+// subsurface lobe instead of a scattering refractive interior. The mean
+// free path is the same (subsurface_radius = 0.23, scale 1), and the
+// tier's single-scatter albedo α = 0.95 is authored as the
+// multiple-scatter color C = 0.596261 that the van de Hulst inversion
+// maps back onto it. The interiors match; the boundaries do not — this
+// surface enters and leaves through the Lambertian transmission, where
+// the sibling refracts — so the two images agree in regime, not per
+// pixel. No 255-bounce cap: the whole walk is one path bounce, which is
+// the point of the architecture this scene exists to measure.
+(
+    version: 2,
+    ops: [
+        Settings((
+            name: "main",
+            resolution: Some((1280, 720)),
+            spp: Some(64),
+        )),
+        Camera((
+            name: "main",
+            position: Some((7.0, 4.5, -7.5)),
+            look_at: Some((0.0, 0.9, 0.3)),
+            vfov_degrees: Some(30.0),
+        )),
+        Environment((
+            name: "sky",
+            path: Some(Some("../../crates/cenote/assets/kloofendal_puresky.exr")),
+            // Dim enough that the quad dominates; bright enough that the
+            // sky still seeds the silhouette.
+            tint: Some((0.05, 0.05, 0.05)),
+        )),
+
+        Mesh((
+            name: "solid",
+            source: Some(Ply(path: "teapot.ply")),
+        )),
+        Mesh((
+            name: "plane",
+            source: Some(Inline(
+                positions: [
+                    (-1.0, 0.0, -1.0), (-1.0, 0.0, 1.0), (1.0, 0.0, 1.0), (1.0, 0.0, -1.0),
+                ],
+                normals: Some([
+                    (0.0, 1.0, 0.0), (0.0, 1.0, 0.0), (0.0, 1.0, 0.0), (0.0, 1.0, 0.0),
+                ]),
+                uvs: Some([(0.0, 0.0), (0.0, 1.0), (1.0, 1.0), (1.0, 0.0)]),
+                triangles: [(0, 1, 2), (0, 2, 3)],
+            )),
+        )),
+        // The warm key: corners precomputed so the emitting face aims at
+        // the body without a rotation transform.
+        Mesh((
+            name: "key",
+            source: Some(Inline(
+                positions: [
+                    (4.6773, 5.0381, -2.7809), (4.0864, 5.9619, -2.2934),
+                    (3.3227, 5.9619, -3.2191), (3.9136, 5.0381, -3.7066),
+                ],
+                normals: Some([
+                    (-0.5938, -0.6383, 0.4899), (-0.5938, -0.6383, 0.4899),
+                    (-0.5938, -0.6383, 0.4899), (-0.5938, -0.6383, 0.4899),
+                ]),
+                uvs: Some([(0.0, 0.0), (0.0, 1.0), (1.0, 1.0), (1.0, 0.0)]),
+                triangles: [(0, 1, 2), (0, 2, 3)],
+            )),
+        )),
+
+        Material((
+            name: "wax",
+            specular_ior: Some(1.5),
+            specular_roughness: Some(Constant(0.08)),
+            subsurface_weight: Some(Constant(1.0)),
+            subsurface_color: Some(Constant((0.596261, 0.596261, 0.596261))),
+            subsurface_radius: Some(Constant(0.23)),
+            subsurface_radius_scale: Some(Constant((1.0, 1.0, 1.0))),
+        )),
+        Material((
+            name: "table",
+            base_color: Some(Constant((0.32, 0.30, 0.28))),
+            base_diffuse_roughness: Some(0.4),
+            specular_weight: Some(0.3),
+            specular_roughness: Some(Constant(0.25)),
+        )),
+        Material((
+            name: "warm-key",
+            emission_color: Some(Constant((1.0, 0.72, 0.45))),
+            emission_luminance: Some(60.0),
+        )),
+
+        Instance((
+            name: "solid",
+            mesh: Some("solid"),
+            material: Some("wax"),
+            // The tea volume floated at the pot's waterline; grounded here.
+            transforms: Some([Trs(translate: (0.0, -0.245, 0.0))]),
+        )),
+        Instance((
+            name: "table",
+            mesh: Some("plane"),
+            material: Some("table"),
+            transforms: Some([Trs(scale: (20.0, 1.0, 20.0))]),
+        )),
+        Instance((
+            name: "key",
+            mesh: Some("key"),
+            material: Some("warm-key"),
+        )),
+    ],
+)

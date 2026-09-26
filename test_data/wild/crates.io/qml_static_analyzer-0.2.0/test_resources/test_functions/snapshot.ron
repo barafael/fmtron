@@ -1,0 +1,105 @@
+(
+    name: "FunctionsItem",
+    base_type: "Item",
+    id: Some("root"),
+    imports: [
+        "import QtQuick",
+    ],
+    signals: [],
+    properties: [
+        (
+            name: "counter",
+            prop_type: Int,
+            value: Int(0),
+            accessed_properties: [],
+        ),
+        (
+            name: "data",
+            prop_type: Var,
+            value: Null,
+            accessed_properties: [],
+        ),
+    ],
+    functions: [
+        (
+            name: "increment",
+            is_signal_handler: false,
+            parameters: [],
+            used_names: [
+                (
+                    name: "counter",
+                    accessed_item: None,
+                ),
+                (
+                    name: "counter",
+                    accessed_item: None,
+                ),
+            ],
+            declared_locals: [],
+            member_assignments: [],
+        ),
+        (
+            name: "reset",
+            is_signal_handler: false,
+            parameters: [],
+            used_names: [
+                (
+                    name: "counter",
+                    accessed_item: None,
+                ),
+                (
+                    name: "data",
+                    accessed_item: None,
+                ),
+            ],
+            declared_locals: [],
+            member_assignments: [],
+        ),
+        (
+            name: "computeSum",
+            is_signal_handler: false,
+            parameters: [
+                "a",
+                "b",
+            ],
+            used_names: [
+                (
+                    name: "a",
+                    accessed_item: None,
+                ),
+                (
+                    name: "b",
+                    accessed_item: None,
+                ),
+                (
+                    name: "result",
+                    accessed_item: None,
+                ),
+            ],
+            declared_locals: [
+                "result",
+            ],
+            member_assignments: [],
+        ),
+        (
+            name: "onCounterChanged",
+            is_signal_handler: true,
+            parameters: [],
+            used_names: [
+                (
+                    name: "counter",
+                    accessed_item: None,
+                ),
+                (
+                    name: "msg",
+                    accessed_item: None,
+                ),
+            ],
+            declared_locals: [
+                "msg",
+            ],
+            member_assignments: [],
+        ),
+    ],
+    children: [],
+)

@@ -1,0 +1,84 @@
+(
+	data_path: "C:\\Program Files (x86)\\GOG Galaxy\\Games\\Vangers\\data",
+	game: (
+		level: "Fostral", // see `wrlds.dat` for the list
+		cycle: "", // see `bunches.prm` for the list, leave empty for bonus worlds
+		geometry: (
+			height: 0x100,
+			delta_mask: 239,
+			delta_power: 3,
+			delta_const: 4,
+		),
+		camera: (
+			angle: 45,
+			height: 210,
+			offset: 140,
+			speed: 3,
+			depth_range: (10, 2000),
+			projection: Perspective, // can be "Flat" or "Perspective"
+		),
+		other: (
+			count: 10, // number of NPC vangers
+			spawn_at: Random, // Player
+		),
+		physics: (
+			max_quant: 0.1,
+			shape_sampling: 0,
+		),
+	),
+	car: (
+		id: "OxidizeMonk",
+		// "IronShadow",
+		color: Green, // Dummy, Red, Blue, Yellow, Gray
+		slots: [],
+		//slots: ["HeavyLaser", "LightMissile", "LightFireBall"],
+		pos: None,
+		//pos: Some((1300, 450)),
+	),
+	window: (
+		title: "Rusty Road",
+		size: (1280, 800),
+		reload_on_focus: false,
+	),
+	backend: Auto, // Auto, Vulkan, Metal, DX12, GL
+	render: (
+		wgpu_trace_path: "",
+		allow_tearing: false,
+		light: (
+			pos: (1, 2, 4, 0), // w=0 for directional, w=1 for point light
+			color: (1, 1, 1),
+			shadow: (
+				size: 1024,
+				terrain:
+					//RayTraced,
+					RayVoxelTraced( max_outer_steps: 20, max_inner_steps: 20 ),
+			),
+		),
+		fog: (
+			color: (0.1, 0.2, 0.3),
+			depth: 50,
+		),
+		//terrain: RayTraced,
+		// RayTraced,
+		terrain: RayVoxelTraced(
+			voxel_size: (2, 4, 1),
+			max_outer_steps: 40,
+			max_inner_steps: 40,
+			max_update_texels: 1_000_000,
+		),
+		// Scattered( density: (2, 2, 2) ),
+		// Sliced,
+		// Painted,
+		water: (),
+		debug: (
+			max_vertices: 512,
+			collision_shapes: false,
+			collision_map: false,
+			impulses: false,
+		),
+	),
+	ui: (
+		enabled: true,
+		frame_history: 50,
+	),
+)

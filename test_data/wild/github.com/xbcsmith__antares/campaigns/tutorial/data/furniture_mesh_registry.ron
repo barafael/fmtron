@@ -1,0 +1,52 @@
+[
+    (
+        id: 10001,
+        name: "Sandstone Throne",
+        filepath: "assets/furniture/seating/sandstone_throne.ron",
+    ),
+    (
+        id: 10002,
+        name: "Ironbound Treasure Chest",
+        filepath: "assets/furniture/storage/ironbound_treasure_chest.ron",
+    ),
+    (
+        id: 10003,
+        name: "Anvil on Stand",
+        filepath: "assets/furniture/utility/anvil_on_stand.ron",
+    ),
+    (
+        id: 10004,
+        name: "Blacksmith Workbench",
+        filepath: "assets/furniture/utility/blacksmith_workbench.ron",
+    ),
+    (
+        id: 10005,
+        name: "Rustic Log Chair",
+        filepath: "assets/furniture/seating/rustic_log_chair.ron",
+    ),
+    (
+        id: 10006,
+        name: "Weathered Wooden Table",
+        filepath: "assets/furniture/seating/weathered_wooden_table.ron",
+    ),
+    (
+        id: 10007,
+        name: "Weathered Wooden Hutch",
+        filepath: "assets/furniture/storage/weathered_wooden_hutch.ron",
+    ),
+    (
+        id: 10008,
+        name: "Astronomer Alter",
+        filepath: "assets/furniture/storage/astronomer_alter.ron",
+    ),
+    (
+        id: 10009,
+        name: "Stone Throne",
+        filepath: "assets/furniture/seating/stone_throne.ron",
+    ),
+    (
+        id: 10010,
+        name: "Frozen Crown Throne",
+        filepath: "assets/furniture/seating/frozen_crown_throne.ron",
+    ),
+]

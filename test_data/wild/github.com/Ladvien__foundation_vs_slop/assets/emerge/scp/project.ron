@@ -1,0 +1,4 @@
+(
+    version: 2,
+    note: Some("The policy layer for `scp`. No patches yet: `Project::open` refuses a rule that matches nothing, so one cannot be added before the pieces it names exist."),
+)

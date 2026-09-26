@@ -1,0 +1,20 @@
+// data/entities/substrates/substrate_001.ron  (instance state)
+(
+  substrate_id: "substrate_001",
+  substrate_type_id: "loam_basic",
+  plot_id: "plot_001",
+
+  volume_m3: 0.25,
+  water_capacity_l: 62.5,
+  drain_rate: 0.15,
+  aeration_index: 0.7,
+
+  water_l: 25.0,
+
+  nitrate_mg: 15000.0,
+  phosphate_mg: 7500.0,
+  potassium_mg: 20000.0,
+
+  ph: 6.5,
+  organic_matter_index: 0.08,
+)

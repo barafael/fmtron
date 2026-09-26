@@ -1,0 +1,20 @@
+Config(
+  play_on_start: false,
+  keybinds: {
+    Home: {
+      "<q>": Quit,
+      "<Ctrl-c>": Quit,
+      "<space>": PausePlay,
+      "<right>": SeekForward,
+      "<left>": SeekBackward,
+      "<s>": ChangeModeSelection,
+      "<r>": ChangeModeRepeat,
+      "<n>": NextTrack,
+      "<h>": ListLeft,
+      "<l>": ListRight,
+      "<j>": ListSelNext,
+      "<k>": ListSelPrev,
+      "<enter>": ListChooseSelected,
+    },
+  }
+)

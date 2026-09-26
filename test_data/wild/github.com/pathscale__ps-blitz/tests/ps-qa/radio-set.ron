@@ -1,0 +1,42 @@
+// Selecting a radio clears the rest of its set, and a listener has to see the
+// finished selection rather than the one before it.
+[
+    (
+        id: "radio-set-paints",
+        group: "radio-set",
+        what: "the fixture builds and paints",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:Radio set",
+        expect: Present,
+    ),
+    (
+        id: "radio-set-is-settled-when-listeners-run",
+        group: "radio-set",
+        what: "a listener sees the whole set already moved",
+        open: None,
+        hover: None,
+        settle_after_ms: 300,
+        click: Some("radio:Second"),
+        subject: "heading:Click saw first=false second=true",
+        expect: Present,
+    ),
+    // The control, not the outcome text. A checkbox or radio has an
+    // intrinsic box that owes nothing to a font, so this is the paint
+    // assertion the rest of this file can no longer make: the checks above
+    // read outcome text, and text measures 0x0 with no face registered.
+    //
+    // Without this, the group proves the tree is right and nothing about
+    // whether the document rendered at all.
+    (
+        id: "radio-set-control-paints",
+        group: "radio-set",
+        what: "the control itself paints, with no font involved",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "radio:Second",
+        expect: PaintsNamed,
+    ),
+]

@@ -1,0 +1,15 @@
+Config(
+    engines:[
+        (
+            name: "Google",
+            url: "https://www.google.com/search?q={}",
+            prefix: "gg ",
+        ),
+
+        (
+            name: "Youtube",
+            url: "https://www.youtube.com/results?search_query={}",
+            prefix: "yt ",
+        ),
+    ]
+)

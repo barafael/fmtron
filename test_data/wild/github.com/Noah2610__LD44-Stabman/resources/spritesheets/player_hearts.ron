@@ -1,0 +1,18 @@
+(
+  spritesheet_width:  32,
+  spritesheet_height: 16,
+  sprites: [
+    ( // 0 - full heart
+      x:      0,
+      y:      0,
+      width:  16,
+      height: 16,
+    ),
+    ( // 1 - half heart
+      x:      16,
+      y:      0,
+      width:  16,
+      height: 16,
+    ),
+  ],
+)

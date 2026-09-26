@@ -1,0 +1,50 @@
+/*
+    Synchron config file example
+
+    For information about the ron file format, please see:
+    https://github.com/ron-rs/ron
+*/
+
+(
+    // Prompt text in CLI mode
+    prompt: "> ",
+
+    // Panes are modes that you can use
+    // Modes can be triggered by pressing the corresponding number key as listed below (e.g. 1 to go to SimpleLibrary)
+    // Feel free to rearrange, delete and add new modes to customise your set up.
+    panes: {
+        // SortedLibrary: Drill down into your artists, their albums, and the tracks on those albums.
+        1: SortedLibrary,
+        // SimpleLibrary: A single list of all your music. Ideal for updating tags and playing all your music.
+        2: SimpleLibrary,
+        // Playlists: A pane to build mixtapes of your favourite music and play them back.
+        3: Playlists,
+        // Files: A file browser to add to your library
+        4: Files,
+    },
+
+    // The pane number to start on when opening synchron
+    open_on_pane: 3,
+
+    // Indicators / Icons for the TUI
+    indicators: {
+        "loop_none": "稜",
+        "loop_track": "綾",
+        "loop_playlist": "凌",
+        "shuffle_on": "列",
+        "shuffle_off": "劣",
+        "volume_mute": "ﱝ ",
+        "volume_low": "奄",
+        "volume_medium": "奔",
+        "volume_high": "墳",
+        "playing": "契",
+        "paused": " ",
+        "stopped": "栗",
+        "progress_bar_full": "",
+        "progress_bar_empty": " ",
+        "playlist_icon": " ",
+    },
+
+    // If true, then hidden files and folders will be shown in the files pane, otherwise they will be hidden
+    show_hidden_files: false,
+)

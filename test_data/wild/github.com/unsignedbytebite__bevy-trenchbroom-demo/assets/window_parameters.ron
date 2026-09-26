@@ -1,0 +1,9 @@
+(
+  resolution: (1280, 720),
+  title: "bevy-trenchbroom-demo",
+  app_name: "bevy-trenchbroom-demo",
+  resizable: true,
+  mouse_visible: true,
+  windowed: true,
+)
+

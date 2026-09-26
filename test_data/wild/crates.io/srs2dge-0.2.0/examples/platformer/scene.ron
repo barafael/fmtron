@@ -1,0 +1,142 @@
+{
+    entities: {
+        "9e61d12d-ea69-4f64-95e8-72c7a915760b": {
+            "RigidBody2D": (
+                linear_velocity: (0, 0),
+                angular_velocity: 0,
+            ),
+            "Transform2D": (
+                translation: (0, 0),
+                rotation: 0,
+                scale: (0.1, 0.1),
+            ),
+            "Sprite": (
+                sprite: (
+                    top_left: (0, 0),
+                    bottom_right: (0.5, 0.5),
+                ),
+                color: (
+                    r: 1,
+                    g: 1,
+                    b: 1,
+                    a: 1,
+                ),
+                idx: None,
+                lerp_transform: (
+                    translation: (0, 0),
+                    rotation: 0,
+                    scale: (0, 0),
+                ),
+            ),
+            "Player": (
+                can_jump: false,
+            ),
+            "Collider": (),
+            "CollisionResolver": ((0, 0)),
+        },
+        "8ab95116-3a90-4bae-af2c-e324bd614d42": {
+            "Transform2D": (
+                translation: (0, -0.5),
+                rotation: 0,
+                scale: (1.5, 0.2),
+            ),
+            "Sprite": (
+                sprite: (
+                    top_left: (0, 0.5),
+                    bottom_right: (0.03125, 0.53125),
+                ),
+                color: (
+                    r: 1,
+                    g: 0.5,
+                    b: 0,
+                    a: 1,
+                ),
+                idx: None,
+                lerp_transform: (
+                    translation: (0, 0),
+                    rotation: 0,
+                    scale: (0, 0),
+                ),
+            ),
+            "Collider": (),
+        },
+        "ba19359e-8d13-4032-b8a8-a0996e7db6d3": {
+            "Transform2D": (
+                translation: (0.4, -0.2),
+                rotation: 0,
+                scale: (0.3, 0.2),
+            ),
+            "Sprite": (
+                sprite: (
+                    top_left: (0, 0.5),
+                    bottom_right: (0.03125, 0.53125),
+                ),
+                color: (
+                    r: 0,
+                    g: 1,
+                    b: 1,
+                    a: 1,
+                ),
+                idx: None,
+                lerp_transform: (
+                    translation: (0, 0),
+                    rotation: 0,
+                    scale: (0, 0),
+                ),
+            ),
+            "Collider": (),
+        },
+        "8f55266b-a035-493a-ab3f-f653f7799d9e": {
+            "Transform2D": (
+                translation: (0.8, 0),
+                rotation: 0,
+                scale: (0.2, 0.4),
+            ),
+            "Sprite": (
+                sprite: (
+                    top_left: (0, 0.5),
+                    bottom_right: (0.03125, 0.53125),
+                ),
+                color: (
+                    r: 0.5,
+                    g: 1,
+                    b: 0,
+                    a: 1,
+                ),
+                idx: None,
+                lerp_transform: (
+                    translation: (0, 0),
+                    rotation: 0,
+                    scale: (0, 0),
+                ),
+            ),
+            "Collider": (),
+        },
+        "03079b9e-9582-4a37-b341-61a7f416a24b": {
+            "Transform2D": (
+                translation: (-0.95, 1),
+                rotation: 0,
+                scale: (0.2, 3.4),
+            ),
+            "Sprite": (
+                sprite: (
+                    top_left: (0, 0.5),
+                    bottom_right: (0.03125, 0.53125),
+                ),
+                color: (
+                    r: 0,
+                    g: 0.5,
+                    b: 1,
+                    a: 1,
+                ),
+                idx: None,
+                lerp_transform: (
+                    translation: (0, 0),
+                    rotation: 0,
+                    scale: (0, 0),
+                ),
+            ),
+            "Collider": (),
+        },
+    },
+}

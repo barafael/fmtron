@@ -1,0 +1,11 @@
+(
+axes: {
+},
+actions: {
+    "Forward": [[Key(W)]],
+    "Backward": [[Key(S)]],
+    "Right": [[Key(A)]],
+    "Left": [[Key(D)]],
+    "Jump": [[Key(Space)]],
+},
+)

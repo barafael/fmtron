@@ -1,0 +1,4 @@
+(
+  // Optional absolute path to Blender executable used for .blend -> .glb export.
+  blender_bin: "/Users/joshua/Library/Application Support/Steam/steamapps/common/Blender/Blender.app/Contents/MacOS/Blender",
+)

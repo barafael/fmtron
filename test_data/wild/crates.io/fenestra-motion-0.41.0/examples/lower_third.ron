@@ -1,0 +1,122 @@
+// A broadcast lower third: transparent background (renders straight alpha —
+// composite it over footage), an accent bar that grows in, a title and a
+// subtitle that rise and fade in staggered. 4 seconds at 60fps, 1280×720.
+//
+//   motion render fenestra-motion/examples/lower_third.ron --out frames/
+//   motion probe  fenestra-motion/examples/lower_third.ron --frame 45
+//
+// Alpha delivery recipes (PNG sequence → video) live in the crate README.
+(
+    version: 1,
+    width: 1280,
+    height: 720,
+    fps: 60,
+    duration: 240,
+    background: "transparent",
+    theme: dark,
+    clips: [
+        (
+            id: "plate",
+            start: 0,
+            end: 240,
+            z: -2,
+            anchor: bottom_left,
+            // A translucent backing plate so the text reads over any footage.
+            element: div(style: (
+                bg: (oklch: (0.15, 0.02, 262.0)),
+                opacity: 0.85,
+                w: 560.0,
+                h: 120.0,
+                rounded: 12.0,
+                m: 48.0,
+            )),
+            tracks: [
+                (prop: opacity, keys: [
+                    (at: 0, value: scalar(0.0), ease: crisp),
+                    (at: 18, value: scalar(1.0)),
+                    (at: 210, value: scalar(1.0), ease: ease_in),
+                    (at: 235, value: scalar(0.0)),
+                ]),
+                (prop: translate_y, keys: [
+                    (at: 0, value: scalar(32.0), ease: crisp),
+                    (at: 18, value: scalar(0.0)),
+                ]),
+            ],
+        ),
+        (
+            id: "bar",
+            start: 4,
+            end: 240,
+            z: -1,
+            anchor: bottom_left,
+            // The accent bar sweeps open along x about its left edge.
+            element: div(style: (
+                bg: "accent",
+                w: 6.0,
+                h: 88.0,
+                rounded: 3.0,
+                ml: 64.0,
+                mb: 64.0,
+            )),
+            tracks: [
+                (prop: scale_xy, keys: [
+                    (at: 0, value: pair(1.0, 0.0), ease: crisp),
+                    (at: 16, value: pair(1.0, 1.0)),
+                ]),
+                (prop: opacity, keys: [
+                    (at: 206, value: scalar(1.0), ease: ease_in),
+                    (at: 231, value: scalar(0.0)),
+                ]),
+            ],
+        ),
+        (
+            id: "title",
+            start: 10,
+            end: 240,
+            anchor: bottom_left,
+            element: text(content: "Ada Lovelace", style: (
+                size_px: 40.0,
+                weight: 600,
+                color: "text",
+                ml: 88.0,
+                mb: 104.0,
+            )),
+            tracks: [
+                (prop: opacity, keys: [
+                    (at: 0, value: scalar(0.0), ease: crisp),
+                    (at: 16, value: scalar(1.0)),
+                    (at: 200, value: scalar(1.0), ease: ease_in),
+                    (at: 225, value: scalar(0.0)),
+                ]),
+                (prop: translate_y, keys: [
+                    (at: 0, value: scalar(20.0), ease: crisp),
+                    (at: 16, value: scalar(0.0)),
+                ]),
+            ],
+        ),
+        (
+            id: "subtitle",
+            start: 18,
+            end: 240,
+            anchor: bottom_left,
+            element: text(content: "Analyst · Metaphysician", style: (
+                size_px: 22.0,
+                color: "text_muted",
+                ml: 88.0,
+                mb: 72.0,
+            )),
+            tracks: [
+                (prop: opacity, keys: [
+                    (at: 0, value: scalar(0.0), ease: crisp),
+                    (at: 14, value: scalar(1.0)),
+                    (at: 192, value: scalar(1.0), ease: ease_in),
+                    (at: 217, value: scalar(0.0)),
+                ]),
+                (prop: translate_y, keys: [
+                    (at: 0, value: scalar(16.0), ease: crisp),
+                    (at: 14, value: scalar(0.0)),
+                ]),
+            ],
+        ),
+    ],
+)

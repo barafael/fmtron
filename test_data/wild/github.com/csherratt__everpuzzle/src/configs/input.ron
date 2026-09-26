@@ -1,0 +1,13 @@
+(
+    axes: {},
+
+    actions: {
+        "up": [Key(Up), Key(W)],
+        "down": [Key(Down), Key(S)],
+        "left": [Key(Left), Key(A)],
+        "right": [Key(Right), Key(D)],
+        "space": [Key(Space)],
+		"swap": [Key(X), Key(Y)],
+		"raise": [Key(C), Key(V)],
+    }
+)

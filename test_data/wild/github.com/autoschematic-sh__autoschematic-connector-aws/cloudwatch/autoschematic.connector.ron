@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/cloudwatch",
+    protocol: "binary-tarpc",
+    description: "Manages AWS CloudWatch resources, such as alarms, dashboards, log groups, and more.",
+    stability: "preview"
+)

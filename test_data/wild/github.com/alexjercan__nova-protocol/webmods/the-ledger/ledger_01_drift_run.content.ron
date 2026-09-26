@@ -1,0 +1,493 @@
+// Drift Run: independent activity; no carried campaign state.
+// Flight is live from spawn. Terrain bands leave the objective routes clear.
+[
+    Scenario((
+        id: "ledger_01_drift_run",
+        name: "Drift Run",
+        description: "A timed Racer slalom through a broken asteroid belt.",
+        cubemap: "dep://base/textures/cubemap.png",
+        thumbnail: Some("self://thumbnails/ledger_01_drift_run.png"),
+        watches: [(variable: "elapsed", query: Scenario((property: Elapsed)))],
+        events: [
+            (
+                name: OnStart,
+                once: true,
+                filters: [],
+                actions: [
+                    SpawnScenarioObject((
+                        base: (
+                            id: "player_spaceship",
+                            name: "Racer",
+                            position: (0.0, 0.0, 0.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(
+                                id: "racer",
+                                section_patches: {
+                                    "fuselage": (config: (health: Some(800.0))),
+                                    "engine_port": (config: (health: Some(300.0))),
+                                    "engine_starboard": (config: (health: Some(300.0))),
+                                },
+                            ),
+                            controller: Player((input_mapping: {})),
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "gate", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "racing", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "started_at", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "lap_time", expression: Term(Factor(Literal(Number(0.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "key",
+                            name: "Sun",
+                            position: (-600.0, 500.0, 600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 11000.0, color: Srgba((red: 1.0, green: 0.92, blue: 0.72, alpha: 1.0)), shadows: true, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "rim",
+                            name: "Rim",
+                            position: (300.0, 400.0, -800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 16000.0, color: Srgba((red: 0.64, green: 0.8, blue: 1.0, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "fill",
+                            name: "Fill",
+                            position: (700.0, -200.0, 400.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 2600.0, color: Srgba((red: 0.62, green: 0.72, blue: 0.95, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "primary",
+                            name: "Primary",
+                            position: (5100.0, -1300.0, -7600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: DustWorld,
+                            radius: 2200.0,
+                            seed: 8100,
+                            mass: Some(40000.0),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "moon",
+                            name: "Moon",
+                            position: (-4300.0, 1800.0, -9800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: BarrenRock,
+                            radius: 800.0,
+                            seed: 8101,
+                            mass: Some(10000.0),
+                        )),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "port_rocks_",
+                        count: 20,
+                        seed: 8110,
+                        region: Box(min: (-2850.0, -400.0, -9800.0), max: (-1350.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "port_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("rock", 6), ("metal", 2), ("carbon", 2)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "starboard_rocks_",
+                        count: 20,
+                        seed: 8120,
+                        region: Box(min: (1350.0, -400.0, -9800.0), max: (2850.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "starboard_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("rock", 6), ("metal", 2), ("carbon", 2)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "lower_rocks_",
+                        count: 14,
+                        seed: 8130,
+                        region: Box(min: (-1300.0, -1250.0, -9800.0), max: (1300.0, -900.0, -1800.0)),
+                        template: (
+                            base: (
+                                id: "lower_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 10.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((10.0, 30.0)),
+                        asteroid_kinds: [("rock", 6), ("metal", 2), ("carbon", 2)],
+                        min_separation: Some(300.0),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_shuttle",
+                            name: "Shuttle",
+                            position: (900.0, 450.0, -700.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "racer"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [
+                                    (900.0, 450.0, -700.0),
+                                    (1500.0, 450.0, -3200.0),
+                                    (900.0, 450.0, -4700.0),
+                                ],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_tug",
+                            name: "Tug",
+                            position: (-1200.0, -600.0, -1900.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_freighter"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [(-1200.0, -600.0, -1900.0), (-1200.0, -600.0, -4500.0)],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "slalom_spur_a",
+                            name: "Asteroid",
+                            position: (-700.0, 300.0, -3000.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 38.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "metal",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "slalom_spur_b",
+                            name: "Asteroid",
+                            position: (800.0, -300.0, -4650.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 35.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "carbon",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "slalom_spur_c",
+                            name: "Asteroid",
+                            position: (-750.0, -100.0, -6450.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Asteroid((
+                            radius: 38.0,
+                            texture: "dep://base/textures/asteroid.png",
+                            kind: "rock",
+                            mass: Some(0.0),
+                            seed: None,
+                            destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "service_platform",
+                            name: "Service platform",
+                            position: (-2100.0, -850.0, -1500.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_platform"),
+                            controller: None,
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    Objective((
+                        id: "course",
+                        message: "Fly directly through the gates in order. The clock starts at START.",
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "start",
+                            name: "START",
+                            position: (0.0, 0.0, -1000.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "START",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(50.0),
+                        )),
+                    )),
+                    HudReadout((
+                        slot: "lap",
+                        variable: "lap_time",
+                        format: Time,
+                        label: Some("TIME"),
+                        visible: true,
+                    )),
+                    CinematicTitle((
+                        corner: TopRight,
+                        location: "DRIFT RUN",
+                        date: "FIELD TRIAL 1 / 6",
+                        note: "",
+                        seconds: 5.0,
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((id: Some("start"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("gate"))), Term(Factor(Literal(Number(0.0))))))),
+                ],
+                actions: [
+                    DespawnScenarioObject((id: "start")),
+                    PlaySound((sound: "dep://base/sounds/radar_retarget.wav", route: Interface, volume: Some(0.7))),
+                    VariableSet((key: "started_at", expression: Term(Factor(Name("elapsed"))))),
+                    VariableSet((key: "racing", expression: Term(Factor(Literal(Number(1.0)))))),
+                    VariableSet((key: "gate", expression: Term(Factor(Literal(Number(1.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "gate_1",
+                            name: "GATE 1",
+                            position: (400.0, 120.0, -2600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "GATE 1",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(50.0),
+                        )),
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((id: Some("gate_1"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("gate"))), Term(Factor(Literal(Number(1.0))))))),
+                ],
+                actions: [
+                    DespawnScenarioObject((id: "gate_1")),
+                    PlaySound((sound: "dep://base/sounds/radar_retarget.wav", route: Interface, volume: Some(0.7))),
+                    VariableSet((key: "gate", expression: Term(Factor(Literal(Number(2.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "gate_2",
+                            name: "GATE 2",
+                            position: (-500.0, 300.0, -4200.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "GATE 2",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(50.0),
+                        )),
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((id: Some("gate_2"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("gate"))), Term(Factor(Literal(Number(2.0))))))),
+                ],
+                actions: [
+                    DespawnScenarioObject((id: "gate_2")),
+                    PlaySound((sound: "dep://base/sounds/radar_retarget.wav", route: Interface, volume: Some(0.7))),
+                    VariableSet((key: "gate", expression: Term(Factor(Literal(Number(3.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "gate_3",
+                            name: "GATE 3",
+                            position: (600.0, -100.0, -5800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "GATE 3",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(50.0),
+                        )),
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((id: Some("gate_3"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("gate"))), Term(Factor(Literal(Number(3.0))))))),
+                ],
+                actions: [
+                    DespawnScenarioObject((id: "gate_3")),
+                    PlaySound((sound: "dep://base/sounds/radar_retarget.wav", route: Interface, volume: Some(0.7))),
+                    VariableSet((key: "gate", expression: Term(Factor(Literal(Number(4.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "gate_4",
+                            name: "GATE 4",
+                            position: (-550.0, 400.0, -7400.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "GATE 4",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(50.0),
+                        )),
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((id: Some("gate_4"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("gate"))), Term(Factor(Literal(Number(4.0))))))),
+                ],
+                actions: [
+                    DespawnScenarioObject((id: "gate_4")),
+                    PlaySound((sound: "dep://base/sounds/radar_retarget.wav", route: Interface, volume: Some(0.7))),
+                    VariableSet((key: "gate", expression: Term(Factor(Literal(Number(5.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "finish",
+                            name: "FINISH",
+                            position: (0.0, 0.0, -9000.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "FINISH",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(50.0),
+                        )),
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((id: Some("finish"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("gate"))), Term(Factor(Literal(Number(5.0))))))),
+                ],
+                actions: [
+                    DespawnScenarioObject((id: "finish")),
+                    VariableSet((
+                        key: "lap_time",
+                        expression: Subtract(Factor(Name("elapsed")), Term(Factor(Name("started_at")))),
+                    )),
+                    VariableSet((key: "racing", expression: Term(Factor(Literal(Number(0.0)))))),
+                    ObjectiveComplete((id: "course")),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(99.0)))))),
+                    Outcome((outcome: Victory, message: Some("Course complete."))),
+                    NextScenario((scenario_id: "ledger_02_rock_garden", linger: true)),
+                ],
+            ),
+            (
+                name: OnUpdate,
+                once: false,
+                filters: [
+                    Expression((Equal(Term(Factor(Name("racing"))), Term(Factor(Literal(Number(1.0))))))),
+                ],
+                actions: [
+                    VariableSet((
+                        key: "lap_time",
+                        expression: Subtract(Factor(Name("elapsed")), Term(Factor(Name("started_at")))),
+                    )),
+                ],
+            ),
+            (
+                name: OnDefeated,
+                once: true,
+                filters: [
+                    Entity((id: Some("player_spaceship"))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(98.0)))))),
+                    Outcome((outcome: Defeat, message: Some("Ship disabled."))),
+                    NextScenario((scenario_id: "ledger_01_drift_run", linger: true)),
+                ],
+            ),
+        ],
+    )),
+]

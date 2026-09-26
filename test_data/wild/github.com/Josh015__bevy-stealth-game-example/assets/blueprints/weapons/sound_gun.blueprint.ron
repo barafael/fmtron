@@ -1,0 +1,5 @@
+// It shoots small ricocheting sounds to distract guards.
+([
+  Weapon,
+  //Scene("models/animated/Fox.glb#Scene0"),
+])

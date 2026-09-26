@@ -1,0 +1,10 @@
+(
+    id: "fast",
+    name: "Fast",
+    default: (
+        kind: KeyButton(ShiftLeft),
+        shift: false,
+        control: false,
+        alt: false
+    )
+)

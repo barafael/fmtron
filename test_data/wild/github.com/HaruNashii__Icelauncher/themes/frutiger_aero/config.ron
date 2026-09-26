@@ -1,0 +1,263 @@
+// ╭─────────────────────────────────────────────────────────────────────────╮
+// │   F R U T I G E R   A E R O   ·   ICELAUNCHER                           │
+// │   Glassy floating pill. Center. Gradient-heavy. Translucent.            │
+// ╰─────────────────────────────────────────────────────────────────────────╯
+//
+//  PALETTE
+//    Sky Blue (91,200,245)  Aqua Teal (41,168,171)  Deep Ocean (11,110,140)
+//    Mint (168,230,207)  Leaf Green (93,184,122)  Ice White (255,255,255,~50)
+//    Ice Text (232,248,255)
+//
+//  LAYOUT — GLASSY CENTER PILL
+//    · 600×500 — standard width, moderate height
+//    · Center anchor — floating in the middle like a glass panel
+//    · 1 column, 24px border radius — glassy pill shape
+//    · Gradient-heavy: window bg, search bg, icon bg all use gradients
+//    · Search at Top
+
+LauncherConfig
+(
+    window:
+    (
+        width:              600,
+        height:             500,
+        max_results:        12,
+        padding:            16,
+        section_spacing:    0,
+        entry_spacing:      4,
+        grid_side_items:    1,
+        grid_column_spacing: 0,
+
+        border_radius:      (16.0, 16.0, 16.0, 16.0),
+        border_width:       1.5,
+        border_color:       RGBA((255, 255, 255, 48)),
+        background_color:   RGBA((14, 55, 85, 82)),
+        background_gradient: Some(Gradient((180.0, [
+            (0.0, RGBA((255, 255, 255, 20))),
+            (0.3, RGBA((91, 200, 245, 30))),
+            (1.0, RGBA((11, 110, 140, 75))),
+        ]))),
+
+        shadow_color:       RGBA((0, 0, 0, 55)),
+        shadow_offset_x:    0.0,
+        shadow_offset_y:    12.0,
+        shadow_blur:        36.0,
+
+        anchor:             Center,
+        margin_top:         0,
+        margin_bottom:      0,
+        margin_left:        0,
+        margin_right:       0,
+    ),
+
+    scrollbar:
+    (
+        show:                    true,
+        width:                   5,
+        margin:                  2,
+        scroller_width:          5,
+        border_radius:           (3.0, 3.0, 3.0, 3.0),
+        rail_color:              RGBA((0, 0, 0, 0)),
+        rail_border_color:       RGBA((0, 0, 0, 0)),
+        rail_border_width:       0.0,
+        scroller_color:          RGBA((91, 200, 245, 40)),
+        scroller_hovered_color:  RGBA((91, 200, 245, 65)),
+        scroller_dragging_color: RGBA((91, 200, 245, 85)),
+        scroller_border_color:   RGBA((0, 0, 0, 0)),
+        scroller_border_width:   0.0,
+    ),
+
+    search:
+    (
+        placeholder:               "Search applications...",
+        text_size:                 15,
+        input_padding:             12,
+        bottom_margin:             10.0,
+
+        background_color:          RGBA((255, 255, 255, 12)),
+        background_gradient:       Some(Gradient((180.0, [
+            (0.0, RGBA((255, 255, 255, 30))),
+            (1.0, RGBA((91, 200, 245, 18))),
+        ]))),
+        focused_background_color:  RGBA((255, 255, 255, 18)),
+        focused_background_gradient: Some(Gradient((180.0, [
+            (0.0, RGBA((255, 255, 255, 45))),
+            (1.0, RGBA((91, 200, 245, 28))),
+        ]))),
+        border_color:              RGBA((168, 230, 207, 50)),
+        focused_border_color:      RGBA((91, 200, 245, 80)),
+        border_width:              1.5,
+        border_radius:             (12.0, 12.0, 12.0, 12.0),
+
+        text_color:                RGB((232, 248, 255)),
+        placeholder_color:         RGBA((168, 230, 207, 80)),
+        selection_color:           RGBA((91, 200, 245, 50)),
+
+        icon:                      "",
+        icon_color:                RGBA((168, 230, 207, 80)),
+
+        font_weight:               Normal,
+        font_style:                Normal,
+        font_family:               "",
+
+        position:                  Top,
+        orientation:               Horizontal,
+        width:                     0,
+        height:                    0,
+        fixed_x:                   None,
+        fixed_y:                   None,
+    ),
+
+    entry:
+    (
+        name_size:              14,
+        name_color:             RGB((232, 248, 255)),
+        selected_name_color:    RGB((255, 255, 255)),
+        hovered_name_color:     RGB((255, 255, 255)),
+        name_font_weight:       Normal,
+        name_font_style:        Normal,
+        name_font_family:       "",
+        name_align:             Left,
+        name_max_chars:         55,
+
+        comment_size:           11,
+        comment_color:          RGBA((168, 230, 207, 80)),
+        selected_comment_color: RGB((168, 230, 207)),
+        hovered_comment_color:  RGBA((168, 230, 207, 80)),
+        comment_font_weight:    Normal,
+        comment_font_style:     Normal,
+        comment_font_family:    "",
+        comment_align:          Left,
+        comment_max_chars:      55,
+        show_comment:           true,
+        name_comment_spacing:   2,
+
+        padding:                (6, 10, 6, 10),
+        label_position:         Right,
+        width:                  0,
+        height:                 0,
+
+        background_color:       RGBA((255, 255, 255, 5)),
+        background_gradient:    None,
+        hovered_color:          RGBA((91, 200, 245, 25)),
+        pressed_color:          RGBA((11, 110, 140, 60)),
+        selected_color:         RGBA((91, 200, 245, 30)),
+        selected_hovered_color: RGBA((91, 200, 245, 50)),
+        text_color:             RGB((232, 248, 255)),
+
+        border_color:           RGBA((91, 200, 245, 20)),
+        selected_border_color:  RGBA((168, 230, 207, 65)),
+        hovered_border_color:   RGBA((91, 200, 245, 35)),
+        pressed_border_color:   RGBA((0, 0, 0, 0)),
+        border_width:           1.0,
+        border_radius:          (10.0, 10.0, 10.0, 10.0),
+
+        shadow_color:               RGBA((0, 0, 0, 0)),
+        shadow_offset_x:            0.0,
+        shadow_offset_y:            0.0,
+        shadow_blur:                0.0,
+        selected_shadow_color:      RGBA((0, 0, 0, 0)),
+        selected_shadow_offset_x:   0.0,
+        selected_shadow_offset_y:   0.0,
+        selected_shadow_blur:       0.0,
+        hovered_shadow_color:       RGBA((0, 0, 0, 0)),
+        hovered_shadow_offset_x:    0.0,
+        hovered_shadow_offset_y:    0.0,
+        hovered_shadow_blur:        0.0,
+
+        wrap_word:                      false,
+        ellipsize_instead_of_wrapping:   true,
+        ellipsis:                       "...",
+
+        show_separator:     false,
+        separator_color:    RGBA((91, 200, 245, 20)),
+        separator_width:    1.0,
+    ),
+
+    icon:
+    (
+        show:                  true,
+        use_real_icons:        true,
+        width:                 36,
+        height:                36,
+        text_size:             18,
+        gap:                   10,
+        padding:               (0, 0),
+        opacity:               1.0,
+        selected_opacity:      1.0,
+        hovered_opacity:       1.0,
+
+        background_color:      RGBA((255, 255, 255, 12)),
+        background_gradient:   Some(Gradient((180.0, [
+            (0.0, RGBA((255, 255, 255, 30))),
+            (1.0, RGBA((41, 168, 171, 20))),
+        ]))),
+        hovered_color:         RGBA((91, 200, 245, 35)),
+        selected_color:        RGBA((91, 200, 245, 55)),
+        icon_color:            RGB((168, 230, 207)),
+        selected_icon_color:   RGB((255, 255, 255)),
+        hovered_icon_color:    RGB((91, 200, 245)),
+
+        border_color:          RGBA((91, 200, 245, 35)),
+        selected_border_color: RGBA((168, 230, 207, 70)),
+        hovered_border_color:  RGBA((91, 200, 245, 50)),
+        border_width:          1.0,
+        border_radius:         (10.0, 10.0, 10.0, 10.0),
+    ),
+
+    footer:
+    (
+        show:             true,
+        show_hint:        false,
+        hint_text:        "",
+        show_count:       true,
+        count_format:     "{shown} / {total} results",
+        single_format:    "{total} result",
+        text_size:        11,
+        text_color:       RGBA((168, 230, 207, 80)),
+        hint_color:       RGBA((168, 230, 207, 80)),
+        count_color:      RGB((91, 200, 245)),
+        font_weight:      Normal,
+        font_style:       Normal,
+        top_margin:       6.0,
+        padding:          (0, 0, 0, 0),
+        background_color: RGBA((0, 0, 0, 0)),
+        border_color:     RGBA((0, 0, 0, 0)),
+        border_width:     0.0,
+        border_radius:    (0.0, 0.0, 0.0, 0.0),
+        position:         Bottom,
+        text_orientation: Horizontal,
+        width:            0,
+        height:           0,
+    ),
+
+    behaviour:
+    (
+        search_name:        true,
+        search_comment:     true,
+        search_exec:        false,
+        search_keywords:    true,
+        case_sensitive:     false,
+        close_on_launch:    true,
+        terminal_command:   "",
+        calc_enabled:           true,
+        copy_feedback_text:     "Copied!",
+        copy_feedback_seconds:  2.0,
+        min_query_length:       0,
+        show_on_empty_query:    true,
+        max_empty_results:      0,
+    ),
+
+    keybinds:
+    (
+        close:              ["Escape"],
+        select_up:          ["ArrowUp"],
+        select_down:        ["ArrowDown"],
+        select_left:        ["ArrowLeft"],
+        select_right:       ["ArrowRight", "Tab"],
+        launch_alt_prefix:  "Alt",
+        relaunch_key:       "l",
+    ),
+
+    background_images: [],
+)

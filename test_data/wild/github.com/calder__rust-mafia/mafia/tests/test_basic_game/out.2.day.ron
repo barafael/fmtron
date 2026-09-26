@@ -1,0 +1,42 @@
+(
+    factions: {
+        "Mafia": [
+            Has(Order("$MEMBER", Kill("$PLAYER"))),
+            Alignment(Evil),
+            Membership(Visible),
+            Objective(AchieveMajority),
+        ],
+        "Town": [
+            Alignment(Good),
+            Membership(Hidden),
+            Objective(Eliminate(Evil)),
+        ],
+    },
+    players: {
+        "Alice": [
+            Member("Town"),
+            Has(Investigate("$PLAYER")),
+            Has(Day(Vote("$PLAYER"))),
+        ],
+        "Bob": [
+            Member("Town"),
+            Has(Protect("$OTHER_PLAYER")),
+            Has(Day(Vote("$PLAYER"))),
+            Dead,
+        ],
+        "Charlie": [
+            Member("Town"),
+            Has(Day(Vote("$PLAYER"))),
+            Dead,
+        ],
+        "Eve": [
+            Member("Mafia"),
+            Has(Day(Vote("$PLAYER"))),
+        ],
+        "Malory": [
+            Member("Mafia"),
+            Has(Day(Vote("$PLAYER"))),
+        ],
+    },
+    seed: 1,
+)

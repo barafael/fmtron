@@ -1,0 +1,72 @@
+(
+    coord: [102, 1, 0],
+    entities: [
+        (
+            name: Some("side_glide_platform"),
+            position: [0.0, -0.25, 0.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [10.0, 0.5, 10.0],
+            mesh: None,
+            material: None,
+            components: [
+                (
+                    component_type: "NavSurface",
+                    data: r#"{"walkable":true,"surface":"side_platform"}"#,
+                ),
+            ],
+        ),
+        (
+            name: Some("glide_updraft_anchor"),
+            position: [0.0, 1.5, 0.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [1.0, 1.0, 1.0],
+            mesh: None,
+            material: None,
+            components: [
+                (
+                    component_type: "WeaveAnchor",
+                    data: r#"{"anchor_id":"side_updraft","type":"updraft","echo_cost":1}"#,
+                ),
+                (
+                    component_type: "EffectAnchor",
+                    data: r#"{"effect":"updraft","intensity":1.0}"#,
+                ),
+            ],
+        ),
+        (
+            name: Some("echo_reward"),
+            position: [0.0, 0.75, 3.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [1.0, 1.0, 1.0],
+            mesh: None,
+            material: None,
+            components: [
+                (
+                    component_type: "Pickup",
+                    data: r#"{"item":"echo_shard","quantity":1}"#,
+                ),
+            ],
+        ),
+        (
+            name: Some("return_portal"),
+            position: [0.0, 0.5, -4.0],
+            rotation: [0.0, 0.0, 0.0, 1.0],
+            scale: [1.0, 1.0, 1.0],
+            mesh: None,
+            material: None,
+            components: [
+                (
+                    component_type: "StreamingPortal",
+                    data: r#"{"target_cell":[102,0,0],"radius":2.0}"#,
+                ),
+            ],
+        ),
+    ],
+    assets: [],
+    metadata: Some((
+        description: Some("Optional echo shard alcove accessed via updraft"),
+        tags: ["veilweaver", "loomspire", "secret"],
+        version: 1,
+    )),
+)
+

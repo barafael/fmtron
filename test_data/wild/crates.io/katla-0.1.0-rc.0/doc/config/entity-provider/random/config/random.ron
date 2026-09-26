@@ -1,0 +1,58 @@
+#![enable(implicit_some)]
+(
+	name: "Random",
+	description: "Random",
+	appenders: [
+		(
+			type: "file",
+			name: "random--appender",
+			fileName: "random.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "random",
+			name: "random--entity-name",
+			source: (
+				type: "rng",
+				dataType: "u8"
+			),
+		),
+	],
+	entries: [
+		(
+			name: "random--entry",
+			entity: "random--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "random--file-feed",
+			content: (
+				type: "katla",
+				inline: "{{ random--entry }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "random--flow",
+			timeInterval: "R20000",
+			entries: [
+				"random--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "random--file-feed",
+					appender: "random--appender",
+				),
+			],
+		),
+	],
+)

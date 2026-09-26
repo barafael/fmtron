@@ -1,0 +1,7 @@
+// brickdata built-catalog pin.
+(
+  mirror_tag: "catalog-2026-07-19",
+  asset_url: "https://github.com/bkfunk/brickdata/releases/download/catalog-2026-07-19/catalog.sqlite",
+  sha256: "20d1ffcf3ceb74038bf73f58b5b9bca6a5fe7de728b4dac56510f868314900d1",
+  bytes: 87146496,
+)

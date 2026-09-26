@@ -1,0 +1,12 @@
+// Laakso — Kukresh valley monastics (Mari-calibrated register).
+// Hushed: š and ñ frequent, soft m, quiet dark vowels; -am/-em finals dominant.
+NameGrammar(
+    prefixes: ["šem", "ñola", "myš", "humš", "šovä", "ñem", "omša", "hyl"],
+    roots: [
+        "šolam", "myškem", "hovam", "ñešem", "šumam", "ošñem", "milšam",
+        "hyñem", "šovam", "emšol", "ñumam", "šelmi", "hožem", "mañvi",
+        "ulšem", "šomñam", "hevam", "ñišem",
+    ],
+    suffixes: ["am", "em", "ñam", "šem", "mi", "oš", "äm"],
+    patterns: [Root, RootSuffix, PrefixRoot, PrefixRootSuffix],
+)

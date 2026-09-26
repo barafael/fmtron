@@ -1,0 +1,15 @@
+AttackAsset(
+    name: "Bite",
+    description: "Bite",
+    tags: [],
+    categories: [
+        "Melee"
+    ],
+
+    attack_damage_base: {
+        Piercing: 7.,
+        Slashing: 7.,
+    },
+    attack_duration_secs: 2.,
+
+)

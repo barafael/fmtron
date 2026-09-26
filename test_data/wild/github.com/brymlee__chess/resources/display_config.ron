@@ -1,0 +1,4 @@
+(
+  title: "Chess",
+  dimensions: Some((1920, 1080)),
+)

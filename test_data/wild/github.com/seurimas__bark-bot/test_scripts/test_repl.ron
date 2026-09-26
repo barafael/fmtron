@@ -1,0 +1,2 @@
+#![enable(implicit_some)]
+(Repl(Simple("What test do you want to run?"), [Simple("stdio"), Simple("knn")]), [User(Subtree("test_scripts/test_stdio.json")), User(Subtree("test_scripts/test_knn.json"))])

@@ -1,0 +1,7 @@
+(
+    by_file: Some({
+        // Attempts to update version strings that match the old version if they are located beneath a line containing the given value
+        "Cargo.toml": ( search_value: Some("bomper"), ),
+        "Cargo.lock": ( search_value: Some("bomper"), ),
+    }),
+)

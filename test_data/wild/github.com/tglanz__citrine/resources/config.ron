@@ -1,0 +1,8 @@
+(
+    projection: (
+        left: 0.0,
+        right: 100.0,
+        top: 0.0,
+        bottom: 100.0,
+    )
+)

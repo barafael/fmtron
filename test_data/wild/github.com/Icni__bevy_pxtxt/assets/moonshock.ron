@@ -1,0 +1,11 @@
+(
+    name: "Moonshock",
+    image: "moonshock.png",
+    glyph_width: Varied (
+        max: 5,
+        min: 1,
+    ),
+    spacing: 1,
+    ascender: 7,
+    descender: 2,
+)

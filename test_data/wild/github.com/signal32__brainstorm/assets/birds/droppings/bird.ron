@@ -1,0 +1,4 @@
+BirdDroppingAsset (
+    sprite: "sprites/blue_bird.png",
+    decay_rate: 0.03,
+)

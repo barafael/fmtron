@@ -1,0 +1,9 @@
+(
+    name: "Desktop Entries",
+    description: "Query applications by their .desktop entries",
+    category: Apps,
+    query: (persistent: true),
+    bin: (path: "desktop-entries"),
+    icon: Name("new-window-symbolic"),
+    history: true,
+)

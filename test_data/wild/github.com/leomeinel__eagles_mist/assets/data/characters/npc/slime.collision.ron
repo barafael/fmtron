@@ -1,0 +1,5 @@
+CollisionData (
+    shape: Some("ball"),
+    width: Some(16),
+    height: Some(16),
+)

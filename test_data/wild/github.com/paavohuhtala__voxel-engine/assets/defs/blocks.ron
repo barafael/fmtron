@@ -1,0 +1,41 @@
+[
+    BlockDefinition(
+        id: 0,
+        name: "air",
+        textures: Invisible,
+    ),
+    BlockDefinition(
+        id: 1,
+        name: "grass",
+        textures: PerFace(
+            top: "grass.png",
+            side: "grass_side.png",
+            bottom: "dirt.png",
+        ),
+    ),
+    BlockDefinition(
+        id: 2,
+        name: "dirt",
+        textures: Single("dirt.png"),
+    ),
+    BlockDefinition(
+        id: 3,
+        name: "gold",
+        textures: Single("gold.png"),
+    ),
+    BlockDefinition(
+        id: 4,
+        name: "tree",
+        textures: PerFace(
+            top: "tree_end.png",
+            side: "tree_side.png",
+            bottom: "tree_end.png",
+        ),
+    ),
+    BlockDefinition(
+        id: 5,
+        name: "leaves",
+        textures: Single("tree_leaves.png"),
+        transparency: Some(AlphaCutout),
+    ),
+]

@@ -1,0 +1,18 @@
+(
+    version: 2,
+    entries: [
+        (
+            key: Primary,
+            state: (
+                // Wayland: position not available, only size is tested
+                logical_position: None,
+                logical_width: 1000,
+                logical_height: 700,
+                monitor_scale: 1.0,
+                monitor_index: 0,
+                mode: Windowed,
+                app_name: "restore_window",
+            )
+        ),
+    ],
+)

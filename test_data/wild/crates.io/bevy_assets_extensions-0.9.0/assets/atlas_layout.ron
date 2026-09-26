@@ -1,0 +1,8 @@
+Grid (
+    tile_size: UVector2 (
+        x: 96,
+        y: 99,
+    ),
+    columns: 2,
+    rows: 3
+)

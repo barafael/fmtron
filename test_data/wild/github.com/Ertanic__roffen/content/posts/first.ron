@@ -1,0 +1,16 @@
+PostBody(
+    draft: true,
+    author: "admin",
+    created_at: 1779439151,
+    title: "Hello, World!",
+    content: [
+        PostComponent(
+            name: "Image",
+            data: {
+                "row": "7",
+                "col": "12",
+                "source": "https://127.0.0.1:8084/examples/anime_girl.png",
+            },
+        ),
+    ],
+)

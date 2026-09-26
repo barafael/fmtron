@@ -1,0 +1,216 @@
+(
+    buffs: [
+        // Self-buff: +25% outgoing damage for 2 seconds (40 ticks @ 20 Hz).
+        (
+            buff_id: 200,
+            name: "PowerUp",
+            buff_kind: Boon,
+            duration_ticks: Some(40),
+            max_stacks: 1,
+            modifiers: (
+                damage_out_pct: Some(0.25),
+            ),
+        ),
+        // On-hit debuff: −50% movement speed for 3 seconds (60 ticks).
+        (
+            buff_id: 300,
+            name: "Chill",
+            buff_kind: Condition,
+            duration_ticks: Some(60),
+            max_stacks: 1,
+            modifiers: (
+                speed_pct: Some(-0.5),
+            ),
+        ),
+        // On-hit debuff: root for 1 second (20 ticks).
+        (
+            buff_id: 301,
+            name: "Snare",
+            buff_kind: Condition,
+            duration_ticks: Some(20),
+            max_stacks: 1,
+            modifiers: (
+                root: Some(true),
+            ),
+        ),
+        // Defensive self-buff: −20% incoming damage for 2.5 seconds (50 ticks).
+        (
+            buff_id: 100,
+            name: "IronSkin",
+            buff_kind: Boon,
+            duration_ticks: Some(50),
+            max_stacks: 1,
+            modifiers: (
+                damage_in_pct: Some(-0.2),
+            ),
+        ),
+        // Stability: absorbs incoming CC (one per stack). 3 stacks, 5 seconds.
+        (
+            buff_id: 400,
+            name: "Stability",
+            buff_kind: Boon,
+            duration_ticks: Some(100),
+            max_stacks: 3,
+            modifiers: (
+                stability: Some(true),
+            ),
+        ),
+
+        // Stunbreak Stability: short immunity after breaking free. 1 stack, 2 seconds.
+        (
+            buff_id: 401,
+            name: "Stunbreak Stability",
+            buff_kind: Boon,
+            duration_ticks: Some(40),
+            max_stacks: 1,
+            modifiers: (
+                stability: Some(true),
+            ),
+        ),
+
+        // ── CC Condition debuffs (ids 500–504) ─────────────────────────
+        // These are applied alongside TacticalState timers in Phase 6.
+        // Cleanse/dispel targets the debuff; removing it also clears the timer.
+
+        // Stun CC debuff. Duration set at application time.
+        (
+            buff_id: 500,
+            name: "Stunned",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            modifiers: (
+                cc_effect: Some(Stun),
+            ),
+        ),
+        // Knockdown CC debuff. Duration set at application time.
+        (
+            buff_id: 501,
+            name: "KnockedDown",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            modifiers: (
+                cc_effect: Some(Knockdown),
+            ),
+        ),
+        // Sleep CC debuff. Duration set at application time.
+        (
+            buff_id: 502,
+            name: "Asleep",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            modifiers: (
+                cc_effect: Some(Sleep),
+            ),
+        ),
+        // Silence CC debuff. Duration set at application time.
+        (
+            buff_id: 503,
+            name: "Silenced",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            modifiers: (
+                cc_effect: Some(Silence),
+            ),
+        ),
+        // Fear CC debuff. Duration set at application time.
+        (
+            buff_id: 504,
+            name: "Feared",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            modifiers: (
+                cc_effect: Some(Fear),
+            ),
+        ),
+
+        // ── DoT / Poison debuffs (ids 600+) ────────────────────────────
+
+        // Poison: 5 damage per tick every 20 ticks (~1s), lasts 200 ticks (10s).
+        // Condition debuff — cleansable via generic Cleanse.
+        (
+            buff_id: 600,
+            name: "Poison",
+            buff_kind: Condition,
+            duration_ticks: Some(200),
+            max_stacks: 5,
+            modifiers: (
+                dot_damage: Some(5.0),
+                dot_interval_ticks: Some(20),
+                dot_damage_type: Some(Physical),
+            ),
+        ),
+        // Burn: 8 damage per tick every 20 ticks (~1s), lasts 100 ticks (5s).
+        (
+            buff_id: 601,
+            name: "Burning",
+            buff_kind: Condition,
+            duration_ticks: Some(100),
+            max_stacks: 3,
+            modifiers: (
+                dot_damage: Some(8.0),
+                dot_interval_ticks: Some(20),
+                dot_damage_type: Some(Magical),
+            ),
+        ),
+
+        // ── Stealth buffs (ids 700+) ───────────────────────────────────
+
+        // Stealth: hides entity from enemy teams for 5 seconds (100 ticks).
+        // Allied entities (same team_id) still see the stealthed entity.
+        // Boon — not cleansable by enemy Cleanse (Condition-only).
+        (
+            buff_id: 700,
+            name: "Stealth",
+            buff_kind: Boon,
+            duration_ticks: Some(100),
+            max_stacks: 1,
+            modifiers: (
+                stealth: Some(true),
+            ),
+        ),
+
+        // ── Manaya's Core mechanic-locked marks (ids 800+) ─────────────
+
+        (
+            buff_id: 800,
+            name: "Core Near Mark",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            removal_policy: MechanicLocked,
+        ),
+        (
+            buff_id: 801,
+            name: "Core Far Mark",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            removal_policy: MechanicLocked,
+        ),
+        (
+            buff_id: 802,
+            name: "Core Boss Lock",
+            buff_kind: Boon,
+            duration_ticks: None,
+            max_stacks: 1,
+            removal_policy: MechanicLocked,
+            modifiers: (
+                ai_override: Some(ForceIdle),
+                root: Some(true),
+            ),
+        ),
+        (
+            buff_id: 803,
+            name: "Core Mid Mark",
+            buff_kind: Condition,
+            duration_ticks: None,
+            max_stacks: 1,
+            removal_policy: MechanicLocked,
+        ),
+    ],
+)

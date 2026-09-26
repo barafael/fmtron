@@ -1,0 +1,5 @@
+LevelIndexFile(
+    levels: [
+        LevelMeta(file: "example_level.ron", name: "Beispiel Level"),
+        // Weitere Levels können hier ergänzt werden
+])

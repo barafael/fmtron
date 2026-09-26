@@ -1,0 +1,8 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "colour for configuration files (*.cfg / *.ini)",
+    ],
+  },
+)

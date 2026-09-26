@@ -1,0 +1,119 @@
+[
+    (
+        id: VoiceId(200),
+        name: "radio_operator",
+        parent: None,
+        grammar_weights: {
+            "technical_readout": 3.0,
+            "resource_status": 2.0,
+            "urgency_marker": 2.0,
+            "threat_proximity": 1.5,
+            "environmental_detail": 0.5,
+            "sensory_detail": 0.3,
+        },
+        vocabulary: (
+            preferred: ["copy", "affirmative", "negative", "over", "status"],
+            avoided: ["beautiful", "wonderful", "lovely", "pleasant"],
+        ),
+        markov_bindings: [
+            (corpus_id: "survival_thriller", weight: 1.0, tags: ["technical"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (3, 8),
+            clause_complexity: 0.1,
+            question_frequency: 0.05,
+        ),
+        quirks: [
+            (pattern: "over", frequency: 0.15),
+            (pattern: "copy that", frequency: 0.10),
+        ],
+    ),
+    (
+        id: VoiceId(201),
+        name: "survivor",
+        parent: None,
+        grammar_weights: {
+            "sensory_detail": 2.5,
+            "environmental_detail": 1.5,
+            "urgency_marker": 2.0,
+            "threat_proximity": 2.0,
+            "resource_status": 1.0,
+            "technical_readout": 0.3,
+        },
+        vocabulary: (
+            preferred: ["felt", "heard", "saw", "needed", "had to"],
+            avoided: ["nominal", "parameters", "sector", "protocol"],
+        ),
+        markov_bindings: [
+            (corpus_id: "survival_thriller", weight: 1.5, tags: ["urgent"]),
+            (corpus_id: "survival_thriller", weight: 0.8, tags: ["dread"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (4, 10),
+            clause_complexity: 0.2,
+            question_frequency: 0.15,
+        ),
+        quirks: [
+            (pattern: "God help us", frequency: 0.05),
+        ],
+    ),
+    (
+        id: VoiceId(202),
+        name: "scientist",
+        parent: None,
+        grammar_weights: {
+            "technical_readout": 2.5,
+            "resource_status": 1.5,
+            "sensory_detail": 1.0,
+            "environmental_detail": 1.2,
+            "threat_proximity": 1.0,
+            "urgency_marker": 0.5,
+        },
+        vocabulary: (
+            preferred: ["hypothesis", "data", "indicates", "consistent with", "significant"],
+            avoided: ["gut feeling", "somehow", "maybe", "stuff"],
+        ),
+        markov_bindings: [
+            (corpus_id: "survival_thriller", weight: 1.0, tags: ["technical"]),
+            (corpus_id: "survival_thriller", weight: 0.5, tags: ["calm_before"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (10, 20),
+            clause_complexity: 0.7,
+            question_frequency: 0.2,
+        ),
+        quirks: [
+            (pattern: "fascinating", frequency: 0.08),
+            (pattern: "if my calculations are correct", frequency: 0.04),
+        ],
+    ),
+    (
+        id: VoiceId(203),
+        name: "narrator_omniscient",
+        parent: None,
+        grammar_weights: {
+            "environmental_detail": 2.0,
+            "sensory_detail": 2.0,
+            "threat_proximity": 1.5,
+            "urgency_marker": 1.0,
+            "resource_status": 1.0,
+            "technical_readout": 0.8,
+        },
+        vocabulary: (
+            preferred: ["vast", "relentless", "inevitable", "ancient", "primordial"],
+            avoided: ["nice", "stuff", "thing", "getting"],
+        ),
+        markov_bindings: [
+            (corpus_id: "survival_thriller", weight: 1.0, tags: ["dread"]),
+            (corpus_id: "survival_thriller", weight: 0.7, tags: ["calm_before"]),
+        ],
+        structure_prefs: (
+            avg_sentence_length: (8, 18),
+            clause_complexity: 0.6,
+            question_frequency: 0.05,
+        ),
+        quirks: [
+            (pattern: "as it had always been", frequency: 0.06),
+        ],
+    ),
+]

@@ -1,0 +1,43 @@
+#![enable(implicit_some)]
+Prefab(
+    entities: [
+        (
+            data: (
+                sheet: Sheet(
+                    texture: File("lfs/textures/background.png", (
+                        "IMAGE", (
+                            sampler_info: (
+                                min_filter: Nearest,
+                                mag_filter: Nearest,
+                                mip_filter: Nearest,
+                                wrap_mode: (Tile, Tile, Tile),
+                                lod_bias: (0),
+                                lod_range: (start: (0), end: (1000)),
+                                border: (0),
+                                normalized: true,
+                                anisotropic: Off,
+                            ),
+                        ),
+                    )),
+                    sprites: [
+                        List((
+                            texture_width: 64,
+                            texture_height: 48,
+                            sprites: [
+                                (x: 0, y: 0, width: 720, height: 600),
+                            ],
+                        )),
+                    ],
+                    name: "background",
+                ),
+                render: (
+                    sheet: "background",
+                    sprite_number: 0,
+                ),
+                transform: (
+                    translation: (360.0, 300.0, -1.0),
+                ),
+            ),
+        ),
+    ],
+)

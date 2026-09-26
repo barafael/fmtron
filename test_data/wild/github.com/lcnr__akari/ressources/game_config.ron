@@ -1,0 +1,34 @@
+(
+    fps: 60,
+    window: (
+        size: (320, 240),
+        scale: 3,
+        title: "Akari",
+        icon_path: "textures/window_icon.png",
+    ),
+    input: (
+        up: W,
+        down: S,
+        right: D,
+        left: A,
+        jump: Space,
+        debug_toggle: T,
+        editor_tile: Tab,
+    ),
+    camera: (
+        offset: (100.0, 100.0),
+    ),
+    gravity: (
+        acceleration: -480,
+        terminal_velocity: -180,
+    ),
+    input_buffer: (
+        jump_buffer_frames: 3,
+    ),
+    player: (
+        jump_speed: 290,
+        movement_speed: 120,
+        grounded_acceleration: 850,
+        airborne_acceleration: 250,
+    ),
+)

@@ -1,0 +1,56 @@
+(
+    version: 1,
+    assets: (
+        textures: ["player", "slime", "coin", "floor", "wall"],
+        sounds: ["hit", "coin"],
+    ),
+    controls: TopDown,
+    prefabs: [
+        Player((name: "player", sprite: "player", health: 20)),
+        Enemy((name: "slime", sprite: "slime", health: 1, tags: ["enemy"])),
+        Pickup((name: "coin", sprite: "coin", score: 1, sound: Some("coin"))),
+    ],
+    maps: [
+        TextMap((
+            name: "level_1",
+            path: "maps/level_1.txt",
+            theme: ("floor", "wall"),
+            legend: {'P': "player", 'E': "slime", 'C': "coin"},
+            start: true,
+        )),
+        TextMap((
+            name: "win",
+            path: "maps/win.txt",
+            theme: ("floor", "wall"),
+            legend: {'P': "player"},
+        )),
+    ],
+    scene_flow: Some((
+        game: Some("level_1"),
+        win: Some("win"),
+        win_text: Some("Event rules cleared the room"),
+    )),
+    rules: [
+        TopDownControls,
+        PlayerCollectsPickups,
+        EnemiesDamagePlayer,
+        DeadEnemiesDespawn,
+        CameraFollowsPlayer,
+        ShowBasicUi,
+        ShowScore,
+        ShowPlayerHealth,
+        ShowWinPanel,
+        When(
+            condition: ActionPressed(Attack),
+            effects: [ShowUiText("Attack was pressed")],
+        ),
+        When(
+            condition: ScoreAtLeast(1),
+            effects: [ShowUiText("Score gate reached")],
+        ),
+        When(
+            condition: AllEnemiesDead,
+            effects: [AddScore(5), PlaySound("hit"), ShowUiText("All enemies cleared"), ChangeScene("win")],
+        ),
+    ],
+)

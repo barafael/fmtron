@@ -1,0 +1,13 @@
+{
+    "Name": "corgi",
+    "Transform": Transform(
+        translation: (1.0, 0.0, 0.0)
+    ),
+    "Hitpoints": 150.0,
+    "Scene": "models/corgi.glb#Scene0",
+    "Attacks": [
+        "FireBreath",
+        "Scratch",
+        "Bark"
+    ],
+}

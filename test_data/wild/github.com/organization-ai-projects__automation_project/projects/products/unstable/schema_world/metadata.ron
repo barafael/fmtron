@@ -1,0 +1,37 @@
+(
+  schema_version: 1,
+  generated_at: 1772841600000,
+  id: "schema_world",
+  name: "Schema World",
+  kind: "product",
+  version: "0.1.0",
+
+  entrypoints: (
+    ui: [
+      (id: "schema_world_ui", title: "Schema World", role: "user"),
+    ],
+  ),
+
+  capabilities: [
+    "schema-driven-storage",
+    "canonical-encoding",
+    "deterministic-snapshots",
+    "migrations",
+    "diff",
+  ],
+
+  domains: [
+    (id: "schema_world", desc: "schema-defined data lifecycle"),
+  ],
+
+  ai_hints: (
+    primary_language: "rust",
+    important_paths: ["backend/", "ui/", "README.md", "metadata.ron"],
+    config_files: [
+      "backend/Cargo.toml",
+      "backend/backend_manifest.ron",
+      "ui/Cargo.toml",
+      "ui/ui_manifest.ron",
+    ],
+  ),
+)

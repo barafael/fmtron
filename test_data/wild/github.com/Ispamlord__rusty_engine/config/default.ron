@@ -1,0 +1,49 @@
+(
+    window: (
+        title: "Rusty Engine",
+        width: 1280,
+        height: 720,
+        resizable: true,
+    ),
+    vsync: true,
+    backend_preference: Auto,
+    enable_validation: true,
+    enable_debug: true,
+    fixed_step: (
+        hz: 60.0,
+        max_steps_per_frame: 8,
+        max_catch_up_seconds: 0.25,
+    ),
+    frame_pacing: (
+        target_fps: 60,
+        sleep_enabled: true,
+    ),
+    perf_gate: (
+        enabled: true,
+        max_frame_ms: 16.67,
+        warmup_frames: 30,
+        sample_frames: 180,
+    ),
+    shader_toolchain: (
+        glslc_path: "glslc",
+        dxc_path: "dxc",
+        fxc_path: "fxc",
+        vulkan_profile: "spirv1.5",
+        dx12_profile: "cs_6_6",
+        dx11_profile: "cs_5_0",
+        strict: false,
+    ),
+    recovery_policy: (
+        recover_surface_out_of_date: true,
+        recover_device_loss: true,
+        max_recovery_attempts: 3,
+    ),
+    scheduler_tuning: (
+        enabled: true,
+        topology_bias: Balanced,
+        reserve_main_thread: true,
+        min_workers: 1,
+        max_workers: 16,
+        script_parallel_min_jobs: 2,
+    ),
+)

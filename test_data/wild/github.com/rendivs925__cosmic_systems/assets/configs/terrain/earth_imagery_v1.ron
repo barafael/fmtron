@@ -1,0 +1,46 @@
+// Earth imagery source manifest. It records the offline-prepared presentation
+// imagery hierarchy for Earth: one public-domain global overview and one bounded
+// high-detail local region. The simulator never downloads imagery at runtime.
+//
+// This manifest is NOT accepted for rendering until every `source_sha256` and
+// `runtime_sha256` is a real 64-character SHA-256 recorded during package
+// production. The `pending` placeholders intentionally fail verification.
+(
+    body: "Earth",
+    version: 1,
+    coordinate_frame: "body-fixed",
+    horizontal_datum: "WGS 84 / EPSG:4326",
+    runtime_download: false,
+    status: "package produced",
+    global_overview: (
+        dataset: "NASA Blue Marble: Next Generation",
+        source_url: "https://eoimages.gsfc.nasa.gov/images/imagerecords/74000/74117/world.200408.3x21600x10800.jpg",
+        source_version: "August 2004 global composite with topography and bathymetry, 21600x10800 (2 km/px); runtime asset downsampled to 8192x4096",
+        license: "Public domain (NASA)",
+        attribution: "NASA Earth Observatory / Reto Stockli (NASA GSFC)",
+        source_resolution_m: 2000.0,
+        runtime_asset: "assets/large_files/terrain/earth_imagery_v1/global_overview.png",
+        source_sha256: "926be7253be90a1fd57071a33afbfe7a712a2dfe0d5b5b4602bc5dfbcfdc2c89",
+        runtime_sha256: "9b108ac20def521dfa6035d906e4fa33097cfd205689b0f3211d4b05e416373f",
+    ),
+    local_regions: [
+        (
+            id: "papua_coastal_lowland",
+            dataset: "Copernicus Sentinel-2 L2A",
+            source_url: "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/54/L/UR/2026/8/S2B_54LUR_20260822_0_L2A/TCI.tif",
+            source_version: "Sentinel-2 L2A TCI 10 m, 2026-08-22 (S2B), MGRS 54LTR/54LUR/54MTS/54MUS; reprojected UTM 54S -> WGS 84 geographic",
+            license: "Copernicus Sentinel Data (free, full and open; attribution required)",
+            attribution: "Contains modified Copernicus Sentinel data 2026",
+            source_resolution_m: 10.0,
+            west_deg: 139.0,
+            south_deg: -8.6,
+            east_deg: 140.0,
+            north_deg: -7.4,
+            min_level: 8,
+            max_level: 12,
+            runtime_tiles: "assets/large_files/terrain/earth_imagery_v1/tiles",
+            source_sha256: "2d3f5173c44895f714d427429eaa929852169318d48c29d3d8cc1b49f674df23",
+            runtime_sha256: "977f14594b871e0fdb0ead79a51bd0495d0564f58e52a127fcf7adedaf737d31",
+        ),
+    ],
+)

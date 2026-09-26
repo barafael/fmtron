@@ -1,0 +1,12 @@
+Item(
+    item_id: 74,
+    name: "Invisibility Potion",
+    quality: Rare,
+    equip_slot: UtilitySlot,
+    stats: None,
+    description: "Unseen by enemies",
+    consumable: true,
+    effects: Some([
+        (Transform(Invisible), Some(15.0))
+    ]),
+)

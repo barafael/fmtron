@@ -1,0 +1,6 @@
+(
+    controller: Win32,
+    selected_window_title: "明日方舟",
+    ui_scale: Scale100,
+    recent_windows: [],
+)

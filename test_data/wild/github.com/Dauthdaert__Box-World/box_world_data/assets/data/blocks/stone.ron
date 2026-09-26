@@ -1,0 +1,4 @@
+VoxelData(
+	voxel_type: Opaque,
+	texture_id: 5
+)

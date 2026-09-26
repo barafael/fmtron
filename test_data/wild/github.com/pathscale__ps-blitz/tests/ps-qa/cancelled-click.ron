@@ -1,0 +1,42 @@
+// The canceled activation steps: `preventDefault` on the click puts the
+// checkedness back, so a control can refuse its own activation.
+[
+    (
+        id: "cancelled-click-paints",
+        group: "cancelled-click",
+        what: "the fixture builds and paints",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:Cancelled click",
+        expect: Present,
+    ),
+    (
+        id: "cancelled-click-is-undone",
+        group: "cancelled-click",
+        what: "a cancelled press toggles, then puts it back",
+        open: None,
+        hover: None,
+        settle_after_ms: 300,
+        click: Some("checkbox:Vetoed"),
+        subject: "heading:Press saw true, left false",
+        expect: Present,
+    ),
+    // The control, not the outcome text. A checkbox or radio has an
+    // intrinsic box that owes nothing to a font, so this is the paint
+    // assertion the rest of this file can no longer make: the checks above
+    // read outcome text, and text measures 0x0 with no face registered.
+    //
+    // Without this, the group proves the tree is right and nothing about
+    // whether the document rendered at all.
+    (
+        id: "cancelled-click-control-paints",
+        group: "cancelled-click",
+        what: "the control itself paints, with no font involved",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "checkbox:Vetoed",
+        expect: PaintsNamed,
+    ),
+]

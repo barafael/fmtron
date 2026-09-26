@@ -1,0 +1,10 @@
+SessionConfig(
+    session_name: "zelp-test-session",
+    shell_command_before: "export RUST_LOG=info",
+    tabs: [
+        ( name: "code", focus: true, commands: ["helix"] ),
+        ( name: "cmd1", commands: ["clear"] ),
+        ( name: "monitoring", commands: ["btm"] ),
+        ( name: "cmd2"),
+    ],
+)

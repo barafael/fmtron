@@ -1,0 +1,9 @@
+(
+    default_icon: "textures/glow.webp",
+    world_scale: 5.5,
+    max_markers: 2000,
+    max_distance: 3000.0,
+    height_offset: 2.0,
+    ally_tint: (0.45, 0.95, 1.0, 0.9),
+    enemy_tint: (1.0, 0.35, 0.25, 0.9),
+)

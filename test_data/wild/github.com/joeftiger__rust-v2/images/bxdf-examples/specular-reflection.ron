@@ -1,0 +1,129 @@
+(
+    config: (
+        output: "./images/bxdf-examples/specular-reflection-2",
+        passes: 10000,
+        threads: None,
+    ),
+    camera: {
+        "NaiveCamera": (
+            sampler: Random,
+            eye: (
+                x: -8,
+                y: 8,
+                z: 8,
+            ),
+            target: (
+                x: 0,
+                y: 1.25,
+                z: 0,
+            ),
+            up: (
+                x: 0,
+                y: 1,
+                z: 0,
+            ),
+            fov: 20,
+            resolution: (
+                x: 512,
+                y: 512,
+            ),
+        ),
+    },
+    integrator: {
+        "Path": (
+            max_depth: 8,
+            sampler: Random,
+            direct_illum: All,
+        ),
+    },
+    scene: (
+        objects: [
+            // floor
+            Receiver((
+                geometry: {
+                    "Plane": (
+                        point: (
+                            x: 0,
+                            y: 0,
+                            z: 0,
+                        ),
+                        normal: (
+                            x: 0,
+                            y: 1,
+                            z: 0,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "LambertianReflection": (
+                                r: Color(White),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // dragon
+            Receiver((
+                geometry: {
+                    "Mesh": Config((
+                        path: "./meshes/dragon_512.obj",
+                        scale: Some((
+                            x: 5,
+                            y: 5,
+                            z: 5,
+                        )),
+                        shading_mode: Flat,
+                    )),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "SpecularReflection": (
+                                r: Color(Grey1),
+                                fresnel: Noop,
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            Receiver((
+                geometry: {
+                    "Sphere": (
+                        center: (
+                            x: 0,
+                            y: 0,
+                            z: 0,
+                        ),
+                        radius: 20,
+                        inverted: true,
+                    )
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "LambertianReflection": (
+                                r: MulColor(2, BlueSky),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            Emitter((
+                geometry: {
+                    "Sphere": (
+                        center: (
+                            x: 5,
+                            y: 10,
+                            z: -5,
+                        ),
+                        radius: 1,
+                    ),
+                },
+                emission: Constant(1),
+                decay: false,
+            )),
+        ],
+    ),
+)

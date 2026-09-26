@@ -1,0 +1,18 @@
+
+FullQuery(
+    query: r#"
+{
+    RootPackage {
+        dependencies {
+            advisoryHistory(includeWithdrawn: true) {
+                affectedFunctions {
+                    functionPath @output
+                    versions @output
+                }
+            }
+        }
+    }
+}
+    "#,
+    args: {}
+)

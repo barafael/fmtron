@@ -1,0 +1,11 @@
+(
+    id: "strength_potion",
+    name: "Strength Potion",
+    description: "You feel stronger just looking at it.",
+    stackable: true,
+    slot: None,
+    stats: None,
+    on_hit: [ Buff(duration: 5, stats: Stats(strength: 3)) ],
+    on_use: [],
+    consumable: true,
+)

@@ -1,0 +1,58 @@
+GraphConfig(
+    graphes: {
+       "scene": [
+            "depth",
+            "forward",
+            "present",
+        ],
+    },
+    passes: {
+       "depth": (
+            ty: Material,
+            pipeline: "depth",
+            attachments: {
+                "depth": DepthAttachment(
+                    access: ReadWrite,
+                    clear: true,
+                )
+            },
+            scene_layout: [
+                CameraViewProj,
+            ],
+            flags: "ENTITY | OPAQUE"
+        ),
+       "forward": (
+            ty: Material,
+            attachments: {
+                "draw": ColorAttachment(
+                    access: ReadWrite,
+                    clear: false,
+                ),
+                "depth": DepthAttachment(
+                    access: Read,
+                    clear: false,
+                )
+            },
+            scene_layout: [
+                CameraViewProj,
+            ],
+            flags: "ENTITY"
+
+        ),
+       "present": (
+            ty: Present,
+            target: "draw",
+        )
+    },
+    attachments: {
+        "draw": (
+            usage: Color,
+            format: R16g16b16a16Sfloat,
+        ),
+        "depth": (
+            usage: Depth,
+            format: D32Sfloat,
+        ),
+    }
+)
+

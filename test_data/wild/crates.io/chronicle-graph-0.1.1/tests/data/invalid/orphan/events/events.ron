@@ -1,0 +1,11 @@
+[
+    (
+        id: "some_event",
+        name: "Some Event",
+        type: Political,
+        time_span: (start: 10, end: 10),
+        participants: [
+            (actor: "connected_faction", role: Participant, sentiment: Neutral),
+        ],
+    ),
+]

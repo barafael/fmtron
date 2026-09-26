@@ -1,0 +1,10 @@
+(
+    size: medium,
+    cost: 30,
+    habitat: sea,
+    temp: (10, 34),
+    settlement_effect: 0.2,
+    civ_prob: 0.2,
+    color: (0x72, 0x81, 0x8e),
+    evolve_from: [("dunkleosteus", 1.0)],
+)

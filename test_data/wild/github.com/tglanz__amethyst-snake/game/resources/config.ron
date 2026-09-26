@@ -1,0 +1,22 @@
+(
+    gameplay: (
+        base_update_millis: 82,
+    ),
+
+    grid: (
+        offset: (32.0, 32.0),
+        tile_size: 32.0,
+        tile_scale: 1.0,
+        tile_margin: 0.0,
+    ),
+
+    sprite: (
+        snake_head_up: 0,
+        snake_limb_up_up: 1,
+        snake_limb_up_right: 2,
+        snake_tail_down: 3,
+        apple: 4,
+        tile_ground: 5,
+        tile_wall: 6,
+    )
+)

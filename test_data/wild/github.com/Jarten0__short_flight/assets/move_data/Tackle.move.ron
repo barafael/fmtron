@@ -1,0 +1,7 @@
+{
+    display_name: "Tackle",
+    spritesheet: None,
+    collider: Some(Circle(0.40)),
+    range: 2.0,
+    related_animation: AttackTackle
+}

@@ -1,0 +1,37 @@
+{
+    "kimi-k2.5": (
+        display_name: "Kimi K2.5",
+        endpoint: "https://inference.defirelay.com/api/v1/chat/completions",
+        model_archetype: "kimi",
+        model: Some("kimi-k2.5"),
+        x402_cost: Some(10000),
+    ),
+    "kimi-turbo": (
+        display_name: "Kimi K2 Turbo",
+        endpoint: "https://inference.defirelay.com/api/v1/chat/completions",
+        model_archetype: "kimi",
+        model: Some("kimi-turbo"),
+        x402_cost: Some(5000),
+    ),
+    "gpt-5-mini": (
+        display_name: "GPT-5 Mini",
+        endpoint: "https://inference.defirelay.com/api/v1/chat/completions",
+        model_archetype: "openai",
+        model: Some("gpt-5-mini"),
+        x402_cost: Some(7500),
+    ),
+    "minimax": (
+        display_name: "MiniMax M2.5",
+        endpoint: "https://inference.defirelay.com/api/v1/chat/completions",
+        model_archetype: "minimax",
+        model: Some("MiniMax-M2.5"),
+        x402_cost: Some(1000),
+    ),
+    "claude-sonnet": (
+        display_name: "Claude Sonnet 4.5",
+        endpoint: "https://inference.defirelay.com/api/v1/chat/completions",
+        model_archetype: "openai",
+        model: Some("claude-sonnet"),
+        x402_cost: Some(30000),
+    ),
+}

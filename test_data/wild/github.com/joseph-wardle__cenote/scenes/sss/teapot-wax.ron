@@ -1,0 +1,121 @@
+// The volume-route control for the SSS walk scenes beside it: the
+// bitterli teapot's tea volume welded closed (teapot.ply — CC0, see the
+// PLY header) as a solid *scattering refractive interior* on a plain
+// table, lit by one small warm quad under a heavily dimmed sky. The rig
+// is deliberately hostile to interior transport: with NEE skipped inside
+// scattering interiors, the small light is only ever found by
+// phase-sampled escape. teapot-wax-walk.ron drives the identical
+// interior through the subsurface walk instead — the pair demonstrates
+// route equivalence in regime (the boundaries differ: Lambertian
+// transmission vs refraction, so not per pixel).
+//
+// Density tiers are parameters, not code paths — the body's slab
+// thickness is ~2.3 units, and `transmission_depth` IS the mean free
+// path here because transmission_color is e⁻¹ (σ_t = −ln(color)/depth =
+// 1/depth): wax is mfp 0.23 (10% of thickness) at albedo 0.95; the
+// denser walk siblings use 0.069/0.98 (marble) and 0.023/0.995 (skin).
+// Achromatic on purpose: one σ_t means the chromatic MIS weights are
+// uniform and the walk-length histogram measures the walk, not the
+// spectral estimator. transmission_scatter = albedo exactly (σ_s·depth).
+(
+    version: 2,
+    ops: [
+        Settings((
+            name: "main",
+            resolution: Some((1280, 720)),
+            spp: Some(64),
+            // The reference cap: rung 9-0's darkening protocol renders
+            // this scene at --depth 12/32/64/128 against this 255.
+            max_bounces: Some(255),
+        )),
+        Camera((
+            name: "main",
+            position: Some((7.0, 4.5, -7.5)),
+            look_at: Some((0.0, 0.9, 0.3)),
+            vfov_degrees: Some(30.0),
+        )),
+        Environment((
+            name: "sky",
+            path: Some(Some("../../crates/cenote/assets/kloofendal_puresky.exr")),
+            // Dim enough that the quad dominates; bright enough that the
+            // sky still seeds the silhouette.
+            tint: Some((0.05, 0.05, 0.05)),
+        )),
+
+        Mesh((
+            name: "solid",
+            source: Some(Ply(path: "teapot.ply")),
+        )),
+        Mesh((
+            name: "plane",
+            source: Some(Inline(
+                positions: [
+                    (-1.0, 0.0, -1.0), (-1.0, 0.0, 1.0), (1.0, 0.0, 1.0), (1.0, 0.0, -1.0),
+                ],
+                normals: Some([
+                    (0.0, 1.0, 0.0), (0.0, 1.0, 0.0), (0.0, 1.0, 0.0), (0.0, 1.0, 0.0),
+                ]),
+                uvs: Some([(0.0, 0.0), (0.0, 1.0), (1.0, 1.0), (1.0, 0.0)]),
+                triangles: [(0, 1, 2), (0, 2, 3)],
+            )),
+        )),
+        // The warm key: corners precomputed so the emitting face aims at
+        // the body without a rotation transform.
+        Mesh((
+            name: "key",
+            source: Some(Inline(
+                positions: [
+                    (4.6773, 5.0381, -2.7809), (4.0864, 5.9619, -2.2934),
+                    (3.3227, 5.9619, -3.2191), (3.9136, 5.0381, -3.7066),
+                ],
+                normals: Some([
+                    (-0.5938, -0.6383, 0.4899), (-0.5938, -0.6383, 0.4899),
+                    (-0.5938, -0.6383, 0.4899), (-0.5938, -0.6383, 0.4899),
+                ]),
+                uvs: Some([(0.0, 0.0), (0.0, 1.0), (1.0, 1.0), (1.0, 0.0)]),
+                triangles: [(0, 1, 2), (0, 2, 3)],
+            )),
+        )),
+
+        Material((
+            name: "wax",
+            specular_ior: Some(1.5),
+            specular_roughness: Some(Constant(0.08)),
+            transmission_weight: Some(1.0),
+            transmission_color: Some((0.3679, 0.3679, 0.3679)),
+            transmission_depth: Some(0.23),
+            transmission_scatter: Some((0.95, 0.95, 0.95)),
+        )),
+        Material((
+            name: "table",
+            base_color: Some(Constant((0.32, 0.30, 0.28))),
+            base_diffuse_roughness: Some(0.4),
+            specular_weight: Some(0.3),
+            specular_roughness: Some(Constant(0.25)),
+        )),
+        Material((
+            name: "warm-key",
+            emission_color: Some(Constant((1.0, 0.72, 0.45))),
+            emission_luminance: Some(60.0),
+        )),
+
+        Instance((
+            name: "solid",
+            mesh: Some("solid"),
+            material: Some("wax"),
+            // The tea volume floated at the pot's waterline; grounded here.
+            transforms: Some([Trs(translate: (0.0, -0.245, 0.0))]),
+        )),
+        Instance((
+            name: "table",
+            mesh: Some("plane"),
+            material: Some("table"),
+            transforms: Some([Trs(scale: (20.0, 1.0, 20.0))]),
+        )),
+        Instance((
+            name: "key",
+            mesh: Some("key"),
+            material: Some("warm-key"),
+        )),
+    ],
+)

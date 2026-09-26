@@ -1,0 +1,39 @@
+(
+    version: 1,
+    name: "test",
+    enums: [
+        (
+            schema: "public",
+            name: "access_management",
+            comment: Some("Represents access management levels."),
+            values: [
+                "global",
+                "contextual",
+                "forbidden",
+            ],
+        ),
+        (
+            schema: "public",
+            name: "analytics_context",
+            comment: None,
+            values: [
+                "admin",
+                "frontend",
+            ],
+        ),
+        (
+            schema: "public",
+            name: "asset_kind",
+            comment: None,
+            values: [
+                "unknown",
+                "image",
+                "video",
+                "audio",
+                "pdf",
+                "document",
+                "archive",
+            ],
+        ),
+    ],
+)

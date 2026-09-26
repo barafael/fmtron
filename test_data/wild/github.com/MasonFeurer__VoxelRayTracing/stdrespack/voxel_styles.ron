@@ -1,0 +1,100 @@
+[
+("air", VoxelStyle( state: Gas, color: (0.0, 0.0, 0.0) )),
+("fire", VoxelStyle( state: Gas, color: (1.0, 0.0, 0.0) )),
+("water", VoxelStyle( state: Liquid, color: (0.076, 0.563, 0.563) )),
+("lava", VoxelStyle( state: Liquid, color: (1.0, 0.0, 0.0) )),
+
+// Base stones
+("limestone", VoxelStyle( state: Solid, color: (0.4, 0.4, 0.4) )),
+("slate", VoxelStyle( state: Solid, color: (0.4, 0.4, 0.4) )),
+("mudstone", VoxelStyle( state: Solid, color: (0.4, 0.4, 0.4) )),
+("sandstone", VoxelStyle( state: Solid, color: (0.7, 0.6, 0.25) )),
+
+// Variant stones
+("granite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("diorite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("andesite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("blairmorite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("basalt", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+
+// Ores
+("bauxite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("electrum", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("kimberlite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("scheelite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("tin_ore", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("iron_ore", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("gold_ore", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("copper_ore", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+
+// Minerals
+("obsidian", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("tungsten", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("aluminum", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("tin", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("iron", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("gold", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("copper", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("silver", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("steel", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("bronze", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("quartz", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("amethyst", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("calcite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("fluorite", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+
+("diamond", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("ruby", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("emerald", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("sapphire", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+
+// Earth
+("dirt", VoxelStyle( state: Solid, color: (0.4, 0.2, 0.0) )),
+("grass", VoxelStyle( state: Solid, color: (0.18, 0.45, 0.09) )),
+("snowy_grass", VoxelStyle( state: Solid, color: (0.18, 0.45, 0.09) )),
+("dry_grass", VoxelStyle( state: Solid, color: (0.46, 0.56, 0.08) )),
+("moist_grass", VoxelStyle( state: Solid, color: (0.14, 0.35, 0.04) )),
+("dead_grass", VoxelStyle( state: Solid, color: (0.1, 0.25, 0.1) )),
+("snow", VoxelStyle( state: Solid, color: (1.0, 1.0, 1.0) )),
+("ice", VoxelStyle( state: Solid, color: (0.47, 1.0, 0.94) )),
+("sand", VoxelStyle( state: Solid, color: (1.0, 0.9, 0.3) )),
+("redsand", VoxelStyle( state: Solid, color: (1.0, 0.4, 0.1) )),
+("mud", VoxelStyle( state: Solid, color: (0.22, 0.13, 0.02) )),
+("clay", VoxelStyle( state: Solid, color: (0.35, 0.30, 0.25) )),
+("gravel", VoxelStyle( state: Solid, color: (0.35, 0.30, 0.25) )),
+
+// Wood
+("birch_wood", VoxelStyle( state: Solid, color: (1.0, 1.0, 1.0) )),
+("oak_wood", VoxelStyle( state: Solid, color: (0.25, 0.10, 0.00) )),
+("maple_wood", VoxelStyle( state: Solid, color: (0.25, 0.10, 0.00) )),
+("spruce_wood", VoxelStyle( state: Solid, color: (0.06, 0.04, 0.00) )),
+("willow_wood", VoxelStyle( state: Solid, color: (0.3, 0.26, 0.00) )),
+("brazil_nut_wood", VoxelStyle( state: Solid, color: (0.3, 0.26, 0.00) )),
+("mahogany_wood", VoxelStyle( state: Solid, color: (0.3, 0.26, 0.00) )),
+("cacao_wood", VoxelStyle( state: Solid, color: (0.3, 0.26, 0.00) )),
+("monkey_wood", VoxelStyle( state: Solid, color: (0.3, 0.26, 0.00) )),
+
+// Leaves/Shrub
+("cactus", VoxelStyle( state: Solid, color: (0.18, 0.52, 0.00) )),
+("oak_leaves", VoxelStyle( state: Solid, color: (0.23, 0.52, 0.00) )),
+("birch_leaves", VoxelStyle( state: Solid, color: (0.43, 0.72, 0.00) )),
+("maple_leaves", VoxelStyle( state: Solid, color: (0.04, 0.22, 0.00) )),
+("spruce_leaves", VoxelStyle( state: Solid, color: (0.04, 0.22, 0.00) )),
+("acacia_leaves", VoxelStyle( state: Solid, color: (0.26, 0.55, 0.07) )),
+("mahogany_leaves", VoxelStyle( state: Solid, color: (0.10, 0.32, 0.00) )),
+
+// Fruits
+("cacao", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("apple", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("orange", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("peach", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("brazil_nut", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+
+// Decorative
+("mirror", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("glass", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("colored_glass", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("concrete", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("colored_concrete", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+("colored_planks", VoxelStyle( state: Solid, color: (0.0, 0.0, 0.0) )),
+]

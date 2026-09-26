@@ -1,0 +1,9 @@
+// Tie vote to test RNG determinism and seed advancement.
+
+[
+    EndPhase,
+    Use("Alice", Vote("Bob")),
+    Use("Bob", Vote("Charlie")),
+    Use("Charlie", Vote("Alice")),
+    EndPhase,
+]

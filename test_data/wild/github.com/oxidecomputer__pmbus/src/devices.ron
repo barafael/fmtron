@@ -1,0 +1,66 @@
+{
+    "adm127x": (
+        manufacturer: "Analog Devices",
+        part: "ADM1272 or ADM1273",
+        description: "Postive Hot Swap Controller",
+    ),
+    "tps546b24a": (
+        manufacturer: "Texas Instruments",
+        part: "TPS546B24a",
+        description: "2.95V-18V 20A Stackable Buck Converter",
+    ),
+    "bmr480": (
+        manufacturer: "Flex",
+        part: "BMR480 series",
+        description: "DC-DC Converter, Input 40-60V, Output to 1000W",
+    ),
+    "bmr491": (
+        manufacturer: "Flex",
+        part: "BMR491 series",
+        description: "DC-DC Converter, Input 40-60V, Output to 1300W",
+    ),
+    "isl68224": (
+        manufacturer: "Renesas",
+        part: "ISL68224",
+        description: "Digital Triple Output, 6-Phase PWM Controller",
+        coefficients: Some(( m: 1, R: 3, b: 0 ))
+    ),
+    "lm5066": (
+        manufacturer: "Texas Instruments",
+        part: "LM5066",
+        description: "Hotswap Controller With I/V/P Monitoring",
+    ),
+    "lm5066i": (
+        manufacturer: "Texas Instruments",
+        part: "LM5066I",
+        description: "Hotswap Controller With I/V/P Monitoring",
+    ),
+    "mwocp67": (
+        manufacturer: "Murata",
+        part: "MWOCP67-5500",
+        description: "Front End Power Module"
+    ),
+    "mwocp68": (
+        manufacturer: "Murata",
+        part: "MWOCP68-3600W",
+        description: "Front End Power Module"
+    ),
+    "raa228926": (
+        manufacturer: "Renesas",
+        part: "RAA228926",
+        description: "Digital Dual Output, 20-Phase PWM Controller",
+        coefficients: Some(( m: 1, R: 3, b: 0 ))
+    ),
+    "raa229618": (
+        manufacturer: "Renesas",
+        part: "RAA229618",
+        description: "Digital Dual Output, 20-Phase Configurable, SVI2 PWM Controller",
+        coefficients: Some(( m: 1, R: 3, b: 0 ))
+    ),
+    "raa229620a": (
+        manufacturer: "Renesas",
+        part: "RAA229620A",
+        description: "Digital Dual Output, 12-Phase Configurable, SVI3 PWM Controller",
+        coefficients: Some(( m: 1, R: 3, b: 0 ))
+    ),
+}

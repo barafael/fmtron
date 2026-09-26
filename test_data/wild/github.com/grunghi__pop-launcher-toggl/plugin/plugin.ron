@@ -1,0 +1,15 @@
+(
+    name: "Toggl Track",
+    description: "Control Toggl Track timers",
+    bin: (
+        path: "toggl",
+    ),
+    icon: Name("timer"),
+    query: (
+        isolate: true,
+        regex: "^toggl.*",
+        help: "toggl ",
+        no_sort: true,
+        priority: High,
+    ),
+)

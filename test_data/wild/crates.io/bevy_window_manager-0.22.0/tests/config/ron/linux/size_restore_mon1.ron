@@ -1,0 +1,18 @@
+(
+    version: 2,
+    entries: [
+        (
+            key: Primary,
+            state: (
+                // Monitor 1 (HDMI) at (0, 0), scale 1
+                logical_position: None,
+                logical_width: 800,
+                logical_height: 600,
+                monitor_scale: 1.0,
+                monitor_index: 1,
+                mode: Windowed,
+                app_name: "restore_window",
+            )
+        ),
+    ],
+)

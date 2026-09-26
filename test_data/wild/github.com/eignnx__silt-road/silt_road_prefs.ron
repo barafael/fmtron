@@ -1,0 +1,16 @@
+(
+    settings: (
+        supplies_demands: {
+            Brewery: (
+                demands: [
+                    Nickel,
+                    Coal,
+                    Iron,
+                ],
+                supplies: [
+                    Tools,
+                ],
+            ),
+        },
+    ),
+)

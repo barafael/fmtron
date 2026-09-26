@@ -1,0 +1,121 @@
+// Generic light front-engined rear-wheel-drive (FR) sports car in the mould of the
+// 2.0 l boxer 2+2 coupés: a naturally aspirated flat four low behind the front axle, a
+// six-speed H-pattern manual with synchromesh and a clutch pedal, a torque-sensing
+// limited-slip differential, and no gearbox electronics — the driver shifts, works the
+// clutch and blips the throttle. Values are representative of the class, not of any
+// particular model.
+// Units: SI (m, kg, N, s). Angles in radians.
+(
+    name: "FR sports",
+    mass: 1300.0,                 // incl. driver and ~half fuel
+    inertia: (420.0, 1850.0, 1980.0),
+    cg_height: 0.46,
+    front_weight: 0.53,
+    wheelbase: 2.57,
+    track_front: 1.52,
+    track_rear: 1.54,
+
+    front: (
+        tire: "velloni_strada_r",
+        pressure: 2.4,
+        unsprung_mass: 36.0,
+        wheel_inertia: 0.8,
+        // Double wishbones, the rack behind the axle.
+        linkage: DoubleWishbone(
+            upper: (front: (0.14, -0.43, 0.13), rear: (-0.14, -0.43, 0.12), outer: (-0.03, -0.12, 0.18)),
+            lower: (front: (0.20, -0.56, -0.155), rear: (-0.22, -0.56, -0.145), outer: (0.0, -0.06, -0.15)),
+            tie_rod: (inner: (-0.13, -0.51, -0.055), outer: (-0.13, -0.10, -0.03)),
+        ),
+        spring_rate: 32000.0,
+        bump_damping: 2400.0,
+        rebound_damping: 3500.0,
+        anti_roll_rate: 22000.0,
+        bump_travel: 0.065,
+        droop_travel: 0.095,
+        bump_stop_rate: 400000.0,
+        static_camber: -0.017,       // -1.0 deg
+    ),
+
+    rear: (
+        tire: "velloni_strada_r",
+        pressure: 2.4,
+        unsprung_mass: 38.0,
+        wheel_inertia: 0.85,
+        // Double wishbones with a toe link.
+        linkage: DoubleWishbone(
+            upper: (front: (0.14, -0.43, 0.14), rear: (-0.14, -0.43, 0.14), outer: (0.0, -0.11, 0.17)),
+            lower: (front: (0.20, -0.54, -0.11), rear: (-0.20, -0.54, -0.15), outer: (0.0, -0.06, -0.15)),
+            tie_rod: (inner: (-0.14, -0.50, -0.02), outer: (-0.14, -0.08, -0.01)),
+        ),
+        spring_rate: 30000.0,
+        bump_damping: 2400.0,
+        rebound_damping: 3500.0,
+        anti_roll_rate: 12000.0,
+        bump_travel: 0.065,
+        droop_travel: 0.095,
+        bump_stop_rate: 400000.0,
+        static_camber: -0.026,       // -1.5 deg
+    ),
+
+    steering: (
+        ratio: 13.1,
+        lock: 7.85,                  // 450 deg each way
+    ),
+
+    brakes: (
+        max_torque: 5500.0,
+        front_bias: 0.65,
+    ),
+
+    // ~212 N·m at 6400 rpm with the flat spot around 4000 rpm, ~150 kW at 7000 rpm.
+    engine: (
+        torque_curve: [
+            (1000.0, 140.0), (2000.0, 175.0), (3000.0, 190.0), (4000.0, 182.0),
+            (5000.0, 196.0), (6400.0, 212.0), (7000.0, 205.0), (7500.0, 185.0),
+        ],
+        drag_curve: [
+            (0.0, 8.0), (1000.0, 11.0), (3000.0, 18.0), (5000.0, 27.0), (7500.0, 42.0),
+        ],
+        inertia: 0.12,
+        idle_rpm: 750.0,
+        limiter_rpm: 7450.0,
+        stall_rpm: 450.0,
+    ),
+
+    clutch: (
+        max_torque: 360.0,           // ~1.7 x peak engine torque
+        bite_point: 0.7,
+        kinetic_ratio: 0.8,
+    ),
+
+    gearbox: (
+        ratios: [3.626, 2.188, 1.541, 1.213, 1.000, 0.767],
+        reverse: 3.437,
+        final_drive: 4.1,
+        efficiency: 0.92,
+        input_inertia: 0.015,
+        kind: HPattern(
+            synchro_torque: 25.0,
+            lever_time: 0.25,
+        ),
+    ),
+
+    drive: Rear,
+
+    // Torque-sensing (Torsen) limited-slip differential.
+    differential: (
+        preload: 20.0,
+        power_ramp: 0.45,
+        coast_ramp: 0.35,
+    ),
+
+    // The body's drag and lift at the axles; a road car's barely change with its attitude.
+    aero: (
+        ride_height: (0.13, 0.14),
+        elements: [
+            (name: "body", position: (0.0, 0.12), area: 0.56, lift: [(0.0, 0.0)], drag: [(0.0, 1.0)]),
+            (name: "front", position: (1.2079, 0.0), area: 0.0, lift: [(0.0, 1.0)], drag: [(0.0, 0.0)]),
+            (name: "rear", position: (-1.3621, 0.0), area: 0.02, lift: [(0.0, 1.0)], drag: [(0.0, 0.0)]),
+        ],
+    ),
+)

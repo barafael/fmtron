@@ -1,0 +1,29 @@
+(
+  file_type: "NomaiObject",
+  log_condition: [
+    (
+      location: [
+        "A"
+      ],
+      reveal_fact: [
+        (
+          condition: [
+            1,
+            2
+          ],
+          id: "goobert"
+        )
+      ]
+    )
+  ],
+  text_block: [
+    (
+      id: 1,
+      location: [
+        "A",
+        "B"
+      ],
+      text: "this is an example"
+    )
+  ]
+)

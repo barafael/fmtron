@@ -1,0 +1,10 @@
+[
+    (
+        name: "TREE",
+        sprite_sheet: "sheets/flora.png",
+        sprite_region: (0, 0),
+        sprite_size: (34, 57),
+        anchor: (0, 0),
+        collision_shape: Some(Circle(0.5)),
+    ),
+]

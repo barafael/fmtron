@@ -1,0 +1,45 @@
+#![enable(explicit_struct_names, implicit_some)]
+[
+//This file contains individual G key scripts as used by the g11-macro-daemon.
+//See https://github.com/rs017991/g11-macro/blob/main/g11-macro-daemon/CONFIGURATION.md for more information.
+
+
+//The below bindings are examples.
+//They will not apply so long as they are surrounded by /* and */
+/*
+KeyBinding(
+    m: 1,
+    g: 15,
+    on: Press,
+    script: [
+        Key(Control, Press),
+        Key(Unicode('w'), Click),
+        Key(Control, Release),
+    ],
+),
+KeyBinding(
+    m: 1,
+    g: 17,
+    on: Press,
+    script: [
+        Key(Shift, Press),
+        Key(Control, Press),
+        Key(Tab, Click),
+        Key(Control, Release),
+        Key(Shift, Release),
+    ],
+),
+KeyBinding(
+    m: 1,
+    g: 18,
+    on: Press,
+    script: [
+        Key(Control, Press),
+        Key(Tab, Click),
+        Key(Control, Release),
+    ],
+),
+*/
+
+
+]

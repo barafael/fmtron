@@ -1,0 +1,33 @@
+(
+    rules: [
+        // ---- SSRF ----
+        (
+            id: Some("python-ssrf-001"),
+            name: Some("Server-Side Request Forgery"),
+            category: Some("ssrf"),
+            mode: "search",
+            patterns: Some([
+                "requests.get",
+                "requests.post",
+                "requests.put",
+                "requests.delete",
+                "requests.patch",
+                "requests.head",
+                "requests.request",
+                "urllib.request.urlopen",
+                "urllib.urlopen",
+                "httpx.get",
+                "httpx.post",
+            ]),
+            finding_type: Some("SSRF"),
+            severity: Some("High"),
+            confidence: Some("Medium"),
+            cwe_id: Some("cwe-918"),
+            description: Some("Outbound HTTP request sink; if the URL is attacker-controlled this is SSRF"),
+            file_types: Some((
+                extensions: Some([".py"])
+            )),
+            tags: Some(["ssrf", "request"])
+        ),
+    ]
+)

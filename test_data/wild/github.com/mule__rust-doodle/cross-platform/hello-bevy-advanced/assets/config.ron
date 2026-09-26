@@ -1,0 +1,11 @@
+AppConfig(
+    text: "Hello, Bevy!",
+    font_size: 60.0,
+    wave_speed: 2.0,
+    wave_spread: 0.3,
+    particle_count: 40,
+    particle_speed: 50.0,
+    spotlight_radius: 300.0,
+    spotlight_intensity: 0.8,
+    background_color: (r: 0.04, g: 0.04, b: 0.1, a: 1.0),
+)

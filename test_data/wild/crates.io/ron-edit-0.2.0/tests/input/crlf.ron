@@ -1,0 +1,4 @@
+(
+    // File containing \r\n endings 
+    something: 10
+)

@@ -1,0 +1,8 @@
+// terrain_config.ron
+ClayTilesConfig(
+    
+    
+    
+     tile_types_config_path: "tile_types.ron", 
+      
+)

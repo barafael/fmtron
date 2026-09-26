@@ -1,0 +1,7 @@
+(
+    input_font: "textures/8x8glyphs.png",
+    input_font_bitmap_size: (128, 128),
+    input_font_glyph_size: (8, 8),
+    output_glyph_scale: (2, 2),
+    window_size_in_glyphs: (64, 48),
+)

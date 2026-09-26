@@ -1,0 +1,210 @@
+(
+    schema: None,
+    file_type: "DialogueTree",
+    text_block: None,
+    log_condition: None,
+    id: None,
+    entry: None,
+    name_field: Some("Ernesto"),
+    dialogue_node: Some([
+        (
+            name: "START",
+            randomize: None,
+            entry_condition: Some([
+                "DEFAULT",
+            ]),
+            dialogue: Some([
+                (
+                    page: [
+                        "Hey it\'s me Ernesto the magic talking anglerfish.",
+                    ],
+                ),
+            ]),
+            reveal_facts: Some((
+                fact_id: [
+                    "EXAMPLES_ERNESTO",
+                ],
+            )),
+            set_persistent_condition: None,
+            set_condition: None,
+            disable_persistent_condition: None,
+            dialogue_target_shiplog_condition: None,
+            dialogue_target: None,
+            dialogue_options_list: Some((
+                dialogue_option: Some([
+                    (
+                        text: "Wow you can talk?",
+                        required_log_condition: None,
+                        required_persistent_condition: None,
+                        cancelled_persistent_condition: None,
+                        required_condition: None,
+                        cancelled_condition: None,
+                        dialogue_target: Some("1"),
+                        condition_to_set: None,
+                        condition_to_cancel: None,
+                    ),
+                    (
+                        text: "What do you think about Geswaldo?",
+                        required_log_condition: None,
+                        required_persistent_condition: None,
+                        cancelled_persistent_condition: None,
+                        required_condition: None,
+                        cancelled_condition: None,
+                        dialogue_target: Some("2"),
+                        condition_to_set: None,
+                        condition_to_cancel: None,
+                    ),
+                    (
+                        text: "Where did you guys come from?",
+                        required_log_condition: None,
+                        required_persistent_condition: None,
+                        cancelled_persistent_condition: None,
+                        required_condition: None,
+                        cancelled_condition: None,
+                        dialogue_target: Some("3"),
+                        condition_to_set: None,
+                        condition_to_cancel: None,
+                    ),
+                    (
+                        text: "I\'ll see you later.",
+                        required_log_condition: None,
+                        required_persistent_condition: None,
+                        cancelled_persistent_condition: None,
+                        required_condition: None,
+                        cancelled_condition: None,
+                        dialogue_target: Some("4"),
+                        condition_to_set: None,
+                        condition_to_cancel: None,
+                    ),
+                ]),
+                reuse_dialogue_options_list_from: None,
+            )),
+        ),
+        (
+            name: "1",
+            randomize: None,
+            entry_condition: None,
+            dialogue: Some([
+                (
+                    page: [
+                        "No I can\'t, you must be mistaken.",
+                        "Haha that\'s a joke. I took speaking as an elective in college.",
+                    ],
+                ),
+            ]),
+            reveal_facts: None,
+            set_persistent_condition: None,
+            set_condition: None,
+            disable_persistent_condition: None,
+            dialogue_target_shiplog_condition: None,
+            dialogue_target: None,
+            dialogue_options_list: Some((
+                dialogue_option: Some([
+                    (
+                        text: "Oh.",
+                        required_log_condition: None,
+                        required_persistent_condition: None,
+                        cancelled_persistent_condition: None,
+                        required_condition: None,
+                        cancelled_condition: None,
+                        dialogue_target: Some("START"),
+                        condition_to_set: None,
+                        condition_to_cancel: None,
+                    ),
+                ]),
+                reuse_dialogue_options_list_from: None,
+            )),
+        ),
+        (
+            name: "2",
+            randomize: None,
+            entry_condition: None,
+            dialogue: Some([
+                (
+                    page: [
+                        "I love him. He is my husband.",
+                    ],
+                ),
+            ]),
+            reveal_facts: None,
+            set_persistent_condition: None,
+            set_condition: None,
+            disable_persistent_condition: None,
+            dialogue_target_shiplog_condition: None,
+            dialogue_target: None,
+            dialogue_options_list: Some((
+                dialogue_option: Some([
+                    (
+                        text: "That\'s beautiful. I\'m so happy for both of you.",
+                        required_log_condition: None,
+                        required_persistent_condition: None,
+                        cancelled_persistent_condition: None,
+                        required_condition: None,
+                        cancelled_condition: None,
+                        dialogue_target: Some("START"),
+                        condition_to_set: None,
+                        condition_to_cancel: None,
+                    ),
+                ]),
+                reuse_dialogue_options_list_from: None,
+            )),
+        ),
+        (
+            name: "3",
+            randomize: None,
+            entry_condition: None,
+            dialogue: Some([
+                (
+                    page: [
+                        "Geswaldo and I were visiting my cousin on Wetrock, I don\'t know about the other two. I don\'t know those guys.",
+                    ],
+                ),
+            ]),
+            reveal_facts: Some((
+                fact_id: [
+                    "EXAMPLES_ERNESTO_COUSIN_RUMOR",
+                ],
+            )),
+            set_persistent_condition: None,
+            set_condition: None,
+            disable_persistent_condition: None,
+            dialogue_target_shiplog_condition: None,
+            dialogue_target: None,
+            dialogue_options_list: Some((
+                dialogue_option: Some([
+                    (
+                        text: "Thanks for the info.",
+                        required_log_condition: None,
+                        required_persistent_condition: None,
+                        cancelled_persistent_condition: None,
+                        required_condition: None,
+                        cancelled_condition: None,
+                        dialogue_target: Some("START"),
+                        condition_to_set: None,
+                        condition_to_cancel: None,
+                    ),
+                ]),
+                reuse_dialogue_options_list_from: None,
+            )),
+        ),
+        (
+            name: "4",
+            randomize: None,
+            entry_condition: None,
+            dialogue: Some([
+                (
+                    page: [
+                        "Bye bye.",
+                    ],
+                ),
+            ]),
+            reveal_facts: None,
+            set_persistent_condition: None,
+            set_condition: None,
+            disable_persistent_condition: None,
+            dialogue_target_shiplog_condition: None,
+            dialogue_target: None,
+            dialogue_options_list: None,
+        ),
+    ]),
+)

@@ -1,0 +1,31 @@
+(
+    xmin: 0.0,
+    xmax: 2.8,
+    tiers: [
+        IntervalTier((
+            name: "utterances",
+            xmin: 0.0,
+            xmax: 2.8,
+            intervals: [
+                (xmin: 0.0, xmax: 1.6229213249309031, text: ""),
+                (xmin: 1.6229213249309031, xmax: 2.341428074708195, text: "demo"),
+                (xmin: 2.341428074708195, xmax: 2.8, text: ""),
+            ],
+        )),
+        IntervalTier((
+            name: "phones",
+            xmin: 0.0,
+            xmax: 2.8,
+            intervals: [
+                (xmin: 0.0, xmax: 1.6229213249309031, text: ""),
+                (xmin: 1.6229213249309031, xmax: 1.6428291382019483, text: "dc"),
+                (xmin: 1.6428291382019483, xmax: 1.6537218372198372, text: "d"),
+                (xmin: 1.6537218372198372, xmax: 1.9437287432894373, text: "E"),
+                (xmin: 1.9437287432894373, xmax: 2.138219382910382, text: "m"),
+                (xmin: 2.138219382910382, xmax: 2.341428074708195, text: "oU"),
+                // NOTE: the interval size is `6`.
+                // (xmin: 2.341428074708195, xmax: 2.8, text: ""),
+            ],
+        )),
+    ],
+)

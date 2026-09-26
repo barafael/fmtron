@@ -1,0 +1,800 @@
+(
+  resources: {},
+  entities: {
+    2: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "background::components::Background": (
+          background_color: Rgba(
+            red: 0.0,
+            green: 0.0,
+            blue: 1.0,
+            alpha: 1.0,
+          ),
+          ground_color: Rgba(
+            red: 0.0,
+            green: 1.0,
+            blue: 0.0,
+            alpha: 1.0,
+          ),
+          size: 20.0,
+          ambient_light: 0.25,
+          directional_light: 32000.0,
+        ),
+      },
+    ),
+    3: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "tree::components::TreeSize": (
+          trunk_thickness: 0.25,
+          trunk_height: 2.0,
+          canopy: (
+            x: 2.0,
+            y: 1.0,
+            z: 2.0,
+          ),
+        ),
+        "tree::components::Tree": (),
+        "game_state::components::PhysicsBody": (),
+      },
+    ),
+    44: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -2.8034077,
+            y: 0.0,
+            z: 0.8116007,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "tree::components::TreeSize": (
+          trunk_thickness: 0.5,
+          trunk_height: 2.0,
+          canopy: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "tree::components::Tree": (),
+        "game_state::components::PhysicsBody": (),
+      },
+    ),
+    47: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 3.2474756,
+            y: 0.0,
+            z: -6.123908,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "tree::components::TreeSize": (
+          trunk_thickness: 0.5,
+          trunk_height: 2.0,
+          canopy: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "tree::components::Tree": (),
+        "game_state::components::PhysicsBody": (),
+      },
+    ),
+    50: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.94970685,
+            y: 0.000000059604645,
+            z: 7.066552,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          ),
+        ),
+        "tree::components::TreeSize": (
+          trunk_thickness: 0.25,
+          trunk_height: 1.0,
+          canopy: (
+            x: 0.5,
+            y: 0.5,
+            z: 0.5,
+          ),
+        ),
+        "tree::components::Tree": (),
+        "game_state::components::PhysicsBody": (),
+      },
+    ),
+    53: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 1.2282641,
+            y: 0.0,
+            z: 7.4139776,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.25,
+            y: 0.25,
+            z: 0.25,
+          ),
+        ),
+        "bush::components::Bush": (),
+        "game_state::components::PhysicsBody": (),
+      },
+    ),
+    59: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.074251115,
+            y: 1.3441164,
+            z: 0.2750001,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.05,
+            y: 0.05,
+            z: 0.05,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (50),
+        "flower::components::Flower": (),
+      },
+    ),
+    65: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.27499998,
+            y: 1.0848961,
+            z: 0.069698334,
+          ),
+          rotation: (
+            x: 0.0,
+            y: -0.70710677,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.05,
+            y: 0.05,
+            z: 0.05,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (50),
+        "flower::components::Flower": (),
+      },
+    ),
+    71: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.63557196,
+            y: 0.50864124,
+            z: 0.5100002,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.08000003,
+            y: 0.08000003,
+            z: 0.08000003,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (53),
+        "flower::components::Flower": (),
+      },
+    ),
+    77: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.6782913,
+            y: 0.7580581,
+            z: 0.5100002,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.08000003,
+            y: 0.08000003,
+            z: 0.08000003,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (53),
+        "flower::components::Flower": (),
+      },
+    ),
+    83: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.3523879,
+            y: 1.01,
+            z: -0.21802711,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.08000003,
+            y: 0.08000003,
+            z: 0.08000003,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (53),
+        "flower::components::Flower": (),
+      },
+    ),
+    89: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.66391134,
+            y: 1.01,
+            z: 0.21638489,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.08000003,
+            y: 0.08000003,
+            z: 0.08000003,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (53),
+        "flower::components::Flower": (),
+      },
+    ),
+    95: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.57237566,
+            y: 0.05,
+            z: 7.009446,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.1,
+            y: 0.1,
+            z: 0.1,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (2),
+        "apple::components::Apple": (),
+      },
+    ),
+    97: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.6936423,
+            y: 0.030000005,
+            z: 7.404175,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.06000001,
+            y: 0.06000001,
+            z: 0.06000001,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (2),
+        "apple::components::Apple": (),
+      },
+    ),
+    99: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.770831,
+            y: 2.2726953,
+            z: 1.0649991,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (3),
+        "apple::components::Apple": (),
+      },
+    ),
+    101: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.7945541,
+            y: 2.6910563,
+            z: 1.065,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (3),
+        "apple::components::Apple": (),
+      },
+    ),
+    103: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.5649998,
+            y: 2.841944,
+            z: -0.13036156,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.70710677,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (44),
+        "apple::components::Apple": (),
+      },
+    ),
+    105: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.38679075,
+            y: 2.4225135,
+            z: 0.5649991,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (44),
+        "apple::components::Apple": (),
+      },
+    ),
+    107: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.37133503,
+            y: 2.2000446,
+            z: 0.565001,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (44),
+        "apple::components::Apple": (),
+      },
+    ),
+    109: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -3.5501583,
+            y: 0.06500012,
+            z: 0.4475088,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (2),
+        "apple::components::Apple": (),
+      },
+    ),
+    111: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.22919622,
+            y: 0.06500006,
+            z: 0.81160164,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (2),
+        "apple::components::Apple": (),
+      },
+    ),
+    113: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.12377691,
+            y: 2.2371922,
+            z: 0.5649991,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (47),
+        "apple::components::Apple": (),
+      },
+    ),
+    115: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 2.8372104,
+            y: 0.065,
+            z: -6.304039,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (2),
+        "apple::components::Apple": (),
+      },
+    ),
+    117: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 3.0765347,
+            y: 0.065,
+            z: -4.813796,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.13,
+            y: 0.13,
+            z: 0.13,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (2),
+        "apple::components::Apple": (),
+      },
+    ),
+    123: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.018983603,
+            y: 2.632508,
+            z: 0.525,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.05,
+            y: 0.05,
+            z: 0.05,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (44),
+        "flower::components::Flower": (),
+      },
+    ),
+    129: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.43708745,
+            y: 2.6382427,
+            z: 1.024999,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.05,
+            y: 0.05,
+            z: 0.05,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (3),
+        "flower::components::Flower": (),
+      },
+    ),
+    135: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: 0.46093228,
+            y: 2.1600657,
+            z: 1.025,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.05,
+            y: 0.05,
+            z: 0.05,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (3),
+        "flower::components::Flower": (),
+      },
+    ),
+    141: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.2793553,
+            y: 2.6523876,
+            z: 0.5250001,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.05,
+            y: 0.05,
+            z: 0.05,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (47),
+        "flower::components::Flower": (),
+      },
+    ),
+    147: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.4690334,
+            y: 0.04999994,
+            z: 7.6781464,
+          ),
+          rotation: (
+            x: -0.70710677,
+            y: 0.0,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.1,
+            y: 0.1,
+            z: 0.1,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (2),
+        "flower::components::Flower": (),
+      },
+    ),
+    4294967353: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.08235955,
+            y: 1.1174119,
+            z: 0.3000002,
+          ),
+          rotation: (
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
+            w: 1.0,
+          ),
+          scale: (
+            x: 0.1,
+            y: 0.1,
+            z: 0.1,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (50),
+        "apple::components::Apple": (),
+      },
+    ),
+    21474836521: (
+      components: {
+        "bevy_transform::components::transform::Transform": (
+          translation: (
+            x: -0.3,
+            y: 1.3562984,
+            z: 0.08164024,
+          ),
+          rotation: (
+            x: 0.0,
+            y: -0.70710677,
+            z: 0.0,
+            w: 0.70710677,
+          ),
+          scale: (
+            x: 0.1,
+            y: 0.1,
+            z: 0.1,
+          ),
+        ),
+        "bevy_hierarchy::components::parent::Parent": (50),
+        "apple::components::Apple": (),
+      },
+    ),
+  },
+)

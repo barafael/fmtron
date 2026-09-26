@@ -1,0 +1,178 @@
+(
+    id: "a3574a00-0000-4000-8000-000000009201",
+    schema_version: 1,
+    name: "Material Graph Lab",
+    domain: Sprite,
+    render_state_policy: (
+        default: (
+            blend: Additive,
+            depth_test: LessEqual,
+            depth_write: false,
+            cull_mode: r#None,
+        ),
+        allowed: [
+            (
+                blend: Additive,
+                depth_test: LessEqual,
+                depth_write: false,
+                cull_mode: r#None,
+            ),
+        ],
+    ),
+    parameters: [
+        (
+            id: "a3574a00-0000-4000-8000-000000009211",
+            name: "Edge Color",
+            value_type: Color,
+            evaluation_domain: Instance,
+            default: Some(ColorSrgb((0.15, 0.45, 1.0, 1.0))),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009212",
+            name: "Fresnel Power",
+            value_type: Float,
+            evaluation_domain: Instance,
+            default: Some(Float(3.0)),
+        ),
+    ],
+    expressions: [
+        (
+            id: "07f9549c-71eb-49a9-9716-ae4d879ec03c",
+            kind: Smoothstep(
+                edge_min: "21566720-9427-4a56-b27e-12d59e5143ca",
+                edge_max: "772325b3-07cf-4ddd-a79d-d319d9f6a4f2",
+                value: "a3574a00-0000-4000-8000-00000000922d",
+            ),
+        ),
+        (
+            id: "0c0a9ca4-af95-4a57-aede-4bc26a92dae8",
+            kind: Constant(Float(4.75)),
+        ),
+        (
+            id: "20d17bc3-64d4-4078-83c2-1c4e3e146b29",
+            kind: Constant(Float(0.0)),
+        ),
+        (
+            id: "21566720-9427-4a56-b27e-12d59e5143ca",
+            kind: Constant(Float(0.0)),
+        ),
+        (
+            id: "225210d0-a26b-438d-aed1-ac3d20592937",
+            kind: Constant(Float(2.49)),
+        ),
+        (
+            id: "772325b3-07cf-4ddd-a79d-d319d9f6a4f2",
+            kind: Constant(Float(1.0)),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009221",
+            kind: Input(ParticleColor),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009222",
+            kind: Input(ParticleNormalizedAge),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009223",
+            kind: Constant(Float(0.08)),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009224",
+            kind: Constant(Float(0.82)),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009225",
+            kind: Smoothstep(
+                edge_min: "a3574a00-0000-4000-8000-000000009223",
+                edge_max: "a3574a00-0000-4000-8000-000000009224",
+                value: "a3574a00-0000-4000-8000-000000009222",
+            ),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009226",
+            kind: Input(Normal),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009227",
+            kind: Input(ViewDirection),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009228",
+            kind: Parameter("a3574a00-0000-4000-8000-000000009212"),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-000000009229",
+            kind: FunctionCall(
+                function: BuiltIn("a3574a00-0000-4000-8000-00000000f001"),
+                arguments: {
+                    "a3574a00-0000-4000-8000-00000000f011": "a3574a00-0000-4000-8000-000000009226",
+                    "a3574a00-0000-4000-8000-00000000f012": "a3574a00-0000-4000-8000-000000009227",
+                    "a3574a00-0000-4000-8000-00000000f013": "a3574a00-0000-4000-8000-000000009228",
+                },
+                output: "a3574a00-0000-4000-8000-00000000f031",
+            ),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-00000000922a",
+            kind: Multiply("a3574a00-0000-4000-8000-000000009225", "a3574a00-0000-4000-8000-000000009229"),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-00000000922b",
+            kind: Parameter("a3574a00-0000-4000-8000-000000009211"),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-00000000922c",
+            kind: Multiply("b4901046-b90c-47c0-b0df-c1aab9fa522a", "a3574a00-0000-4000-8000-00000000922a"),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-00000000922d",
+            kind: Add("a3574a00-0000-4000-8000-000000009221", "a3574a00-0000-4000-8000-00000000922c"),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-00000000922e",
+            kind: Input(ParticleOpacity),
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-00000000922f",
+            kind: Multiply("a3574a00-0000-4000-8000-00000000922e", "a3574a00-0000-4000-8000-000000009225"),
+        ),
+        (
+            id: "ab2b08ec-3442-4b4c-97fb-1fd8102c28a8",
+            kind: Constant(Float(1.0)),
+        ),
+        (
+            id: "b4901046-b90c-47c0-b0df-c1aab9fa522a",
+            kind: Remap(
+                value: "a3574a00-0000-4000-8000-00000000922b",
+                input_min: "20d17bc3-64d4-4078-83c2-1c4e3e146b29",
+                input_max: "e7dce44e-6e1e-49d4-b8b2-5749c1c28bc3",
+                output_min: "225210d0-a26b-438d-aed1-ac3d20592937",
+                output_max: "ab2b08ec-3442-4b4c-97fb-1fd8102c28a8",
+            ),
+        ),
+        (
+            id: "c353dee5-e1ca-4988-97e3-64034b72779f",
+            kind: Constant(Float(2.22)),
+        ),
+        (
+            id: "e7dce44e-6e1e-49d4-b8b2-5749c1c28bc3",
+            kind: Constant(Float(11.944)),
+        ),
+    ],
+    inline_constants: [
+        "0c0a9ca4-af95-4a57-aede-4bc26a92dae8",
+        "20d17bc3-64d4-4078-83c2-1c4e3e146b29",
+        "21566720-9427-4a56-b27e-12d59e5143ca",
+        "225210d0-a26b-438d-aed1-ac3d20592937",
+        "772325b3-07cf-4ddd-a79d-d319d9f6a4f2",
+        "a3574a00-0000-4000-8000-000000009223",
+        "a3574a00-0000-4000-8000-000000009224",
+        "ab2b08ec-3442-4b4c-97fb-1fd8102c28a8",
+        "c353dee5-e1ca-4988-97e3-64034b72779f",
+        "e7dce44e-6e1e-49d4-b8b2-5749c1c28bc3",
+    ],
+    outputs: (
+        color: "07f9549c-71eb-49a9-9716-ae4d879ec03c",
+        alpha: "a3574a00-0000-4000-8000-00000000922f",
+    ),
+)

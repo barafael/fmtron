@@ -1,0 +1,52 @@
+// Named fill regions and the list of layouts to generate.
+//
+// A fill is a list of regions; each region fills outward from a start key by
+// `left`/`right` columns.  An output renders `layout` in `tuning` using `fill`,
+// writing to layouts/<name>/<name>.{svg,ltn}.
+(
+    fills: {
+        "split": [
+            (left: 8, right: 9, start: (group: 3, key: 47)),
+            (left: 9, right: 9, start: (group: 1, key: 14)),
+        ],
+        // Like split, but shifted left so sharps are easier to reach.
+        "split-sharp": [
+            (left: 6, right: 10, start: (group: 3, key: 38)),
+            (left: 5, right: 11, start: (group: 0, key: 24)),
+        ],
+        "wide": [
+            (left: 16, right: 16, start: (group: 2, key: 39)),
+        ],
+        "wide-dn1": [
+            (left: 16, right: 16, start: (group: 2, key: 27)),
+        ],
+    },
+
+    outputs: [
+        (tuning: "edo12", layout: "wicki-hayden", fill: "split",       name: "dlb-edo12-wicki-hayden-split"),
+        (tuning: "edo12", layout: "bosanquet",    fill: "wide-dn1",    name: "dlb-edo12-bosanquet"),
+        (tuning: "edo19", layout: "wicki-hayden", fill: "split",       name: "dlb-edo19-wicki-hayden-split"),
+        (tuning: "edo19", layout: "bosanquet",    fill: "wide-dn1",    name: "dlb-edo19-bosanquet"),
+        (tuning: "edo17", layout: "wicki-hayden", fill: "split",       name: "dlb-edo17-wicki-hayden-split"),
+        (tuning: "edo31", layout: "wicki-hayden", fill: "split",       name: "dlb-edo31-wicki-hayden-split"),
+        (tuning: "edo31", layout: "wicki-hayden", fill: "split-sharp", name: "dlb-edo31-sharp-wicki-hayden-split"),
+        (tuning: "edo31", layout: "wicki-hayden", fill: "wide",        name: "dlb-edo31-wicki-hayden-wide"),
+        (tuning: "edo31", layout: "dlb1",         fill: "split",       name: "dlb-edo31-dlb1-split"),
+        (tuning: "edo31", layout: "dlb1",         fill: "wide",        name: "dlb-edo31-dlb1-wide"),
+        (tuning: "edo31", layout: "bosanquet",    fill: "wide-dn1",    name: "dlb-edo31-bosanquet"),
+        (tuning: "edo41", layout: "wicki-hayden", fill: "wide",        name: "dlb-edo41-wicki-hayden-wide"),
+        (tuning: "edo41", layout: "dlb1",         fill: "wide",        name: "dlb-edo41-dlb1-wide"),
+        (tuning: "edo41", layout: "dlb1",         fill: "split",       name: "dlb-edo41-dlb1-split"),
+        (tuning: "edo41", layout: "bosanquet",    fill: "wide-dn1",    name: "dlb-edo41-bosanquet"),
+        (tuning: "edo12", layout: "harmonic",     fill: "split",       name: "dlb-edo12-harmonic-split"),
+        (tuning: "edo12", layout: "harmonic",     fill: "wide",        name: "dlb-edo12-harmonic-wide"),
+        (tuning: "edo19", layout: "harmonic",     fill: "split",       name: "dlb-edo19-harmonic-split"),
+        (tuning: "edo19", layout: "harmonic",     fill: "wide",        name: "dlb-edo19-harmonic-wide"),
+        (tuning: "edo31", layout: "harmonic",     fill: "split",       name: "dlb-edo31-harmonic-split"),
+        (tuning: "edo31", layout: "harmonic",     fill: "wide",        name: "dlb-edo31-harmonic-wide"),
+        (tuning: "edo53", layout: "dlb1",         fill: "wide",        name: "dlb-edo53-dlb1"),
+        (tuning: "edo53", layout: "wicki-hayden", fill: "wide",        name: "dlb-edo53-wicki-hayden"),
+        (tuning: "edo53", layout: "wicki-hayden", fill: "wide-dn1",    name: "dlb-edo53-dn1-wicki-hayden"),
+        (tuning: "edo53", layout: "bosanquet",    fill: "wide-dn1",    name: "dlb-edo53-bosanquet"),
+    ],
+)

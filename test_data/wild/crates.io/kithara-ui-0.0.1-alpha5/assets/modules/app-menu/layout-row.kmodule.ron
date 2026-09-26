@@ -1,0 +1,36 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "app-menu-layout-row",
+    parameters: ["layout", "label"],
+    root: Pressable(
+        id: "apply",
+        press: Command(id: "ui.layout.apply", with: { "layout": "$layout" }),
+        child: Row(
+            size: (w: Fill, h: Fixed(24.0)),
+            pad_x: 10.0,
+            gap: 8.0,
+            children: [
+                Row(id: "indent", size: (w: Fixed(9.0), h: Fill), gap: 0.0, children: []),
+                Row(
+                    id: "led",
+                    size: (w: Fixed(4.0), h: Fixed(4.0)),
+                    gap: 0.0,
+                    background: Line,
+                    active_background: Accent,
+                    active: Model(id: "ui.layout.selected", with: { "layout": "$layout" }),
+                    children: [],
+                ),
+                Text(
+                    id: "label",
+                    size: (w: Fill, h: Fill),
+                    style: Section,
+                    color: TextDim,
+                    active_color: Text,
+                    label: "$label",
+                    active: Model(id: "ui.layout.selected", with: { "layout": "$layout" }),
+                ),
+            ],
+        ),
+    ),
+)

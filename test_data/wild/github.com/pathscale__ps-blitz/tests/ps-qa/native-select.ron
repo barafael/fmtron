@@ -1,0 +1,27 @@
+[
+    (
+        id: "native-select-option-label",
+        group: "native-select",
+        what: "the option inside an optgroup exposes its label",
+        subject: "option:Team plan",
+        expect: Present,
+    ),
+    (
+        id: "native-select-page-receives-change",
+        group: "native-select",
+        what: "keyboard selection delivers the newly selected value to the page",
+        key_on: Some("combobox:Plan"),
+        key: Some("ArrowDown"),
+        subject: "heading:Chosen team",
+        expect: Present,
+    ),
+    (
+        id: "native-select-page-receives-second-change",
+        group: "native-select",
+        what: "the next keyboard action selects Enterprise and sends its change event",
+        key_on: Some("combobox:Plan"),
+        key: Some("ArrowDown"),
+        subject: "heading:Chosen enterprise",
+        expect: Present,
+    ),
+]

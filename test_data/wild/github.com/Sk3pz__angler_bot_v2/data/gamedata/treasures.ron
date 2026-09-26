@@ -1,0 +1,123 @@
+(
+    treasures: [
+        // --- COMMON (Junk / Humorous) ---
+        (
+            name: "Old Boot",
+            description: "It has a hole in the sole. Sadly, there is no matching boot.",
+            value: 0.5,
+            rarity: Common,
+        ),
+        (
+            name: "Tin Can",
+            description: "An empty bean can. The label is peeling off.",
+            value: 0.2,
+            rarity: Common,
+        ),
+        (
+            name: "Soggy Newspaper",
+            description: "Yesterday's news, literally. It's too wet to read.",
+            value: 0.05,
+            rarity: Common,
+        ),
+        (
+            name: "Cool Stick",
+            description: "Kinda looks like a sword!",
+            value: 0.01,
+            rarity: Common,
+        ),
+        (
+            name: "Old Bandaid",
+            description: "It's still sticky... ew.",
+            value: 0.01,
+            rarity: Common,
+        ),
+        (
+            name: "Broken Spectacles",
+            description: "You can't see the value in these. Neither could the owner.",
+            value: 1.0,
+            rarity: Common,
+        ),
+        (
+            name: "Tangled Fishing Line",
+            description: "The bane of every angler's existence.",
+            value: 0.5,
+            rarity: Common,
+        ),
+        (
+            name: "Plastic Bag",
+            description: "Not the kind of catch we want. Please recycle.",
+            value: 0.5,
+            rarity: Common,
+        ),
+        (
+            name: "Algae Clump",
+            description: "Just a handful of slime.",
+            value: 0.2,
+            rarity: Common,
+        ),
+
+        // --- RARE (Interesting Finds) ---
+        (
+            name: "Message in a Bottle",
+            description: "The note inside says: 'We've been trying to reach you about your car's extended warranty'.",
+            value: 15.0,
+            rarity: Rare,
+        ),
+        (
+            name: "Rusty Lure",
+            description: "An antique lure. With some polish, it might work.",
+            value: 10.0,
+            rarity: Rare,
+        ),
+        (
+            name: "Glass Float",
+            description: "A vintage glass fishing float. Collectors love these.",
+            value: 25.0,
+            rarity: Rare,
+        ),
+        (
+            name: "Silver Spoon",
+            description: "Must have fallen off a yacht.",
+            value: 20.0,
+            rarity: Rare,
+        ),
+        (
+            name: "Waterproof Watch",
+            description: "It's still ticking! The time is wrong, though.",
+            value: 40.0,
+            rarity: Rare,
+        ),
+
+        // --- LEGENDARY (Actual Treasure) ---
+        (
+            name: "Gold Dubloon",
+            description: "A genuine gold coin from the Spanish Main. How it got here is a mystery.",
+            value: 250.0,
+            rarity: Legendary,
+        ),
+        (
+            name: "Pearl",
+            description: "A perfectly round, lustrous white pearl. It must have come from a giant clam.",
+            value: 300.0,
+            rarity: Legendary,
+        ),
+        (
+            name: "Pirate's Chest",
+            description: "It's heavy and locked. What could be inside?",
+            value: 500.0,
+            rarity: Legendary,
+        ),
+        (
+            name: "Ancient Crown",
+            description: "Covered in barnacles, but the gold shines through. Did a fish king wear this?",
+            value: 750.0,
+            rarity: Legendary,
+        ),
+        (
+            name: "Sunken Idol",
+            description: "A strange golden statue. You feel a sudden urge to put it back.",
+            value: 400.0,
+            rarity: Legendary,
+        ),
+    ]
+)

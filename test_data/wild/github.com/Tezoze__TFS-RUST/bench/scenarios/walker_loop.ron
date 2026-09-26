@@ -1,0 +1,13 @@
+(
+    name: "walker_loop",
+    bots: 25,
+    duration_s: 60,
+    warmup_s: 5,
+    seed: 42,
+    walk_period_ms: 500,
+    say_period_ms: 2500,
+    waypoint_file: Some("bench/waypoints/thais_depot_loop.csv"),
+    roles: [
+        (kind: Walker, weight: 1.0),
+    ],
+)

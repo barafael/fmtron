@@ -1,0 +1,9 @@
+(
+    object_type: "ui_img",
+    id: "!icon-question",
+    
+    image: (
+        path: "icon-question.png",
+        copyright: "T.Okubo",
+    ),
+)

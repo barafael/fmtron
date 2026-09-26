@@ -1,0 +1,56 @@
+[
+		Halt(),
+		// hello
+		Call(arg: 0, fnc: 0),
+		Exit(),
+		// get_greeting
+		Set(dst: 0, src: 1),
+		Ret(ret: 0),
+		// hello_1
+		Set(dst: 0, src: 1),
+		Call(arg: 0, fnc: 0),
+		// awa
+		Enter(arg: 0, add: 2),
+		Exit(),
+		// _start
+		Reserve(cnt: 4),
+		Enter(arg: 0, add: 1),
+		Enter(arg: 0, add: 0),
+		// Line 21
+		Set(dst: 0, src: 0),
+		Enter(arg: 1, add: 1),
+		ArPush(arr: 0, src: 1),
+		Set(dst: 1, src: 2),
+		ArPush(arr: 0, src: 1),
+		Set(dst: 1, src: 3),
+		ArPush(arr: 0, src: 1),
+		// Line 27
+		ArIdxI(dst: 1, arr: 0, idx: 0),
+		Enter(arg: 1, add: 0),
+		ArIdxI(dst: 1, arr: 0, idx: 1),
+		Enter(arg: 1, add: 0),
+		ArIdxI(dst: 1, arr: 0, idx: 2),
+		Enter(arg: 1, add: 0),
+		// Line 31
+		Len(dst: 1, arr: 0),
+		Seti(dst: 2, val: 0),
+		ArIdx(dst: 3, arr: 0, idx: 2),
+		Enter(arg: 3, add: 0),
+		AddI(dst: 2, lhs: 2, rhs: 1),
+		Neq(dst: 3, lhs: 2, rhs: 1),
+		CJmpI(cnd: 3, off: -4),
+		VoidA(dst: 1),
+		// Line 35
+		Seti(dst: 1, val: 12),
+		Seti(dst: 2, val: 0),
+		AddI(dst: 2, lhs: 2, rhs: 1),
+		//? If-statement here not implemented
+		Gt(dst: 3, lhs: 2, rhs: 1),
+		CJmpI(cnd: 3, off: 4),
+		GteI(dst: 3, lhs: 2, rhs: 50),
+		CJmpI(cnd: 3, off: 4),
+		JmpI(off: -5),
+		AddI(dst: 1, lhs: 1, rhs: 1),
+		JmpI(off: -8),
+		VoidA(dst: 2),
+]

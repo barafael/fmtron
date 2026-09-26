@@ -1,0 +1,18 @@
+// Edit with `hyprshell config edit`
+(
+    version: 4,
+    windows: (
+        scale: 8.5,
+        items_per_row: 5,
+        overview: None,
+        switch: (
+            modifier: "super",
+            key: "Tab",
+            filter_by: [],
+            switch_workspaces: false,
+            exclude_workspaces: "",
+            kill_key: 'q',
+        ),
+        switch_2: None,
+    ),
+)

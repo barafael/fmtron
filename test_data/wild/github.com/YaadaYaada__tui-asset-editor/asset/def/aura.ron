@@ -1,0 +1,45 @@
+(
+    next_id: 4,
+    defs: [
+        (
+            id: 0,
+            name: "Well Fed",
+            icon: "sprite/icon/cheese.png",
+            duration: 3600.0,
+            aura_type: None,
+            rules_text: "You feel full! Your fortitudeness is through the roof.",
+        ),
+        (
+            id: 1,
+            name: "Shocked",
+            icon: "sprite/icon/lightning.png",
+            duration: 10.0,
+            aura_type: Magic,
+            rules_text: "Dealing lightning damage periodically",
+        ),
+        (
+            id: 2,
+            name: "Haste",
+            icon: "sprite/icon/shoe.png",
+            duration: 4000.0,
+            aura_type: Magic,
+            rules_text: "You\'re feeling exceedingly speedy. Haste increased by 30%",
+        ),
+        (
+            id: 3,
+            name: "Ice Shield",
+            icon: "sprite/icon/unknown.png",
+            duration: 30.0,
+            aura_type: Magic,
+            rules_text: "You are protected by a barrier of ice. The next attack dealt to you will slow the attacker\'s attack speed by 25%.",
+        ),
+        (
+            id: 4,
+            name: "Smolder",
+            icon: "sprite/icon/unknown.png",
+            duration: 15.0,
+            aura_type: Magic,
+            rules_text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce porta ac sapien eget pulvinar.",
+        ),
+    ],
+)

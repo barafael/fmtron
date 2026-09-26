@@ -1,0 +1,7 @@
+(
+    cargo: Some(Autodetect),
+    authors: Some({
+        // match the git commit author name to the GitHub username
+        "Justin Rubek": "justinrubek"
+    }),
+)

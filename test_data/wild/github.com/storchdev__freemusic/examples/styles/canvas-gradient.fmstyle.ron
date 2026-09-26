@@ -1,0 +1,38 @@
+(
+    version: 1,
+    notes: Static((
+        fill: CanvasGradient(
+            top: Constant((80, 120, 255)),
+            bottom: Constant((255, 200, 90)),
+        ),
+        sheen: Some((
+            intensity: 0.35,
+            width: 0.6,
+            angle_degrees: 45.0,
+        )),
+        glow: None,
+        roundedness: 1.0,
+        fall_speed: 400.0,
+        border: None,
+        black_key_fill: Custom(CanvasGradient(
+            top: Constant((40, 60, 130)),
+            bottom: Constant((160, 120, 50)),
+        )),
+        alpha: Constant(1.0),
+    )),
+    barrier: Static((
+        color: Constant((255, 255, 255)),
+        thickness: 4.0,
+        glow: None,
+        pulse: None,
+        wavy: None,
+        show_bar: true,
+    )),
+    transition: Static((
+        kind: r#None,
+        particles: None,
+        flash: None,
+    )),
+    background: Constant((0, 0, 0)),
+    octave_lines: None,
+)

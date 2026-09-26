@@ -1,0 +1,11 @@
+ColorMap(
+    x: Temperature,
+    y: Moisture,
+
+    mappings: (
+        xlo_ylo: 0xA2CFA2,
+        xhi_ylo: 0x9E9875,
+        xhi_yhi: 0x3EA20A,
+        xlo_yhi: 0x84C664,
+    ),
+)

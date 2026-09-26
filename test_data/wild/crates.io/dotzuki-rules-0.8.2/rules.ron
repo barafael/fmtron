@@ -1,0 +1,79 @@
+// rules.ron — the canonical no-code ruleset (doc 11 §1 five-system reference +
+// doc 12 §2 type chart), parseable by `dotzuki_rules::Ruleset::from_ron`.
+//
+// This is the SHAPE the data must reproduce (doc 11 §6). Phase 1 ships the loader
+// + interpreter that consumes this; Phase 2 wires it into minimon. Every name
+// here binds to the CLOSED engine vocabulary (events, ops, selectors, predicates)
+// at LOAD — an unknown name is a load error, never a battle-time surprise.
+//
+// NOTE on `chance`/`mult`: doc 11 sketches `chance:30` and doc 12 `mult:[2,1]`.
+// RON parses a fixed `[u32;2]` as a tuple, so the loader's `Rational` reads the
+// authored `[num, den]` bracket-pair form (e.g. `chance:[30,100]` = 30%). This is
+// the only deviation from the doc's prose sketch; the semantics are identical.
+Ruleset(
+    // Opaque to the engine; the game binding maps these names <-> P::Stat / P::Type.
+    stats: ["Hp", "Atk", "Def", "SpA", "SpD", "Spe"],
+    types: ["Normal", "Rock", "Metal", "Wood", "Water", "Fire", "Earth"],
+
+    // doc 12 §2: the 金木水火土 相克 wheel as integer rationals. Omitted pairs = 1x.
+    type_chart: [
+        ( atk: "Metal", def: "Wood",  mult: [2, 1] ),   // 金克木
+        ( atk: "Wood",  def: "Earth", mult: [2, 1] ),   // 木克土
+        ( atk: "Earth", def: "Water", mult: [2, 1] ),   // 土克水
+        ( atk: "Water", def: "Fire",  mult: [2, 1] ),   // 水克火
+        ( atk: "Fire",  def: "Metal", mult: [2, 1] ),   // 火克金
+        ( atk: "Wood",  def: "Metal", mult: [1, 2] ),
+        ( atk: "Earth", def: "Wood",  mult: [1, 2] ),
+        ( atk: "Water", def: "Earth", mult: [1, 2] ),
+        ( atk: "Fire",  def: "Water", mult: [1, 2] ),
+        ( atk: "Metal", def: "Fire",  mult: [1, 2] ),
+        ( atk: "Water", def: "Wood",  mult: [0, 1] ),   // 水->木 immunity
+    ],
+
+    effects: [
+        // (split) A physical damaging move; the phys/special split is provider+data.
+        Effect(id: "move.tackle", kind: Move, category: "Physical", power: 40, type: "Normal", accuracy: 100,
+            hooks: [
+                Hook(on: "ModifyDamage",  do: [ DealMoveDamage ]),
+                Hook(on: "Effectiveness", order: 100, do: [ ApplyTypeChart ]),
+            ]),
+
+        // A special move with a 30% secondary burn (the chance gate).
+        Effect(id: "move.ember", kind: Move, category: "Special", power: 40, type: "Fire", accuracy: 100,
+            hooks: [
+                Hook(on: "ModifyDamage",  do: [ DealMoveDamage ]),
+                Hook(on: "Effectiveness", order: 100, do: [ ApplyTypeChart ]),
+                Hook(on: "DamagingHit", order: 10, chance: [30, 100], do: [
+                    InflictStatus(status: "burn", target: Target) ]),
+            ]),
+
+        // (a) Poison residual chip — order 10 = BEFORE Leftovers.
+        Effect(id: "status.poison", kind: Status,
+            hooks: [ Hook(on: "Residual", order: 10, do: [
+                DamageFraction(num: 1, den: 8, of: MaxHp, target: Host) ]) ]),
+
+        // (b) Intimidate — on switch-in, request -1 foe Atk.
+        Effect(id: "ability.intimidate", kind: Ability,
+            hooks: [ Hook(on: "SwitchIn", order: 10, do: [
+                Boost(stat: "Atk", stages: -1, target: Foe) ]) ]),
+
+        // (c) Clear Body — veto any negative boost on the holder.
+        Effect(id: "ability.clearbody", kind: Ability,
+            hooks: [ Hook(on: "TryBoost", order: 5, do: [
+                VetoIf(cond: RelayIntLt(0)) ]) ]),
+
+        // (d) Leftovers — heal 1/16 each end-of-turn, AFTER the status chip.
+        Effect(id: "item.leftovers", kind: Item,
+            hooks: [ Hook(on: "Residual", order: 20, do: [
+                HealFraction(num: 1, den: 16, of: MaxHp, target: Host) ]) ]),
+
+        // (e) Sandstorm — chip non-Rock 1/16; x1.5 SpD for Rock. Field-hosted.
+        Effect(id: "weather.sandstorm", kind: Weather,
+            hooks: [
+                Hook(on: "FieldResidual", order: 50, do: [
+                    DamageFraction(num: 1, den: 16, of: MaxHp, target: Target, unless: HasType("Rock")) ]),
+                Hook(on: "WeatherModifyStat", order: 50, do: [
+                    ScaleRelay(num: 3, den: 2, when: [ HasType("Rock"), StatIs("SpD") ]) ]),
+            ]),
+    ],
+)

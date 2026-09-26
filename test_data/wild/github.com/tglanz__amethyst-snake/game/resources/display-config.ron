@@ -1,0 +1,10 @@
+(
+    title: "Snake",
+    dimensions: Some((1024, 768)),
+    max_dimensions: None,
+    min_dimensions: Some((1024, 768)),
+    fullscreen: false,
+    multisampling: 0,
+    visibility: true,
+    vsync: true,
+)

@@ -1,0 +1,4 @@
+[
+    //filename, tile size, rows, columns, [animation name, start index, end index, frame time (seconds), animation type . . .]
+    //("default.png", 16.0, 1, 3, [("walking", 0, 3, 0.1, AnimationType::Repeat),]),
+]

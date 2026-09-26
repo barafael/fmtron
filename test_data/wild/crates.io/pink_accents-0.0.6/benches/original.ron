@@ -1,0 +1,9 @@
+(
+    normalize_case: true,
+
+    patterns: [
+        ("a", Original),
+        ("VeryLongNonExistent12344343243244234", Original),
+        ("you", Original),
+    ],
+)

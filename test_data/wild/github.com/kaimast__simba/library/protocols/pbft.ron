@@ -1,0 +1,4 @@
+PracticalBFT(
+    max_block_size: 1000,
+    max_block_interval: 500,
+)

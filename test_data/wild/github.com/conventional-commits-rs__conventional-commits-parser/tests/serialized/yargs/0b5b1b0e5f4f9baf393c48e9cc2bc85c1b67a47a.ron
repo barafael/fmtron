@@ -1,0 +1,8 @@
+(
+    body: None,
+    desc: "fix enumeration for normalized path arguments (#1567)",
+    footer:[],
+    is_breaking_change: false,
+    scope: Some("deps"),
+    ty: "fix"
+)

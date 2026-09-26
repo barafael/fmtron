@@ -1,0 +1,29 @@
+(
+    normalize_case: true,
+
+    patterns: [
+        ("a", Any([
+            Original,
+            Simple("B"),
+            Simple("Flat"),
+        ])),
+        ("VeryLongNonExistent12344343243244234", Any([Original])),
+        ("you", Any([
+            Any([
+            Any([
+            Any([
+            Any([
+            Any([
+            Any([
+            Any([
+                Simple("nestednormalizeme"),
+            ]),
+            ]),
+            ]),
+            ]),
+            ]),
+            ]),
+            ]),
+        ])),
+    ],
+)

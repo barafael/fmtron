@@ -1,0 +1,8 @@
+// Fostral's height map bent into a torus: the axial direction wraps, so the
+// world has no ends. The derived length (~503 m) gives a centreline radius
+// of ~80 m — comfortably above radius.end, so the tube doesn't self-intersect.
+(
+    radius: (start: 10.0, end: 15.0),
+    density: 10.0,
+    shape: Torus,
+)

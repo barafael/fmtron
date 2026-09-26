@@ -1,0 +1,133 @@
+(
+    config: (
+        output: "./images/bxdf-examples/fresnel2",
+        passes: 10000,
+        threads: None,
+    ),
+    camera: {
+        "NaiveCamera": (
+            sampler: Random,
+            eye: (
+                x: -8,
+                y: 8,
+                z: 8,
+            ),
+            target: (
+                x: 0,
+                y: 1.25,
+                z: 0,
+            ),
+            up: (
+                x: 0,
+                y: 1,
+                z: 0,
+            ),
+            fov: 20,
+            resolution: (
+                x: 512,
+                y: 512,
+            ),
+        ),
+    },
+    integrator: {
+        "SpectralPath": (
+            max_depth: 8,
+            sampler: Random,
+            direct_illum: All,
+            spectral_sampler: Hero,
+        ),
+    },
+    scene: (
+        objects: [
+            // floor
+            Receiver((
+                geometry: {
+                    "Plane": (
+                        point: (
+                            x: 0,
+                            y: 0,
+                            z: 0,
+                        ),
+                        normal: (
+                            x: 0,
+                            y: 1,
+                            z: 0,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "LambertianReflection": (
+                                r: Color(White),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // dragon
+            Receiver((
+                geometry: {
+                    "Mesh": Config((
+                        path: "./meshes/dragon_512.obj",
+                        scale: Some((
+                            x: 5,
+                            y: 5,
+                            z: 5,
+                        )),
+                        shading_mode: Flat,
+                    )),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "FresnelSpecular": (
+                                r: MulColor(2, BlueSky),
+                                t: MulColor(2, BlueSky),
+                                fresnel: (
+                                    eta_i: Air,
+                                    eta_t: Glass,
+                                ),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            Receiver((
+                geometry: {
+                    "Sphere": (
+                        center: (
+                            x: 0,
+                            y: 0,
+                            z: 0,
+                        ),
+                        radius: 20,
+                    )
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "LambertianReflection": (
+                                r: Color(White),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            Emitter((
+                geometry: {
+                    "Sphere": (
+                        center: (
+                            x: 5,
+                            y: 10,
+                            z: -5,
+                        ),
+                        radius: 1,
+                    ),
+                },
+                emission: Constant(1),
+                decay: false,
+            )),
+        ],
+    ),
+)

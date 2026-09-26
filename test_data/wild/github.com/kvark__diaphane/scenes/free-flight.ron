@@ -1,0 +1,46 @@
+// A wave packet crossing empty space.
+//
+// Two cycles of a 18.7 GHz carrier under a Gaussian envelope, launched from a
+// sheet a third of the way back from the centre and polarized along z. Watch it
+// in the Ez view: the alternating red and blue lobes are the half-cycles, and
+// the curvature of the wavefronts is the beam diverging.
+//
+// The sheet is a soft source, so it radiates in *both* directions along x. The
+// backward half is absorbed by the near wall a few hundred steps in.
+//
+// All lengths are metres, measured from the centre of the domain.
+//
+// Try:
+//   cargo viz --scene scenes/free-flight.ron --mode electric
+
+Scene(
+    // 96 mm cube at 1 mm per cell. Sixteen cells per wavelength keeps
+    // numerical dispersion to a few tenths of a percent.
+    grid: Grid(
+        extent: Extent(x: 96, y: 96, z: 96),
+        cell_size: 0.001,
+        courant: 0.5,
+    ),
+    boundary: Absorbing(thickness: 10, target_reflection: 0.000001),
+    materials: MaterialTable(materials: [
+        Material(
+            relative_permittivity: 1.0,
+            relative_permeability: 1.0,
+            conductivity: 0.0,
+            magnetic_loss: 0.0,
+        ),
+    ]),
+    shapes: [],
+    sources: [
+        Source(
+            shape: Sheet(axis: X, offset: -0.0288, waist: 0.024),
+            polarization: Z,
+            waveform: GaussianPulse(
+                center_frequency: 18737029000.0,
+                duration_cycles: 2.0,
+                delay: 0.00000000021348102,
+            ),
+            amplitude: 1.0,
+        ),
+    ],
+)

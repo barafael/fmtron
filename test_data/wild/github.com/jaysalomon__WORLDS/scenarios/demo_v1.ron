@@ -1,0 +1,6 @@
+(
+    name: "demo_v1",
+    seed: 20260315,
+    partition_count: 96,
+    notes: "Demo scenario tuned for visibly changing social, biological, and resource dynamics in a short run.",
+)

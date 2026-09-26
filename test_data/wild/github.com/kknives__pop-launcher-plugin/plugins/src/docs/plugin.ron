@@ -1,0 +1,11 @@
+(
+    name: "DocFind",
+    description: "Find files in folders meant for documents",
+    query: (
+        regex: "^(df )+",
+        help: "docfind ",
+        isolate: true,
+    ),
+    bin: (path: "docs"),
+    icon: Name("system-file-manager")
+)

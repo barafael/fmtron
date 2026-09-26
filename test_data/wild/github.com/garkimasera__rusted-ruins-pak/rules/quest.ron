@@ -1,0 +1,4 @@
+(
+    duplicate_factor: 0.1,
+    update_duration_days: 5,
+)

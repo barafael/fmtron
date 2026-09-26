@@ -1,0 +1,7 @@
+Material(
+    pipeline: "/engine/simple/unlit",
+    params: {
+        "base_colour": Constant(RGB(0, 128, 255)),
+    },
+)
+

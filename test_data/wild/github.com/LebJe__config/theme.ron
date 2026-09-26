@@ -1,0 +1,5 @@
+(
+	selection_bg: Some("#355f8f"),
+	cmdbar_bg: Some("#355f8f"),
+	cmdbar_extra_lines_bg: Some("#355f8f")
+)

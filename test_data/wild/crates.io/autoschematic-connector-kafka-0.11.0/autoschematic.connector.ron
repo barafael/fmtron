@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "kafka",
+    protocol: "binary-tarpc",
+    description: "Manages Kafka",
+    stability: "preview"
+)

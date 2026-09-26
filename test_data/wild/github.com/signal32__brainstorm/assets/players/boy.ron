@@ -1,0 +1,5 @@
+PlayerAsset (
+    sprite: "sprites/scenery/monarch_butterfly.png",
+    speed: 10.0,
+    health: 100
+)

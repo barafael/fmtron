@@ -1,0 +1,144 @@
+// SFX manifest — moddable surface for sound-effect cues.
+//
+// Each entry is one named cue. The runtime `SfxPlugin`
+// (src/plugins/sfx/mod.rs) loads this on `Startup`, resolves the
+// `file` path under `assets/audio/sfx/`, and registers a
+// `Handle<AudioSource>` per cue in `SfxRegistry`.
+//
+// **Moddability**: to override an existing cue, drop a `.wav`
+// into `assets/audio/sfx/` with the same `file` name and
+// (optionally) tweak `default_volume` / `cooldown_ms` here. To
+// add a new cue, append an entry below *and* add the matching
+// `SfxCueId` variant in `src/plugins/sfx/mod.rs` (the audit script
+// `scripts/audit_sfx_manifest.py` enforces this).
+//
+// **Schema**: `SfxCategory` is the same enum used internally
+// for per-category volume routing (mirrors the categories in
+// `assets/data/notifications.ron`). `default_volume` is a
+// linear multiplier on top of the player's `sfx_volume` master
+// slider; values are typically 0.5–1.0. `cooldown_ms` is the
+// minimum interval between successive plays of the same cue
+// (prevents button-mash saturation). `prompt` is the natural-
+// language brief fed to the MiniMax Audio generator — see
+// `assets/data/sfx_prompts.ron` for the canonical prompts used
+// to produce the bundled WAVs.
+//
+// **Phase 1 surface**: 13 UI cues + 1 universal notification
+// chime. Construction / research / shipbuilding / fleet /
+// survey / launch / time-control cues are added in later PRs
+// (see `docs/SFX.md` for the full roadmap).
+(
+    cues: [
+        // ── UI chrome ─────────────────────────────────────────────
+        (
+            id: "ui.button_click",
+            file: "ui_button_click.wav",
+            category: Ui,
+            default_volume: 0.7,
+            cooldown_ms: 50,
+            prompt: "Sharp metallic pushbutton click, 80ms. A single hard transient — like a small metal striker hitting a steel anvil once, then absolute silence. NO drum head, NO body sustain, NO resonance, NO reverb tail. Just the crack of metal on metal and then nothing. Pure impulse, sub-15ms attack, immediate silence. Reads as a tactile click, not a musical percussion hit.",
+        ),
+        (
+            id: "ui.tab_switch",
+            file: "ui_tab_switch.wav",
+            category: Ui,
+            default_volume: 0.6,
+            cooldown_ms: 80,
+            prompt: "Pure mechanical switch click, 110ms. A single mid-frequency clack — like a sealed micro-switch closing inside a metal enclosure. Completely DRY, no reverb, no tail, no sustain. Sharp attack and immediate silence. Reads as 'click happened', not as a musical note. Lower pitch and duller timbre than ui_button_click — distinctly different character.",
+        ),
+        (
+            id: "ui.panel_open",
+            file: "ui_panel_open.wav",
+            category: Ui,
+            default_volume: 0.65,
+            cooldown_ms: 200,
+            prompt: "Mechanical latch releasing, 220ms. A heavy panel door unlatching — a single decisive mechanical unlock thunk followed by an immediate short slide. No alarm, no siren, no whoosh. Completely dry, no reverb tail. Reads as a metal lid popping open, finishing cleanly within the duration.",
+        ),
+        (
+            id: "ui.panel_close",
+            file: "ui_panel_close.wav",
+            category: Ui,
+            default_volume: 0.9,
+            cooldown_ms: 200,
+            prompt: "Massive metallic slam, 180ms. A heavy steel blast door slammed hard shut with full force — a LOUD, explosive metallic impact with high-amplitude transient, then absolute silence. Reads as a thick iron plate locking closed with real mass behind it. NO reverb, NO decay, NO tail. The sound must be as loud as a slammed car door in a quiet garage — visceral, weighty, decisive.",
+        ),
+        (
+            id: "ui.slider_tick",
+            file: "ui_slider_tick.wav",
+            category: Ui,
+            default_volume: 0.5,
+            cooldown_ms: 40,
+            prompt: "Encoder detent pulse, 60ms. A precise notched-wheel click under a metal stylus. Mechanical, mid-high, dry. Like a detented rotary encoder on a spacecraft instrument panel.",
+        ),
+        (
+            id: "ui.dropdown_open",
+            file: "ui_dropdown_open.wav",
+            category: Ui,
+            default_volume: 0.6,
+            cooldown_ms: 150,
+            prompt: "Mechanical detent popup, 140ms. A hinged metal cover flipping open with a spring-loaded snap — like a flip-up guarded switch on a military radio. Mid-pitched, decisive, no chirp.",
+        ),
+        (
+            id: "ui.row_select",
+            file: "ui_row_select.wav",
+            category: Ui,
+            default_volume: 0.55,
+            cooldown_ms: 80,
+            prompt: "Targeting computer lock tone, 100ms. A muted two-tone metallic ping — like a weapons console acknowledging target selection. Tonal (not percussive), brief sustain, no melodic sweetness.",
+        ),
+        (
+            id: "ui.drag_drop",
+            file: "ui_drag_drop.wav",
+            category: Ui,
+            default_volume: 0.7,
+            cooldown_ms: 120,
+            prompt: "Magnetic coupling engagement, 180ms. A heavy industrial bolt-latch snapping into its receiver — steel shoe locking into a hard mount. Solid low-mid, satisfying weight.",
+        ),
+        (
+            id: "ui.modal_confirm",
+            file: "ui_modal_confirm.wav",
+            category: Ui,
+            default_volume: 0.75,
+            cooldown_ms: 200,
+            prompt: "Metallic confirmation impact, 280ms. A single low-mid metallic thud followed by one short descending metallic ping — like a heavy solenoid latching into 'READY'. NO flute, NO woodwind, NO sustained tonal note. Pure metal — percussive, dry, no reverb. Aggressive transient at the start, immediate silence at the end. Must NOT sound musical or sweet.",
+        ),
+        (
+            id: "ui.modal_cancel",
+            file: "ui_modal_cancel.wav",
+            category: Ui,
+            default_volume: 0.75,
+            cooldown_ms: 200,
+            prompt: "Disarm confirmation, 280ms. A muted descending two-tone, lower and softer than ui_modal_confirm. Like a safety cover snapping back over an arming switch. No musical sweetness.",
+        ),
+        (
+            id: "ui.chip_toggle",
+            file: "ui_chip_toggle.wav",
+            category: Ui,
+            default_volume: 0.55,
+            cooldown_ms: 60,
+            prompt: "Toggle switch throw, 70ms. A guarded micro-switch clicking on/off — military-spec toggle, dry, mid-high. Symmetric: on and off sound identical (state is conveyed visually).",
+        ),
+        (
+            id: "ui.mode_toggle",
+            file: "ui_mode_toggle.wav",
+            category: Ui,
+            default_volume: 0.7,
+            cooldown_ms: 150,
+            prompt: "Mode-selector detent, 160ms. A heavy rotary knob clicking into a new detent position — like a 4-position weapons-selector switch on a hard-mounted console.",
+        ),
+
+        // ── Notifications (universal chime) ────────────────────────
+        // Plays once per *coalesced* toast (see
+        // src/plugins/sfx/bridges/notifications.rs). Cooldown is
+        // long enough that a burst of toasts yields at most one
+        // chime per second.
+        (
+            id: "notifications.chime",
+            file: "notifications_chime.wav",
+            category: Notifications,
+            default_volume: 0.7,
+            cooldown_ms: 1000,
+            prompt: "Comms-channel incoming alert, 600ms. A two-tone metallic ping over a low hum — like an intercom opening on a ship's bridge, or a comms officer's headset registering an incoming transmission. Not a bell, not an arpeggio — a station hailing you.",
+        ),
+    ],
+)

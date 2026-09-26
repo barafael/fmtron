@@ -1,0 +1,19 @@
+(
+    source_locale: "en-US",
+    terms: "terms.ron",
+    source_bundle: "out/en-US.trox.json",
+    source_report: "locales/en-US.csv",
+    sources: [
+        (language: Rust, include: ["src/**/*.rs"]),
+        (language: TypeScript, include: ["web/**/*.ts", "web/**/*.tsx"]),
+        (language: Ron, include: ["data/**/*.ron"]),
+    ],
+    locales: {
+        "es": (profile: "locales/es.ron", csv: "locales/es.csv", bundle: "out/es.trox.json"),
+    },
+    term_forms: {
+        "counted": (description: "Term inflected for an explicit count.", number: Required),
+        "indefinite": (description: "Nonspecific singular noun phrase.", source_fallback: Default),
+    },
+    ron_description_defaults: { "data/**/*.ron": "Player-authored game data label." },
+)

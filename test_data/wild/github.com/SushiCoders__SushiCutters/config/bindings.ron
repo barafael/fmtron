@@ -1,0 +1,10 @@
+(
+  axes: {
+    Horizontal: Emulated(pos: Key(D), neg: Key(A)),
+    Vertical: Emulated(pos: Key(W), neg: Key(S)),
+  },
+  actions: {
+    ToggleColliders: [[Key(F2)]],
+    Attack: [[Key(Space)]],
+  },
+)

@@ -1,0 +1,204 @@
+// A schema describes the words and concepts used in the narrative.
+Schema(
+    // User defined enums
+    // Is this necessary? It adds some redundancy. 
+    // Maybe define them in properties directly, at the cost of losing reusability.
+    enums: {
+        "size": ["tiny", "small", "average", "big", "huge"],
+        "relation":["enemy", "rival", "acquaintance", "friend", "devoted"],
+        "wealth": ["destitute", "poor", "average", "rich", "obscene"],
+        "quality": ["awful", "poor", "average", "good", "remarkable", "divine"],
+        "severity": ["petty", "serious", "unforgivable"],
+        "month": ["frosty", "springy", "sunny", "harvesty"],
+        "time of day": ["morning", "midday", "evening", "night"],
+        "object type": ["clothing", "letter"],
+    },
+
+    // User defined properties of entities
+    properties: {
+        "speech": String, // maybe use a different type to denote that this is likely templated? But all strings ought to be templateable anyway.
+
+        "name": String,
+        "given name": String,
+        "family name": String,
+        "age": Int,
+        "description": String,
+
+        "size": Enum("size"),
+        "wealth": Enum("wealth"),
+        "population": Enum("size"),
+
+        "era": String,
+        "year": Int,
+        "month": Enum("month"),
+        "day": Int,
+        "hour": Int,
+        "minute": Int,
+        "time of day": Enum("time of day"), 
+
+        "who": Entity("character"),
+        "other": Entity("character"),
+        "impression": Enum("quality"),
+        "severity": Enum("severity"),
+        "quality": Enum("quality"), // Is this redundancy necessary? If no props match the label, go check the enums.
+        "deal quality": Enum("quality"), // we don't care about actual value of things, only qualitative events for storytelling
+
+        // How to do nested properties?
+        "gender": Properties([ // when array, means it's a list of other properties
+            "name",
+            "gendered title",
+            "gendered title short",
+        ]),
+        "gendered title": String,
+        "gendered title short": String,
+
+        // How to handle syntax? articles? possessive?
+        "article": String,
+
+    },
+
+    // An entity is a type of thing important to the narrative. Each contain a set of named properties.
+    // The properties below are mandatory, but any entity can have additional optional properties.
+    entity_types: {
+        "character": [
+            "description",
+            "given name",
+            "family name",
+            "gender",
+            "age",
+            "size",
+        ],
+        "city": [
+            "name",
+            "population",
+        ],
+        "object": [
+            "name",
+            "object type",
+            "quality",
+            "description",
+        ],
+        "building": [
+            "name",
+            "size",
+            "wealth",
+            "description",
+        ],
+        "business": [
+            "product",
+            "wealth",
+        ],
+
+        // In most use cases, there would probably be only be a Singleton entity of this type.
+        "time": [ // let each user define their representation of time
+            "era",
+            "year",
+            "month",
+            "day",
+            "hour",
+            "minute",
+            "time of day",
+        ]
+    },
+
+    // Can be optionally added to any entity.
+    flags: [
+        "jolly",
+        "pretty",
+        "ugly",
+        "clever",
+        "local renown", // ex: when entering an area where player gained fame, he receives this flag
+        "unconscious",
+        "sleeping",
+    ],
+
+    // The ways in which entities can relate to each other, and an optional relationship qualifier.
+    // Unidirectional.
+    relationships: {
+        "in": [
+            ("character", "city", None),
+            ("object", "object", None),
+            ("building", "city", None),
+            ("business", "building", None),
+        ],
+        "knows": [
+            // should the qualifier instead be multiple relationships? "is aquainted" "is rival" "is friend"
+            // But then in our case only one at a time makes sense, which makes the qualifier useful while not
+            // preventing the other approach.
+            ("character", "character", Some("relation")),
+        ],
+        "works for": [
+            ("character", "character", None),
+        ],
+        "owns": [
+            ("character", "object", None),
+            ("character", "business", None),
+        ],
+        "carries": [
+            ("character", "object", None),
+            ("character", "character", None),
+        ],
+    },
+
+    // User defined instructions. The writer's mean to express modifications to the narration.
+    // Instructions must then be interpreted by the caller. In its simplest form, each instruction type
+    // may get mapped to a different function call.
+    // In effect a sort of simple scripting language available to the writers.
+    instructions: {
+        "say": [
+            "who",
+            "speech",
+        ],
+        "say to": [
+            "who",
+            "other",
+            "speech",
+        ],
+
+        // This probably should be handled gameside. Otherwise, writers would have to add this
+        // "encounter" instruction every time entites interact.
+        // A better way would be for the game to manage this via instructions involving multiple
+        // entities, and writers need only add story relevant instructions like "offend", "flatter", etc.
+        "encounter": [
+            "time",
+            "who",
+            "other",
+            "impression",
+        ],
+
+        "offend": [
+            "who",
+            "other",
+            "severity"
+        ],
+        "give": [
+            "who",
+            "other",
+            "object",
+        ],
+
+        // This is an interesting case. Can writers handle game systems like trading? Or should that be done
+        // gameside and then relayed via entities and relationships in the narration?
+        // I feel like they should focus on the fewest things necessary, meaning keep storytelling as separate
+        // from the game systems as possible. Writers focus on things of narrative import.
+        // What is interesting about a sale storywise? The relationship between seller and buyer, the quality
+        // of the item or the deal, the legal aspect, etc. Therefore an event such as a sale gameside affects
+        // the narration in those terms. Giving an explicit "sale" instruction might be the wrong way to go.
+        // An alternative would be an instruction such as "allow sale" or its opposite.
+        "sale" :[ // some props are entity labels, some are an Enum. Probably doable with custom deserializer.
+            "who", // the salesman. use other labels?
+            "other", // the buyer
+            "what",
+            "deal quality",
+        ],
+
+    },
+
+    // can specify some global entities. They can be static characters. Need to set their props in the narration.
+    global_entities: {
+        "TIME": "time",
+        "PROTAG": "character", // the main character aka the player
+        "MALE": "gender",
+        "FEMALE": "gender",
+    }
+)

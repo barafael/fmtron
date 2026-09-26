@@ -1,0 +1,16 @@
+(
+    list: [
+        (
+            name: "Numbers",
+            path: "ron/kao.game.ron",
+        ),
+        (
+            name: "いいゲ",
+            path: "ron/iig.game.ron",
+        ),
+        (
+            name: "only 5",
+            path: "ron/kao_s.game.ron",
+        )
+    ]
+)

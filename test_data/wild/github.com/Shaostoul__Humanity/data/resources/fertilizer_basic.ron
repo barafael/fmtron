@@ -1,0 +1,13 @@
+// data/resources/fertilizer_basic.ron
+(
+  nutrient_id: "fertilizer_basic",
+  common_name: "Balanced fertilizer (basic)",
+  quantity_units: "kg",
+  quantity_value: 1.0,
+
+  nitrate_mg: 100000.0,
+  phosphate_mg: 60000.0,
+  potassium_mg: 80000.0,
+
+  release_profile: "immediate",
+)

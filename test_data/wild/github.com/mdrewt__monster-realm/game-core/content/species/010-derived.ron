@@ -1,0 +1,33 @@
+// Derived species (M10a-content) — evolution targets + fusion results. DATA, not
+// code (ADR-0006/0019/0060). Stable `id`s are APPEND-ONLY (this file sorts AFTER
+// 000-core.ron, so the 000-core rows stay the registry prefix). Species 4, 5, 6 are
+// all evolution/fusion-only DERIVED forms and MUST NEVER appear in an encounter table
+// (validate_evolution_fusion enforces it). They are reachable in-game only via a
+// transform of a wild-obtainable form: Flameling (1) evolves into 4 or 5; Flameling
+// (1) + Tidalin (2) fuse into 6.
+[
+    (
+        id: 4,
+        name: "Pyroleo",
+        base_stats: (hp: 75, attack: 84, defense: 70, speed: 90, sp_attack: 90, sp_defense: 70),
+        affinity: Fire,
+        learnable_skill_ids: [1, 2],
+        tier: 1,
+    ),
+    (
+        id: 5,
+        name: "Embersworn",
+        base_stats: (hp: 80, attack: 95, defense: 75, speed: 80, sp_attack: 70, sp_defense: 70),
+        affinity: Fire,
+        learnable_skill_ids: [1, 2],
+        tier: 1,
+    ),
+    (
+        id: 6,
+        name: "Steamveil",
+        base_stats: (hp: 70, attack: 70, defense: 72, speed: 70, sp_attack: 88, sp_defense: 80),
+        affinity: Water,
+        learnable_skill_ids: [1, 3],
+        tier: 1,
+    ),
+]

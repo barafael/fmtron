@@ -1,0 +1,68 @@
+#![enable(implicit_some)]
+Container(
+	transform: (
+		id:"oxygen_bar",
+		anchor:BottomLeft,
+		x:100,
+		y:100,
+		z:0.0,
+		width: 100.,
+		height:11.,
+	),
+	background: (
+        image: Data(Rgba((1.0, 1.0, 1.0, 0.2), (channel: Srgb))),
+	),
+	children:[
+		Image(
+			transform: (
+				id:"filled_bar",
+				anchor: MiddleLeft,
+				x:25.,
+				z:2.,
+				height: 7.,
+				width:50.,
+				scale_mode:Pixel,
+			),
+			image: (
+				image:File("ui/oxygen_bar/filled_bar.png", Png, (channel:Srgb))
+			)
+		),
+		Image(
+			transform: (
+				id:"empty_bar",
+				anchor: Middle,
+				z:1.,
+				stretch:X(x_margin:0),
+				height: 7.,
+				scale_mode:Pixel,
+			),
+			image: (
+				image:File("ui/oxygen_bar/empty_bar.png", Png, (channel:Srgb))
+			)
+		),
+		Image(
+			transform: (
+				id:"left_end",
+				anchor: MiddleLeft,
+				z:2.,
+				height: 11.,
+				width:8.,
+			),
+			image: (
+				image:File("ui/oxygen_bar/left_end.png", Png, (channel:Srgb))
+			)
+		),
+		Image(
+			transform: (
+				id:"right_end",
+				anchor: MiddleRight,
+				z:2.,
+				height: 11.,
+				width:8.,
+			),
+			image: (
+				image:File("ui/oxygen_bar/right_end.png", Png, (channel:Srgb))
+			)
+		),
+	]	
+)

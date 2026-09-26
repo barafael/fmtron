@@ -1,0 +1,10 @@
+(
+  title: "Tofu on Fire",
+  // dimensions: Some((1280, 960)),
+  // dimensions: Some((960, 720)),
+  // dimensions: Some((640, 480)),
+  fullscreen: None,
+  multisampling: 0,
+  visibility: true,
+  vsync: true,
+)

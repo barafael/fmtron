@@ -1,0 +1,49 @@
+(
+    lua_file: "seatrial.lua",
+
+    grunts: [
+        (
+            base_name: "Postmaster General",
+            count: 1,
+            persona: (
+                timeout: Seconds(30),
+                sequence: [
+                    LuaFunction("generate_profile"),
+                    Http(Post(
+                        url: "/profile",
+                        body: LuaTableValue("profile"),
+                        headers: { "Content-Type": Value("application/json") },
+                    )),
+                    Combinator(AllOf([
+                        WarnUnlessStatusCodeInRange(200, 299),
+                        WarnUnlessHeaderExists("X-Never-Gonna-Give-You-Up"),
+                    ]))
+                ]
+            ),
+        ),
+        (
+            base_name: "Reloader Grunt",
+            count: 10,
+            persona: (
+                timeout: Seconds(30),
+
+                sequence: [
+                    LuaFunction("generate_30_day_range"),
+                    Http(Get(
+                        url: "/calendar",
+                        params: {
+                            "start_date": LuaTableValue("start_date"),
+                            "end_date": LuaTableValue("end_date"),
+                        },
+                    )),
+                    Combinator(AllOf([
+                        WarnUnlessStatusCodeInRange(200, 299),
+                        WarnUnlessHeaderExists("X-Never-Gonna-Give-You-Up"),
+                        LuaFunction("is_valid_esoteric_format"),
+                    ])),
+                    ControlFlow(GoTo(index: 0, max_times: 2)),
+                ],
+            ),
+        ),
+    ],
+)

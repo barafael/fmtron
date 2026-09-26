@@ -1,0 +1,12 @@
+StateGraph( // name optional, but must be same name as struct
+    name: Some("Example"),
+    nodes: [
+        (7, Some("This is node 7")),
+        (11, None),
+        (42, Some("This is node 42")),
+    ],
+    edges: [
+        (7, 11, None),
+        (7, 42, Some("Edge from 7 to 42")),
+    ],
+)

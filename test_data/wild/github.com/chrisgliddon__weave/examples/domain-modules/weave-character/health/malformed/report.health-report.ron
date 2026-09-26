@@ -1,0 +1,72 @@
+(
+    report_format_version: 1,
+    id: "org.weave.character.health.report_316d9a3a5c653939",
+    manifest_id: "org.weave.character.health.malformed_project",
+    input_sha256: "316d9a3a5c6539396506e8673c4e8348213765670d75a525ad3b95097d7bf151",
+    summary: (
+        documents_total: 1,
+        documents_valid: 0,
+        characters_total: 0,
+        diagnostics_total: 2,
+        active_diagnostics: 2,
+        suppressed_diagnostics: 0,
+        active_by_severity: {
+            error: 2,
+        },
+        failure_threshold: Some(error),
+        ci_exit_code: 2,
+    ),
+    coverage: (
+        characters: {},
+        factor_values_present: 0,
+        factor_values_total: 0,
+        facet_values_present: 0,
+        facet_values_total: 0,
+        known_confidence_values: 0,
+        measured_values: 0,
+    ),
+    distributions: (
+        trait_bands: {},
+        relationship_kinds: {},
+        role_taxonomies: {},
+        expression_categories: {},
+        constraints_configured: 0,
+    ),
+    diagnostics: [
+        (
+            id: "health_60de45c5f3574a25",
+            code: H101,
+            severity: error,
+            scope: (
+                scope: "document",
+                document_id: "org.weave.health.malformed.collection",
+            ),
+            path: "characters",
+            source: Some((
+                document_id: "org.weave.health.malformed.collection",
+                file: "collection.character-collection.json",
+            )),
+            explanation: "source omits a required field from its declared Character document contract",
+            remediation: "Add the required typed field using the current schema, then rerun strict validation.",
+        ),
+        (
+            id: "health_0efa899a0c8967a2",
+            code: H100,
+            severity: error,
+            scope: (
+                scope: "document",
+                document_id: "org.weave.health.malformed.collection",
+            ),
+            path: "document",
+            source: Some((
+                document_id: "org.weave.health.malformed.collection",
+                file: "collection.character-collection.json",
+            )),
+            explanation: "source cannot be decoded as its declared strict Character document kind and encoding",
+            remediation: "Restore every required field, remove unknown or duplicate fields, and validate the declared JSON or RON document.",
+        ),
+    ],
+    suppressions: [],
+    read_only: true,
+    source_payloads_retained: false,
+)

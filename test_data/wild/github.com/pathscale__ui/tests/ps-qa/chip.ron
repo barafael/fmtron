@@ -1,0 +1,37 @@
+// Generated from tests/qa-harness/components.ts by tests/qa-harness/generate-checks.ts. Do not edit.
+//
+// Chip, mounted alone on its own harness page. Outcomes for
+// this component share one native host; idempotent preparation keeps each
+// outcome reproducible by id against a fresh host as well.
+[
+    (
+        id: "chip-page-paints",
+        group: "chip",
+        what: "the Chip page builds and paints",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "heading:Chip",
+        expect: PaintsNamed,
+    ),
+    (
+        id: "chip-renders",
+        group: "chip",
+        what: "Chip renders a node of its own",
+        open: None,
+        hover: None,
+        click: None,
+        subject: "fixture",
+        expect: Paints,
+    ),
+    (
+        id: "chip-removes",
+        group: "chip",
+        what: "the removable chip invokes its owner",
+        open: None,
+        hover: None,
+        click: Some("button:Remove fixture chip"),
+        subject: "heading:Chip removed",
+        expect: PaintsNamed,
+    ),
+]

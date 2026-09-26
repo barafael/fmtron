@@ -1,0 +1,13 @@
+(
+    name: "Flower",
+    key: "flower",
+    tool_type: Attachable((
+        distance: 0.5,
+        forward: (0.0, 0.0, 1.0),
+    )),
+    initial_scale: 0.05,
+    scaling: Some((
+        min: 0.0125,
+        max: 0.1,
+    )),
+)

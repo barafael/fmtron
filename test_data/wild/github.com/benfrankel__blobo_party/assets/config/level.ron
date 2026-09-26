@@ -1,0 +1,9 @@
+(
+    levels: [
+        LevelData(xp_cost: 50),
+        LevelData(xp_cost: 100),
+        LevelData(xp_cost: 150),
+        LevelData(xp_cost: 200),
+        LevelData(xp_cost: 300),
+    ],
+)

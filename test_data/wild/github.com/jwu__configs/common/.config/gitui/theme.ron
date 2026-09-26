@@ -1,0 +1,5 @@
+(
+    selection_fg: Some("#282c34"),
+    command_fg: Some("#282c34"),
+    push_gauge_fg: Some("#282c34"),
+)

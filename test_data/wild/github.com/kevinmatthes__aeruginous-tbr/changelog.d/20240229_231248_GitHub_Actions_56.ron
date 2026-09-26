@@ -1,0 +1,9 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "Brotli; fixes #56",
+      "test cases for Brotli",
+    ],
+  },
+)

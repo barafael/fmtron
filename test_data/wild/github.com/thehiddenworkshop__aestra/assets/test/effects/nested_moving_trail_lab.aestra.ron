@@ -1,0 +1,149 @@
+(
+    format_version: 4,
+    id: "a3574a00-0000-4000-8000-00000000d601",
+    name: "Nested Moving Trail Lab",
+    duration: 6.0,
+    playback_mode: LoopContinuous,
+    host_transform_track: Some((
+        curves: (
+            translation: ((
+                id: "a3574a00-0000-4000-8000-00000000e000",
+                keys: [
+                    (
+                        time: 0.0,
+                        value: -30.0,
+                    ),
+                    (
+                        time: 3.0,
+                        value: 30.0,
+                    ),
+                    (
+                        time: 6.0,
+                        value: -30.0,
+                    ),
+                ],
+                interpolation: Linear,
+            ), (
+                id: "a3574a00-0000-4000-8000-00000000e001",
+                keys: [
+                    (
+                        time: 0.0,
+                        value: 0.0,
+                    ),
+                    (
+                        time: 3.0,
+                        value: 10.0,
+                    ),
+                    (
+                        time: 6.0,
+                        value: 0.0,
+                    ),
+                ],
+                interpolation: Linear,
+            ), (
+                id: "a3574a00-0000-4000-8000-00000000e002",
+                keys: [
+                    (
+                        time: 0.0,
+                        value: 0.0,
+                    ),
+                    (
+                        time: 3.0,
+                        value: 0.0,
+                    ),
+                    (
+                        time: 6.0,
+                        value: 0.0,
+                    ),
+                ],
+                interpolation: Linear,
+            )),
+            rotation: (
+                keys: [
+                    (
+                        time: 0.0,
+                        value: (0.0, 0.0, 0.0, 1.0),
+                    ),
+                    (
+                        time: 3.0,
+                        value: (0.0, 0.0, 0.38268343, 0.9238795),
+                    ),
+                    (
+                        time: 6.0,
+                        value: (0.0, 0.0, 0.0, 1.0),
+                    ),
+                ],
+                interpolation: Linear,
+            ),
+            scale: ((
+                id: "a3574a00-0000-4000-8000-00000000e003",
+                keys: [
+                    (
+                        time: 0.0,
+                        value: 1.5,
+                    ),
+                    (
+                        time: 3.0,
+                        value: 1.5,
+                    ),
+                    (
+                        time: 6.0,
+                        value: 1.5,
+                    ),
+                ],
+                interpolation: Linear,
+            ), (
+                id: "a3574a00-0000-4000-8000-00000000e004",
+                keys: [
+                    (
+                        time: 0.0,
+                        value: 0.75,
+                    ),
+                    (
+                        time: 3.0,
+                        value: 0.75,
+                    ),
+                    (
+                        time: 6.0,
+                        value: 0.75,
+                    ),
+                ],
+                interpolation: Linear,
+            ), (
+                id: "a3574a00-0000-4000-8000-00000000e005",
+                keys: [
+                    (
+                        time: 0.0,
+                        value: 1.0,
+                    ),
+                    (
+                        time: 3.0,
+                        value: 1.0,
+                    ),
+                    (
+                        time: 6.0,
+                        value: 1.0,
+                    ),
+                ],
+                interpolation: Linear,
+            )),
+        ),
+        repeat: true,
+    )),
+    emitters: [],
+    effect_clips: [
+        (
+            id: "a3574a00-0000-4000-8000-00000000d611",
+            source: "a3574a00-0000-4000-8000-00000000d501",
+            start_time: 0.5,
+            source_offset: 0.75,
+            duration: 5.5,
+            transform: (
+                translation: (0.0, 5.0, 0.0),
+                rotation: (0.0, 0.0, 0.0, 1.0),
+                scale: (1.0, 1.0, 1.0),
+            ),
+            seed: Fixed(23),
+        ),
+    ],
+)

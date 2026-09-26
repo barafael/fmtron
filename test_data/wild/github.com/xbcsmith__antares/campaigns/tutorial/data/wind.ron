@@ -1,0 +1,9 @@
+// SPDX-FileCopyrightText: 2026 Brett Smith <xbcsmith@gmail.com>
+// SPDX-License-Identifier: Apache-2.0
+
+(
+    wind_system: Sine,
+    strength: 0.04,
+    frequency: 0.65,
+    direction: (1.0, 0.0),
+)

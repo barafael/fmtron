@@ -1,0 +1,5 @@
+(
+    version: 1,
+    command: "deno_doc.d",
+    placeholder: true,
+)

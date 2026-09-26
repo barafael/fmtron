@@ -1,0 +1,14 @@
+(
+	model_path: "models/characters/rat.glb",
+	model_scale: 0.05,
+	collider: Cuboid((0.05, 0.05, 0.1)),
+	collider_offset: Vec3(0.0, 0.05, 0.0),
+	health: 25,
+	spotting_range: 20.0,
+	speed: 0.5,
+	attack_stats: AttackStats (
+		range: 0.5,
+		speed: 1.0,
+		damage: 1.0,
+	),
+)

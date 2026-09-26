@@ -1,0 +1,7 @@
+(
+    name: "Scripts",
+    description: "Shell scripts as launcher options",
+    category: Commands,
+    bin: (path: "scripts"),
+    icon: Name("utilities-terminal"),
+)

@@ -1,0 +1,141 @@
+(
+    config: (
+        output: "./images/prism/sapphire-1_000_000",
+        passes: 1000000,
+        threads: None,
+    ),
+    camera: {
+        "OrthographicCamera": (
+            position: (
+                x: 0,
+                y: 0.0625,
+                z: 0,
+            ),
+            target: (
+                x: 0,
+                y: 0,
+                z: 0,
+            ),
+            up: (
+                x: 0,
+                y: 0,
+                z: -1,
+            ),
+            fov: (
+                x: 2.25,
+                y: 1.125,
+            ),
+            resolution: (
+                x: 1024,
+                y: 512,
+            ),
+            sampler: Random,
+        ),
+    },
+    integrator: {
+        "SpectralPath": (
+            max_depth: 3,
+            sampler: Random,
+            spectral_sampler: Hero,
+            direct_illum: Indirect,
+        ),
+    },
+    scene: (
+        objects: [
+            // Ground
+            Receiver((
+                geometry: {
+                    "Plane": (
+                        point: (
+                            x: 0,
+                            y: 0,
+                            z: 0,
+                        ),
+                        normal: (
+                            x: 0,
+                            y: 1,
+                            z: 0,
+                        ),
+                    ),
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "LambertianReflection": (
+                                r: Constant(1),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            // prism
+            Receiver((
+                geometry: {
+                    "Mesh": Config((
+                        path: "./meshes/prism.obj",
+                        scale: Some((
+                            //x: 0.5773502691896182,
+                            x: 0.14433756729740455,
+                            y: 0.14433756729740455,
+                            z: 2,
+                            //z: 0.14433756729740455,
+                        )),
+                        rotation: Some((
+                            mat: (
+                                x: (x: 1, y:0, z:0),
+                                y: (x: 0, y:-1, z:0),
+                                z: (x: 0, y:0, z:1),
+                            )
+                        )),
+                        translation: Some((
+                            x: 0,
+                            y: 1,
+                            z: 0,
+                        )),
+                        shading_mode: Flat,
+                    )),
+                    // "Sphere": (
+                    //     center: (
+                    //         x: 0,
+                    //         y: 1,
+                    //         z: 0,
+                    //     ),
+                    //     radius: 0.5,
+                    // )
+                },
+                bsdf: (
+                    bxdfs: [
+                        {
+                            "SpecularTransmission": (
+                                r: Constant(1),
+                                t: Constant(1),
+                                fresnel: (
+                                    eta_i: Air,
+                                    eta_t: Sapphire,
+                                ),
+                            ),
+                        },
+                    ],
+                ),
+            )),
+            Emitter((
+                geometry: {
+                    "Disk": (
+                        center: (
+                            x: 0,
+                            y: 50,
+                            z: 0,
+                        ),
+                        normal: (
+                            x: 0,
+                            y: -1,
+                            z: 0,
+                        ),
+                        radius: 5,
+                    ),
+                },
+                emission: Constant(80),
+            )),
+        ],
+    ),
+)

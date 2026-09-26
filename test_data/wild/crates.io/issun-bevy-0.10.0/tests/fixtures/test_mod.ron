@@ -1,0 +1,21 @@
+(
+  resources: [],
+  entities: [
+    (
+      entity: 0,
+      components: [
+        {
+          "issun_bevy::plugins::combat::components::Health": (
+            current: 100,
+            max: 100,
+          ),
+        },
+        {
+          "issun_bevy::plugins::combat::components::Attack": (
+            power: 10,
+          ),
+        },
+      ],
+    ),
+  ],
+)

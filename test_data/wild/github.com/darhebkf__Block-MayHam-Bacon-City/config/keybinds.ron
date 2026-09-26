@@ -1,0 +1,15 @@
+// Key bindings configuration
+(
+    forward: "W",
+    backward: "S",
+    left: "A",
+    right: "D",
+    jump: "Space",
+    crouch: "LeftCtrl",
+    sprint: "LeftShift",
+    fire: "Mouse1",
+    aim: "Mouse2",
+    reload: "R",
+    interact: "E",
+    menu: "Escape",
+)

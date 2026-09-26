@@ -1,0 +1,53 @@
+// Default Theme
+(
+    background_color: (
+        red: 1.0,
+        green: 1.0,
+        blue: 1.0,
+        alpha: 1.0,
+    ),
+    text_color: (
+        red: 0.6,
+        green: 0.6,
+        blue: 0.6,
+        alpha: 1.0,
+    ),
+    player_head_color: (
+        red: 0.65,
+        green: 0.65,
+        blue: 0.65,
+        alpha: 1.0,
+    ),
+    player_body_color: (
+        red: 0.65,
+        green: 0.65,
+        blue: 0.65,
+        alpha: 1.0,
+    ),
+    obstacles_grayscale: true,
+    obstacles_color_variation: 0.1,
+    obstacles_base_color: (
+        red: 0.7,
+        green: 0.7,
+        blue: 0.7,
+        alpha: 1.0,
+    ),
+    player_broken_color: (
+        red: 1.0,
+        green: 1.0,
+        blue: 0.4,
+        alpha: 1.0,
+    ),
+    player_final_color: (
+        red: 1.0,
+        green: 0.4,
+        blue: 0.4,
+        alpha: 1.0,
+    ),
+    walls_color: (
+        red: 0.65,
+        green: 0.65,
+        blue: 0.65,
+        alpha: 1.0,
+    ),
+)

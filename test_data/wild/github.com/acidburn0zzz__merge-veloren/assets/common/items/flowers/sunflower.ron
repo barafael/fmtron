@@ -1,0 +1,8 @@
+ItemDef(
+    name: "Sunflower",
+    description: "Smells like summer.",
+    kind: Ingredient(
+        kind: "Flower",
+    ),
+    quality: Common,
+)

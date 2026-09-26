@@ -1,0 +1,4 @@
+(
+    private_key: "private_key_example",
+    public_key: "public_key_example",
+)

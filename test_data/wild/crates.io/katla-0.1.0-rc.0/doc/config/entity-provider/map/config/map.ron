@@ -1,0 +1,83 @@
+#![enable(implicit_some)]
+(
+	name: "Map",
+	description: "Map",
+	appenders: [
+		(
+			type: "file",
+			name: "map--appender",
+			fileName: "map.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "map",
+			name: "map--entity-name",
+			map: [
+				(
+					field: "sequence--field",
+					entity: "sequence--entity-name",
+				),
+				(
+					field: "timestamp--field",
+					entity: "timestamp--entity-name",
+				),
+				(
+					field: "uuid--field",
+					entity: "uuid--entity-name",
+				),
+			]
+		),
+		(
+			type: "sequence",
+			name: "sequence--entity-name",
+			start: 1,
+			hold: 1,
+			increment: 1,
+		),
+		(
+			type: "timestamp",
+			name: "timestamp--entity-name",
+		),
+		(
+			type: "uuid",
+			name: "uuid--entity-name",
+		),
+	],
+	entries: [
+		(
+			name: "map--entry",
+			entity: "map--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "map--file-feed",
+			content: (
+				type: "katla",
+				inline: "{{ map--entry/sequence--field }},{{ map--entry/timestamp--field }},{{ map--entry/uuid--field }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "map--flow",
+			timeInterval: "R20000",
+			entries: [
+				"map--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "map--file-feed",
+					appender: "map--appender",
+				),
+			],
+		),
+	],
+)

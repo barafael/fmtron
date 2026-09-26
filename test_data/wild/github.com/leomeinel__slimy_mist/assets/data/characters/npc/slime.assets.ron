@@ -1,0 +1,7 @@
+({
+    "slime.walk_sounds": Files (
+        paths: [
+            "audio/sound-effects/movement/bounce.ogg",
+        ],
+    ),
+})

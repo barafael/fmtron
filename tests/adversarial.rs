@@ -514,3 +514,38 @@ fn huge_indentation_is_a_typed_error() {
     // Flat input needs no indentation and still formats.
     assert_eq!(format_ron("1", &config).unwrap(), "1");
 }
+
+// W1: a block comment between a key or field name and its value stays inline
+// after the colon; a line comment there moves above the entry (it must end
+// its line). Previously a field's comment was hoisted above the field even
+// when it was a block comment, and a map entry was split after the comment.
+#[test]
+fn comments_between_key_and_value_stay_with_the_entry() {
+    let cases = [
+        (
+            "(delay: /* seconds */ 5, next: 1)",
+            "(\n    delay: /* seconds */ 5,\n    next: 1,\n)",
+        ),
+        (
+            r#"{"delay": /* seconds */ 5}"#,
+            "{\n    \"delay\": /* seconds */ 5,\n}",
+        ),
+        (
+            "(a /* before */ : /* after */ 1)",
+            "(\n    a: /* before */ /* after */ 1,\n)",
+        ),
+        (
+            "Foo(delay: // seconds\n 5, next: 1)",
+            "Foo(\n    // seconds\n    delay: 5,\n    next: 1,\n)",
+        ),
+        ("{46: // Bb2\n [1, 2]}", "{\n    // Bb2\n    46: [1, 2],\n}"),
+    ];
+    for (input, expected) in cases {
+        assert_eq!(
+            format_ron(input, &cfg(40)).unwrap(),
+            expected,
+            "for {input:?}"
+        );
+        assert_roundtrips(input);
+    }
+}

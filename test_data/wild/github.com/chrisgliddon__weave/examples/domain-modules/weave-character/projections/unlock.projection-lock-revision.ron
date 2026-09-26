@@ -1,0 +1,45 @@
+(
+    revision_format_version: 1,
+    id: "org.weave.character.projection.unlock_narrative_role",
+    expected_input_sha256: "03b8928a8c9e4dbf7ed825b4cdfa6831e9eddcb4ab35c5f35faa3137b59daf5a",
+    targets: [
+        (
+            character_id: "org.weave.character.ari_vale",
+            projection_id: "narrative_role",
+        ),
+    ],
+    lock: unlocked,
+    rationale: "Unlock the reviewed narrative role for a later explicit rebalance preview.",
+    provenance: (
+        sources: [
+            (
+                id: "weave_glasswind_lenses_original",
+                kind: original,
+                url: "https://github.com/chrisgliddon/weave",
+                revision: "glasswind-lenses-v1",
+                license: "MIT",
+                license_url: "https://github.com/chrisgliddon/weave/blob/main/LICENSE",
+                attribution: "Original Glasswind Lenses inputs, labels, scoring method, limitations, and calibration vectors.",
+                modified: false,
+            ),
+        ],
+        transformations: [],
+        claims: {
+            "calibrations": [
+                "weave_glasswind_lenses_original",
+            ],
+            "entries": [
+                "weave_glasswind_lenses_original",
+            ],
+            "inputs": [
+                "weave_glasswind_lenses_original",
+            ],
+            "methodology": [
+                "weave_glasswind_lenses_original",
+            ],
+            "taxonomies": [
+                "weave_glasswind_lenses_original",
+            ],
+        },
+    ),
+)

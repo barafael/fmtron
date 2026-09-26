@@ -1,0 +1,14 @@
+(
+    start: (0, 0),
+    objects: {
+        box: (
+            offset: (10, 4, 0),
+            size: (1,1),
+            material: Gold,
+        ),
+        collectable: (
+            collectable_type: Strawberry,
+            spawn_type: Fixed((5, 5)),
+        ),
+    },
+)

@@ -1,0 +1,10 @@
+// Four frames of a coin spinning about its vertical axis, left to right.
+//
+// `texture` is optional, and RON spells an optional value `Some(...)`; it is
+// the sheet the editor assigns alongside this slicing, not something the draw
+// path reads.
+(
+    version: 1,
+    texture: Some("sprites/coin.png"),
+    grid: Some((cell: (16, 16), columns: 4, rows: 1)),
+)

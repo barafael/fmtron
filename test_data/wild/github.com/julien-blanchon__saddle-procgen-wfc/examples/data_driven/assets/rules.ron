@@ -1,0 +1,27 @@
+// A simple meadow / road / water tileset defined entirely in RON.
+// Load this file at runtime instead of hardcoding rulesets in Rust.
+(
+    topology: Cartesian2d,
+    tiles: [
+        ( id: WfcTileId(0), weight: 5.0, label: "Meadow", symmetry: Fixed ),
+        ( id: WfcTileId(1), weight: 2.0, label: "Road",   symmetry: Fixed ),
+        ( id: WfcTileId(2), weight: 1.0, label: "Water",  symmetry: Fixed ),
+    ],
+    adjacency: [
+        // Meadow can neighbor anything
+        ( tile: WfcTileId(0), direction: XPos, allowed_tiles: [WfcTileId(0), WfcTileId(1), WfcTileId(2)] ),
+        ( tile: WfcTileId(0), direction: XNeg, allowed_tiles: [WfcTileId(0), WfcTileId(1), WfcTileId(2)] ),
+        ( tile: WfcTileId(0), direction: YPos, allowed_tiles: [WfcTileId(0), WfcTileId(1), WfcTileId(2)] ),
+        ( tile: WfcTileId(0), direction: YNeg, allowed_tiles: [WfcTileId(0), WfcTileId(1), WfcTileId(2)] ),
+        // Road neighbors meadow or road
+        ( tile: WfcTileId(1), direction: XPos, allowed_tiles: [WfcTileId(0), WfcTileId(1)] ),
+        ( tile: WfcTileId(1), direction: XNeg, allowed_tiles: [WfcTileId(0), WfcTileId(1)] ),
+        ( tile: WfcTileId(1), direction: YPos, allowed_tiles: [WfcTileId(0), WfcTileId(1)] ),
+        ( tile: WfcTileId(1), direction: YNeg, allowed_tiles: [WfcTileId(0), WfcTileId(1)] ),
+        // Water neighbors meadow or water
+        ( tile: WfcTileId(2), direction: XPos, allowed_tiles: [WfcTileId(0), WfcTileId(2)] ),
+        ( tile: WfcTileId(2), direction: XNeg, allowed_tiles: [WfcTileId(0), WfcTileId(2)] ),
+        ( tile: WfcTileId(2), direction: YPos, allowed_tiles: [WfcTileId(0), WfcTileId(2)] ),
+        ( tile: WfcTileId(2), direction: YNeg, allowed_tiles: [WfcTileId(0), WfcTileId(2)] ),
+    ],
+)

@@ -1,0 +1,58 @@
+(
+    effects: [
+        (
+            name: "green vapor",
+            parent: None,
+            capacity: 500,
+            spawner_settings: (
+                count: Single(500.0),
+                spawn_duration: Single(386.0),
+                period: Single(1.0),
+                cycle_count: 1,
+                starts_active: true,
+                emit_on_start: true,
+            ),
+            texture_index: Some(1),
+            init_modifiers: [
+                SetAttribute((
+                    attr: "position",
+                    attr_expr: Operator(Subtract(RandVec3, Vec3((0.0, -20.0, 0.0)))),
+                )),
+                SetAttribute((
+                    attr: "age",
+                    attr_expr: Float(0.0),
+                )),
+                SetAttribute((
+                    attr: "lifetime",
+                    attr_expr: Float(8.0),
+                )),
+                SetAttribute((
+                    attr: "velocity",
+                    attr_expr: Operator(Multiply(Operator(Normalized(Operator(Subtract(Operator(Multiply(RandVec3, Float(2.0))), Float(1.0))))), Float(0.41))),
+                )),
+            ],
+            update_modifiers: [],
+            render_modifiers: [
+                ColorOverLifetime((
+                    gradient: (
+                        g: [
+                            (0.0, (0.2, 1.0, 0.0, 0.0)),
+                            (0.5, (0.2, 1.0, 0.0, 1.0)),
+                            (1.0, (0.2, 1.0, 0.0, 0.0)),
+                        ],
+                    ),
+                    blend: Some(Overwrite),
+                    mask: Some((15)),
+                )),
+                SizeOverLifetime((
+                    gradient: (
+                        g: [
+                            (0.3, (5.0, 5.0, 5.0)),
+                            (1.0, (12.0, 12.0, 12.0)),
+                        ],
+                    ),
+                )),
+            ],
+        ),
+    ],
+)

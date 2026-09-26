@@ -1,0 +1,14 @@
+(
+    index: 0,
+    name: "Grass",
+    material: Pbr(
+        display_color: (0, 255, 0),
+        albedo: "leafy-grass2-albedo.png",
+        normal_map: "",
+        occlusion: "",
+        metallic_roughness_texture: "",
+        emissive: "",
+        roughness: 0.089,
+        metallic: 0,
+    )
+)

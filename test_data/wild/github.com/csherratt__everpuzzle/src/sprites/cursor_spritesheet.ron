@@ -1,0 +1,62 @@
+(
+    spritesheet_width: 576.0,
+    spritesheet_height: 40.0,
+    sprites: [
+        (
+            x: 0.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+		(
+            x: 72.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+		(
+            x: 144.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+		(
+            x: 216.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+		(
+            x: 288.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+		(
+            x: 360.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+		(
+            x: 432.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+		(
+            x: 504.0,
+			y: 0.0,
+            width: 72.0,
+            height: 40.0,
+			offsets: Some((-32.0, -16.0))
+        ),
+    ],
+)

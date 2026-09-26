@@ -1,0 +1,6 @@
+
+ImgLayerConfig(
+    tms_map: {
+       // "verm": "$ODIN_ROOT/data/verm/verm_2023_CA_tms"
+    }
+)

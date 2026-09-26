@@ -1,0 +1,33 @@
+// Boss encounter spec — Clockwork Warden.
+//
+// Renamed boss derived from `gradient_sentinel`; the profile
+// constructor in Rust still starts from `gradient_sentinel`'s
+// numbers and overrides id/name/max_hp. The on-disk RON
+// authors the *final* state directly — id and max_hp are
+// authoritative when this file exists.
+//
+// Mirrors `BossProfile::clockwork_warden()` in
+// `crates/ambition_platformer2d_actor_monolith/src/boss_encounter/profile.rs`; the
+// spec equivalence is pinned by
+// `clockwork_warden_profile_encounter_matches_hardcoded_constructor`.
+
+(
+    id: "clockwork_warden",
+    name: "Clockwork Warden",
+    max_hp: 36,
+    phase1_to_transition_hp: 0.66,
+    phase2_to_enrage_hp: 0.22,
+    intro_seconds: 2.4,
+    transition_seconds: 1.6,
+    death_seconds: 2.4,
+    // Gradient Sentinel: fast violin theme from the moment the
+    // encounter wakes up, through every active phase. The earlier
+    // "intro keeps the calmer pulse-drift bed for an escalation"
+    // pattern read as "boss got the wrong music for 2.4 seconds
+    // then snapped into the real track" — the violin landing on
+    // the very first beat of the encounter is the better feel.
+    music_intro: "fast_paced_violin_boss",
+    music_phase1: "fast_paced_violin_boss",
+    music_phase2: "fast_paced_violin_boss",
+    music_enrage: "fast_paced_violin_boss",
+)

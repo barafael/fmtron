@@ -1,0 +1,5 @@
+#![enable(implicit_some)]
+(
+  title: "Tutorial 00",
+  entities: [],
+)

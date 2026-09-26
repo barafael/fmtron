@@ -1,0 +1,441 @@
+(
+    all: [
+        // Regrettably, this part has quite a few PMBus operations that induce
+        // misbehavior; we mark reads and writes for these operations as illegal
+        // to prevent them from being issued.
+        (0x00, "PAGE", Illegal, Illegal),
+        (0x04, "PHASE", Illegal, Illegal),
+        (0x05, "PAGE_PLUS_WRITE", Illegal, Illegal),
+        (0x06, "PAGE_PLUS_READ", Illegal, Illegal),
+        (0x07, "ZONE_CONFIG", Illegal, Illegal),
+        (0x08, "ZONE_ACTIVE", Illegal, Illegal),
+        (0x13, "STORE_DEFAULT_CODE", Illegal, Illegal),
+        (0x14, "RESTORE_DEFAULT_CODE", Illegal, Illegal),
+        (0x17, "STORE_USER_CODE", Illegal, Illegal),
+        (0x18, "RESTORE_USER_CODE", Illegal, Illegal),
+        (0x1a, "QUERY", Illegal, Illegal),
+        (0x1b, "SMBALERT_MASK", Illegal, Illegal),
+        (0x2b, "VOUT_MIN", Illegal, Illegal),
+        (0x30, "COEFFICIENTS", Illegal, Illegal),
+        (0x31, "POUT_MAX", Illegal, Illegal),
+        (0x34, "POWER_MODE", Illegal, Illegal),
+        (0x38, "IOUT_CAL_GAIN", Illegal, Illegal),
+        (0x3a, "FAN_CONFIG_1_2", Illegal, Illegal),
+        (0x3b, "FAN_COMMAND_1", Illegal, Illegal),
+        (0x3c, "FAN_COMMAND_2", Illegal, Illegal),
+        (0x3d, "FAN_CONFIG_3_4", Illegal, Illegal),
+        (0x3e, "FAN_COMMAND_3", Illegal, Illegal),
+        (0x3f, "FAN_COMMAND_4", Illegal, Illegal),
+        (0x49, "IOUT_OC_LV_FAULT_RESPONSE", Illegal, Illegal),
+        (0x4b, "IOUT_UC_FAULT_LIMIT", Illegal, Illegal),
+        (0x4c, "IOUT_UC_FAULT_RESPONSE", Illegal, Illegal),
+        (0x5b, "IIN_OC_FAULT_LIMIT", Illegal, Illegal),
+        (0x5c, "IIN_OC_FAULT_RESPONSE", Illegal, Illegal),
+        (0x5d, "IIN_OC_WARN_LIMIT", Illegal, Illegal),
+        (0x67, "Deprecated", Illegal, Illegal),
+        (0x68, "POUT_OP_FAULT_LIMIT", Illegal, Illegal),
+        (0x69, "POUT_OP_FAULT_RESPONSE", Illegal, Illegal),
+        (0x6a, "POUT_OP_WARN_LIMIT", Illegal, Illegal),
+        (0x6b, "PIN_OP_WARN_LIMIT", Illegal, Illegal),
+        (0x80, "STATUS_MFR_SPECIFIC", Illegal, Illegal),
+        (0x81, "STATUS_FANS_1_2", Illegal, Illegal),
+        (0x82, "STATUS_FANS_3_4", Illegal, Illegal),
+        (0x83, "READ_KWH_IN", Illegal, Illegal),
+        (0x84, "READ_KWH_OUT", Illegal, Illegal),
+        (0x85, "READ_KWH_CONFIG", Illegal, Illegal),
+        (0x86, "READ_EIN", Illegal, Illegal),
+        (0x87, "READ_EOUT", Illegal, Illegal),
+        (0x89, "READ_IIN", Illegal, Illegal),
+        (0x8a, "READ_VCAP", Illegal, Illegal),
+        (0x8f, "READ_TEMPERATURE_3", Illegal, Illegal),
+        (0x90, "READ_FAN_SPEED_1", Illegal, Illegal),
+        (0x91, "READ_FAN_SPEED_2", Illegal, Illegal),
+        (0x92, "READ_FAN_SPEED_3", Illegal, Illegal),
+        (0x93, "READ_FAN_SPEED_4", Illegal, Illegal),
+        (0x96, "READ_POUT", Illegal, Illegal),
+        (0x97, "READ_PIN", Illegal, Illegal),
+        (0x9f, "APP_PROFILE_SUPPORT", Illegal, Illegal),
+        (0xa0, "MFR_VIN_MIN", Illegal, Illegal),
+        (0xa1, "MFR_VIN_MAX", Illegal, Illegal),
+        (0xa2, "MFR_IIN_MAX", Illegal, Illegal),
+        (0xa3, "MFR_PIN_MAX", Illegal, Illegal),
+        (0xa4, "MFR_VOUT_MIN", Illegal, Illegal),
+        (0xa5, "MFR_VOUT_MAX", Illegal, Illegal),
+        (0xa6, "MFR_IOUT_MAX", Illegal, Illegal),
+        (0xa7, "MFR_POUT_MAX", Illegal, Illegal),
+        (0xa8, "MFR_TAMBIENT_MAX", Illegal, Illegal),
+        (0xa9, "MFR_TAMBIENT_MIN", Illegal, Illegal),
+        (0xaa, "MFR_EFFICIENCY_LL", Illegal, Illegal),
+        (0xab, "MFR_EFFICIENCY_HL", Illegal, Illegal),
+        (0xac, "MFR_PIN_ACCURACY", Illegal, Illegal),
+        (0xad, "IC_DEVICE_ID", Illegal, Illegal),
+        (0xae, "IC_DEVICE_REV", Illegal, Illegal),
+        (0xb1, "USER_DATA_01", Illegal, Illegal),
+        (0xb2, "USER_DATA_02", Illegal, Illegal),
+        (0xb3, "USER_DATA_03", Illegal, Illegal),
+        (0xb4, "USER_DATA_04", Illegal, Illegal),
+        (0xb5, "USER_DATA_05", Illegal, Illegal),
+        (0xb6, "USER_DATA_06", Illegal, Illegal),
+        (0xb7, "USER_DATA_07", Illegal, Illegal),
+        (0xb8, "USER_DATA_08", Illegal, Illegal),
+        (0xb9, "USER_DATA_09", Illegal, Illegal),
+        (0xba, "USER_DATA_10", Illegal, Illegal),
+        (0xbb, "USER_DATA_11", Illegal, Illegal),
+        (0xbc, "USER_DATA_12", Illegal, Illegal),
+        (0xbd, "USER_DATA_13", Illegal, Illegal),
+        (0xbe, "USER_DATA_14", Illegal, Illegal),
+        (0xbf, "USER_DATA_15", Illegal, Illegal),
+        (0xc0, "MFR_MAX_TEMP_1", Illegal, Illegal),
+        (0xc1, "MFR_MAX_TEMP_2", Illegal, Illegal),
+        (0xc2, "MFR_MAX_TEMP_3", Illegal, Illegal),
+
+        (0xc4, "MFR_VIN_OV_WARN_RESPONSE", WriteByte, ReadByte),
+        (0xc5, "MFR_CONFIG_UNUSED_PINS", WriteWord, ReadWord),
+        (0xc6, "MFR_RC_LEVEL", WriteByte, ReadByte),
+        (0xc7, "MFR_KS_PRETRIG", WriteByte, ReadByte),
+        (0xc8, "MFR_FAST_VIN_OFF_OFFSET", WriteByte, ReadByte),
+        (0xd0, "MFR_PGOOD_POLARITY", WriteByte, ReadByte),
+        (0xd1, "MFR_FAST_OCP_CFG", WriteWord, ReadWord),
+        (0xd2, "MFR_RESPONSE_UNIT_CFG", WriteByte, ReadByte),
+        (0xd3, "MFR_VIN_SCALE_MONITOR", Illegal, ReadBlock),
+        (0xd4, "MFR_PREBIAS_DVDT_CFG", WriteBlock, ReadBlock),
+        (0xd5, "MFR_FILTER_SELECT", WriteByte, ReadByte),
+        (0xd7, "MFR_READ_EVENT", Illegal, ReadBlock),
+        (0xd8, "MFR_TEMP_COMPENSATION", Illegal, ReadBlock),
+        (0xd9, "MFR_SET_ROM_MODE", WriteBlock, Illegal),
+        (0xda, "MFR_ISHARE_THRESHOLD", WriteBlock, ReadBlock),
+        (0xdb, "MFR_EVENT_INDEX", WriteByte, ReadByte),
+        (0xdc, "MFR_SELECT_TEMPERATURE_SENSOR", WriteByte, ReadByte),
+        (0xdd, "MFR_VIN_OFFSET", Illegal, ReadBlock),
+        (0xde, "MFR_VOUT_OFFSET_MONITOR", Illegal, ReadWord),
+        (0xe0, "MFR_SPECIAL_OPTIONS", WriteByte, ReadByte),
+        (0xe1, "MFR_TEMP_OFFSET_INT", Illegal, ReadWord),
+        (0xe2, "MFR_REMOTE_TEMP_CAL", Illegal, ReadBlock),
+        (0xe3, "MFR_REMOTE_CTRL", WriteByte, ReadByte),
+        (0xe6, "MFR_VFF_PARAMS", WriteBlock, ReadBlock),
+        (0xe7, "MFR_TEMP_COEFF", Illegal, ReadBlock),
+        (0xe8, "MFR_FILTER_COEFF", WriteBlock, ReadBlock),
+        (0xe9, "MFR_FILTER_NLR_GAIN", WriteBlock, ReadBlock),
+        (0xeb, "MFR_MIN_DUTY", WriteWord, ReadWord),
+        (0xec, "MFR_ACTIVE_CLAMP", Illegal, ReadWord),
+        (0xee, "MFR_OFFSET_ADDRESS", WriteByte, ReadByte),
+        (0xef, "MFR_DBV_CONFIG", WriteBlock, ReadBlock),
+        (0xf0, "MFR_DEBUG_BUFF", WriteBlock, ReadBlock),
+        (0xf1, "MFR_SETUP_PASSWORD", WriteBlock, ReadBlock),
+        (0xf2, "MFR_DISABLE_SECURITY_ONCE", WriteBlock, ReadBlock),
+        (0xf4, "MFR_SECURITY_BIT_MASK", Illegal, ReadBlock),
+        (0xf5, "MFR_TRANSFORMER_TURN", Illegal, ReadByte),
+        (0xf6, "MFR_OSC_TRIM", Illegal, ReadByte),
+        (0xf7, "MFR_DLC_CONFIG", WriteBlock, ReadBlock),
+        (0xf8, "MFR_ILIM_SOFTSTART", WriteByte, ReadByte),
+        (0xf9, "MFR_MULTI_PIN_CONFIG", WriteByte, ReadByte),
+        (0xfc, "MFR_ADDED_DROOP_DURING_RAMP", WriteWord, ReadWord),
+        (0xfd, "MFR_FIRMWARE_DATA", Illegal, ReadBlock),
+        (0xfe, "MFR_RESTART", WriteBlock, Illegal),
+    ],
+
+    numerics: [
+        ("VOUT_TRANSITION_RATE", Linear11, VoltsPerMillisecond),
+        ("VOUT_DROOP", Linear11, MillivoltsPerAmp),
+        ("MAX_DUTY", Linear11, Percent),
+        ("FREQUENCY_SWITCH", Linear11, Kilohertz),
+        ("VIN_ON", Linear11, Volts),
+        ("VIN_OFF", Linear11, Volts),
+        ("IOUT_CAL_OFFSET", Linear11, Amperes),
+        ("IOUT_OC_FAULT_LIMIT", Linear11, Amperes),
+        ("OT_FAULT_LIMIT", Linear11, Celsius),
+        ("OT_WARN_LIMIT", Linear11, Celsius),
+        ("UT_WARN_LIMIT", Linear11, Celsius),
+        ("UT_FAULT_LIMIT", Linear11, Celsius),
+        ("VIN_OV_FAULT_LIMIT", Linear11, Volts),
+        ("VIN_OV_WARN_LIMIT", Linear11, Volts),
+        ("VIN_UV_WARN_LIMIT", Linear11, Volts),
+        ("VIN_UV_FAULT_LIMIT", Linear11, Volts),
+        ("VOUT_UV_FAULT_LIMIT", VOutMode(Unsigned), Volts),
+        ("TON_DELAY", Linear11, Milliseconds),
+        ("TON_RISE", Linear11, Milliseconds),
+        ("TON_MAX_FAULT_LIMIT", Linear11, Milliseconds),
+        ("TOFF_DELAY", Linear11, Milliseconds),
+        ("TOFF_FALL", Linear11, Milliseconds),
+        ("TOFF_MAX_WARN_LIMIT", Linear11, Milliseconds),
+        ("READ_VIN", Linear11, Volts),
+        ("READ_VOUT", VOutMode(Unsigned), Volts),
+        ("READ_IOUT", Linear11, Amperes),
+        ("READ_TEMPERATURE_1", Linear11, Celsius),
+        ("READ_TEMPERATURE_2", Linear11, Celsius),
+        ("READ_DUTY_CYCLE", Linear11, Percent),
+
+        // READ_FREQUENCY claims to be direct, but appears to in fact be linear
+        ("READ_FREQUENCY", Linear11, Kilohertz),
+
+        // The datasheet says only that MFR_RC_LEVEL is fixed-point, but
+        // its factor appears to be 10
+        ("MFR_RC_LEVEL", FixedPoint(Factor(10)), Volts),
+
+        // Strangely, each unit is 450ns
+        ("MFR_KS_PRETRIG", FixedPoint(Factor(2.22222222222)), Microseconds),
+
+        // As with MFR_RC_LEVEL, this is fixed-point -- but there is no indicator
+        // in the datasheet as to the factor.  From conversations with Flex,
+        // the default value (0x20) is 0.5V, which yields a factor of 64 (that
+        // is, two bits to the left of the decimal point and eight bits to the
+        // right).
+        ("MFR_FAST_VIN_OFF_OFFSET", FixedPoint(Factor(64)), Volts),
+
+        ("MFR_VOUT_OFFSET_MONITOR", VOutMode(Signed), Volts),
+
+        ("MFR_EVENT_INDEX", Raw, Unitless),
+    ],
+
+    structured: {
+        "MFR_PGOOD_POLARITY": {
+            "Polarity": (
+                name: "Power good polarity",
+                bits: Bitrange(High(7), Low(0)),
+                values: Sentinels({
+                    "ActiveLow": (0x00, "Active low"),
+                    "ActiveHigh": (0x01, "Active high"),
+                })
+            )
+        },
+
+        "MFR_FAST_OCP_CFG": {
+            "Samples": (
+                name: "Samples to trigger OCP",
+                bits: Bitrange(High(12), Low(8)),
+                values: Scalar(Unsigned),
+            ),
+            "Enable": (
+                name: "Overcurrent protection enable",
+                bits: Bit(7),
+                values: Sentinels({
+                    "Disabled": (0b0, "disabled"),
+                    "Enabled": (0b1, "enabled"),
+                }),
+            ),
+            "Level": (
+                name: "Level to trigger OCP",
+                bits: Bitrange(High(6), Low(0)),
+                values: Scalar(Unsigned),
+            )
+        },
+
+        "MFR_RESPONSE_UNIT_CFG": {
+            "VOutUnit": (
+                name: "Vout fault delay units",
+                bits: Bitrange(High(7), Low(6)),
+                values: Sentinels({
+                    "Unit1ms": (0b00, "1 millisecond/unit"),
+                    "Unit10ms": (0b01, "10 milliseconds/unit"),
+                    "Unit100ms": (0b10, "100 milliseconds/unit"),
+                    "Unit1s": (0b11, "1 second/unit"),
+                })
+            ),
+            "VInUnit": (
+                name: "Vin fault delay units",
+                bits: Bitrange(High(5), Low(4)),
+                values: Sentinels({
+                    "Unit1ms": (0b00, "1 millisecond/unit"),
+                    "Unit10ms": (0b01, "10 milliseconds/unit"),
+                    "Unit100ms": (0b10, "100 milliseconds/unit"),
+                    "Unit1s": (0b11, "1 second/unit"),
+                })
+            ),
+            "IOutUnit": (
+                name: "Iout fault delay units",
+                bits: Bitrange(High(3), Low(2)),
+                values: Sentinels({
+                    "Unit1ms": (0b00, "1 millisecond/unit"),
+                    "Unit10ms": (0b01, "10 milliseconds/unit"),
+                    "Unit100ms": (0b10, "100 milliseconds/unit"),
+                    "Unit1s": (0b11, "1 second/unit"),
+                })
+            ),
+            "TempUnit": (
+                name: "Temp response delay units",
+                bits: Bitrange(High(1), Low(0)),
+                values: Sentinels({
+                    "Unit1ms": (0b00, "1 millisecond/unit"),
+                    "Unit10ms": (0b01, "10 milliseconds/unit"),
+                    "Unit100ms": (0b10, "100 milliseconds/unit"),
+                    "Unit1s": (0b11, "1 second/unit"),
+                })
+            ),
+        },
+        
+        "MFR_PREBIAS_DVDT_CFG": {
+            "MaxPositiveDVInDT": (
+                name: "Max positive dVin/dt",
+                bits: Bitrange(High(63), Low(48)),
+                values: FixedPointUnits(Factor(1), VoltsPerMillisecond),
+            ),
+            "MaxNegativeDVInDT": (
+                name: "Max negative dVin/dt",
+                bits: Bitrange(High(47), Low(32)),
+                values: FixedPointUnits(Factor(1), VoltsPerMillisecond),
+            ),
+            "MaxPositiveDVOutDT": (
+                name: "Max positive dVout/dt",
+                bits: Bitrange(High(31), Low(16)),
+                values: FixedPointUnits(Factor(1), VoltsPerMillisecond),
+            ),
+            "MaxNegativeDVoutDT": (
+                name: "Max negative dVout/dt",
+                bits: Bitrange(High(15), Low(0)),
+                values: FixedPointUnits(Factor(1), VoltsPerMillisecond),
+            ),
+        },
+
+        "MFR_FILTER_SELECT": {
+            "Selection": (
+                name: "Filter coefficient selection",
+                bits: Bitrange(High(7), Low(0)),
+                values: Sentinels({
+                    "VOut": (0x00, "Vout"),
+                    "IOut": (0x01, "Iout"),
+                    "VFF": (0x02, "VFF"),
+                })
+            )
+        },
+
+        "MFR_TEMP_COMPENSATION": {
+            "TempThreshold2Deadtime": (
+                name: "Temp threshold 2 dead time",
+                bits: Bitrange(High(63), Low(56)),
+                values: FixedPointUnits(Factor(1), Nanoseconds),
+            ),
+            "TempThreshold2Hysteresis": (
+                name: "Temp threshold 2 hysteresis",
+                bits: Bitrange(High(55), Low(48)),
+                values: FixedPointUnits(Factor(1), Celsius),
+            ),
+            "TempThreshold2": (
+                name: "Temp threshold 2",
+                bits: Bitrange(High(47), Low(40)),
+                values: FixedPointUnits(Factor(1), Celsius),
+            ),
+            "TempThreshold1Deadtime": (
+                name: "Temp threshold 1 dead time",
+                bits: Bitrange(High(39), Low(32)),
+                values: FixedPointUnits(Factor(1), Nanoseconds),
+            ),
+            "TempThreshold1Hysteresis": (
+                name: "Temp threshold 1 hysteresis",
+                bits: Bitrange(High(31), Low(24)),
+                values: FixedPointUnits(Factor(1), Celsius),
+            ),
+            "TempThreshold1": (
+                name: "Temp threshold 1",
+                bits: Bitrange(High(23), Low(16)),
+                values: FixedPointUnits(Factor(1), Celsius),
+            ),
+            "EDACSlope": (
+                name: "EDAC slope",
+                bits: Bitrange(High(15), Low(8)),
+                // The factor here is 256 / (1.6 / 1024)
+                values: FixedPointUnits(Factor(163.84), MillivoltsPerCelsius),
+            ),
+            "EDACThreshold": (
+                name: "EDAC treshold",
+                bits: Bitrange(High(7), Low(0)),
+                values: FixedPointUnits(Factor(1), Celsius),
+            ),
+        },
+
+        "MFR_ISHARE_THRESHOLD": {
+            "EnableDisable": (
+                name: "Enable/disable current share",
+                bits: Bit(56),
+                values: Sentinels({
+                    "Disable": (0b0, "Active current share disabled"),
+                    "Enable": (0b1, "Active current share enabled"),
+                })
+            ),
+            "TrimLimit": (
+                name: "Output voltage trim limit",
+                bits: Bitrange(High(31), Low(24)),
+                values: FixedPointUnits(Factor(588.235294118), Volts),
+            ),
+            "PositiveThreshold": (
+                name: "Positive threshold level",
+                bits: Bitrange(High(15), Low(8)),
+                values: FixedPointUnits(Factor(20), Amperes),
+            ),
+            "NegativeThreshold": (
+                name: "Negative threshold level",
+                bits: Bitrange(High(7), Low(0)),
+                values: FixedPointUnits(Factor(50), Amperes),
+            )
+        },
+
+        "MFR_VIN_OFFSET": {
+            "VInOffsetOn": (
+                name: "On",
+                bits: Bitrange(High(31), Low(16)),
+                // This factor is likely wrong, but unclear what it should be
+                values: FixedPointUnits(Factor(1), Volts)
+            ),
+            "VInOffsetOff": (
+                name: "Off",
+                bits: Bitrange(High(15), Low(0)),
+                // This factor is likely wrong, but unclear what it should be
+                values: FixedPointUnits(Factor(1), Volts)
+            )
+        },
+
+        "MFR_SPECIAL_OPTIONS": {
+            "RequirePEC": (
+                name: "Require Packet Error Check",
+                bits: Bit(7),
+                values: Sentinels({
+                    "Disabled": (0b0, "disabled"),
+                    "Enabled": (0b1, "enabled"),
+                }),
+            ),
+            "EnableHRR": (
+                name: "Enable hybrid regulated ratio",
+                bits: Bit(6),
+                values: Sentinels({
+                    "Disabled": (0b0, "disabled"),
+                    "Enabled": (0b1, "enabled"),
+                }),
+            ),
+            "DLSSlopeConfiguration": (
+                name: "Vout droop slope configuration",
+                bits: Bit(5),
+                values: Sentinels({
+                    "Linear": (0b0, "linear droop"),
+                    "NonLinear": (0b1, "non-linear droop"),
+                }),
+            ),
+            "TelemetryMode": (
+                name: "Telemetry mode",
+                bits: Bit(4),
+                values: Sentinels({
+                    "Converted": (0b0, "converted to units"),
+                    "Raw": (0b1, "raw ADC output"),
+                }),
+            ),
+            "EnableARTDLC": (
+                name: "Enable adaptive ramp-up time/dynamic load compensation",
+                bits: Bit(3),
+                values: Sentinels({
+                    "Disabled": (0b0, "disabled"),
+                    "Enabled": (0b1, "enabled"),
+                }),
+            ),
+            "EnableDBV": (
+                name: "Enable dynamic bus voltage",
+                bits: Bit(2),
+                values: Sentinels({
+                    "Disabled": (0b0, "disabled"),
+                    "Enabled": (0b1, "enabled"),
+                }),
+            )
+        }
+    },
+
+    synonyms: Some([
+        ("MFR_VIN_OV_WARN_RESPONSE", "VOUT_OV_FAULT_RESPONSE"),
+    ]),
+)

@@ -1,0 +1,90 @@
+[
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 0,
+            nanos: 15746600,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 0,
+            nanos: 16579600,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 0,
+            nanos: 16442600,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 0,
+            nanos: 29807400,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 0,
+            nanos: 46939100,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 70,
+            nanos: 28286300,
+        ),
+    ),
+    Score(
+        name: "Ikan",
+        difficulty: None,
+        time: Duration(
+            secs: 71,
+            nanos: 528722600,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 96,
+            nanos: 728722600,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 106,
+            nanos: 235293300,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: None,
+        time: Duration(
+            secs: 121,
+            nanos: 868063200,
+        ),
+    ),
+    Score(
+        name: "Something",
+        difficulty: Easy,
+        time: Duration(
+            secs: 890,
+            nanos: 69377800,
+        ),
+    ),
+]

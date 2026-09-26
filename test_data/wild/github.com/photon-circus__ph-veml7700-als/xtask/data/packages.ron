@@ -1,0 +1,8 @@
+(
+    driver: "ph-veml7700-als",
+    model: "ph-veml7700-als-model",
+    conformance: "ph-veml7700-als-conformance",
+    lifecycle: "incubating",
+    conformance_sentinel: "0.0.0",
+    cargo_deny_version: "0.20.2",
+)

@@ -1,0 +1,56 @@
+(
+    palette: (
+        assets: (
+            array_materials: {
+                1: "grass_rock_snow_dirt",
+            },
+        ),
+        infos: [
+            // Empty
+            (
+                flags: (
+                    is_floor: false,
+                    is_empty: true,
+                ),
+                material_index: (255), // null
+            ),
+            // Solid 1
+            (
+                flags: (
+                    is_floor: true,
+                    is_empty: false,
+                ),
+                material_index: (0),
+            ),
+            // Solid 2
+            (
+                flags: (
+                    is_floor: true,
+                    is_empty: false,
+                ),
+                material_index: (1),
+            ),
+            // Solid 3
+            (
+                flags: (
+                    is_floor: true,
+                    is_empty: false,
+                ),
+                material_index: (2),
+            ),
+            // Solid 4
+            (
+                flags: (
+                    is_floor: true,
+                    is_empty: false,
+                ),
+                material_index: (3),
+            ),
+        ],
+    ),
+    // TODO: procgen maps are currently broken, awaiting a port from ilattice3
+    // voxels_file_path: Some((ProcGenDungeon, "assets/maps/procgen_dungeon.ron")),
+    // TODO: serializable maps are currently broken, need to add support for ChunkDb from building-blocks
+    // voxels_file_path: Some((Bincode, "saved_voxels.bin")),
+    voxels_file_path: None,
+)

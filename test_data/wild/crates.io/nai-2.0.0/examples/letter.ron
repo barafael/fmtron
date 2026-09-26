@@ -1,0 +1,17 @@
+// Letter.ron
+Config(
+    moments: [
+        (
+            start_date: "2021-07-23",
+            format: "Dear {{ 'Friend' | cyan | bold }},\n\nI hope this letter finds you well. It has been {{ duration }} since we last met.\n\nI wanted to share some news with you. On {{ start_date | red }}, I celebrated my birthday, and it reminded me of our shared memories.\n"
+        ),
+        (
+            start_date: "2022-07-23",
+            format: "In recent years, I have been working diligently at {{ 'Rohan Equestrian Supplies' | underline }} since {{ start_date }}. It has been an exciting journey, and I have learned so much.\n"
+        ),
+        (
+            start_date: "2023-01-23",
+            format: "On {{ start_date | red }}, I embarked on a new chapter in my life by marrying my beloved, Arwen Undómiel. Our love continues to grow stronger every day.\n\nI cherish our friendship and the adventures we have had together. Let's plan a reunion soon and create more memories.\n\nWishing you all the best,\n{{ 'Aragorn II Elessar' | cyan | bold }}\n",
+        ),
+    ],
+)

@@ -1,0 +1,8 @@
+#![enable(implicit_some)]
+(
+    border_width: 2,
+    margin: 5,
+    default_border_color: "#4B7EB0", // steelBlue for background windows
+    floating_border_color: "#8BE9FD", // liquidCool for floating windows
+    focused_border_color: "#D98E32", // moltenAmber for the active window
+)

@@ -1,0 +1,9 @@
+BirdAsset (
+    name: "Canada goose",
+    hunger: 10,
+    size: (300, 150),
+    sprite: "sprites/canada_goose.png",
+    velocity: 80.0,
+    on_feed_points: 25,
+    atlas_dimensions: Some((4, 1))
+)

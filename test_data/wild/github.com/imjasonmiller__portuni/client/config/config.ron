@@ -1,0 +1,9 @@
+(
+    vid: 0x2341,
+    pid: 0x0043, 
+    baud_rate: 9600,
+    flow_control: none,
+    data_bits: 8,
+    parity: none,
+)
+

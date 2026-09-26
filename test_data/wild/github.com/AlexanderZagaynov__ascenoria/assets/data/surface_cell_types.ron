@@ -1,0 +1,14 @@
+(
+    surface_cell_type: [
+        (
+            id: "cell_white",
+            name_en: "White",
+            is_usable: true,
+        ),
+        (
+            id: "cell_black",
+            name_en: "Black",
+            is_usable: false,
+        ),
+    ],
+)

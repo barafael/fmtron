@@ -1,0 +1,6 @@
+(
+  id: "hud_ui",
+  layer: Some(overlay_ui),
+  ui_template: Some("game/assets/ui/hud.ron"),
+  render_graph_append_passes: [],
+)

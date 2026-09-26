@@ -1,0 +1,10 @@
+{
+    "paddle": (
+        output: ("common.items.weapons.tool.paddle", 1),
+        inputs: [
+            (Item("common.items.log.wood"), 4, false),
+            (Item("common.items.tool.craftsman_hammer"), 0, false),
+        ],
+        craft_sprite: Some(CraftingBench),
+    ),
+}

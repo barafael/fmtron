@@ -1,0 +1,20 @@
+(
+    name: "Test",
+    base_type: "Item",
+    id: None,
+    imports: [],
+    signals: [],
+    properties: [
+        (
+            name: "combined",
+            prop_type: Var,
+            value: TooComplex,
+            accessed_properties: [
+                "item2",
+                "item3",
+            ],
+        ),
+    ],
+    functions: [],
+    children: [],
+)

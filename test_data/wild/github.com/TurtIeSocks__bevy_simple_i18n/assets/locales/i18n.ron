@@ -1,0 +1,22 @@
+// bevy_simple_i18n manifest: declares which locale files and dynamic font families
+// to load at runtime. Required because wasm/Android builds cannot list directories.
+//
+// `files` paths are relative to this manifest's directory.
+// LIST ORDER IS MERGE ORDER: later files win on conflicting (locale, key) pairs.
+// `fonts[].dir` is relative to the asset root.
+(
+    default_locale: "en",
+    files: [
+        "en.json",
+        "ja.json",
+        "zh-TW.json",
+        "v2_example.yml",
+    ],
+    fonts: [
+        (
+            family: "NotoSans",
+            dir: "fonts/NotoSans",
+            files: ["fallback.ttf", "ja.ttf", "ko.ttf", "th.ttf", "zh-TW.ttf"],
+        ),
+    ],
+)

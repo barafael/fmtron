@@ -1,0 +1,31 @@
+Frame((
+    img_width: 1920,
+    img_height: 1080,
+    zoom: 0.0001,
+    center_x: -0.1159076,
+    center_y: -0.000022,
+    rotate: None,
+    fractal: Tdrge(
+        max_iter: 2000,
+        bailout: 10.0,
+    ),
+    coloring_mode: MinMaxNorm(
+        min: Custom(200.0),
+        max: Custom(750.0),
+        map: Linear,
+    ),
+    gradient: [
+        (0.0, (20, 8, 30)),
+        (0.1, (160, 30, 200)),
+        (0.25, (20, 160, 230)),
+        (0.4, (60, 230, 80)),
+        (0.55, (255, 230, 20)),
+        (0.7, (255, 120, 20)),
+        (0.85, (255, 40, 60)),
+        (1.0, (20, 2, 10)),
+    ],
+    sampling: (
+        level: Ultra,
+        random_offsets: true,
+    ),
+))

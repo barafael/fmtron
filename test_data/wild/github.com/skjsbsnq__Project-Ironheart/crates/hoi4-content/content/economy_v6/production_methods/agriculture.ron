@@ -1,0 +1,28 @@
+#![enable(implicit_some)]
+
+[
+    (
+        id: "grain_farm_default",
+        name: "谷物种植",
+        building_id: "grain_farm",
+        input_good_ids: [],
+        input_good_amounts: [],
+        output_good_ids: ["grain"],
+        output_good_amounts: [140.0],
+        employment_demand: (200, 0, 0, 0, 10, 0),
+        unlocked_by: None,
+        equipment_output: None,
+    ),
+    (
+        id: "livestock_ranch_default",
+        name: "畜牧养殖",
+        building_id: "livestock_ranch",
+        input_good_ids: ["grain"],
+        input_good_amounts: [28.0],
+        output_good_ids: ["meat"],
+        output_good_amounts: [70.0],
+        employment_demand: (150, 0, 0, 0, 10, 0),
+        unlocked_by: None,
+        equipment_output: None,
+    ),
+]

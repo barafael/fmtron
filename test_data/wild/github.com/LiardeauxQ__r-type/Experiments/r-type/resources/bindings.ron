@@ -1,0 +1,9 @@
+(
+  axes: {
+    "x_movement": Emulated(pos: Key(Right), neg: Key(Left)),
+    "y_movement": Emulated(pos: Key(Up), neg: Key(Down)),
+  },
+  actions: {
+    "flex": [[Key(Space)]]
+  },
+)

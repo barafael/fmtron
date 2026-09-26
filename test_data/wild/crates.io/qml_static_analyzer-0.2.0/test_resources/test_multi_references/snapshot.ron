@@ -1,0 +1,251 @@
+[
+    (
+        name: "DataSource",
+        base_type: "Item",
+        id: Some("dataSource"),
+        imports: [
+            "import QtQuick",
+        ],
+        signals: [
+            (
+                name: "dataReady",
+                parameters: [],
+            ),
+            (
+                name: "errorOccurred",
+                parameters: [
+                    (
+                        param_type: "string",
+                        param_name: "message",
+                    ),
+                ],
+            ),
+        ],
+        properties: [
+            (
+                name: "count",
+                prop_type: Int,
+                value: Int(0),
+                accessed_properties: [],
+            ),
+            (
+                name: "currentItem",
+                prop_type: String,
+                value: String("none"),
+                accessed_properties: [],
+            ),
+            (
+                name: "loading",
+                prop_type: Bool,
+                value: Bool(false),
+                accessed_properties: [],
+            ),
+        ],
+        functions: [
+            (
+                name: "load",
+                is_signal_handler: false,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "loading",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+            (
+                name: "clear",
+                is_signal_handler: false,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "count",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "currentItem",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "loading",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [],
+    ),
+    (
+        name: "ListView",
+        base_type: "Item",
+        id: Some("listView"),
+        imports: [
+            "import QtQuick",
+        ],
+        signals: [
+            (
+                name: "selectionChanged",
+                parameters: [
+                    (
+                        param_type: "string",
+                        param_name: "item",
+                    ),
+                ],
+            ),
+        ],
+        properties: [
+            (
+                name: "model",
+                prop_type: Var,
+                value: TooComplex,
+                accessed_properties: [
+                    "dataSource",
+                ],
+            ),
+            (
+                name: "selectedItem",
+                prop_type: String,
+                value: TooComplex,
+                accessed_properties: [
+                    "dataSource",
+                ],
+            ),
+            (
+                name: "isLoading",
+                prop_type: Bool,
+                value: TooComplex,
+                accessed_properties: [
+                    "dataSource",
+                ],
+            ),
+        ],
+        functions: [
+            (
+                name: "refresh",
+                is_signal_handler: false,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "dataSource",
+                        accessed_item: Some("load"),
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+            (
+                name: "clearAll",
+                is_signal_handler: false,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "dataSource",
+                        accessed_item: Some("clear"),
+                    ),
+                    (
+                        name: "selectedItem",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [],
+    ),
+    (
+        name: "MainView",
+        base_type: "Item",
+        id: Some("mainView"),
+        imports: [
+            "import QtQuick",
+        ],
+        signals: [
+            (
+                name: "pageChanged",
+                parameters: [
+                    (
+                        param_type: "string",
+                        param_name: "title",
+                    ),
+                ],
+            ),
+        ],
+        properties: [
+            (
+                name: "pageTitle",
+                prop_type: String,
+                value: String("Main"),
+                accessed_properties: [],
+            ),
+            (
+                name: "itemCount",
+                prop_type: Int,
+                value: TooComplex,
+                accessed_properties: [
+                    "dataSource",
+                ],
+            ),
+            (
+                name: "ready",
+                prop_type: Bool,
+                value: TooComplex,
+                accessed_properties: [
+                    "dataSource",
+                ],
+            ),
+        ],
+        functions: [
+            (
+                name: "initialize",
+                is_signal_handler: false,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "dataSource",
+                        accessed_item: Some("load"),
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+            (
+                name: "onDataReady",
+                is_signal_handler: true,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "pageTitle",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "dataSource",
+                        accessed_item: Some("currentItem"),
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [
+            (
+                type_name: "DataSource",
+                id: Some("dataSource"),
+                properties: [],
+                functions: [],
+                children: [],
+            ),
+            (
+                type_name: "ListView",
+                id: Some("listView"),
+                properties: [],
+                functions: [],
+                children: [],
+            ),
+        ],
+    ),
+]

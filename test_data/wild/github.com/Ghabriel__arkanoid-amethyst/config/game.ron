@@ -1,0 +1,17 @@
+(
+    arena: (
+        width: 800.0,
+        height: 600.0,
+    ),
+    ball: (
+        initial_angle: 30.0,
+        initial_velocity: 320.0,
+        radius: 12.0,
+    ),
+    paddle: (
+        width: 170.0,
+        height: 12.0,
+        margin: 15.0,
+    ),
+    use_joystick_keybindings: false,
+)

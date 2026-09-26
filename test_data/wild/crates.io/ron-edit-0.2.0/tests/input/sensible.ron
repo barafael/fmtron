@@ -1,0 +1,10 @@
+(
+    value: "string",
+    value: inf,
+    value: +NaN,
+    map: {
+        A: "hello",
+        [1, 2]: Something
+    },
+    r#12+10.3-x: "five"
+)

@@ -1,0 +1,7 @@
+(
+    default: "en-US",
+    languages: [
+        "en-US",
+        "id-ID",
+    ],
+)

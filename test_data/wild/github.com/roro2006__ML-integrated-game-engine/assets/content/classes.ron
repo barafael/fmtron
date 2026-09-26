@@ -1,0 +1,52 @@
+// The two classes ADR-0007 calls for: one fully playable and tuned, one defined
+// in data and deliberately left unpolished.
+//
+// Pools are milli-units like every other simulation value: 120000 is 120 points.
+// They are copied into canonical state when the class is chosen, so retuning a
+// class here does not rewrite the pools of a character who already exists.
+[
+    (
+        schema_version: 1,
+        id: "wayfinder",
+        name: "Wayfinder",
+        // The slice's tuned class: enough health to survive a mistake, enough
+        // stamina for three committed swings before the bar gates you.
+        base_health: 120000,
+        base_stamina: 100000,
+        // The two active abilities PROJECT_CONTEXT §6 requires — one
+        // offensive, one defensive — and the first skillshot. Bound to Q, R
+        // and F in that order.
+        abilities: ["ember-cleave", "warden-guard", "ember-bolt"],
+        // ADR-0017. The second class keeps the block-out shape, as ADR-0007
+        // leaves it deliberately unpolished.
+        model: Some("wayfinder"),
+        // A steel arc on every swing, and sparks where it bites.
+        presentation: (swing: Some("blade-arc"), hit: Some("strike-sparks")),
+        level_curve: Some("standard"),
+    ),
+    (
+        schema_version: 1,
+        id: "cinderward",
+        name: "Cinderward",
+        // Tougher and slower to act. Pools since M6; since M9 it fights by
+        // its own numbers too — a heavy, slow blow that stands its ground,
+        // paid for with a roll that is dearer and shorter-guarded. Still a
+        // starting point rather than balance.
+        base_health: 160000,
+        base_stamina: 80000,
+        abilities: ["ember-cleave", "warden-guard"],
+        combat: (
+            damage: Some(34000),
+            reach: Some(1600),
+            radius: Some(1100),
+            cost: Some(32000),
+            windup_ticks: Some(18),
+            active_ticks: Some(6),
+            recovery_ticks: Some(26),
+            poise: Some(60000),
+            dodge_cost: Some(30000),
+            dodge_iframes: Some(8),
+        ),
+        level_curve: Some("standard"),
+    ),
+]

@@ -1,0 +1,210 @@
+[
+    (
+        name: "BaseButton",
+        base_type: "Rectangle",
+        id: Some("root"),
+        imports: [
+            "import QtQuick",
+            "import QtQuick.Controls",
+        ],
+        signals: [
+            (
+                name: "clicked",
+                parameters: [],
+            ),
+            (
+                name: "longPressed",
+                parameters: [
+                    (
+                        param_type: "int",
+                        param_name: "duration",
+                    ),
+                ],
+            ),
+        ],
+        properties: [
+            (
+                name: "label",
+                prop_type: String,
+                value: String("Click me"),
+                accessed_properties: [],
+            ),
+            (
+                name: "enabled",
+                prop_type: Bool,
+                value: Bool(true),
+                accessed_properties: [],
+            ),
+            (
+                name: "clickCount",
+                prop_type: Int,
+                value: Int(0),
+                accessed_properties: [],
+            ),
+        ],
+        functions: [
+            (
+                name: "reset",
+                is_signal_handler: false,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "clickCount",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+            (
+                name: "handlePress",
+                is_signal_handler: false,
+                parameters: [],
+                used_names: [
+                    (
+                        name: "clickCount",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "clickCount",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [],
+    ),
+    (
+        name: "Panel",
+        base_type: "Item",
+        id: Some("container"),
+        imports: [
+            "import QtQuick",
+        ],
+        signals: [
+            (
+                name: "titleChanged",
+                parameters: [
+                    (
+                        param_type: "string",
+                        param_name: "newTitle",
+                    ),
+                ],
+            ),
+        ],
+        properties: [
+            (
+                name: "width",
+                prop_type: Int,
+                value: Int(200),
+                accessed_properties: [],
+            ),
+            (
+                name: "height",
+                prop_type: Int,
+                value: Int(100),
+                accessed_properties: [],
+            ),
+            (
+                name: "title",
+                prop_type: String,
+                value: String("Panel"),
+                accessed_properties: [],
+            ),
+            (
+                name: "content",
+                prop_type: Var,
+                value: Unset,
+                accessed_properties: [],
+            ),
+        ],
+        functions: [
+            (
+                name: "setTitle",
+                is_signal_handler: false,
+                parameters: [
+                    "newTitle",
+                ],
+                used_names: [
+                    (
+                        name: "title",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "newTitle",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [
+            (
+                type_name: "Rectangle",
+                id: Some("background"),
+                properties: [
+                    (
+                        name: "visible",
+                        prop_type: Bool,
+                        value: Bool(true),
+                        accessed_properties: [],
+                    ),
+                ],
+                functions: [],
+                children: [],
+            ),
+        ],
+    ),
+    (
+        name: "StatusBar",
+        base_type: "Item",
+        id: Some("statusBar"),
+        imports: [
+            "import QtQuick",
+        ],
+        signals: [],
+        properties: [
+            (
+                name: "message",
+                prop_type: String,
+                value: String("Ready"),
+                accessed_properties: [],
+            ),
+            (
+                name: "busy",
+                prop_type: Bool,
+                value: Bool(false),
+                accessed_properties: [],
+            ),
+        ],
+        functions: [
+            (
+                name: "showMessage",
+                is_signal_handler: false,
+                parameters: [
+                    "msg",
+                ],
+                used_names: [
+                    (
+                        name: "message",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "msg",
+                        accessed_item: None,
+                    ),
+                    (
+                        name: "busy",
+                        accessed_item: None,
+                    ),
+                ],
+                declared_locals: [],
+                member_assignments: [],
+            ),
+        ],
+        children: [],
+    ),
+]

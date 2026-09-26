@@ -1,0 +1,19 @@
+(
+    speciation: 0.1,
+    sample: Sample(percentage: 1.0),
+    rng: Entropy,
+    
+    algorithm: EventSkipping(),
+
+    scenario: NonSpatial(
+        area: (100, 100),
+        deme: 100,
+    ),
+    
+    reporters: [
+        Plugin(
+            library: "target/release/deps/libnecsim_plugins_common.so",
+            reporters: [Biodiversity(), Execution(), Progress()],
+        ),
+    ],
+)

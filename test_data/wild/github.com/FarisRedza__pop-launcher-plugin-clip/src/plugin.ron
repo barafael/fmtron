@@ -1,0 +1,11 @@
+(
+    name: "Clipboard",
+    description: "Syntax: clip <word>",
+    query: (
+        regex: "^(clip)\\s.*",
+        help: "clip",
+        isolate: true
+    ),
+    bin: (path: "clip"),
+    icon: Name("edit-paste-symbolic")
+)

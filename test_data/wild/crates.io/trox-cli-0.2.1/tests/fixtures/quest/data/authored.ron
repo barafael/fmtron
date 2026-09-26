@@ -1,0 +1,16 @@
+[
+    Tx(text: "Delve", description: "Exploration site action label."),
+    Tx(text: "Choose a card to purge"),
+    Tx(text: "Choose a card to copy"),
+    Tx(text: "No eligible cards remain."),
+    Tx(text: "Play Again"),
+    Tx(text: "Choose Replacement"),
+    Tx(text: "Transfiguration"),
+    Tx(text: "Choose Its New Form"),
+    Tx(text: "Duplication"),
+    Tx(text: "Decline Offer"),
+    Tx(text: "Walk On"),
+    Tx(text: "Confirm Choice"),
+    Tx(text: "Exploration card, face down"),
+    Tx(text: "Exploration card returning face down"),
+]

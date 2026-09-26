@@ -1,0 +1,7 @@
+{
+    "tyconia::loading::assets::items::ItemTextureMapSource": ({
+        "auto_arm": Auto,
+        "mover_belt": Auto,
+        "infinite_io": Auto,
+    }),
+}

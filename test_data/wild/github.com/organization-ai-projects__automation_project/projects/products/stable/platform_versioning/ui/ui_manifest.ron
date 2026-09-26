@@ -1,0 +1,8 @@
+(
+  schema_version: 1,
+  id: "platform_versioning_ui",
+  title: "Platform Versioning UI",
+  entrypoint: "index.html",
+  kind: "ui_bundle",
+  version: "0.1.0",
+)

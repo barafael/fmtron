@@ -1,0 +1,11 @@
+(
+  references: {},
+  changes: {
+    "Changed": [
+      "Renovate:  migrate configuration file to latest version",
+    ],
+    "Fixed": [
+      "Renovate:  also upgrade everything in project manifest, again",
+    ],
+  },
+)

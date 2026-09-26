@@ -1,0 +1,9 @@
+// Syntax: <table_name>: [<rust_row_type>, <rust_row_type>, ...]
+(
+	databaseVersion: DatabaseVersion(
+		id: 1,
+		rev: 1,
+		version: 1
+	),
+	zone: []
+)

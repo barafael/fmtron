@@ -1,0 +1,30 @@
+// Brazilian Portuguese pattern data (SSOT). Mirrors lang/br/patterns.py PATTERNS.
+[
+    PatternData(
+        type_: r"cpf",
+        label: r"[CPF]",
+        pattern: r"(?<![0-9])\d{3}\.?\d{3}\.?\d{3}-?\d{2}(?![0-9])",
+        validator: Some(r"cpf"),
+        description: r"Brazilian CPF (Cadastro de Pessoas Físicas)",
+        // The check-digit algorithm is the same digits regardless of surrounding
+        // script, so a CPF in en/ja/… text must still be caught, not only when
+        // br is requested.
+        language_neutral: true,
+    ),
+    PatternData(
+        type_: r"cnpj",
+        label: r"[CNPJ]",
+        pattern: r"(?<![0-9])\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}(?![0-9])",
+        validator: Some(r"cnpj"),
+        description: r"Brazilian CNPJ (Cadastro Nacional da Pessoa Jurídica)",
+        // Same rationale as cpf above: checksum-validated digits, language-neutral.
+        language_neutral: true,
+    ),
+    PatternData(
+        type_: r"phone",
+        label: r"[Telefone]",
+        pattern: r"(?:\+55\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}(?![0-9])",
+        check_context: true,
+        description: r"Brazilian phone number",
+    ),
+]

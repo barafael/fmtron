@@ -1,0 +1,6 @@
+// Placeholder for chunk/sector procedural content. Schema only; no systems load this yet.
+// See docs/RON.md "Sector and chunk subdivision". Future: terrain_types, prop_sets, enemy_budget_per_chunk.
+(
+    chunks_per_sector_axis: 4,
+    terrain_types: [],
+)

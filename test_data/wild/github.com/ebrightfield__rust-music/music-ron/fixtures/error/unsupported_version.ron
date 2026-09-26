@@ -1,0 +1,7 @@
+// Error fixture: UnsupportedVersion (REQ-O10, O37).
+(
+  kind: "Snippet",
+  version: 99,
+  clef: "treble",
+  events: [],
+)

@@ -1,0 +1,11 @@
+// A burn the cinder husk's claw leaves: four a second, fire.
+[
+    (
+        schema_version: 1,
+        id: "status-cinder-burn",
+        name: "Cinder Burn",
+        palette: "cinderwake",
+        color: "ember",
+        modifiers: [DamageOverTime(per_second: 4000, kind: Fire)],
+    ),
+]

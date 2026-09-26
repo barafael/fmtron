@@ -1,0 +1,59 @@
+(
+    geom: (
+        main_plane: 200,
+        quantity: 20,
+    ),
+    player:(
+        fov: 60,
+        zoom: (1.5, 30.0),
+        movement: (
+            speed: 10,
+            sprint_factor: 1.5,
+            crouch_factor: 0.5,
+            actions_in_air: 3,
+            dash_distance: 10,
+            idle_to_run_threshold: 0.01,
+        ),
+        hitbox:(
+            radius: 0.5,
+            height: 1
+        ),
+    ),
+    // seconds
+    timers: (
+        step: 0.475, // for this specific animation: twice per cycle
+        // sprint anim: 0.354
+        // step on sprint timer: 0.317
+        jump: 0.45,
+    ),
+    sound: (
+        general: 1.0,
+        music: 0.0,
+        sfx: 0.5,
+    ),
+    physics: (
+        distance_fog: true,
+        fog_directional_light_exponent: 5.0,
+        fog_visibility: 500.0,
+        shadow_distance: 100,
+    ),
+    settings: (
+        min_volume: 0.0,
+        max_volume: 3.0,
+        min_fov: 20.0,
+        max_fov: 160.0,
+        step: 0.1,
+
+    ),
+    credits: (
+        assets: [
+        ("Bevy Logo", "All rights reserved by the Bevy Foundation, permission granted for splash screen use when unmodified" ),
+        ("Background Music", "smnbl-time-for-fun\ngifted to rust community, CC0" ),
+        ("Button hover/press sounds, step sounds", "smnbl records\ngifted to rust community, CC0" ),
+        ("icons", "khusmeen, CC4" ),
+        ],
+        devs: [
+        ( "olekspickle", "compiled different bevy crates to have a consistent template covering stuff average third person RPG game need"),
+        ]
+    )
+)

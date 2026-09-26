@@ -1,0 +1,11 @@
+Config(
+  prefix: "/",
+  engines:[
+    Custom(
+      name: "Qwant",
+      url: "qwant.com/?q={}",
+    ),
+  ]
+  //
+  // NOTE: `{}` is replaced by the search query and `https://` is automatically added in front.
+)

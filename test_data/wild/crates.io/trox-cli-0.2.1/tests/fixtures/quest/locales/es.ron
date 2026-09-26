@@ -1,0 +1,9 @@
+(
+    locale: "es", direction: Ltr, isolation: Isolate, fallbacks: ["en-US"],
+    facets: { "gender": (scope: Message, values: ["masculine", "feminine"]) },
+    term_facets: {
+        "card-subtype.character": { "gender": "masculine" },
+        "card-subtype.event": { "gender": "masculine" },
+        "card-subtype.warrior": { "gender": "feminine" },
+    },
+)

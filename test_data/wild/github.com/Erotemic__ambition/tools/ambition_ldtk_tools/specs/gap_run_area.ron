@@ -1,0 +1,78 @@
+// gap_run — a horizontal leap-the-gaps traverse (story: "the function has
+// discontinuities — leap them; fall in and you respawn"). Distinct from the
+// vertical climbs: three floor segments split by two ~110px pits, each well
+// under the player's running-jump reach (MAX_RUN_SPEED 270 × ~0.56s jump air
+// time ≈ 150px). Pits open to the void below, so a miss falls out and respawns
+// at the start. Chains off gradient_ascent alongside ratchet_climb.
+//
+// Layout (1280x320), floor segment tops = 288:
+//   y=288  [== seg_1 ==]  (pit1)  [== seg_2 ==]  (pit2)  [== seg_3 ==]
+//          16........380         490........790         900.......1264
+//   spawn + door on seg_1 (left); leap pit1 → seg_2; leap pit2 → seg_3.
+(
+    id: "gap_run",
+    level_id: "gap_run",
+    world_x: 90000,
+    world_y: 1808,
+    px_wid: 1280,
+    px_hei: 320,
+    fill_collision: "empty",
+    bg_color: "#181410",
+    biome: "lab",
+    entities: [
+        // Bounding: ceiling + side walls (NO continuous floor — the pits are the
+        // point). Walls stop at the floor-top so they don't seal the pits.
+        ( type: "Solid", px: [0, 0], size: [1280, 16], fields: ( name: "ceiling" ) ),
+        ( type: "Solid", px: [0, 16], size: [16, 272], fields: ( name: "left_wall" ) ),
+        ( type: "Solid", px: [1264, 16], size: [16, 272], fields: ( name: "right_wall" ) ),
+        // Three floor segments split by two ~110px pits.
+        ( type: "Solid", px: [16, 288], size: [364, 32], fields: ( name: "seg_1" ) ),
+        ( type: "Solid", px: [490, 288], size: [300, 32], fields: ( name: "seg_2" ) ),
+        ( type: "Solid", px: [900, 288], size: [364, 32], fields: ( name: "seg_3" ) ),
+        // Spawn + entry door on seg_1; camera; intro read-out.
+        ( type: "PlayerStart", px: [90, 242], size: [28, 46], fields: ( name: "gap_run_spawn" ) ),
+        (
+            type: "LoadingZone",
+            px: [24, 192],
+            size: [48, 96],
+            fields: (
+                id: "gap_run_entry",
+                name: "gap_run_entry",
+                activation: "Door",
+                target_room: "gradient_ascent",
+                target_zone: "gap_run_door",
+                bidirectional: true,
+            ),
+        ),
+        (
+            type: "CameraZone",
+            px: [0, 0],
+            size: [1280, 320],
+            fields: ( id: "gap_run_camera", name: "gap_run_camera", mode: "Default" ),
+        ),
+        (
+            type: "DebugLabel",
+            px: [140, 100],
+            size: [640, 24],
+            fields: (
+                name: "gap_run_intro",
+                text: "Gap Run: leap the two pits (run + jump); a miss respawns you here.",
+                category: "Custom",
+            ),
+        ),
+    ],
+    // Reciprocal door inserted into gradient_ascent's right floor (x=1100, clear
+    // of ratchet_climb's door at 1180 and the steps/summit), snapped onto the floor.
+    connect_to: [
+        (
+            target_room: "gradient_ascent",
+            px: [1100, 400],
+            size: [16, 96],
+            id: "gap_run_door",
+            target_zone: "gap_run_entry",
+            activation: "Door",
+            bidirectional: true,
+            snap_to_surface: true,
+        ),
+    ],
+)

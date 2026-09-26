@@ -1,0 +1,18 @@
+[
+    NodeEntryMeta(
+        node_type: File,
+        source_path: "/some/target/a",
+    ),
+    NodeEntryMeta(
+        node_type: File,
+        source_path: "/some/target/b",
+    ),
+    NodeEntryMeta(
+        node_type: File,
+        source_path: "/some/target/",
+    ),
+    NodeEntryMeta(
+        node_type: File,
+        source_path: "/some/target/cccc/zzz",
+    ),
+]

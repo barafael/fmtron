@@ -1,0 +1,11 @@
+(
+  title:          "Stabman!",
+  dimensions:     Some((1280, 720)),
+  max_dimensions: None,
+  min_dimensions: None,
+  maximized:      false,
+  fullscreen:     false,
+  multisampling:  0,
+  visibility:     true,
+  vsync:          true,
+)

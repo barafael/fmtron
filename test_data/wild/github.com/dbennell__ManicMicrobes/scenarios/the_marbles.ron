@@ -1,0 +1,113 @@
+// The marbles — soup.ron, seeded with a lineage that has paid to stay round.
+//
+// This file exists so the two pictures can be put side by side without any tool use. Open
+// `soup.ron` and you get a tessellation: cells flattened into polygons, sharing walls, no gaps
+// anywhere. Open this and you get a heap of separate round bodies. Nothing about the world
+// differs between them — the chemistry, the light, the size and the seeding are `soup.ron`'s,
+// copied — and nothing about the *simulation* differs either. Only the genome does.
+//
+//   mm-cli run scenarios/the_marbles.ron --ticks 20000 --check
+//
+// The mechanism is in `docs/STIFFNESS.md` and the arithmetic is in `genomes/marble.mm`'s own
+// header. In one line: a cell bulges into the space its neighbours leave unless it is either
+// glued to them or too firm to bulge, and `marble.mm` is neither glued nor soft.
+//
+// Measured, on this slide against the same slide seeded with `ancestor.mm`:
+//
+//   genome         population   rigidity   swell   coverage   radius
+//   ancestor.mm         1 113       0.09    1.229       105%     1.12
+//   marble.mm             666       0.68    1.095       105%     1.38
+//
+// where 1.000 is a perfect sphere cut by its seams and 1.237 is a cell inflated until its
+// clipped outline keeps the area it has. **Four cells in ten** is what the picture costs, and it
+// is charged every tick forever rather than once.
+//
+// Coverage is the number that decides whether this looks like anything. A rounder strain is
+// available — a vacuole and a wall at the catalogue's maximum reaches a swell of 1.015 — and it
+// settles at 436 cells covering barely half the slide, which is a scatter of very round cells
+// rather than a smear of yeast. `marble.mm`'s own header has that measurement. Being nearly as
+// round and twice as dense is the better picture, and it is why the wall stops at 200.
+//
+// Note that `soup.ron` names no inhabitants at all, which is why it falls back to the ancestor —
+// see `seed_into` in `mm-app`. Naming them here is also how a saved slide remembers who was on
+// it, so this is the ordinary way to author a population rather than a special case for a demo.
+(
+    name: "the marbles",
+    seed: 20250728,
+    width: 64,
+    height: 64,
+
+    light: Uniform(intensity: 1024),
+    current: Still,
+    fluid_interval: 1,
+
+    // soup.ron's, unchanged. The world is the control; the genome is the experiment.
+    seeding: [
+        Uniform(chemical: 11, per_square: 409600),
+        // The carbonate system (`docs/CHEMISTRY.md` §11). Carbonate matched to the dissolved
+        // CO2 above, so the slide starts at pH 7 and every move from there is something the
+        // cells did. Calcium is then *not* free: the pair precipitates on the product of the
+        // two, so this is set to put `sqrt(calcium * carbonate)` a little over
+        // `minerals.calcite_saturation` — near enough to equilibrium that the pH decides which
+        // way it goes, which is the whole point of the coupling.
+        Uniform(chemical: 18, per_square: 409600),
+        Uniform(chemical: 17, per_square: 3461),
+        Uniform(chemical: 14, per_square: 409600),
+        Uniform(chemical: 4, per_square: 409600),
+        // The three minerals nothing in the engine produces (`docs/CHEMISTRY.md` §8): seeding is
+        // the only way in, and without them a nucleus, an enzyme or a shell cannot be built at
+        // all. At the Redfield proportion of this world's own carbon — 16/106 nitrogen, 1/106
+        // phosphorus rounded up — and half that again in silicon, matching the fresh slide.
+        Uniform(chemical: 5, per_square: 61440),
+        Uniform(chemical: 6, per_square: 4096),
+        // The inert pool a diazosome cracks. Four times the bioavailable nitrogen: a
+        // young world is mostly locked up, and unlocking it is what the organelle is for.
+        Uniform(chemical: 16, per_square: 245760),
+        Uniform(chemical: 7, per_square: 20480),
+    ],
+    barriers: [],
+
+    inhabitants: [
+        (genome: "marble.mm", count: 16),
+    ],
+
+    // The other half of being a marble, and it only works as a pair with the genome.
+    //
+    // A firm cell is drawn at its true radius rather than 15% over it, so it crosses its
+    // neighbours barely and the plane through the crossings barely cuts it. That takes a packed
+    // sheet from 0.387 out of round — more angular than a square — to 0.167, between a hexagon and
+    // a circle. **The rest of the distance is the cells not being pressed into one another**, and
+    // that is not something a renderer can give: at a spacing where nothing physically touches the
+    // same firmness reaches 0.088, rounder than a hexagon.
+    //
+    // `rigidity_gain` is what buys it. Wall times turgor scales `neighbours::core_permille`
+    // towards `CORE_PERMILLE_RIGID`, which is a thousand — exactly tangency — so any overlap at
+    // all is past the core and takes the stiff response. A firm cell cannot be that close to
+    // another without pushing it away, which is what "marble" means mechanically.
+    //
+    // `separation_relax` is what makes that survivable. With the core at tangency every contact
+    // takes the stiff branch, where it had been the rare deep-penetration case, and the
+    // corrections are summed across a cell's neighbours — so a crowded cell is shoved several
+    // times as far as any one contact asked for and the pack buzzes at 662 thousandths of a square
+    // a tick. An eighth takes that to **7**, and leaves the pack better separated as well: 14% of
+    // near pairs overlapping against 19%.
+    //
+    // `rigidity_gain` is **one**, not sixteen, and the difference matters more than it looks. The
+    // gain multiplies wall times turgor and then clamps at one, so at sixteen anything above a
+    // sixteenth saturates — and a membrane of 24 out of 255 is already 0.094. Every cell on the
+    // slide would read fully firm and the dial would discriminate nothing, which is exactly what
+    // happened the first time `can_a_marble_swim_through_a_crowd_a_blob_cannot` was run: four
+    // swimmers, four different bodies, one identical distance. At one, `marble.mm` reads 1.00 and
+    // an ancestor reads 0.09, which is the spread the whole mechanism is about.
+    //
+    // Both are zero in `BiologyConfig::default`, for the reason `light_occlusion` is: they change
+    // what a slide holds, and every acceptance result in the tree was taken without them.
+    biology: (
+        separation_relax: 128,
+        metabolism: (
+            rates: (
+                rigidity_gain: 1024,
+            ),
+        ),
+    ),
+)

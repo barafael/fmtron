@@ -1,0 +1,145 @@
+[
+    (
+        (
+            (Any,Any,Any),
+            (Any,Ground(concealed:false),Any),
+            (Any,Any,Any),
+        ),            
+        "ground",
+    ),
+
+    (
+        (
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+        ),
+        "concealed",
+    ),
+
+    (
+        (
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+        ), 
+        "single_edge",
+    ),
+
+    (
+        (
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+        ), 
+        "double_edge",
+    ),
+
+     (
+         (
+             (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Ground(concealed:false)),
+             (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+             (Ground(concealed:false),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+         ),
+         "diagonal_edge",
+     ),
+
+    (
+        (
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Ground(concealed:false)),
+        ), 
+        "triple_edge",
+    ),
+
+    (
+        (
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Ground(concealed:false)),
+        ), 
+        "quadra_edge",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+        ), 
+        "wall",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Ground(concealed:false)),
+        ), 
+        "wall_single_edge_right",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+        ), 
+        "wall_single_edge_left",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Ground(concealed:false)),
+        ), 
+        "wall_double_edge",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Wall(breaks:false, ore:0)),
+            (Any,Ground(concealed:false),Any),
+        ), 
+        "double_wall",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Any),
+        ), 
+        "single_edge_270",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Wall(breaks:false, ore:0),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Any),
+        ), 
+        "kinked_wall",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Any,Wall(breaks:false, ore:0),Any),
+        ), 
+        "ending_wall",
+    ),
+
+    (
+        (
+            (Any,Ground(concealed:false),Any),
+            (Ground(concealed:false),Wall(breaks:false, ore:0),Ground(concealed:false)),
+            (Any,Ground(concealed:false),Any),
+        ), 
+        "pillar",
+    ),
+]

@@ -1,0 +1,16 @@
+(
+    board_size: (6, 6),
+    objects: {
+        (x:0, y:5): Rock,
+        (x:3, y:0): Rock,
+        (x:1, y:2): BombVertical,
+        (x:2, y:2): Rock,
+        (x:5, y:4): Rock,
+    },
+    fire_coord: (x:1, y:2),
+    meta: (
+        name: "Scattered",
+        min_bombs: 3,
+        min_affected_cells: 19,
+    )
+)

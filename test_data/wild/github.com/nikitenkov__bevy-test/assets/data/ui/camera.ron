@@ -1,0 +1,58 @@
+(
+    runtime: (
+        default_yaw_degrees: 6.875,
+        default_pitch_degrees: 60.0,
+        default_distance: 22.0,
+        edge_scroll_margin: 18.0,
+        move_speed: 14.0,
+        speed_boost_multiplier: 1.8,
+        drag_pan_factor: 0.0025,
+        rotate_sensitivity: 0.006,
+        zoom_factor: 1.5,
+        pitch_min_degrees: 25.0,
+        pitch_max_degrees: 80.0,
+        distance_min: 8.0,
+        distance_max: 42.0,
+    ),
+    opening: (
+        point_limit_for_clearing_bounds: 5,
+        aspect_ratio_clamp_max: 1.2,
+        clearing_bounds: (
+            frame: (
+                padding_x: 4.75,
+                padding_y: 4.0,
+                distance_multiplier: 1.16,
+                distance_min: 14.5,
+                distance_max: 17.0,
+            ),
+            focus_blend: 0.55,
+            focus_offset_x: 0.25,
+            focus_offset_y: 0.22,
+        ),
+        point_cluster: (
+            frame: (
+                padding_x: 3.25,
+                padding_y: 3.0,
+                distance_multiplier: 1.24,
+                distance_min: 10.5,
+                distance_max: 13.5,
+            ),
+            focus_x_ratio: 0.32,
+            focus_y_ratio: 0.56,
+            focus_offset_x: 0.05,
+            focus_offset_y: 0.10,
+        ),
+        clearing_only: (
+            frame: (
+                padding_x: 2.75,
+                padding_y: 2.5,
+                distance_multiplier: 1.34,
+                distance_min: 11.0,
+                distance_max: 14.0,
+            ),
+            focus_offset_x: 0.20,
+            focus_offset_y: 0.18,
+        ),
+        map_fallback_distance_multiplier: 0.85,
+    ),
+)

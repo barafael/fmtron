@@ -1,0 +1,158 @@
+#![enable(implicit_some)]
+Container (
+    transform: (
+        id: "container",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0.),
+    ),
+    children: [
+        Text (
+            transform: (
+                id: "name",
+                anchor: TopMiddle,
+                x: 0.,
+                y: -100.,
+                width: 800.,
+                height: 40.,
+                transparent: true,
+            ),
+            text: (
+                text: "",
+                font_size: 40.,
+                color: (1., 1., 1., 1.),
+                font: File("font/square.ttf", Ttf, ()),
+                align: Middle,
+            ),
+        ),
+        Text (
+            transform: (
+                id: "description",
+                anchor: TopMiddle,
+                x: 0.,
+                y: -140.,
+                width: 800.,
+                height: 40.,
+                transparent: true,
+            ),
+            text: (
+                text: "",
+                font_size: 25.,
+                color: (1., 1., 1., 1.),
+                font: File("font/square.ttf", Ttf, ()),
+                align: Middle,
+            ),
+        ),
+        Text (
+            transform: (
+                id: "fps",
+                anchor: TopRight,
+                x: 0.,
+                y: -30.,
+                width: 250.,
+                height: 40.,
+                transparent: true,
+            ),
+            text: (
+                text: "FPS: 00.0",
+                font_size: 25.,
+                color: (1., 1., 1., 1.),
+                font: File("font/square.ttf", Ttf, ()),
+                align: TopLeft,
+            ),
+        ),
+        Text (
+            transform: (
+                id: "spawned",
+                anchor: TopLeft,
+                x: 160.,
+                y: -30.,
+                width: 300.,
+                height: 40.,
+                transparent: true,
+            ),
+            text: (
+                text: "SPAWNED: 0/0",
+                font_size: 25.,
+                color: (1., 1., 1., 1.),
+                font: File("font/square.ttf", Ttf, ()),
+                align: TopLeft,
+            ),
+        ),
+        Text (
+            transform: (
+                id: "needed_percent",
+                anchor: TopLeft,
+                x: 160.,
+                y: -60.,
+                width: 300.,
+                height: 40.,
+                transparent: true,
+            ),
+            text: (
+                text: "% Needed: 0",
+                font_size: 25.,
+                color: (1., 1., 1., 1.),
+                font: File("font/square.ttf", Ttf, ()),
+                align: TopLeft,
+            ),
+        ),
+        Text (
+            transform: (
+                id: "saved_percent",
+                anchor: TopLeft,
+                x: 160.,
+                y: -90.,
+                width: 300.,
+                height: 40.,
+                transparent: true,
+            ),
+            text: (
+                text: "% SAVED: 0",
+                font_size: 25.,
+                color: (1., 1., 1., 1.),
+                font: File("font/square.ttf", Ttf, ()),
+                align: TopLeft,
+            ),
+        ),
+
+        Image(
+            transform: (
+                id: "lift_icon",
+                y: 40.,
+                x: 40.,
+                width: 64.,
+                height: 64.,
+                anchor: BottomLeft,
+            ),
+            image: (
+                image: File("texture/lift_icon.png", Png, (channel: Srgb)),
+            )
+        ),
+        Image(
+            transform: (
+                id: "change_direction_icon",
+                y: 40.,
+                x: 96.,
+                width: 64.,
+                height: 64.,
+                anchor: BottomLeft,
+            ),
+            image: (
+                image: File("texture/change_direction_icon.png", Png, (channel: Srgb)),
+            )
+        ),
+        Image(
+            transform: (
+                id: "ram_icon",
+                y: 40.,
+                x: 158.,
+                width: 64.,
+                height: 64.,
+                anchor: BottomLeft,
+            ),
+            image: (
+                image: File("texture/ram_icon.png", Png, (channel: Srgb)),
+            )
+        ),
+    ]
+)

@@ -1,0 +1,17 @@
+(
+    protocol: "snowball",
+    network: "a2a_large",
+
+    metrics: [
+        Throughput,
+    ],
+
+    data_ranges: [
+        (AcceptanceThreshold, LinearInt(start: 10, end: 100, step_size: 10)),
+    ],
+
+    timeout: Blocks(
+        warmup: 0,
+        runtime: 1,
+    ),
+)

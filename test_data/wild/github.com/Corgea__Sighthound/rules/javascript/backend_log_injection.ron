@@ -1,0 +1,22 @@
+(
+    rules: [
+        // ==================== CWE-117: Log Injection ====================
+        (
+            id: Some("js-node-log-injection-001"),
+            name: Some("Log Injection via unsanitized input"),
+            category: Some("log-injection"),
+            mode: "search",
+            patterns: Some([
+                "regex:logLine\\([^)]*\\+",
+                "regex:auditLogger.raw\\([^)]*\\+",
+            ]),
+            finding_type: Some("Log Injection"),
+            severity: Some("Medium"),
+            confidence: Some("High"),
+            cwe_id: Some("cwe-117"),
+            description: Some("Untrusted input written to a log without neutralizing newlines"),
+            file_types: Some((extensions: Some([".js", ".jsx", ".ts", ".tsx"]))),
+            tags: Some(["log-injection", "backend", "cwe-117"])
+        ),
+    ],
+)

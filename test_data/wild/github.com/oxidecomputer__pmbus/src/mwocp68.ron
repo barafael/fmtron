@@ -1,0 +1,227 @@
+(
+    all: [
+        // These are unsupported, and marked to prevent from automatic queries
+        (0x7f, "STATUS_OTHER", Illegal, Illegal),
+        (0x82, "STATUS_FANS_3_4", Illegal, Illegal),
+        // Note that ACAN-114 from Murata makes no mention of the IC_DEVICE_ID
+        // and IC_DEVICE_REV  commands; testing indicates that they get NACKed
+        //and set STATUS_CML.
+        (0xad, "IC_DEVICE_ID", Illegal, Illegal),
+        (0xae, "IC_DEVICE_REV", Illegal, Illegal),
+
+        //
+        // MFR_PAGE_X allows for reading the black box data: when any fault
+        // (except for an input undervoltage) occurs, many values are latched
+        // into non-volatile memory.  To read these values, the desired fault
+        // recency should be written to MFR_PAGE_X, after which the following
+        // standard PMBus commands can be issued to determine the corresponding
+        // value at the time of the fault:
+        //
+        //   STATUS_VOUT            STATUS_FANS_1_2        READ_TEMPERATURE_2
+        //   STATUS_IOUT            READ_VIN               READ_TEMPERATURE_3
+        //   STATUS_INPUT           READ_IIN               READ_FAN_SPEED_1
+        //   STATUS_TEMPERATURE     READ_VOUT              READ_POUT
+        //   STATUS_CML             READ_IOUT              READ_PIN
+        //   STATUS_MFR_SPECIFIC    READ_TEMPERATURE_1
+        //
+        (0xe4, "MFR_PAGE_X", WriteByte, ReadByte),
+        (0xf0, "BOOT_LOADER_KEY", WriteBlock, Illegal),
+
+        //
+        // Note that BOOT_LOADER_CMD shares the same command code as
+        // BOOT_LOADER_STATUS (!!), with the sense depending if it's a read
+        // (BOOT_LOADER_STATUS) or a write (BOOT_LOADER_CMD).  We don't support
+        // the notion of a single command code having multiple senses based on
+        // operation, but if we did we might have an additional line here:
+        //
+        //   (0xf1, "BOOT_LOADER_CMD", WriteBlock, Illegal)
+        //
+        // This behavior is not PMBus compliant (such that compliance with such
+        // a loose specification in fact means anything at all), so it's
+        // unclear if our implicit refusal to accommodate it isn't a feature.
+        // (And as long as we're editorializing: that both commands use block
+        // operations for a fixed-size one-byte payload is... idiosyncratic, to
+        // put it euphemistically.)
+        //
+        (0xf1, "BOOT_LOADER_STATUS", Illegal, ReadBlock),
+
+        (0xf2, "BOOT_LOADER_MEMORY_BLOCK", MfrDefined, MfrDefined),
+        (0xf3, "BOOT_LOADER_PRODUCT_KEY", MfrDefined, Illegal),
+        (0xf4, "IMAGE_CHECKSUM", WriteBlock, Illegal),
+    ],
+
+    numerics: [
+        ("FAN_COMMAND_1", Linear11, Percent),
+        ("FAN_COMMAND_2", Linear11, Percent),
+        ("IOUT_OC_FAULT_LIMIT", Linear11, Amperes),
+        ("IOUT_OC_WARN_LIMIT", Linear11, Amperes),
+        ("OT_WARN_LIMIT", Linear11, Celsius),
+        ("IIN_OC_WARN_LIMIT", Linear11, Amperes),
+        ("POUT_OP_WARN_LIMIT", Linear11, Watts),
+        ("PIN_OP_WARN_LIMIT", Linear11, Watts),
+        ("READ_VIN", Linear11, Volts),
+        ("READ_IIN", Linear11, Amperes),
+        // TODO: READ_VCAP is probably `Linear11` not `VOutMode(Unsigned)`
+        // https://github.com/oxidecomputer/hubris/issues/2543
+        ("READ_VCAP", VOutMode(Unsigned), Volts),
+        ("READ_VOUT", VOutMode(Unsigned), Volts),
+        ("READ_IOUT", Linear11, Amperes),
+        ("READ_TEMPERATURE_1", Linear11, Celsius),
+        ("READ_TEMPERATURE_2", Linear11, Celsius),
+        ("READ_TEMPERATURE_3", Linear11, Celsius),
+        ("READ_FAN_SPEED_1", Linear11, Rpm),
+        ("READ_FAN_SPEED_2", Linear11, Rpm),
+        ("READ_POUT", Linear11, Watts),
+        ("READ_PIN", Linear11, Watts),
+        ("MFR_VIN_MIN", Linear11, Volts),
+        ("MFR_VIN_MAX", Linear11, Volts),
+        ("MFR_IIN_MAX", Linear11, Amperes),
+        ("MFR_PIN_MAX", Linear11, Watts),
+        ("MFR_VOUT_MIN", VOutMode(Unsigned), Volts),
+        ("MFR_VOUT_MAX", VOutMode(Unsigned), Volts),
+        ("MFR_IOUT_MAX", Linear11, Amperes),
+        ("MFR_POUT_MAX", Linear11, Watts),
+        ("MFR_TAMBIENT_MAX", Linear11, Celsius),
+        ("MFR_TAMBIENT_MIN", Linear11, Celsius),
+        ("MFR_MAX_TEMP_1", Linear11, Celsius),
+        ("MFR_MAX_TEMP_2", Linear11, Celsius),
+        ("MFR_MAX_TEMP_3", Linear11, Celsius),
+    ],
+
+    structured: {
+        "STATUS_MFR_SPECIFIC": {
+            // Bit 7: reserved
+            "PrimaryOvertemperatureFault": (
+                name: "LLC primary temp sensor overtemperature fault",
+                bits: Bit(6),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            ),
+            "OringOvertemperatureFault": (
+                name: "Oring temp sensor overtemperature fault",
+                bits: Bit(5),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            ),
+            "CurrentSensorReadError": (
+                name: "Current sensor reading error",
+                bits: Bit(4),
+                values: Sentinels({
+                    "NoError": (0b0, "no error"),
+                    "Error": (0b1, "error"),
+                }),
+            ),
+            "TemperatureSensorReadError": (
+                name: "Temperature sensor reading error",
+                bits: Bit(3),
+                values: Sentinels({
+                    "NoError": (0b0, "no error"),
+                    "Error": (0b1, "error"),
+                }),
+            ),
+            "WrongProductId": (
+                name: "Primary product ID incorrect",
+                bits: Bit(2),
+                values: Sentinels({
+                    "IdCorrect": (0b0, "product ID correct"),
+                    "IdIncorrect": (0b1, "product ID incorrect"),
+                }),
+            ),
+            // Bit 1: reserved
+            "OringFetFault": (
+                name: "Oring FET fault",
+                bits: Bit(0),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            ),
+        },
+
+        "MFR_PAGE_X": {
+            "MFQPage": (
+                name: "Murata-defined PMBus page",
+                bits: Bitrange(High(7), Low(0)),
+                values: Sentinels({
+                    "RealTimeData": (0xff, "Default, normal operation"),
+                    "FaultHistory1": (0x00, "most recent fault"),
+                    "FaultHistory2": (0x01, "next most recent fault"),
+                    "FaultHistory3": (0x02, "third most recent fault"),
+                    "FaultHistory4": (0x03, "fourth most recent fault"),
+                    "FaultHistory5": (0x04, "oldest fault"),
+                })
+            )
+        },
+
+        "BOOT_LOADER_STATUS": {
+            "ChecksumSuccessful": (
+                name: "Checksum successfully checked",
+                bits: Bit(0),
+                values: Sentinels({
+                    "NotSuccessful": (0b0, "not successful"),
+                    "Successful": (0b1, "successful"),
+                }),
+            ),
+            "MemoryError": (
+                name: "Memory boundary error condition",
+                bits: Bit(1),
+                values: Sentinels({
+                    "NoError": (0b0, "no error"),
+                    "Error": (0b1, "error"),
+                }),
+            ),
+            "AlignError": (
+                name: "Unaligned memory read/write",
+                bits: Bit(2),
+                values: Sentinels({
+                    "NoError": (0b0, "no error"),
+                    "Error": (0b1, "error"),
+                }),
+            ),
+            "KeyError": (
+                name: "Invalid key detected",
+                bits: Bit(3),
+                values: Sentinels({
+                    "NoError": (0b0, "no error"),
+                    "Error": (0b1, "error"),
+                }),
+            ),
+            "StartError": (
+                name: "PSU failed to start",
+                bits: Bit(4),
+                values: Sentinels({
+                    "NoError": (0b0, "no error"),
+                    "Error": (0b1, "error"),
+                }),
+            ),
+            "ProductKeyError": (
+                name: "Product key verification error",
+                bits: Bit(5),
+                values: Sentinels({
+                    "NoError": (0b0, "no error"),
+                    "Error": (0b1, "error"),
+                }),
+            ),
+            "Mode": (
+                name: "Boot loader mode",
+                bits: Bit(6),
+                values: Sentinels({
+                    "NotBootLoader": (0b0, "not in boot loader"),
+                    "BootLoader": (0b1, "in boot loader"),
+                }),
+            ),
+            "ProgramBusy": (
+                name: "Write operation in progress",
+                bits: Bit(7),
+                values: Sentinels({
+                    "NotInProgress": (0b0, "not in progress"),
+                    "InProgress": (0b1, "in progress"),
+                }),
+            ),
+        }
+    }
+)

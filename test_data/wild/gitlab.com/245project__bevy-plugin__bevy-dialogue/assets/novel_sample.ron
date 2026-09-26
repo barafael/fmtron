@@ -1,0 +1,124 @@
+(
+    dialogues: {
+        15008331116881037351: {
+            3967406410050873939: [
+                (
+                    contents: {
+                        "eng": "A long, long time ago a little boy was walking through a park. In the middle of the park there was a tree with a sign on it.",
+                    },
+                ),
+                (
+                    contents: {
+                        "eng": "The sign said \"I am a magic tree. Say the magic words and you will see.\" ",
+                    },
+                ),
+                (
+                    contents: {
+                        "eng": "The boy tried to guess the magic words. He tried ",
+                    },
+                ),
+            ],
+            3483606952641759290: [
+                (
+                    contents: {
+                        "eng": ", and many more... but none of them worked.",
+                    },
+                ),
+                (
+                    contents: {
+                        "eng": "Exhausted, he threw himself on the floor, saying: ",
+                    },
+                ),
+            ],
+            14507228134289988565: [
+                (
+                    contents: {
+                        "eng": "and suddenly, a big door opened in the trunk. Inside everything was dark, except for a sign which said \"Carry on with your magic\".",
+                    },
+                ),
+            ],
+            17757003687059125270: [
+                (
+                    contents: {
+                        "eng": "With this, the inside of the tree lit up brightly and revealed a pathway leading to a great big pile of toys and chocolate. ",
+                    },
+                ),
+            ],
+        },
+        14537648815543369767: {
+            3967406410050873939: [
+                (
+                    contents: {
+                        "eng": "abracadabra",
+                    },
+                ),
+                (
+                    contents: {
+                        "eng": "supercalifragilisticexpialidocious",
+                    },
+                ),
+                (
+                    contents: {
+                        "eng": "tan-ta-ra",
+                    },
+                ),
+            ],
+            3483606952641759290: [
+                (
+                    contents: {
+                        "eng": "\"Please, dear tree!\"",
+                    },
+                ),
+            ],
+            14507228134289988565: [
+                (
+                    contents: {
+                        "eng": "\"Thank you, dear tree!\"",
+                    },
+                ),
+            ],
+        },
+    },
+    sequences: {
+        1: [
+            (
+                class: 15008331116881037351,
+                state: 3967406410050873939,
+            ),
+            (
+                class: 14537648815543369767,
+                state: 3967406410050873939,
+            ),
+            (
+                class: 15008331116881037351,
+                state: 3483606952641759290,
+            ),
+            (
+                class: 14537648815543369767,
+                state: 3483606952641759290,
+            ),
+            (
+                class: 15008331116881037351,
+                state: 14507228134289988565,
+            ),
+            (
+                class: 14537648815543369767,
+                state: 14507228134289988565,
+            ),
+            (
+                class: 15008331116881037351,
+                state: 17757003687059125270,
+            ),
+        ],
+    },
+    class_name_map: {
+        "Narrator": 15008331116881037351,
+        "The Boy": 14537648815543369767,
+    },
+    state_name_map: {
+        "End": 17757003687059125270,
+        "First": 3967406410050873939,
+        "Second": 3483606952641759290,
+        "Third": 14507228134289988565,
+    },
+)

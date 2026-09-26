@@ -1,0 +1,44 @@
+(
+    entities: {
+        0: (
+            components: {
+                "bevy_transform::components::transform::Transform": (
+                    translation: (
+                        x: 0.0,
+                        y: 0.0,
+                        z: 1.0,
+                    ),
+                    rotation: (
+                        x: 0.0,
+                        y: 0.0,
+                        z: 0.0,
+                        w: 1.0,
+                    ),
+                    scale: (
+                        x: 1.0,
+                        y: 1.0,
+                        z: 1.0,
+                    ),
+                ),
+                "bevy_core::name::Name": (
+                    name: "MyName",
+                ),
+                "bevy_sprite::sprite::Sprite": (
+                    color: Rgba(
+                        red: 255.0,
+                        green: 0.0,
+                        blue: 0.0,
+                        alpha: 255.0,
+                    ),
+                    flip_x: true,
+                    custom_size: Some((x: 1.23, y: 4.56))
+                    
+                ),
+                "bevy_render::view::visibility::InheritedVisibility": (true),
+                "bevy_render::view::visibility::ViewVisibility": (true),
+                "bevy_render::view::visibility::Visibility": Visible,
+            }
+        ),
+    },
+    resources: {},
+)

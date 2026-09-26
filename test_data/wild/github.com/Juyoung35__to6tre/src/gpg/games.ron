@@ -1,0 +1,40 @@
+[
+    (
+        name: "TentsAndTrees",
+        cells: [
+            (
+                name: "Empty",
+                default: true,
+                l_click: "Tent",
+                r_click: "Flagged",
+                color: "WHITE",
+            ),
+            (
+                name: "Flagged",
+                l_click: "Tent",
+                r_click: "Empty",
+                color: "GREEN",
+            ),
+            (
+                name: "Tree",
+                randarg: 0,
+                color: "GREEN",
+                sprite: "assets/tree.svg",
+                is_valid: "uniq_pair(Tent, 1)",
+            ),
+            (
+                name: "Tent",
+                l_click: "Empty",
+                r_click: "Flagged",
+                color: "GREEN",
+                sprite: "assets/tent.svg",
+                is_valid: "uniq_pair(Tree, 1) && !adj(Tent, r:square)",
+            ),
+            (
+                name: "Clue",
+                template: "horizontal-vertical-count",
+                arg: "Tent.count",
+            )
+        ]
+    )
+]

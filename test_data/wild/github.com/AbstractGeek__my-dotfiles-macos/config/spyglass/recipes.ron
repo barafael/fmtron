@@ -1,0 +1,46 @@
+(
+    version: "1",
+    author: "Dinesh Natesan",
+    name: "recipes",
+    description: Some("A curated collection of websites with high-quality vegetarian/vegan recipes."),
+    is_enabled: true,   // Set to false if you want to disable this lens
+    domains: [
+        // Major sites that often have really good recipes
+        "www.seriouseats.com",
+        // "cooking.nytimes.com",
+        
+        // Specific cuisines/sites that I've found randomly w/ high-quality recipes
+        "https://lovingitvegan.com/",
+        "https://thefoodietakesflight.com/",
+        // "www.hungryhuy.com",
+        // "www.vickypham.com",
+    ],
+
+    urls: [
+        // URLs are considered prefixed, i.e. anything that starts w/ the following
+        // will be matched and crawled.
+        //
+        // https://www.reddit.com/r/recipes/ -> matches
+        // https://www.reddit.com/r/recipes_not/ -> does not match, notice the end slash.
+        // "https://www.reddit.com/r/recipes/",
+    ],
+
+    // Rules allow you to refine how the crawler determine whether it should crawl
+    // a URL or not.
+    rules: [
+        // SkipURL is a simple regex (similar to ones in robots.txt) that when matches
+        // a URL will skip crawling it.
+        //
+        // For example, below I'm skipping over any URLs that have the word "broccoli"
+        // in the path, despite the benefits to my health.
+        // SkipURL("https://www.seriouseats.com/*broccoli*"),
+        // Limits the depth of a URL to a certain depth.
+        // For example:
+        //  - LimitURLDepth("https://example.com/", 1) will limit it to https://example.com/<path 1>
+        //  - LimitURLDepth("https://example.com/", 2) will limit it to https://example.com/<path 1>/<path 2>
+        //  - etc.
+        // In this case, we're limiting to only https://www.reddit.com/r/recipes/<post> so we don't
+        // index too many comments/etc. from reddit.
+       // LimitURLDepth("https://www.reddit.com/r/recipes", 1),
+    ]
+)

@@ -1,0 +1,23 @@
+/// Example config file for backgrounds.
+/// Any backgrounds used, need to have this file.
+/// To use, copy this file, place it next to the image, and rename it to
+///   `<bg_image_name>.ron`
+/// where `<bg_image_name>` is the filename of the background image,
+/// without its extension (.png).
+(
+    /// Specify the WIDTH of the whole image:
+    texture_width: 256,
+    /// Specify the HEIGHT of the whole image:
+    texture_height: 256,
+    sprites: [
+        (
+            x:      0,
+            y:      0,
+            /// Specify the WIDTH and HEIGHT of the image here as well:
+            width:  256,
+            height: 256,
+        ),
+    ],
+)
+/// I would also appreciate it if you would remove the comments
+/// from the new .ron file (all lines starting with '///') :)

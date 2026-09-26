@@ -1,0 +1,12 @@
+// filled with the default values for each key
+Configuration(
+	token: "token goes here",
+	prefix: "r~",
+	log_file: "output.log",
+	log_level: Info,
+	admins: ["user ids for the admins of the bot, excluding the owner"],
+	database: DatabaseConfig(
+		host: "redis://localhost",
+		max_connections: 20,
+	),
+)

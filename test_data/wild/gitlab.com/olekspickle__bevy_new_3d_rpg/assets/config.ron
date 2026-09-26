@@ -1,0 +1,55 @@
+(
+    camera: (
+        // top down config
+        edge_margin: 50.0,
+        rotate_speed: 0.1,
+        zoom_speed: 10.0,
+        max_speed: 200.0,
+        min_height: 5.0,
+        max_height: 50.0,
+    ),
+    player:(
+        spawn_pos: (-0.5, 44.0, 0.5),
+        fov: 60,
+        zoom: (1.5, 30),
+        movement: (
+            max_speed: 100,
+            jump_height: 5.0,
+            sprint_factor: 1.5,
+            crouch_factor: 0.2,
+            dash_distance: 10,
+            idle_to_run_threshold: 0.01,
+        ),
+        hitbox:(
+            radius: 0.5,
+            height: 1
+        ),
+    ),
+    // seconds
+    timers: (
+        step: 0.475, // for this specific animation: twice per cycle
+        // sprint anim: 0.354
+        // step on sprint timer: 0.317
+        jump: 0.45,
+    ),
+    sound: (
+        general: 1.0,
+        music: 0.0,
+        sfx: 0.5,
+    ),
+    physics: (
+        day_length: 10.0,
+        distance_fog: true,
+        fog_directional_light_exponent: 10,
+        fog_visibility: 500,
+        shadow_distance: 500,
+        gravity: 50.0,
+    ),
+    settings: (
+        min_volume: 0.0,
+        max_volume: 3.0,
+        min_fov: 20.0,
+        max_fov: 160.0,
+        step: 0.1,
+    )
+)

@@ -1,0 +1,12 @@
+((
+    default: (
+        vox_spec: ("armor.misc.foot.none", (-2.5, -3.5, -2.0)),
+        color: None
+    ),
+    map: {
+        "common.items.armor.hide.lizard_boots": (
+            vox_spec: ("npc.lizardman.male", (-2.5, -3.5, -2.0), 2),
+            color: None
+        )
+    }
+))

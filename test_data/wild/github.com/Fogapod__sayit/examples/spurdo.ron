@@ -1,0 +1,84 @@
+(
+    accent: {
+        "main": (
+            rules: {
+                r"(?-u)\<epic\>": {"Literal": "ebin"},
+                r"(?-u)\<:?\)\>": {"Any": [
+                    {"Literal": ":D"},
+                    {"Literal": ":DD"},
+                    {"Literal": ":DDD"},
+                ]},
+                r"(?-u)\Bng\>": {"Literal": "gn"},
+                "xc": {"Literal": "gg"},
+                "c": {"Literal": "g"},
+                "k": {"Literal": "g"},
+                "t": {"Literal": "d"},
+                "p": {"Literal": "b"},
+                "x": {"Literal": "gs"},
+            },
+        ),
+        "ending": (
+            rules: {
+                "$": {"Weights": {
+                    1: {"Original": ()},
+                    1: {"Any": [
+                        {"Literal": " :D"},
+                        {"Literal": " :DD"},
+                        {"Literal": " :DDD"},
+                        {"Literal": " :DDDD"},
+                        {"Literal": " :DDDDD"},
+                    ]},
+                }},
+            },
+        ),
+    },
+    intensities: {
+        1: Extend({
+            "main": (
+                rules: {
+                    r"(?-u)\<:?\)\>": {"Any": [
+                        {"Literal": ":DD"},
+                        {"Literal": ":DDD"},
+                        {"Literal": ":DDDD"},
+                    ]},
+                },
+            ),
+            "ending": (
+                rules: {
+                    "$": {"Weights": {
+                        1: {"Original": ()},
+                        2: {"Any": [
+                            {"Literal": " :DD"},
+                            {"Literal": " :DDD"},
+                            {"Literal": " :DDDD"},
+                            {"Literal": " :DDDDD"},
+                            {"Literal": " :DDDDDD"},
+                        ]},
+                    }},
+                },
+            ),
+        }),
+        2: Extend({
+            "main": (
+                rules: {
+                    r"(?-u)\<:?\)\>": {"Any": [
+                        {"Literal": ":DDDD"},
+                        {"Literal": ":DDDDD"},
+                        {"Literal": ":DDDDDD"},
+                    ]},
+                },
+            ),
+            "ending": (
+                rules: {
+                    "$": {"Any": [
+                        {"Literal": " :DDDD"},
+                        {"Literal": " :DDDDD"},
+                        {"Literal": " :DDDDDD"},
+                        {"Literal": " :DDDDDDD"},
+                        {"Literal": " :DDDDDDDD"},
+                    ]},
+                },
+            ),
+        }),
+    },
+)

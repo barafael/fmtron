@@ -1,0 +1,61 @@
+// An entity that bobs upward while Space is held, authored as a node graph
+// rather than as JavaScript text.
+//
+//   OnStart ---------> log("bob: started")
+//
+//   OnUpdate --> Branch(isKeyDown("Space")) --true--> addPosition(self, vec3(0, speed * dt, 0))
+//                                            \-false-> setHudText("bob", "hold Space")
+//
+// Compile it with `bsengine_visualscript::compile` (the editor's Script Graph
+// panel does this on save) and point a scene's `script:` at the resulting
+// `bob.js`. The hand-written scripts beside this file go through exactly the
+// same loading path -- the generated route is an addition to the JavaScript
+// text path, not a replacement for it.
+(
+    nodes: [
+        (id: 0, kind: OnStart, position: (0.0, 0.0)),
+        (id: 1, kind: Call("log"), position: (220.0, 0.0)),
+        (id: 2, kind: Literal(Text("bob: started")), position: (0.0, 60.0)),
+
+        (id: 10, kind: OnUpdate, position: (0.0, 160.0)),
+        (id: 11, kind: Branch, position: (220.0, 160.0)),
+        (id: 12, kind: Call("isKeyDown"), position: (0.0, 240.0)),
+        (id: 13, kind: Literal(Text("Space")), position: (-200.0, 240.0)),
+
+        (id: 20, kind: Call("addPosition"), position: (460.0, 120.0)),
+        (id: 21, kind: SelfEntity, position: (220.0, 260.0)),
+        (id: 22, kind: Vec3Make, position: (220.0, 340.0)),
+        (id: 23, kind: Literal(Number(0.0)), position: (0.0, 340.0)),
+        (id: 24, kind: Multiply, position: (0.0, 420.0)),
+        (id: 25, kind: GetVar("speed"), position: (-200.0, 400.0)),
+        (id: 26, kind: Call("getDeltaTime"), position: (-200.0, 460.0)),
+
+        (id: 30, kind: Call("setHudText"), position: (460.0, 260.0)),
+        (id: 31, kind: Literal(Text("bob")), position: (220.0, 520.0)),
+        (id: 32, kind: Literal(Text("hold Space")), position: (220.0, 580.0)),
+    ],
+    edges: [
+        (from: (0, "then"), to: (1, "exec")),
+        (from: (2, "out"), to: (1, "message")),
+
+        (from: (10, "then"), to: (11, "exec")),
+        (from: (12, "out"), to: (11, "condition")),
+        (from: (13, "out"), to: (12, "key")),
+
+        (from: (11, "true"), to: (20, "exec")),
+        (from: (21, "out"), to: (20, "entity")),
+        (from: (22, "out"), to: (20, "delta")),
+        (from: (23, "out"), to: (22, "x")),
+        (from: (24, "out"), to: (22, "y")),
+        (from: (23, "out"), to: (22, "z")),
+        (from: (25, "out"), to: (24, "a")),
+        (from: (26, "out"), to: (24, "b")),
+
+        (from: (11, "false"), to: (30, "exec")),
+        (from: (31, "out"), to: (30, "id")),
+        (from: (32, "out"), to: (30, "text")),
+    ],
+    variables: [
+        (name: "speed", initial: Number(2.0)),
+    ],
+)

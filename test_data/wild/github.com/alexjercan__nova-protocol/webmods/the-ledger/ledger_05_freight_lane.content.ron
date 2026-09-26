@@ -1,0 +1,570 @@
+// Freight Lane: independent activity; no carried campaign state.
+// Flight is live from spawn. A seeded central cluster adds corridor depth.
+[
+    Scenario((
+        id: "ledger_05_freight_lane",
+        name: "Freight Lane",
+        description: "Screen two transports through a hostile debris lane.",
+        cubemap: "dep://base/textures/cubemap_alt.png",
+        thumbnail: Some("self://thumbnails/ledger_05_freight_lane.png"),
+        watches: [(variable: "elapsed", query: Scenario((property: Elapsed)))],
+        events: [
+            (
+                name: OnStart,
+                once: true,
+                filters: [],
+                actions: [
+                    SpawnScenarioObject((
+                        base: (
+                            id: "player_spaceship",
+                            name: "Corvette",
+                            position: (0.0, 0.0, 0.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(
+                                id: "cargoa",
+                                section_patches: {
+                                    "fuselage": (config: (health: Some(1200.0))),
+                                    "engine_port": (config: (health: Some(300.0))),
+                                    "engine_starboard": (config: (health: Some(300.0))),
+                                    "nose": (config: (health: Some(1200.0))),
+                                },
+                            ),
+                            controller: Player((
+                                input_mapping: {"turret_port": [Mouse(Left), Gamepad(RightTrigger2)], "turret_starboard": [Mouse(Left), Gamepad(RightTrigger2)]},
+                            )),
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(0.0)))))),
+                    VariableSet((key: "arrived", expression: Term(Factor(Literal(Number(0.0)))))),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "key",
+                            name: "Sun",
+                            position: (-600.0, 500.0, 600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 11000.0, color: Srgba((red: 0.82, green: 0.94, blue: 1.0, alpha: 1.0)), shadows: true, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "rim",
+                            name: "Rim",
+                            position: (300.0, 400.0, -800.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 16000.0, color: Srgba((red: 0.55, green: 0.7, blue: 1.0, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "fill",
+                            name: "Fill",
+                            position: (700.0, -200.0, 400.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Light(Directional(illuminance: 2600.0, color: Srgba((red: 0.62, green: 0.72, blue: 0.95, alpha: 1.0)), shadows: false, aim: Some((0.0, 0.0, -2500.0)))),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "primary",
+                            name: "Primary",
+                            position: (-5200.0, -900.0, -8400.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: Temperate,
+                            radius: 2300.0,
+                            seed: 8504,
+                            mass: Some(40000.0),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "moon",
+                            name: "Moon",
+                            position: (5300.0, 2400.0, -9900.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Planet((
+                            planet_type: IceWorld,
+                            radius: 950.0,
+                            seed: 8505,
+                            mass: Some(10000.0),
+                        )),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "port_rocks_",
+                        count: 20,
+                        seed: 8514,
+                        region: Box(min: (-3750.0, -400.0, -8000.0), max: (-2250.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "port_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("ice", 7), ("rock", 2), ("carbon", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "starboard_rocks_",
+                        count: 20,
+                        seed: 8524,
+                        region: Box(min: (2250.0, -400.0, -8000.0), max: (3750.0, 550.0, -500.0)),
+                        template: (
+                            base: (
+                                id: "starboard_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((16.0, 43.0)),
+                        asteroid_kinds: [("ice", 7), ("rock", 2), ("carbon", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "lower_rocks_",
+                        count: 14,
+                        seed: 8534,
+                        region: Box(min: (-1300.0, -1250.0, -8000.0), max: (1300.0, -900.0, -1800.0)),
+                        template: (
+                            base: (
+                                id: "lower_rocks_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 10.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((10.0, 30.0)),
+                        asteroid_kinds: [("ice", 7), ("rock", 2), ("carbon", 1)],
+                        min_separation: Some(300.0),
+                    )),
+                    ScatterObjects((
+                        id_prefix: "lane_cluster_",
+                        count: 12,
+                        seed: 8544,
+                        region: Box(min: (-1300.0, -600.0, -7800.0), max: (1300.0, 700.0, -2200.0)),
+                        template: (
+                            base: (
+                                id: "lane_cluster_",
+                                name: "Asteroid",
+                                position: (0.0, 0.0, 0.0),
+                                rotation: (0.0, 0.0, 0.0, 1.0),
+                            ),
+                            kind: Asteroid((
+                                radius: 16.0,
+                                texture: "dep://base/textures/asteroid.png",
+                                kind: "rock",
+                                mass: Some(0.0),
+                                destroy_sound: Some("dep://base/sounds/destroy_rock.wav"),
+                            )),
+                        ),
+                        asteroid_radius: Some((10.0, 43.0)),
+                        asteroid_kinds: [("ice", 5), ("rock", 3), ("metal", 1), ("carbon", 1)],
+                        min_separation: Some(350.0),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_shuttle",
+                            name: "Shuttle",
+                            position: (900.0, 450.0, -700.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "racer"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [
+                                    (900.0, 450.0, -700.0),
+                                    (1500.0, 450.0, -3200.0),
+                                    (900.0, 450.0, -4700.0),
+                                ],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "traffic_tug",
+                            name: "Tug",
+                            position: (-1200.0, -600.0, -1900.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_freighter"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                patrol: [(-1200.0, -600.0, -1900.0), (-1200.0, -600.0, -4500.0)],
+                                arrival_standoff: Some(100.0),
+                                waypoint_slack: Some(80.0),
+                                avoid_margin: Some(200.0),
+                            )),
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "transport_a",
+                            name: "Transport 1",
+                            position: (-450.0, 0.0, -600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_freighter"),
+                            controller: None,
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "transport_b",
+                            name: "Transport 2",
+                            position: (450.0, 100.0, -600.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(
+                                id: "racer",
+                                section_patches: {
+                                    "fuselage": (config: (health: Some(1000.0))),
+                                    "engine_port": (config: (health: Some(300.0))),
+                                    "engine_starboard": (config: (health: Some(300.0))),
+                                },
+                            ),
+                            controller: None,
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "dock",
+                            name: "Cargo dock",
+                            position: (0.0, -100.0, -9500.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "ledger_platform"),
+                            controller: None,
+                            allegiance: Some(Neutral),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "escort",
+                            name: "Escort",
+                            position: (-1100.0, 350.0, 2000.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "cargoa"),
+                            controller: AI((
+                                engage_delay: Some(10.0),
+                                standoff_clearance: Some(1250.0),
+                                engage_range: Some(3000.0),
+                                leash: Some(6500.0),
+                                patrol: [
+                                    (-1100.0, 350.0, 2000.0),
+                                    (-1000.0, 350.0, -1200.0),
+                                    (-750.0, 350.0, -3800.0),
+                                ],
+                            )),
+                            allegiance: Some(Player),
+                        )),
+                    )),
+                    Objective((
+                        id: "convoy",
+                        message: "Cross DEPARTURE, then screen both transports through the debris lane.",
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "departure",
+                            name: "DEPARTURE",
+                            position: (0.0, 0.0, -1000.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "DEPARTURE",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(700.0),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "dock_mark",
+                            name: "DOCK",
+                            position: (0.0, 300.0, -9000.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Beacon((
+                            label: "DOCK",
+                            radius: 20.0,
+                            color: Srgba((red: 0.25, green: 0.9, blue: 1.0, alpha: 1.0)),
+                            area_radius: Some(700.0),
+                        )),
+                    )),
+                    HudReadout((
+                        slot: "arrived",
+                        variable: "arrived",
+                        format: Integer,
+                        label: Some("DOCKED"),
+                        visible: true,
+                    )),
+                    CinematicTitle((
+                        corner: TopRight,
+                        location: "FREIGHT LANE",
+                        date: "FIELD TRIAL 5 / 6",
+                        note: "",
+                        seconds: 5.0,
+                    )),
+                ],
+            ),
+            (
+                name: OnEnter,
+                once: true,
+                filters: [
+                    Entity((id: Some("departure"), other_id: Some("player_spaceship"))),
+                    Expression((Equal(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(0.0))))))),
+                ],
+                actions: [
+                    DespawnScenarioObject((id: "departure")),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(1.0)))))),
+                    ObjectiveMarkerAttach((target_id: "transport_a", label: "TRANSPORT 1")),
+                    ObjectiveMarkerAttach((target_id: "transport_b", label: "TRANSPORT 2")),
+                    MoveShipTo((
+                        ship: "transport_a",
+                        order: "a_mid",
+                        position: (-700.0, 0.0, -4200.0),
+                        arrival_standoff: Some(80.0),
+                    )),
+                    MoveShipTo((
+                        ship: "transport_b",
+                        order: "b_mid",
+                        position: (700.0, 100.0, -4300.0),
+                        arrival_standoff: Some(80.0),
+                    )),
+                    TimerStart((key: "convoy_limit", seconds: Term(Factor(Literal(Number(240.0)))))),
+                    Sequence((
+                        key: "first_intercept",
+                        steps: [
+                            (
+                                after: Some(3.0),
+                                actions: [
+                                    SpawnScenarioObject((
+                                        base: (
+                                            id: "interceptor_a",
+                                            name: "Interceptor 1",
+                                            position: (-900.0, 200.0, -3600.0),
+                                            rotation: (0.0, 0.0, 0.0, 1.0),
+                                        ),
+                                        kind: Spaceship((
+                                            design: Prototype(id: "cargoa_raider"),
+                                            controller: AI((
+                                                engage_delay: Some(5.0),
+                                                standoff_clearance: Some(1250.0),
+                                                engage_range: Some(4400.0),
+                                            )),
+                                            allegiance: Some(Enemy),
+                                        )),
+                                    )),
+                                    SpawnScenarioObject((
+                                        base: (
+                                            id: "interceptor_b",
+                                            name: "Interceptor 2",
+                                            position: (900.0, -150.0, -4300.0),
+                                            rotation: (0.0, 0.0, 0.0, 1.0),
+                                        ),
+                                        kind: Spaceship((
+                                            design: Prototype(id: "cargoa_raider"),
+                                            controller: AI((
+                                                engage_delay: Some(5.0),
+                                                standoff_clearance: Some(1250.0),
+                                                engage_range: Some(4400.0),
+                                            )),
+                                            allegiance: Some(Enemy),
+                                        )),
+                                    )),
+                                ],
+                            ),
+                        ],
+                    )),
+                ],
+            ),
+            (
+                name: OnShipOrderComplete,
+                once: true,
+                filters: [ShipOrder((order: Some("a_mid")))],
+                actions: [
+                    MoveShipTo((
+                        ship: "transport_a",
+                        order: "a_late",
+                        position: (-650.0, 0.0, -6700.0),
+                        arrival_standoff: Some(80.0),
+                    )),
+                ],
+            ),
+            (
+                name: OnShipOrderComplete,
+                once: true,
+                filters: [ShipOrder((order: Some("b_mid")))],
+                actions: [
+                    MoveShipTo((
+                        ship: "transport_b",
+                        order: "b_late",
+                        position: (650.0, 100.0, -6800.0),
+                        arrival_standoff: Some(80.0),
+                    )),
+                ],
+            ),
+            (
+                name: OnShipOrderComplete,
+                once: true,
+                filters: [ShipOrder((order: Some("a_late")))],
+                actions: [
+                    MoveShipTo((
+                        ship: "transport_a",
+                        order: "a_dock",
+                        position: (-350.0, 0.0, -8900.0),
+                        arrival_standoff: Some(80.0),
+                    )),
+                ],
+            ),
+            (
+                name: OnShipOrderComplete,
+                once: true,
+                filters: [ShipOrder((order: Some("b_late")))],
+                actions: [
+                    MoveShipTo((
+                        ship: "transport_b",
+                        order: "b_dock",
+                        position: (350.0, 100.0, -8900.0),
+                        arrival_standoff: Some(80.0),
+                    )),
+                ],
+            ),
+            (
+                name: OnShipOrderComplete,
+                once: true,
+                filters: [ShipOrder((order: Some("a_dock")))],
+                actions: [
+                    VariableSet((
+                        key: "arrived",
+                        expression: Add(Factor(Name("arrived")), Term(Factor(Literal(Number(1.0))))),
+                    )),
+                    ObjectiveMarkerDetach((target_id: "transport_a")),
+                ],
+            ),
+            (
+                name: OnShipOrderComplete,
+                once: true,
+                filters: [ShipOrder((order: Some("b_dock")))],
+                actions: [
+                    VariableSet((
+                        key: "arrived",
+                        expression: Add(Factor(Name("arrived")), Term(Factor(Literal(Number(1.0))))),
+                    )),
+                    ObjectiveMarkerDetach((target_id: "transport_b")),
+                ],
+            ),
+            (
+                name: OnUpdate,
+                once: true,
+                filters: [
+                    Expression((GreaterThan(Term(Factor(Name("arrived"))), Term(Factor(Literal(Number(1.0))))))),
+                    Expression((Equal(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(1.0))))))),
+                ],
+                actions: [
+                    TimerCancel((key: "convoy_limit")),
+                    ObjectiveComplete((id: "convoy")),
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(99.0)))))),
+                    Outcome((outcome: Victory, message: Some("Both transports docked."))),
+                    NextScenario((scenario_id: "ledger_06_siege_line", linger: true)),
+                ],
+            ),
+            (
+                name: OnTimerEnd,
+                once: true,
+                filters: [
+                    Timer((key: "convoy_limit")),
+                    Expression((Equal(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(1.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(98.0)))))),
+                    Outcome((outcome: Defeat, message: Some("The convoy could not reach its berths."))),
+                    NextScenario((scenario_id: "ledger_05_freight_lane", linger: true)),
+                ],
+            ),
+            (
+                name: OnDefeated,
+                once: true,
+                filters: [
+                    Entity((id: Some("transport_a"))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(98.0)))))),
+                    Outcome((outcome: Defeat, message: Some("Transport 1 lost."))),
+                    NextScenario((scenario_id: "ledger_05_freight_lane", linger: true)),
+                ],
+            ),
+            (
+                name: OnDefeated,
+                once: true,
+                filters: [
+                    Entity((id: Some("transport_b"))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(98.0)))))),
+                    Outcome((outcome: Defeat, message: Some("Transport 2 lost."))),
+                    NextScenario((scenario_id: "ledger_05_freight_lane", linger: true)),
+                ],
+            ),
+            (
+                name: OnDefeated,
+                once: true,
+                filters: [
+                    Entity((id: Some("player_spaceship"))),
+                    Expression((LessThan(Term(Factor(Name("stage"))), Term(Factor(Literal(Number(98.0))))))),
+                ],
+                actions: [
+                    VariableSet((key: "stage", expression: Term(Factor(Literal(Number(98.0)))))),
+                    Outcome((outcome: Defeat, message: Some("Ship disabled."))),
+                    NextScenario((scenario_id: "ledger_05_freight_lane", linger: true)),
+                ],
+            ),
+        ],
+    )),
+]

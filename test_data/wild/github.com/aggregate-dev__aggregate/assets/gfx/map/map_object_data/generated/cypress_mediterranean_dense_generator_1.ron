@@ -1,0 +1,20 @@
+(schema_version: 1, entries: [
+    Property(key: "object", operator: Assign, value: Block([
+        Property(key: "name", operator: Assign, value: Text("cypress_mediterranean_dense_generator_1_0")),
+        Property(key: "clamp_to_water_level", operator: Assign, value: Boolean(false)),
+        Property(key: "render_under_water", operator: Assign, value: Boolean(false)),
+        Property(key: "generated_content", operator: Assign, value: Boolean(true)),
+        Property(key: "layer", operator: Assign, value: Text("semidynamic")),
+        Property(key: "pdxmesh", operator: Assign, value: Text("tree_cypress_mediterranean_02_mesh")),
+        Property(key: "transform_bin_file", operator: Assign, value: Text("gfx/map/map_object_data/cypress_mediterranean_dense_generator_1_0.bin")),
+    ])),
+    Property(key: "object", operator: Assign, value: Block([
+        Property(key: "name", operator: Assign, value: Text("cypress_mediterranean_dense_generator_1_1")),
+        Property(key: "clamp_to_water_level", operator: Assign, value: Boolean(false)),
+        Property(key: "render_under_water", operator: Assign, value: Boolean(false)),
+        Property(key: "generated_content", operator: Assign, value: Boolean(true)),
+        Property(key: "layer", operator: Assign, value: Text("semidynamic")),
+        Property(key: "pdxmesh", operator: Assign, value: Text("tree_cypress_mediterranean_01_mesh")),
+        Property(key: "transform_bin_file", operator: Assign, value: Text("gfx/map/map_object_data/cypress_mediterranean_dense_generator_1_1.bin")),
+    ])),
+])

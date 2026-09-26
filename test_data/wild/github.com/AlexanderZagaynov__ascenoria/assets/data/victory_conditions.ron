@@ -1,0 +1,9 @@
+(
+    victory_condition: [
+        (
+            id: "victory_cover_planet",
+            name_en: "Cover the Planet",
+            type: cover_all_tiles,
+        ),
+    ],
+)

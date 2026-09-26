@@ -1,0 +1,37 @@
+Components(
+    Settings(
+        title: "Documentation for ....",
+        copy: "web",
+        temp_name: ["web_temp"],
+        source: "./docs",
+        destination: "./styleguide",
+        css: ["../web/css/main.css"],
+        js: [""],
+    ),
+    [
+        Component(
+            name: "some Button",
+            description: r#"Button example"#,
+            markup: "templates/example.j2",
+            modifiers: [],
+            section: "Button",
+            docs_file: "btn",
+        ),
+        Component(
+            name: "some Button1",
+            description: r#"Button example1"#,
+            markup: "templates/example.j2",
+            modifiers: [],
+            section: "Button.first",
+            docs_file: "btn",
+        ),
+        Component(
+            name: "some Button2",
+            description: r#"Button example2"#,
+            markup: "templates/example.j2",
+            modifiers: [],
+            section: "Button.second",
+            docs_file: "btn2",
+        ),
+    ],
+)

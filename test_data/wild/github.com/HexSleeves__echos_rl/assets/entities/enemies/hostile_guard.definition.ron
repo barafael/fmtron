@@ -1,0 +1,46 @@
+EntityDefinition(
+    name: "Hostile Guard",
+    description: "A fierce warrior that guards important areas and attacks intruders on sight",
+    components: (
+        // Core gameplay components
+        turn_actor: Some((
+            speed: 800,
+            action_queue_size: Some(3),
+        )),
+        field_of_view: Some(FieldOfViewData(6)),
+        tile_sprite: Some((
+            tile_coords: (26, 2),
+            tile_size: Some((12.0, 12.0)),
+            tint: Some((1.0, 0.8, 0.8, 1.0)), // Slight red tint for hostility
+        )),
+
+        // New enhanced components
+        health: Some((
+            current: 80,
+            max: 80,
+        )),
+        stats: Some((
+            strength: 15,
+            defense: 14,
+            intelligence: 8,
+            agility: 11,
+            vitality: 13,
+            luck: 9,
+        )),
+        inventory: None, // Guards don't carry items
+        description: Some((
+            text: "A heavily armored guard with a stern expression. Their eyes constantly scan for threats, and their hand rests on their weapon. They show no mercy to trespassers.",
+        )),
+
+        // Entity type flags
+        is_player: Some(false),
+        is_ai: Some(true),
+
+        // AI behavior
+        ai_behavior_type: Some(Hostile),
+
+        // Spawning properties
+        spawn_weight: Some(1.0),
+        level_range: Some((1, 5)),
+    ),
+)

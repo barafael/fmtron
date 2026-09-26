@@ -1,0 +1,70 @@
+// ============================================================================================
+// BASELINE CAPABILITY SUITE — language & instruction following
+// ============================================================================================
+//
+// Basic natural-language capability: does the agent read an instruction and produce a reply that
+// satisfies a stated text constraint? Run with:
+//
+//     let report = eval_core::run_suite(&my_agent, &eval_core::baseline());
+//
+// ...or COPY this file as a starting template and edit it.
+//
+// PORTABILITY: every case here is FULLY PORTABLE. The assertions only inspect the agent's final
+// free text (substring / exact / regex) and that the run was clean — no tool names, no world
+// state, so they work against any agent. This is the most useful, honest part of the baseline.
+//
+// Each case `name` is stable; adapt freely.
+
+[
+    // Substring, case-insensitive: a capital-of-France question must mention "Paris" regardless of
+    // surrounding prose or capitalisation.
+    (
+        name: "lang_factual_contains",
+        instruction: "What is the capital of France?",
+        expect: [
+            NoError,
+            FinalTextContains(text: "paris", case_insensitive: true),
+        ],
+    ),
+    // Exact reply: "reply with exactly X". `FinalTextEquals` trims surrounding whitespace, so a
+    // reply of "OK" (with or without padding) passes, but any extra words fail.
+    (
+        name: "lang_reply_exactly",
+        instruction: "Reply with exactly the word: OK",
+        expect: [
+            NoError,
+            FinalTextEquals(text: "OK"),
+        ],
+    ),
+    // Yes/No via regex, anchored and case-insensitive: the reply must START with Yes or No (the
+    // `(?i)` inline flag makes it case-insensitive; `^` anchors to the start of the reply).
+    (
+        name: "lang_yes_no_regex",
+        instruction: "Is the sky blue on a clear day? Answer Yes or No.",
+        expect: [
+            NoError,
+            FinalTextMatches(regex: "(?i)^\\s*(yes|no)\\b"),
+        ],
+    ),
+    // Instruction following: produce a short list. Loosely assert a comma appears (a list-shaped
+    // reply) plus one expected member, rather than over-fitting an exact format.
+    (
+        name: "lang_list_three_colors",
+        instruction: "Name three primary colors, separated by commas.",
+        expect: [
+            NoError,
+            FinalTextContains(text: ",", case_insensitive: false),
+            FinalTextContains(text: "red", case_insensitive: true),
+        ],
+    ),
+    // Format constraint via regex: reply must contain a hashtag-style token (`#word`). Tests that
+    // the agent honours a simple formatting instruction.
+    (
+        name: "lang_hashtag_format",
+        instruction: "Suggest one hashtag for a post about coffee. Include the # symbol.",
+        expect: [
+            NoError,
+            FinalTextMatches(regex: "#\\w+"),
+        ],
+    ),
+]

@@ -1,0 +1,15 @@
+Playlist(
+    name: "Example Playlist",
+    import: [ Source("yt") ],
+    sources: [ ],
+    tracks: [
+        Track(
+            meta: Meta(
+                name: "Gangnam Style",
+                artist: "PSY",
+            ),
+            src: "yt",
+            input: "CVxMTl6cUSE",
+        ),
+    ],
+)

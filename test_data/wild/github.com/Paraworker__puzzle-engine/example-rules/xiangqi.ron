@@ -1,0 +1,341 @@
+(
+    name: "Xiangqi (Chinese Chess)",
+    board: (
+        rows: 10,
+        cols: 9,
+    ),
+    pieces: {
+        // Rook
+        Cube: (
+            count: Finite(2),
+            movement: And([
+                // 1) Must move in a straight line: same row or same column
+                Or([
+                    Equal(TargetRow, SourceRow),
+                    Equal(TargetCol, SourceCol),
+                ]),
+                
+                // 2) Branch on whether the target square is occupied
+                If(
+                    PosOccupied(TargetRow, TargetCol),
+                    // then: Target is occupied
+                    //   - It must be an enemy piece
+                    //   - The rectangle between source and target must contain exactly 1 piece (the target itself)
+                    And([
+                        Not(ColorEqual(ColorAtPos(TargetRow, TargetCol), MovingColor)),
+                        Equal(CountInRect((SourceRow, SourceCol), (TargetRow, TargetCol)), Const(1)),
+                    ]),
+                    // otherwise: Target is empty
+                    //   - The rectangle between source and target must contain 0 pieces
+                    Equal(CountInRect((SourceRow, SourceCol), (TargetRow, TargetCol)), Const(0)),
+                ),
+            ]),
+            placement: False,
+        ),
+        // Knight (Xiangqi horse with "leg" blocking rule)
+        Sphere: (
+            count: Finite(2),
+            movement: And([
+                // Target square must be empty OR occupied by enemy
+                Or([
+                    Not(PosOccupied(TargetRow, TargetCol)),
+                    And([
+                        PosOccupied(TargetRow, TargetCol),
+                        Not(ColorEqual(ColorAtPos(TargetRow, TargetCol), MovingColor)),
+                    ]),
+                ]),
+
+                // Two cases: horizontal-long (|dx|=2, |dy|=1) or vertical-long (|dx|=1, |dy|=2)
+                Or([
+                    // Horizontal-long move: leg at (srcRow, srcCol ± 1)
+                    And([
+                        Equal(Abs(Sub(TargetCol, SourceCol)), Const(2)),
+                        Equal(Abs(Sub(TargetRow, SourceRow)), Const(1)),
+                        If(
+                            GreaterThan(TargetCol, SourceCol),
+                            Not(PosOccupied(SourceRow, Add(SourceCol, Const(1)))),
+                            Not(PosOccupied(SourceRow, Add(SourceCol, Const(-1)))),
+                        ),
+                    ]),
+                    // Vertical-long move: leg at (srcRow ± 1, srcCol)
+                    And([
+                        Equal(Abs(Sub(TargetCol, SourceCol)), Const(1)),
+                        Equal(Abs(Sub(TargetRow, SourceRow)), Const(2)),
+                        If(
+                            GreaterThan(TargetRow, SourceRow),
+                            Not(PosOccupied(Add(SourceRow, Const(1)), SourceCol)),
+                            Not(PosOccupied(Add(SourceRow, Const(-1)), SourceCol)),
+                        ),
+                    ]),
+                ]),
+            ]),
+            placement: False,
+        ),
+        // Bishop / Elephant (cannot cross the river; blocked by the mid "eye"; move 2 diagonally)
+        Cylinder: (
+            count: Finite(2),
+            movement: And([
+                // 1) exactly two steps diagonally
+                Equal(Abs(Sub(TargetRow, SourceRow)), Const(2)),
+                Equal(Abs(Sub(TargetCol, SourceCol)), Const(2)),
+
+                // 2) the mid "eye" must be empty
+                Not(
+                    PosOccupied(
+                        // mid_row = SourceRow ± 1 depending on TargetRow
+                        If(
+                            GreaterThan(TargetRow, SourceRow),
+                            Add(SourceRow, Const(1)),
+                            Add(SourceRow, Const(-1)),
+                        ),
+                        // mid_col = SourceCol ± 1 depending on TargetCol
+                        If(
+                            GreaterThan(TargetCol, SourceCol),
+                            Add(SourceCol, Const(1)),
+                            Add(SourceCol, Const(-1)),
+                        ),
+                    ),
+                ),
+
+                // 3) river rule: Red must stay in rows 0..4; Black must stay in rows 5..9
+                Or([
+                    And([
+                        ColorEqual(MovingColor, Literal(Red)),
+                        LessOrEqual(TargetRow, Const(4)),
+                    ]),
+                    And([
+                        ColorEqual(MovingColor, Literal(Black)),
+                        GreaterOrEqual(TargetRow, Const(5)),
+                    ]),
+                ]),
+
+                // 4) target square: empty OR enemy
+                Or([
+                    Not(PosOccupied(TargetRow, TargetCol)),
+                    And([
+                        PosOccupied(TargetRow, TargetCol),
+                        Not(ColorEqual(ColorAtPos(TargetRow, TargetCol), MovingColor)),
+                    ]),
+                ]),
+            ]),
+            placement: False,
+        ),
+        // Guard (must stay inside the palace; move 1 step diagonally)
+        Torus: (
+            count: Finite(2),
+            movement: And([
+                // 1) exactly one diagonal step
+                Equal(Abs(Sub(TargetRow, SourceRow)), Const(1)),
+                Equal(Abs(Sub(TargetCol, SourceCol)), Const(1)),
+
+                // 2) palace constraint (rows depend on color; cols are always 3..5)
+                GreaterOrEqual(
+                    TargetRow,
+                    If( 
+                        ColorEqual(MovingColor, Literal(Red)),
+                        Const(0), // Red rows 0..2
+                        Const(7), // Black rows 7..9
+                    ),
+                ),
+                LessOrEqual(
+                    TargetRow,
+                    If(
+                        ColorEqual(MovingColor, Literal(Red)),
+                        Const(2), // Red rows 0..2
+                        Const(9), // Black rows 7..9
+                    ),
+                ),
+                GreaterOrEqual(TargetCol, Const(3)),
+                LessOrEqual(TargetCol, Const(5)),
+
+                // 3) target square: empty OR enemy
+                Or([
+                    Not(PosOccupied(TargetRow, TargetCol)),
+                    And([
+                        PosOccupied(TargetRow, TargetCol),
+                        Not(ColorEqual(ColorAtPos(TargetRow, TargetCol), MovingColor)),
+                    ]),
+                ]),
+            ]),
+            placement: False,
+        ),
+        // General / Marshal (palace only; move 1 step orthogonally)
+        Tetrahedron: (
+            count: Finite(1),
+            movement: And([
+                // 1) Exactly one orthogonal step: |dr| + |dc| == 1
+                Equal(
+                    Add(
+                        Abs(Sub(TargetRow, SourceRow)),
+                        Abs(Sub(TargetCol, SourceCol))
+                    ),
+                    Const(1)
+                ),
+
+                // 2) Palace constraint: rows depend on color; cols are always 3..5
+                GreaterOrEqual(
+                    TargetRow,
+                    If(
+                        ColorEqual(MovingColor, Literal(Red)),
+                        Const(0),
+                        Const(7),
+                    ),
+                ),
+                LessOrEqual(
+                    TargetRow,
+                    If(
+                        ColorEqual(MovingColor, Literal(Red)),
+                        Const(2),
+                        Const(9),
+                    ),
+                ),
+                GreaterOrEqual(TargetCol, Const(3)),
+                LessOrEqual(TargetCol, Const(5)),
+
+                // 3) Target square: empty OR occupied by enemy (guard ColorAtPos with PosOccupied)
+                Or([
+                    Not(PosOccupied(TargetRow, TargetCol)),
+                    And([
+                        PosOccupied(TargetRow, TargetCol),
+                        Not(ColorEqual(ColorAtPos(TargetRow, TargetCol), MovingColor)),
+                    ]),
+                ]),
+            ]),
+            placement: False,
+        ),
+        // Cannon (moves like rook; capture requires exactly one screen piece)
+        Cone: (
+            count: Finite(2),
+            movement: And([
+                // Must move in a straight line (same row or same column)
+                Or([
+                    Equal(TargetRow, SourceRow),
+                    Equal(TargetCol, SourceCol),
+                ]),
+
+                // If target is occupied -> capture rule; else -> non-capture rule
+                If(
+                    PosOccupied(TargetRow, TargetCol),
+                    // then: capture — target must be enemy, and exactly one screen piece between
+                    And([
+                        Not(ColorEqual(ColorAtPos(TargetRow, TargetCol), MovingColor)),
+                        Equal(
+                            CountInRect((SourceRow, SourceCol), (TargetRow, TargetCol)),
+                            Const(2)
+                        ),
+                    ]),
+                    // otherwise: non-capture — target empty, and no piece in between
+                    Equal(
+                        CountInRect((SourceRow, SourceCol), (TargetRow, TargetCol)),
+                        Const(0)
+                    ),
+                ),
+            ]),
+            placement: False,
+        ),
+        // Soldier / Pawn (before river: forward 1; after river: forward 1 or sideways 1; never backward)
+        Capsule: (
+            count: Finite(5),
+            movement: And([
+                // 1) Allowed movement patterns
+                Or([
+                    // Always: move forward by 1 (dir = +1 for Red, -1 for Black)
+                    And([
+                        Equal(
+                            TargetRow,
+                            Add(
+                                SourceRow,
+                                If(ColorEqual(MovingColor, Literal(Red)), Const(1), Const(-1)),
+                            ),
+                        ),
+                        Equal(TargetCol, SourceCol),
+                    ]),
+
+                    // After crossing the river: may also move sideways by 1
+                    And([
+                        If(
+                            ColorEqual(MovingColor, Literal(Red)),
+                            GreaterOrEqual(SourceRow, Const(5)), // Red crossed river if row >= 5
+                            LessOrEqual(SourceRow, Const(4))     // Black crossed river if row <= 4
+                        ),
+                        Equal(TargetRow, SourceRow),
+                        Equal(Abs(Sub(TargetCol, SourceCol)), Const(1)),
+                    ]),
+                ]),
+
+                // 2) Target square must be empty OR contain an enemy piece
+                Or([
+                    Not(PosOccupied(TargetRow, TargetCol)),
+                    And([
+                        PosOccupied(TargetRow, TargetCol),
+                        Not(ColorEqual(ColorAtPos(TargetRow, TargetCol), MovingColor)),
+                    ]),
+                ]),
+            ]),
+            placement: False,
+        ),
+    },
+    players: {
+        Red: (
+            lose_condition: False,
+            win_condition: Equal(
+                CountPieceInRect(
+                    (Literal(Tetrahedron), Literal(Black)),
+                    (Const(0), Const(0)),
+                    (Const(9), Const(8))
+                ),
+                Const(0),
+            ),
+        ),
+        Black: (
+            lose_condition: False,
+            win_condition: Equal(
+                CountPieceInRect(
+                    (Literal(Tetrahedron), Literal(Red)),
+                    (Const(0), Const(0)),
+                    (Const(9), Const(8))
+                ),
+                Const(0),
+            ),
+        ),
+    },
+    initial_layout: [
+        (model: Cube, color: Red, pos: (0,0)),
+        (model: Sphere, color: Red, pos: (0,1)),
+        (model: Cylinder, color: Red, pos: (0,2)),
+        (model: Torus, color: Red, pos: (0,3)),
+        (model: Tetrahedron, color: Red, pos: (0,4)),
+        (model: Torus, color: Red, pos: (0,5)),
+        (model: Cylinder, color: Red, pos: (0,6)),
+        (model: Sphere, color: Red, pos: (0,7)),
+        (model: Cube, color: Red, pos: (0,8)),
+        (model: Cone, color: Red, pos: (2,1)),
+        (model: Cone, color: Red, pos: (2,7)),
+        (model: Capsule, color: Red, pos: (3,0)),
+        (model: Capsule, color: Red, pos: (3,2)),
+        (model: Capsule, color: Red, pos: (3,4)),
+        (model: Capsule, color: Red, pos: (3,6)),
+        (model: Capsule, color: Red, pos: (3,8)),
+
+        (model: Cube, color: Black, pos: (9,0)),
+        (model: Sphere, color: Black, pos: (9,1)),
+        (model: Cylinder, color: Black, pos: (9,2)),
+        (model: Torus, color: Black, pos: (9,3)),
+        (model: Tetrahedron, color: Black, pos: (9,4)),
+        (model: Torus, color: Black, pos: (9,5)),
+        (model: Cylinder, color: Black, pos: (9,6)),
+        (model: Sphere, color: Black, pos: (9,7)),
+        (model: Cube, color: Black, pos: (9,8)),
+        (model: Cone, color: Black, pos: (7,1)),
+        (model: Cone, color: Black, pos: (7,7)),
+        (model: Capsule, color: Black, pos: (6,0)),
+        (model: Capsule, color: Black, pos: (6,2)),
+        (model: Capsule, color: Black, pos: (6,4)),
+        (model: Capsule, color: Black, pos: (6,6)),
+        (model: Capsule, color: Black, pos: (6,8)),
+    ],
+    game_over_condition: Or([
+        PlayerStateEqual(Red, Won),
+        PlayerStateEqual(Black, Won),
+    ]),
+)

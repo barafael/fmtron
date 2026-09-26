@@ -1,0 +1,30 @@
+// The engine's own numbers, named.
+//
+// Empty on purpose. It exists so that a scenario can say `ruleset: "default"` and mean it —
+// an explicit statement that it runs the baseline economy, rather than the silence that means
+// the same thing and reads like an omission. Every other ruleset in this directory is a diff
+// against it, so `of: "default"` is also the way to say "start from the engine".
+//
+// It is also the thing to copy when starting a new one, because the format is small enough that
+// the example is the documentation:
+//
+//   set: { "<dotted path into Rules>": <integer or bool>, ... }
+//
+// The paths are the ones the in-app parameter editor lists, prefixed by which of the three
+// config blocks they live in: `biology.`, `vm.` or `chemicals.`. `mm-cli balance` and
+// `mm_core::params::fields` will both enumerate them.
+//
+// You do not have to write one of these by hand. The parameter editor's `rules` page shows which
+// set a world is running, what it changes against the engine's own numbers, and will write the
+// whole thing out here under a name you give it. A scenario then says `ruleset: "<that name>"`,
+// which the build window's save row also offers as a row of chips.
+//
+// A scenario saved from the microscope writes only what it changes — the world, the ruleset it
+// names, and a `set` block of dotted paths for anything it moves on top. Fifteen lines rather
+// than four hundred and thirty-six, and the reason editing this directory reaches anything at
+// all: a file that restates every parameter has nothing left to inherit.
+(
+    name: "default",
+    notes: "The engine's own numbers. See crates/mm-core for where each of them is set and why.",
+    set: {},
+)

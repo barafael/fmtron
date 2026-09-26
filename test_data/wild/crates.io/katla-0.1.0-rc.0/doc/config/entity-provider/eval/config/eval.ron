@@ -1,0 +1,54 @@
+#![enable(implicit_some)]
+(
+	name: "Eval",
+	description: "Eval",
+	appenders: [
+		(
+			type: "file",
+			name: "eval--appender",
+			fileName: "eval.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "eval",
+			name: "eval--entity-name",
+		),
+	],
+	entries: [
+		(
+			name: "eval--entry",
+			entity: "eval--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "eval--file-feed",
+			content: (
+				type: "katla",
+				inline: "{{ eval--entry }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "eval--flow",
+			timeInterval: "R20000",
+			entries: [
+				"eval--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "eval--file-feed",
+					appender: "eval--appender",
+				),
+			],
+		),
+	],
+)

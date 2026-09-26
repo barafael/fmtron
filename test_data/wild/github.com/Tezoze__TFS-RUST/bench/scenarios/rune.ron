@@ -1,0 +1,15 @@
+(
+    name: "rune",
+    bots: 5,
+    duration_s: 60,
+    warmup_s: 5,
+    seed: 42,
+    walk_period_ms: 500,
+    say_period_ms: 2500,
+    waypoint_file: Some("bench/waypoints/cyclops_hunt_loop.csv"),
+    roles: [
+        (kind: Rune, weight: 1.0),
+    ],
+    rune_sprite_id: 3155,
+    rune_slot: 10,
+)

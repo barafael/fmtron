@@ -1,0 +1,17 @@
+// A simple footstep with 3 random variants and slight pitch/volume variance.
+// Audio files colocated next to this config in the same directory.
+(
+    playlist: (
+        mode: RandomNoRepeat,
+        sounds: [
+            ( file: "footstep_01.wav" ),
+            ( file: "footstep_02.wav" ),
+            ( file: "footstep_03.wav" ),
+        ],
+    ),
+    pitch: ( base: 1.0, variance: (-0.05, 0.05) ),
+    volume: ( variance: (-2.0, 0.0) ),
+    max_instances: 4,
+    steal: Oldest,
+    cooldown: 0.05,
+)

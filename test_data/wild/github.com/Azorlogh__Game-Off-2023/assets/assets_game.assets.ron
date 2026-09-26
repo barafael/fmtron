@@ -1,0 +1,9 @@
+({
+    "world": File(path: "world/World.glb#Scene0"),
+    "models": Folder (
+        path: "world/library",
+    ),
+    "enemies": Folder (
+        path: "enemies",
+    ),
+})

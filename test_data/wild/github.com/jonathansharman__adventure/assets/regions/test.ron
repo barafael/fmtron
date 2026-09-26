@@ -1,0 +1,51 @@
+RegionData(
+	col_count: 11,
+	terrain: [
+		Wall, Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,
+		Wall, Stone, Floor, Floor, Floor, Floor, Floor, Floor, Wall,  Grass, Wall,
+		Wall, Floor, Grass, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Wall,
+		Wall, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Wall,
+		Wall, Floor, Floor, Floor, Floor, Wall,  Floor, Floor, Wall,  Wall,  Wall,
+		Wall, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Wall,
+		Wall, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Wall,  Wall,  Wall,
+		Wall, Floor, Wall,  Wall,  Floor, Floor, Floor, Floor, Floor, Floor, Wall,
+		Wall, Floor, Wall,  Wall,  Floor, Floor, Floor, Floor, Floor, Floor, Wall,
+		Wall, Floor, Floor, Floor, Floor, Floor, Floor, Floor, Stone, Wall,  Wall,
+		Wall, Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,  Wall,
+	],
+	entrances: [
+		(
+			location: (row: 1, col: 1),
+			col: 1,
+			direction: Right,
+		),
+		(
+			location: (row: 9, col: 8),
+			direction: Left,
+		),
+	],
+	exits: [
+		(
+			location: (row: 2, col: 2),
+			target_region: "test.ron",
+			target_entrance_idx: 0,
+		),
+		(
+			location: (row: 1, col: 9),
+			target_region: "test.ron",
+			target_entrance_idx: 1,
+		),
+	],
+	enemies: [
+		(
+			location: (row: 1, col: 4),
+		),
+		(
+			location: (row: 3, col: 4),
+		),
+	],
+	heart_locations: [
+		(row: 9, col: 1),
+		(row: 5, col: 9),
+	]
+)

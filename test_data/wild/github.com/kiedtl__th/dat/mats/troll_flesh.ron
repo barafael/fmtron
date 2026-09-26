@@ -1,0 +1,28 @@
+MaterialInfo(
+	name: "troll flesh",
+	description: "", // TODO
+	class: Flesh,
+	rarity: 0,
+	// tolkien has suggested that trolls were first
+	// made from stone by morgoth. so it makes sense that
+	// troll flesh is denser than human flesh (human
+	// flesh has a density of about 1
+	density: 1.28,
+	color_fg: Color(
+		red: 148,  blue: 13,
+		green: 13, alpha: 0,
+	),
+	color_bg: Color(
+		red: 0, blue: 0,
+		green: 0, alpha: 0,
+	),
+	block_glyph: 'α',
+	melting_point: 123.45, // how does flesh melt anyway
+	combustible: Some(523.09),
+	smelt_result: None,
+	hardness: 0.1, // lol
+	specific_heat: 3.9,
+	emit_light: 0,
+	occurs_naturally: None,
+	edible: true,
+)

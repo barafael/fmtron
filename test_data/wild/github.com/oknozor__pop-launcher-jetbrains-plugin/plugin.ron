@@ -1,0 +1,13 @@
+(
+    name: "Launch jetbrains project",
+    description: "Open jetbrains IDE projects",
+    query: (
+        regex: "^(idea )+",
+        help: "idea ",
+        isolate: true,
+        no_sort: true,
+    ),
+    bin: (path: "jetbrains"),
+    icon: Name("text-editor-symbolic"),
+    history: false,
+)

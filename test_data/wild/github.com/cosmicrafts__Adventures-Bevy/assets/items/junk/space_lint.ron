@@ -1,0 +1,12 @@
+(
+    id: "space_lint",
+    label: "Space Lint",
+    description: "How does lint even form in the vacuum of space?",
+    slot: shield,
+    rarity: junk,
+    base_value: 4,
+    icon: Some("#"),
+    icon_path: None,
+    modifiers: [],
+    on_kill: None,
+)

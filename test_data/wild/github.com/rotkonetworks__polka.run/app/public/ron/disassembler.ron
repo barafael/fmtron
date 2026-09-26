@@ -1,0 +1,44 @@
+MainMenu(
+    items: [
+        (
+            label: "File",
+            item_type: SubMenu(
+                items: [
+                    (label: "Load New", item_type: RegularItem, action: "file_load_new"),
+                    (label: "Unload All", item_type: RegularItem, action: "file_unload_all"),
+                ]
+            )
+        ),
+        (label: "Settings", item_type: RegularItem),
+        (
+            label: "View",
+            item_type: SubMenu(
+                items: [
+                    (
+                        label: "Style",
+                        item_type: SubMenu(
+                            items: [
+                                (label: "System Default", item_type: RegularItem, action: "style_system_default"),
+                                (label: "Day Mode", item_type: RegularItem, action: "style_day_mode"),
+                                (label: "Dark Mode", item_type: RegularItem , action: "style_dark_mode"),
+                            ]
+                        )
+                    ),
+                    (
+                        label: "Zoom",
+                        item_type: SubMenu(
+                            items: [
+                                (label: "Zoom: {zoom_level}%", item_type: RegularItem),
+                                (label: "Zoom in (+)", item_type: RegularItem, action: "zoom_in"),
+                                (label: "Zoom out (-)", item_type: RegularItem, action: "zoom_out"),
+                                (label: "Default Size", item_type: RegularItem, action: "zoom_default"),
+                            ]
+                        )
+                    )
+                ]
+            )
+        ),
+        (label: "Compare", item_type: RegularItem),
+        (label: "Info", item_type: RegularItem),
+    ],
+)

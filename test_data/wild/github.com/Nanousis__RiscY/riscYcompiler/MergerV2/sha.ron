@@ -1,0 +1,256 @@
+(
+    show_hierarchy: None,
+    show_menu: None,
+    show_ticks: None,
+    show_toolbar: None,
+    show_tooltip: None,
+    show_overview: None,
+    show_statusbar: None,
+    align_names_right: None,
+    show_variable_indices: None,
+    show_variable_direction: None,
+    show_empty_scopes: None,
+    show_parameters_in_scopes: None,
+    waves: Some((
+        source: File("waveform.vcd"),
+        format: Vcd,
+        active_scope: Some(WaveScope((
+            strs: [
+                "tb_keccak",
+                "uut",
+            ],
+        ))),
+        displayed_items_order: [
+            (1),
+            (2),
+            (3),
+            (4),
+            (5),
+            (6),
+            (7),
+            (8),
+            (10),
+            (11),
+        ],
+        displayed_items: {
+            (8): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "buffer_full",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "buffer_full",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (2): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "in",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "in [31:0]",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (11): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                            "uut",
+                        ],
+                    ),
+                    name: "f_ack",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "f_ack",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (1): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "clk",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "clk",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (3): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "in_ready",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "in_ready",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (10): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "reset",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "reset",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (6): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "out_size",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "out_size [1:0]",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (4): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "is_last",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "is_last",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (5): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "out_ready",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "out_ready",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+            (7): Variable((
+                variable_ref: (
+                    path: (
+                        strs: [
+                            "tb_keccak",
+                        ],
+                    ),
+                    name: "out",
+                ),
+                color: None,
+                background_color: None,
+                display_name: "out [511:0]",
+                display_name_type: Unique,
+                manual_name: None,
+                format: None,
+                field_formats: [],
+            )),
+        },
+        display_item_ref_counter: 11,
+        viewports: [
+            (
+                curr_left: (0.0),
+                curr_right: (1.0),
+                target_left: (0.0),
+                target_right: (1.0),
+                move_start_left: (0.0),
+                move_start_right: (1.0),
+                move_duration: None,
+                move_strategy: Instant,
+            ),
+        ],
+        cursor: Some((1, [
+            295777,
+        ])),
+        markers: {},
+        focused_item: Some((9)),
+        focused_transaction: (None, None),
+        selected_items: [],
+        default_variable_name_type: Unique,
+        scroll_offset: 0.0,
+        display_variable_indices: true,
+        graphics: {},
+    )),
+    drag_started: false,
+    drag_source_idx: None,
+    drag_target_idx: None,
+    previous_waves: None,
+    count: None,
+    blacklisted_translators: [],
+    show_about: false,
+    show_keys: false,
+    show_gestures: false,
+    show_quick_start: false,
+    show_license: false,
+    show_performance: false,
+    show_logs: false,
+    show_cursor_window: false,
+    wanted_timeunit: PicoSeconds,
+    time_string_format: None,
+    show_url_entry: false,
+    variable_name_filter_focused: false,
+    variable_name_filter_type: Fuzzy,
+    variable_name_filter_case_insensitive: true,
+    rename_target: None,
+    sidepanel_width: Some(300.0),
+    ui_zoom_factor: None,
+)

@@ -1,0 +1,6 @@
+(
+    play_mode: Loop,
+    start: 0,
+    end: 12,
+    duration: 1.0,
+)

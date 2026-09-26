@@ -1,0 +1,87 @@
+(
+    // 1. Global Settings
+    max_notifications: 5,
+    timeout: 5000,
+    poll_interval: 16,
+    history_length: 10,
+    replacing_enabled: true,
+    replacing_resets_timeout: true,
+
+    // 2. Window Manager / Compositor Behavior
+    // This allows it to work seamlessly on both LeftWM (X11) and Niri (Wayland)
+    min_window_width: 300,
+    min_window_height: 50,
+    idle_threshold: 3600,
+
+    // 3. Layout and Theming
+    layout_blocks: [
+        // The Main Container (Background & Borders)
+        (
+            name: "root",
+            parent: "",
+            hook: Hook(parent_anchor: TR, self_anchor: TR, offset: (x: -20, y: 45)),
+            params: NotificationBlock((
+                monitor: 0,
+                border_width: 2.0,
+                border_rounding: 0.0, // Sharp industrial corners
+                
+                // Steelbore Palette mapping
+                background_color: (hex: "#000027"), // voidNavy
+                
+                // Border colors change based on notification urgency
+                border_color: (hex: "#4B7EB0"),           // steelBlue (Normal)
+                border_color_low: (hex: "#4B7EB0"),       // steelBlue (Low)
+                border_color_critical: (hex: "#FF5C5C"),  // redOxide (Critical Error)
+                border_color_paused: (hex: "#D98E32"),    // moltenAmber (Paused)
+
+                gap: (x: 0.0, y: 8.0),
+                notification_hook: Hook(parent_anchor: BL, self_anchor: TL, offset: (x: 0, y: 0)),
+            )),
+        ),
+
+        // The Application Name
+        (
+            name: "app_name",
+            parent: "root",
+            hook: Hook(parent_anchor: TL, self_anchor: TL, offset: (x: 10, y: 10)),
+            params: TextBlock((
+                text: "%a", // %a = App Name
+                font: "Fira Code Bold 10",
+                ellipsize: Middle,
+                color: (hex: "#50FA7B"), // radiumGreen (Safe/Status indicator)
+                padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+                dimensions: (width: (min: 50, max: 280), height: (min: 0, max: 0)),
+            )),
+        ),
+
+        // The Notification Title (Summary)
+        (
+            name: "summary",
+            parent: "app_name",
+            hook: Hook(parent_anchor: BL, self_anchor: TL, offset: (x: 0, y: 4)),
+            params: TextBlock((
+                text: "%s", // %s = Summary
+                font: "Fira Code Bold 12",
+                ellipsize: Middle,
+                color: (hex: "#D98E32"), // moltenAmber (Primary active text)
+                padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
+                dimensions: (width: (min: 50, max: 280), height: (min: 0, max: 0)),
+            )),
+        ),
+
+        // The Notification Message (Body)
+        (
+            name: "body",
+            parent: "summary",
+            hook: Hook(parent_anchor: BL, self_anchor: TL, offset: (x: 0, y: 4)),
+            params: TextBlock((
+                text: "%b", // %b = Body
+                font: "Fira Code 11",
+                ellipsize: Middle,
+                color: (hex: "#8BE9FD"), // liquidCool (Info readout)
+                padding: (left: 0.0, right: 0.0, top: 0.0, bottom: 10.0),
+                dimensions: (width: (min: 50, max: 280), height: (min: 0, max: 0)),
+            )),
+        ),
+    ],
+)

@@ -1,0 +1,19 @@
+// The Mary-O demo's own content pack: what its characters are, stated as
+// data. The manifest is the pack's explicit source list, not a directory
+// glob, so its contents do not depend on filesystem order. A source declared
+// here and not embedded in `src/pack.rs` (or the reverse) is a loud refusal.
+//
+// Validate without rebuilding Rust:
+//
+//     cargo run -p ambition_content_cli --bin ambition_content -- \
+//         game/ambition_demo_mary_o/assets
+(
+    id: "ambition_demo_mary_o",
+    version: "0.1.0",
+    // Every identity this pack mints is `mary_o_demo:<schema>/<name>`.
+    namespace: "mary_o_demo",
+    requires: [],
+    sources: [
+        (path: "data/movesets/mary_o.ron", schema: "moveset", version: 1),
+    ],
+)

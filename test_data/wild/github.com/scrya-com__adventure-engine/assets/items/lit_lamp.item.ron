@@ -1,0 +1,13 @@
+// Phase 7 fixture — result of oil + lamp.
+Item((
+    id: "lit_lamp",
+    display_name: "Lit Lamp",
+    description: "A warm, glowing oil lamp.",
+    icon: Some("icons/lit_lamp"),
+    tags: ["Item.Tool", "Item.Light"],
+    verbs: [
+        ( kind: Look, text: Some("Examine"), action: Some("examine_lit_lamp") ),
+    ],
+    can_combine: false,
+    can_pickup: true,
+))

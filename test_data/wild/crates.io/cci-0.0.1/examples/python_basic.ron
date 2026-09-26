@@ -1,0 +1,16 @@
+CciConfig(
+    presets: [
+        Python(PythonConfig(
+            version: "3.11",
+            linter: LinterConfig(
+                enabled: true,
+                tool: Ruff,
+            ),
+            formatter: FormatterConfig(
+                enabled: true,
+                tool: Black,
+            ),
+            type_check: true,
+        )),
+    ],
+)

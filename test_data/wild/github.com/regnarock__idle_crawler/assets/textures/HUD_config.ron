@@ -1,0 +1,7 @@
+UIConfig(
+    size: (1895, 1396),
+    dongeon_view_margin: (58, 75),
+    dungeon_view_size: (1189, 1000),
+    minimap_margin: (70, 768),
+    minimap_size: (486, 241),
+)

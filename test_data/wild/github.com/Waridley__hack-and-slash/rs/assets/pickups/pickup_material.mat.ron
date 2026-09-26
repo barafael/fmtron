@@ -1,0 +1,11 @@
+ExtendedMaterial(
+	extension: BubbleMaterial(
+		glow_color: ( red: 128.0, green: 8.0, blue: 0.0, alpha: 0.12 ),
+	),
+	base: ExtendedMaterial( extension: (), base: StandardMaterial(
+		specular_transmission: 1.0,
+		thickness: 8.0,
+		ior: 3.0,
+		perceptual_roughness: 0.3,
+	)),
+)

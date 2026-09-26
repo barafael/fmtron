@@ -1,0 +1,6 @@
+(
+    locale: "und",
+    resources: [
+        "menu/locales.ftl",
+    ]
+)

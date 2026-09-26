@@ -1,0 +1,4 @@
+(
+    // automatically determine the name of all crates in the workspace and update their version strings
+    cargo: Some(Autodetect),
+)

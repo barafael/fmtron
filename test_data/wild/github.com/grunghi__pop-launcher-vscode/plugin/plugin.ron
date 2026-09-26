@@ -1,0 +1,15 @@
+(
+    name: "VSCode Recent Projects",
+    description: "Open recent VSCode projects",
+    bin: (
+        path: "vscode",
+    ),
+    icon: Name("vscode"),
+    query: (
+        isolate: true,
+        regex: "^vs.*",
+        help: "vs ",
+        no_sort: true,
+        priority: High,
+    ),
+)

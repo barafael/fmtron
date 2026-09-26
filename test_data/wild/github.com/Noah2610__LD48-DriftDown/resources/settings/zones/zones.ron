@@ -1,0 +1,16 @@
+// src/settings/zones_settings.rs
+// ./dev_0.ron
+// ./dev_1.ron
+
+#![enable(implicit_some)]
+(
+    config: (
+        zone_order: [
+            "well",
+            "green",
+            "space",
+            "red",
+            "psychedelic",
+        ],
+    ),
+)

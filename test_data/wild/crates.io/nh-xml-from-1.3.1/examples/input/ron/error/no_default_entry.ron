@@ -1,0 +1,20 @@
+(
+  file_type: "DialogueTree",
+  name_field: "Softlock",
+  dialogue_node: [
+    (
+      id: "START",
+      name: "NAME",
+      entry_condition: [
+        "NOT_DEFAULT"
+      ],
+      dialogue: [
+        (
+          page: [
+            "Can't reach me."
+          ]
+        )
+      ]
+    )
+  ]
+)

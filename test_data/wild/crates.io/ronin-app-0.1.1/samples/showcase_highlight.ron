@@ -1,0 +1,24 @@
+// showcase_highlight.ron — every syntax-highlight token class (a LINE comment).
+/* and a BLOCK comment, spanning the highlighter's Comment class as well. */
+//
+// HighlightClass coverage (editor_view.rs):
+//   Ident       — identifiers + enum variant idents (Showcase, Fast, Some)
+//   Number      — integer AND float numeric literals
+//   StringLit   — normal strings, raw strings, AND char literals
+//   Boolean     — true / false
+//   Punctuation — ( ) [ ] { } : , # !
+//   Comment     — line (//) and block (/* */) comments
+Showcase(
+    ident_field: plain_ident_value,   // bare ident value
+    enum_ident: Fast,                 // enum variant ident
+    an_integer: 42,                   // Number (integer)
+    a_float: 3.14,                    // Number (float)
+    a_string: "normal string",        // StringLit (string)
+    a_raw_string: r#"raw "string""#,  // StringLit (raw string)
+    a_char: 'Z',                      // StringLit (char)
+    a_true: true,                     // Boolean
+    a_false: false,                   // Boolean
+    a_list: [1, 2, 3],                // [ ] , punctuation
+    a_map: { "k": 1 },                // { } : punctuation
+    an_option: Some('x'),             // enum ident + char
+)

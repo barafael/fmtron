@@ -1,0 +1,4 @@
+(
+    id: "crafter",
+    recipe_kinds: [ "base::crafting" ],
+)

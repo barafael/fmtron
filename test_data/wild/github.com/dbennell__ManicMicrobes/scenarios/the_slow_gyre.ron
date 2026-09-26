@@ -1,0 +1,119 @@
+// The slow gyre — a long day, a lazy turn, and four rocks to hold on to.
+//
+// The combination no shipped slide had. `the_short_night` has a day and still water;
+// `predator_introduction` and `the_box` have a turning current under a flat sky. Nothing had both,
+// and both is what a filter feeder needs before its bet means anything: the water has to *move*
+// or there is nothing to strain out of it, and the light has to *stop* or there is no reason to
+// have any income but the sun.
+//
+//   mm-cli run scenarios/the_slow_gyre.ron --ticks 200000 --metrics gyre.ndjson
+//
+// ---------------------------------------------------------------- the day
+//
+// `period_ticks: 20000` against a generation of about 489 (`docs/ECONOMY.md`), so a day is forty
+// generations long. That is deliberately far slower than `the_short_night`'s 2,000, which is four
+// generations and therefore something a lineage rides out rather than adapts to. At forty, night
+// is a *season*: a lineage is born, breeds and dies inside one, and what pays in the dark is a
+// different living from what pays at noon.
+//
+// Night is 96 rather than 0. A slide that goes fully dark kills every autotroph on it and the
+// question stops being interesting around tick 10,000; at 96 the sun is a poor living rather than
+// no living, and the answer to "what do you do at night" can be *endure* rather than only *die*.
+//
+// ---------------------------------------------------------------- the turn
+//
+// `Rotational(strength: 24)`, against the 64 and 96 the vent scenarios use. Rotational speed is
+// proportional to radius — still at the middle, `strength` at the rim — so a gentle number is
+// what keeps the *inner* half of the slide somewhere a cell can live without a holdfast. At 96
+// the rim is a washing machine and everything that is not anchored ends up in the middle, which
+// makes the slide one habitat with a fence round it rather than a gradient.
+//
+// So there is a gradient of ways to make a living, along the radius, and nothing declares it:
+// still water and no delivery at the centre, fast water and food arriving at the rim, and a
+// holdfast is what converts the second into an income rather than a hazard.
+//
+// ---------------------------------------------------------------- the rocks
+//
+// Four pillars at mid-radius, and they are **bedrock** rather than the mineral kind. A reef laid
+// in water short of its own mineral wears from the rim inwards (`World::rock_dose`), and a slide
+// meant to run for two hundred thousand ticks wants the thing its sponges are holding on to still
+// there at the end. What erodes is a subject for a scenario about erosion.
+//
+// Placed off the axes, so a pillar presents an edge to a tangential flow rather than a flat face:
+// the water goes round it, which is what makes the square behind one a different place from the
+// square in front.
+(
+    name: "the slow gyre",
+    seed: 20260817,
+    width: 96,
+    height: 96,
+
+    light: DayNight(period_ticks: 20000, day: 1024, night: 96),
+    current: Rotational(strength: 24),
+    fluid_interval: 1,
+
+    seeding: [
+        Uniform(chemical: 11, per_square: 409600),
+        // The carbonate system (`docs/CHEMISTRY.md` §11). Carbonate matched to the dissolved
+        // CO2 above, so the slide starts at pH 7 and every move from there is something the
+        // cells did. Calcium is then not free: the pair precipitates on the product of the two,
+        // so this puts `sqrt(calcium * carbonate)` a little over `minerals.calcite_saturation`.
+        //
+        // **This is the first shipped slide where that should visibly cycle.** Photosynthesis
+        // eats CO2 and sweetens the water; respiration makes it and sours it; and here the two
+        // take turns on a twenty-thousand-tick clock rather than balancing each other out
+        // continuously. Switch the `acidity` overlay on and watch a day go by.
+        Uniform(chemical: 18, per_square: 409600),
+        Uniform(chemical: 17, per_square: 3461),
+        Uniform(chemical: 14, per_square: 409600),
+        Uniform(chemical: 4, per_square: 409600),
+        Uniform(chemical: 5, per_square: 61440),
+        Uniform(chemical: 6, per_square: 4096),
+        Uniform(chemical: 16, per_square: 245760),
+        Uniform(chemical: 7, per_square: 20480),
+        // Something to strain out of the water, so a filter is worth having on the first day
+        // rather than only once something has died. Detritus is what a body has already broken
+        // down into and the current carries it at its own speed, which is the whole reason a
+        // sessile cell can eat at all.
+        Uniform(chemical: 12, per_square: 40960),
+    ],
+
+    inhabitants: [
+        // The autotroph everything else is measured against, over the whole slide.
+        (
+            genome: "ancestor.mm",
+            count: 24,
+            place: Spread,
+        ),
+        // And the filter feeders, on the rocks. `Placement` is barrier-aware — a founder that
+        // lands in a wall is moved to the nearest free square — so a grid laid *over* a pillar
+        // comes out as a ring of cells around it, which is where a holdfast wants to be.
+        (
+            genome: "sponge.mm",
+            count: 8,
+            place: Grid(x: 26, y: 18, width: 10, height: 8),
+        ),
+        (
+            genome: "sponge.mm",
+            count: 8,
+            place: Grid(x: 60, y: 26, width: 8, height: 10),
+        ),
+        (
+            genome: "sponge.mm",
+            count: 8,
+            place: Grid(x: 60, y: 60, width: 10, height: 8),
+        ),
+        (
+            genome: "sponge.mm",
+            count: 8,
+            place: Grid(x: 26, y: 60, width: 8, height: 10),
+        ),
+    ],
+
+    barriers: [
+        Rect(x: 28, y: 20, width: 6, height: 4),
+        Rect(x: 62, y: 28, width: 4, height: 6),
+        Rect(x: 62, y: 62, width: 6, height: 4),
+        Rect(x: 28, y: 62, width: 4, height: 6),
+    ],
+)

@@ -1,0 +1,9 @@
+(
+  name: 42,
+  count: 1,
+  weight: 2.5,
+  active: true,
+  label: None,
+  tags: [],
+  category: Weapon,
+)

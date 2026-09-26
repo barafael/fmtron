@@ -1,0 +1,9 @@
+(
+    object_type: "ui_img",
+    id: "!icon-defence-shock",
+    
+    image: (
+        path: "icon-defence-shock.png",
+        copyright: "T.Okubo",
+    ),
+)

@@ -1,0 +1,13 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "container_g_background",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 1.0,
+        height: 1.0,
+        z: 7,
+    ),
+    //background: SolidColor(0.0, 0.0, 0.0, 1.0),
+    children: [],
+)

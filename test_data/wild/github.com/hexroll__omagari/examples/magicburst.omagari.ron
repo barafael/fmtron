@@ -1,0 +1,71 @@
+(
+    effects: [
+        (
+            name: "Magic",
+            capacity: 16384,
+            spawner_settings: (
+                count: Single(2500.0),
+                spawn_duration: Single(0.05),
+                period: Single(0.0),
+                cycle_count: 1,
+                starts_active: true,
+                emit_on_start: true,
+            ),
+            texture_index: Some(4),
+            init_modifiers: [
+                SetAttribute((
+                    id: 1,
+                    attr: "age",
+                    attr_expr: Float(0.0),
+                )),
+                SetAttribute((
+                    id: 2,
+                    attr: "lifetime",
+                    attr_expr: Operator(Uniform(Float(0.6), Float(4.3))),
+                )),
+                SetPositionCircle((
+                    center_expr: Vec3((0.0, 0.0, 0.0)),
+                    axis_expr: Vec3((0.0, 1.0, 0.0)),
+                    radius_expr: Float(0.2),
+                    dimension: Surface,
+                )),
+                SetVelocityCircle((
+                    center_expr: Vec3((0.0, 0.0, 0.0)),
+                    axis_expr: Vec3((0.0, 1.0, 0.0)),
+                    speed_expr: Float(0.5),
+                )),
+                SetVelocityTangent((
+                    origin_expr: Vec3((0.0, 0.0, 0.0)),
+                    axis_expr: Vec3((0.0, 1.0, 0.0)),
+                    speed_expr: Operator(Uniform(Float(0.2), Float(1.0))),
+                )),
+            ],
+            update_modifiers: [
+                AccelModifier((
+                    accel_expr: Operator(Subtract(Operator(Multiply(RandVec3, Vec3((2.0, 2.0, 2.0)))), Vec3((1.0, 1.0, 1.0)))),
+                )),
+            ],
+            render_modifiers: [
+                SizeOverLifetime((
+                    gradient: (
+                        g: [
+                            (0.3, (0.1, 0.1, 0.1)),
+                            (1.0, (1.0, 1.0, 1.0)),
+                        ],
+                    ),
+                )),
+                ColorOverLifetime((
+                    gradient: (
+                        g: [
+                            (0.0, (0.0, 4.0, 4.0, 0.0)),
+                            (0.1, (0.0, 4.0, 4.0, 1.0)),
+                            (0.3, (4.0, 0.0, 0.0, 0.22)),
+                            (0.6, (4.0, 2.2, 4.15, 0.0)),
+                            (1.0, (4.0, 6.57, 4.35, 0.0)),
+                        ],
+                    ),
+                )),
+            ],
+        ),
+    ],
+)

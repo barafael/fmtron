@@ -1,0 +1,36 @@
+// showcase_interop.ron — one construct per RON->JSON loss code in interop/loss.rs.
+//
+// The Part-D test converts this with `ron_to_json` and asserts each expected
+// stable RON-I#### code appears in the loss report:
+//   RON-I0001 StructName    — a named struct (the top-level `Showcase(..)` and `inner`)
+//   RON-I0002 TupleVsList   — an anonymous tuple -> JSON array
+//   RON-I0003 Char          — a char -> one-char JSON string
+//   RON-I0004 EnumTagging   — a named enum variant -> serde tagging
+//   RON-I0005 NonStringKey  — a non-string map key -> stringified
+//   RON-I0006 UnitVsNull    — a unit () -> JSON null
+//   RON-I0007 RawString     — a raw string -> standard JSON string
+//   RON-I0008 TrailingComma — a trailing comma -> dropped (no JSON form)
+//   RON-I0009 DroppedComment— this comment is a loss ONLY under pure standard JSON
+//                             (CommentMode::None); JSONC carries it. The test
+//                             converts once with None to assert RON-I0009.
+//
+// RON-I0010 (UnparseableRegion) is intentionally NOT present: it requires an
+// unparseable region, which would make this file invalid RON. A valid showcase
+// cannot trigger it, so it is covered by the interop module's own tests instead.
+Showcase(
+    a_tuple: (1, 2, 3),
+    a_char: 'x',
+    a_variant: Running,
+    a_map: {
+        1: "int-key",
+        2: "another",
+    },
+    a_unit: (),
+    a_raw: r#"raw "string" stays raw"#,
+    // The `inner` named struct gives a second StructName loss; its trailing comma
+    // after `q: 2,` is the TrailingComma loss (a comma right before the `)`).
+    inner: Inner(
+        p: 1,
+        q: 2,
+    ),
+)

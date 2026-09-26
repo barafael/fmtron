@@ -1,0 +1,54 @@
+Rule(
+    id: "507341a0-ad84-4fa7-9705-5f06b0b4f7db",
+    name: "OH1 Opened - Night",
+    enabled: true,
+    priority: 10,
+    tags: [],
+    trigger: DeviceStateChanged(
+        device_id: "yolink_d88b4c01000cf2e5",
+        attribute: Some("open"),
+        to: Some(true),
+    ),
+    conditions: [
+        ModeIs(
+            mode_id: "mode_night",
+            on: true,
+        ),
+    ],
+    actions: [
+        RuleAction(
+            enabled: true,
+            action: Parallel(
+                actions: [
+                    SetDeviceState(
+                        device_id: "lutron_54",
+                        state: {
+                            "on": true,
+                        },
+                        track_event_value: false,
+                    ),
+                    SetDeviceState(
+                        device_id: "lutron_scene_outside_on_phantom",
+                        state: {
+                            "activate": true,
+                        },
+                        track_event_value: false,
+                    ),
+                    SetDeviceState(
+                        device_id: "timer_garage_close",
+                        state: {
+                            "command": "start",
+                            "duration_secs": 600,
+                            "label": "Garage OH1 auto-close",
+                        },
+                        track_event_value: false,
+                    ),
+                ],
+            ),
+        ),
+    ],
+    log_events: false,
+    log_triggers: false,
+    log_actions: false,
+    cancel_on_false: false,
+)

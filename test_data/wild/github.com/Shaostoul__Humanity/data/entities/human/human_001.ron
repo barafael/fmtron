@@ -1,0 +1,5 @@
+// data/entities/humans/human_001.ron
+(
+  human_id: "human_001",
+  common_name: "Human 001",
+)

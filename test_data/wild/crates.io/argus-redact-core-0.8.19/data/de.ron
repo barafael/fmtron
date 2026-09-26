@@ -1,0 +1,17 @@
+// German pattern data (SSOT). Mirrors lang/de/patterns.py PATTERNS.
+[
+    PatternData(
+        type_: r"tax_id",
+        label: r"[Steuer-ID]",
+        pattern: r"(?<![0-9])\d{2}\s?\d{3}\s?\d{3}\s?\d{3}(?![0-9])",
+        validator: Some(r"de_tax_id"),
+        description: r"German tax ID (Steuerliche Identifikationsnummer, 11 digits)",
+    ),
+    PatternData(
+        type_: r"phone",
+        label: r"[Telefonnummer]",
+        pattern: r"(?:\+49|0049)[-\s]?\d{2,4}[-/\s]?\d{3,4}[-/\s]?\d{3,5}(?![0-9])|(?<![0-9])0[1-9]\d{1,4}[-/\s]?\d{3,4}[-/\s]?\d{3,5}(?![0-9])",
+        validator: Some(r"de_phone"),
+        description: r"German phone number (mobile/landline, 10-15 digits)",
+    ),
+]

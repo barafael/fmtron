@@ -1,0 +1,3 @@
+(
+  tiles: Glob("square/tiles/*.png")
+)

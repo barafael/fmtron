@@ -1,0 +1,7 @@
+(
+    package_groups: [
+        "C Development Tools and Libraries",
+        "Development Tools"
+    ],
+    packages: ["bat", "fzf", "kitty"], 
+)

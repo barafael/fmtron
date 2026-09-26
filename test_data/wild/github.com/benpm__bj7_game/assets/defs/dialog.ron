@@ -1,0 +1,352 @@
+DialogueTrees([
+        DialogueNode(
+            role: Npc,
+            text: "How long have you been here?",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "I think I never left.",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "Why did you stay?",
+                    responses: [
+                    DialogueNode(
+                        role: Player,
+                        text: "Why did you? ",
+                        responses: [],
+                    ),
+                    DialogueNode(
+                        role: Player,
+                        text: "...",
+                        win: true,
+                        responses: [],
+                    ),
+                    ],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "Where is here? ",
+                responses: [],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "I think I understand.",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "What do you understand?",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "That there's nothing to understand. Do you understand?",
+                    responses: [
+                    DialogueNode(
+                        role: Player,
+                        text: "Of course not.",
+                        responses: [
+                        DialogueNode(
+                            role: Npc,
+                            text: "Of course not.",
+                            win: true,
+                            responses: [],
+                        ),
+                        ],
+                    ),
+                    DialogueNode(
+                        role: Player,
+                        text: "Of course.",
+                        responses: [
+                        DialogueNode(
+                            role: Npc,
+                            text: "No.",
+                            responses: [],
+                        ),
+                        ],
+                    ),
+                    DialogueNode(
+                        role: Player,
+                        text: "...",
+                        win: true,
+                        responses: [],
+                    ),
+                    ],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "Are you sure?",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "Yes.",
+                    responses: [],
+                ),
+                ],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "Do we know each other?",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "Not like we know ourselves.",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "Do you see me?",
+                    responses: [
+                    DialogueNode(
+                        role: Player,
+                        text: "Yes.",
+                        responses: [
+                        DialogueNode(
+                            role: Npc,
+                            text: "Do you really? Do you really see me? Do you see me? Do you really see me?",
+                            win: true,
+                            responses: [],
+                        ),
+                        ],
+                    ),
+                    ],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "I don't know you. You might know me.",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "Do you see me?",
+                    responses: [
+                    DialogueNode(
+                        role: Player,
+                        text: "Yes.",
+                        responses: [
+                        DialogueNode(
+                            role: Npc,
+                            text: "Do you really? Do you really see me? Do you see me? Do you really see me?",
+                            win: true,
+                            responses: [],
+                        ),
+                        ],
+                    ),
+                    ],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "Maybe we all can get to know each other.",
+                responses: [],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "...",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "I don't think that's me.",
+                win: true,
+                responses: [],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "Try not to think.",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "(Try to stop.)",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "STOP IT! STOP. STOP",
+                    responses: [],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "(Continue to think,)",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "Hahaha.",
+                    win: true,
+                    responses: [],
+                ),
+                ],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "There is no \"you\".",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "No \"you\". But there is \"me\".",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "You me or me me? Is there me? Am I? Where did my me go?",
+                    responses: [
+                    DialogueNode(
+                        role: Player,
+                        text: "Mine now.",
+                        win: true,
+                        responses: [],
+                    ),
+                    ],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "You are you if you can be!",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "But I can't!!!",
+                    responses: [],
+                ),
+                ],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "CALM DOWN!",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "WHYWOULDYOUEVERTHINKTHATTHATSUSEFULADVICE",
+                    responses: [],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "aaaaaaaaaaaaaa...",
+                    responses: [
+                    DialogueNode(
+                        role: Player,
+                        text: "aaaaa?",
+                        responses: [
+                        DialogueNode(
+                            role: Npc,
+                            text: ".",
+                            win: true,
+                            responses: [],
+                        ),
+                        ],
+                    ),
+                    DialogueNode(
+                        role: Player,
+                        text: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        responses: [
+                        DialogueNode(
+                            role: Npc,
+                            text: "No. Those days are behind me now.",
+                            responses: [],
+                        ),
+                        ],
+                    ),
+                    ],
+                ),
+                ],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "YOU. YOU. YOU. YOU. YOU ARE. ",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "ME! ME! ME! IT'S ALL ABOUT MEEEEEEE!!!",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "YES, ACTUALLY!",
+                    win: true,
+                    responses: [],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "Haha yeah I'm good, how are you?",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "BAD!",
+                    responses: [],
+                ),
+                ],
+            ),
+            ],
+        ),
+        DialogueNode(
+            role: Npc,
+            text: "Noble knight, I have a quest for thee! But first you must annnswerrrrrrrr my riddlesss three!!!",
+            responses: [
+            DialogueNode(
+                role: Player,
+                text: "Good Sir I decline.",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "I am discontented but I accept!",
+                    win: true,
+                    responses: [],
+                ),
+                ],
+            ),
+            DialogueNode(
+                role: Player,
+                text: "Good Sir! I accept!",
+                responses: [
+                DialogueNode(
+                    role: Npc,
+                    text: "Noble Knight, you would not \"get it\" anyway!",
+                    responses: [
+                    DialogueNode(
+                        role: Player,
+                        text: "Good Sir, you must first substantiate your claim!",
+                        responses: [
+                        DialogueNode(
+                            role: Npc,
+                            text: "Noble Knight.... I forgot to prepare the riddles...",
+                            win: true,
+                            responses: [],
+                        ),
+                        ],
+                    ),
+                    ],
+                ),
+                ],
+            ),
+            ],
+        ),
+])

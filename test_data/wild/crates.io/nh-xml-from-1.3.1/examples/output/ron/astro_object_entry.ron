@@ -1,0 +1,72 @@
+(
+    schema: None,
+    file_type: "AstroObjectEntry",
+    text_block: None,
+    log_condition: None,
+    id: Some("EXAMPLE"),
+    entry: Some([
+        (
+            id: "EXAMPLE_ENTRY_ONE",
+            name: "Example One",
+            curiosity: Some("EXAMPLE_CURIOSITY_ONE"),
+            is_curiosity: None,
+            ignore_more_to_explore: None,
+            parent_ignore_not_revealed: None,
+            ignore_more_to_explore_condition: None,
+            alt_photo_condition: None,
+            rumor_fact: Some([
+                (
+                    id: "EXAMPLE_RUMOR",
+                    text: "This is some lame rumor text :3",
+                    source_id: Some("EXAMPLE_CURIOSITY_ONE"),
+                    rumor_name: Some("Rumor Example"),
+                    rumor_name_priority: None,
+                    ignore_more_to_explore: None,
+                ),
+            ]),
+            explore_fact: Some([
+                (
+                    id: "EXAMPLE_EXPLORE",
+                    text: "Example of explore fact :3c",
+                    ignore_more_to_explore: Some(true),
+                ),
+            ]),
+            entry: Some([
+                (
+                    id: "EXAMPLE_ENTRY_CHILD",
+                    name: "Child Entry",
+                    curiosity: None,
+                    is_curiosity: None,
+                    ignore_more_to_explore: None,
+                    parent_ignore_not_revealed: None,
+                    ignore_more_to_explore_condition: None,
+                    alt_photo_condition: None,
+                    rumor_fact: None,
+                    explore_fact: Some([
+                        (
+                            id: "EXAMPLE_EXPLORE_NESTED",
+                            text: "Example of explore fact, in a child entry :3c",
+                            ignore_more_to_explore: None,
+                        ),
+                    ]),
+                    entry: None,
+                ),
+            ]),
+        ),
+        (
+            id: "EXAMPLE_ENTRY_TWO",
+            name: "Example Two",
+            curiosity: None,
+            is_curiosity: None,
+            ignore_more_to_explore: None,
+            parent_ignore_not_revealed: None,
+            ignore_more_to_explore_condition: None,
+            alt_photo_condition: None,
+            rumor_fact: None,
+            explore_fact: None,
+            entry: None,
+        ),
+    ]),
+    name_field: None,
+    dialogue_node: None,
+)

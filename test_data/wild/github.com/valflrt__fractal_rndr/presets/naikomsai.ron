@@ -1,0 +1,29 @@
+Frame((
+    img_width: 1920,
+    img_height: 1080,
+    zoom: 0.000013064440140298652,
+    center_x: -0.25092860490393454,
+    center_y: 0.010714399473791216,
+    rotate: Some(1.37),
+    fractal: Twtmwk(
+        max_iter: 1600,
+        bailout: 10.0,
+    ),
+    coloring_mode: MinMaxNorm(
+        min: Custom(300.0),
+        max: Custom(1600.0),
+        map: Powf(0.8),
+    ),
+    gradient: [
+        (0.0, (255, 255, 255)),
+        (0.3, (250, 182, 210)),
+        (0.35, (213, 135, 193)),
+        (0.5, (60, 60, 90)),
+        (0.75, (105, 120, 198)),
+        (1.0, (255, 255, 255)),
+    ],
+    sampling: (
+        level: High,
+        random_offsets: true,
+    ),
+))

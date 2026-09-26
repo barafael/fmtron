@@ -1,0 +1,14 @@
+(
+    id: "iron_sword",
+    name: "Iron sword",
+    description: "A beat-up, old iron sword. I wonder who it belonged to?",
+    stackable: false,
+    slot: Some(MainHand),
+    stats: Some(Stats(
+        strength: 2,
+        speed: 2,
+    )),
+    on_hit: [],
+    on_use: [],
+    consumable: false,
+)

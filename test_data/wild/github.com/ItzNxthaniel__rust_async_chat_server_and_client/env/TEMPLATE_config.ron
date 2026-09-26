@@ -1,0 +1,7 @@
+(
+    host_ipv4: Some("127.0.0.1"),
+    host_ipv6: None,
+    host_port: 7070,
+    msg_size: 255,
+    prefix: ':'
+)

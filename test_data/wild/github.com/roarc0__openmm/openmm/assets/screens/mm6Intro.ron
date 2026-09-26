@@ -1,0 +1,16 @@
+(
+    id: "mm6Intro",
+    elements: [
+        Video((
+            id: "vid_MM6Intro",
+            position: (0.0, 0.0),
+            size: (640.0, 480.0),
+            z: 1,
+            video: "MM6Intro",
+            skippable: true,
+            on_end: [
+                "LoadScreen(\"loading\")",
+            ],
+        )),
+    ],
+)

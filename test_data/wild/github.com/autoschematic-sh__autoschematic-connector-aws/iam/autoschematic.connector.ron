@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/iam",
+    protocol: "binary-tarpc",
+    description: "Manages AWS Identity and Access Management resources, such as groups, users, roles, and policies.",
+    stability: "beta"
+)

@@ -1,0 +1,7 @@
+// data/resources/water_clean.ron
+(
+  water_id: "water_clean",
+  common_name: "Clean water",
+  quantity_l: 100.0,
+  quality_flags: ["potable"],
+)

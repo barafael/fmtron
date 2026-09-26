@@ -1,0 +1,81 @@
+AppState(
+  schema_version: 4,
+  sections: {
+    "nav": Nav(NavConfig(
+      sections: [
+        Section(
+          key: "main",
+          label: "Main",
+          icon: "home",
+          roles: None,
+          entries: [
+            Entry(
+              route: "dashboard",
+              label: Some("Dashboard"),
+              icon: Some("home"),
+              roles: None,
+            ),
+            Entry(
+              route: "profile",
+              label: Some("Profile"),
+              icon: Some("user"),
+              roles: None,
+            ),
+          ],
+        ),
+        Section(
+          key: "admin",
+          label: "Admin",
+          icon: "bolt",
+          roles: Some([Admin]),
+          entries: [
+            Entry(
+              route: "admin",
+              label: Some("Overview"),
+              icon: Some("activity"),
+              roles: Some([Admin]),
+            ),
+          ],
+        ),
+      ],
+    )),
+    "pages": Pages([
+      Page(
+        route: "dashboard",
+        path: "/dashboard",
+        component: "dashboard:DashboardPage",
+        layout: Cards,
+        label: Some("Dashboard"),
+        icon: None,
+        in_nav: true,
+        roles: None,
+      ),
+      Page(
+        route: "profile",
+        path: "/profile",
+        component: "profile:ProfilePage",
+        layout: Cards,
+        label: Some("Profile"),
+        icon: None,
+        in_nav: true,
+        roles: None,
+      ),
+      Page(
+        route: "admin",
+        path: "/admin",
+        component: "admin:AdminPage",
+        layout: Bleed,
+        label: Some("Admin"),
+        icon: None,
+        in_nav: false,
+        roles: Some([Admin]),
+      ),
+    ]),
+    "sync": Sync(SyncConfig(
+      // Project-root-relative paths that `blast sync` will not overwrite.
+      // A directory entry freezes everything beneath it; a file entry freezes that file.
+      // Run `blast sync diff` to see drift between frozen entries and what catalyst currently ships.
+      freeze: [],
+    )),
+  },
+)

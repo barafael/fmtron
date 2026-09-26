@@ -1,0 +1,42 @@
+// Fixture `clue-not-placed` (M9 wave 1): the clue to investigate is placed in no location.
+[
+    (
+        schema_version: 1,
+        id: "cellar-errand",
+        title: "The Cellar Errand",
+        start: "ask-keeper",
+        nodes: {
+            "ask-keeper": (
+                objective: TalkTo(npc: "hall-keeper"),
+                next: ["read-ledger"],
+                resolution: None,
+            ),
+            "read-ledger": (
+                objective: Investigate(clue: "clue-lost-page"),
+                next: ["pull-lever"],
+                resolution: None,
+            ),
+            "pull-lever": (
+                objective: Decide(choice: "choice-lever"),
+                next: ["go-down"],
+                resolution: None,
+            ),
+            "go-down": (
+                objective: Reach(location: "cellar"),
+                next: ["gather-moss"],
+                resolution: None,
+            ),
+            "gather-moss": (
+                objective: Collect(item: "cellar-moss", quantity: 1),
+                next: ["report"],
+                resolution: None,
+            ),
+            "report": (
+                objective: TalkTo(npc: "hall-keeper"),
+                next: [],
+                resolution: Some("errand-done"),
+            ),
+        },
+        rewards: (items: {}, experience: 10, reputation: {}),
+    ),
+]

@@ -1,0 +1,107 @@
+// Mesh-interior budgets for the shipped model set (issue #905).
+//
+// The inside of the .glb files that perf/baselines/assets.ron weighs from the
+// outside: how many triangles the engine builds and how much texture it is
+// handed, read through BEVY'S OWN LOADER rather than by parsing glTF a second
+// way. A number that disagrees with the engine is worse than no number — see
+// src/perf/mesh.rs for why this repository carries no `gltf` dependency.
+//
+// Originally recorded at 22 models, 1,436,266 triangles in total, largest model 138,790
+// triangles (alliance_destroyer.glb), three textures per model, largest sheet
+// 1024×1024.
+//
+// Machine-independent in the same sense as the asset budgets: the loader is
+// the same code on every host, so any checkout of this commit reproduces these
+// numbers. These are deliberately coarse tripwires rather than precision
+// targets: every resource budget warns at 50% adverse growth and fails at 100%.
+// The collector discovers only runtime-reachable GLB levels; `.remesh.glb`
+// generator intermediates are excluded.
+//
+// Re-recorded after issues #999-#1001 changed both the content and the meaning
+// of the aggregate. The capture contains 63 runtime-reachable GLB levels. Its
+// maximum is 131,560 triangles and the
+// deduplicated closest/base levels total 1,968,208 triangles. The previous
+// 1,436,266 total was recorded before the fleet-wide LOD rebuild; the later
+// 2,978,584 finding incorrectly added every mutually-exclusive LOD and nine
+// `.remesh.glb` generator intermediates together. The 1,968,208 value accepts
+// the real post-rebuild base-model growth without retaining that population bug.
+//
+// This scenario now gates on the manual demo deploy (deploy-demo.yml runs
+// `report --gate` on the mesh step); the regular CI perf job stays
+// warnings-only. Provenance is settled: the loader is the same code on every
+// host, and a CI runner reproduces these numbers.
+//
+// assets.texture.pixels was raised from 1,048,576 (1024×1024) to 4,194,304
+// (2048×2048) on 2026-08-17: alliance_starbase.glb was rebuilt (7a0b08bf) to
+// carry a deliberate 2048×2048 sheet — the only 2K texture in the set, and the
+// reason assets.glb.bytes' largest-model tripwire also moved to the starbase.
+// The 4× is accepted, not a leak. Because the metric is the max across the
+// whole set, this budget no longer guarantees 1K for every other model; if a
+// second model ever needs 2K, that is a separate decision to read about here.
+//
+// Metric by metric:
+//
+// - assets.mesh.triangles.total — the deduplicated first/near GLB level of each
+//   runtime model. Lower LODs are mutually exclusive and are not added again.
+// - assets.mesh.triangles — the single heaviest runtime-reachable GLB level,
+//   the one that dominates a draw when it is on screen.
+// - assets.texture.pixels — the largest sheet, in pixels. Bytes are not
+//   measured: what a GPU allocates depends on the compressed format it is
+//   uploaded in, and a headless pass has no GPU and therefore no formats.
+// - assets.texture.count — how many images a model carries. Three today, for
+//   every model in the set: base colour, normal, metallic-roughness. A fourth
+//   is a pipeline change worth reading about.
+//
+// Commentary belongs in this header: `phoenix-perf adopt` regenerates the RON
+// value below from a capture, so a comment written inside it would be deleted
+// by the next recording. See src/perf/baseline.rs.
+//
+// ── Recorded from a capture ─────────────────────────────────
+// Written by `phoenix-perf adopt` from a bevy-loader capture of scenario "assets-mesh".
+// build: dev   device: (unrecorded)
+// rev:   (unrecorded)
+//
+// Edit the prose ABOVE this block; re-recording rewrites from here down, and
+// carries every statistic and tolerance over unchanged. The numbers are the
+// capture's; the tolerances are yours.
+(
+    scenario: "assets-mesh",
+    expectations: {
+        "assets.mesh.triangles": (
+            unit: count,
+            statistic: max,
+            expected: 131560.0,
+            tolerance: (
+                warn: 0.5,
+                fail: 1.0,
+            ),
+        ),
+        "assets.mesh.triangles.total": (
+            unit: count,
+            statistic: max,
+            expected: 1968208.0,
+            tolerance: (
+                warn: 0.5,
+                fail: 1.0,
+            ),
+        ),
+        "assets.texture.count": (
+            unit: count,
+            statistic: max,
+            expected: 3.0,
+            tolerance: (
+                warn: 0.5,
+                fail: 1.0,
+            ),
+        ),
+        "assets.texture.pixels": (
+            unit: count,
+            statistic: max,
+            expected: 4194304.0,
+            tolerance: (
+                warn: 0.5,
+                fail: 1.0,
+            ),
+        ),
+    },
+)

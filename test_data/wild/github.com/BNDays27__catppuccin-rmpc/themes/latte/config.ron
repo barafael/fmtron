@@ -1,0 +1,390 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+(
+    theme: Some("~/.config/rmpc/catppuccin-latte.ron"),
+    cache_dir: Some("~/.cache/rmpc"),
+    on_song_change: ["~/.config/rmpc/script.sh"], 
+    lyrics_dir: Some("~/Music"),
+    enable_lyrics_hot_reload: true,
+    password: None,
+    volume_step: 5,
+    max_fps: 180,
+    scrolloff: 0,
+    wrap_navigation: false,
+    enable_mouse: true,
+    status_update_interval_ms: 1000,
+    select_current_song_on_change: false,
+    browser_column_widths: [20, 38, 42],
+    album_art: (
+        method: Auto,
+        max_size_px: (width: 900, height: 900),
+        disabled_protocols: ["http://", "https://"],
+        vertical_align: Top,
+        horizontal_align: Center,
+    ),
+    keybinds: (
+        global: {
+            ":":       CommandMode,
+            ",":       VolumeDown,
+            "s":       Stop,
+            ".":       VolumeUp,
+            "<Tab>":   NextTab,
+            "<S-Tab>": PreviousTab,
+            "1":       SwitchToTab("Queue"),
+            "2":       SwitchToTab("Albums"),
+            "3":       SwitchToTab("Search"),
+            "4":       SwitchToTab("Lyrics"),
+            "5":       SwitchToTab("Visualizer"),
+            "q":       Quit,
+            ">":       NextTrack,
+            "p":       TogglePause,
+            "<":       PreviousTrack,
+            "f":       SeekForward,
+            "z":       ToggleRepeat,
+            "x":       ToggleRandom,
+            "c":       ToggleConsume,
+            "v":       ToggleSingle,
+            "b":       SeekBack,
+            "~":       ShowHelp,
+            "I":       ShowCurrentSongInfo,
+            "O":       ShowOutputs,
+            "P":       ShowDecoders,
+        },
+        navigation: {
+            "k":         Up,
+            "j":         Down,
+            "h":         Left,
+            "l":         Right,
+            "<Up>":      Up,
+            "<Down>":    Down,
+            "<Left>":    Left,
+            "<Right>":   Right,
+            "<C-k>":     PaneUp,
+            "<C-j>":     PaneDown,
+            "<C-h>":     PaneLeft,
+            "<C-l>":     PaneRight,
+            "<C-u>":     UpHalf,
+            "N":         PreviousResult,
+            "a":         Add,
+            "A":         AddAll,
+            "r":         Rename,
+            "n":         NextResult,
+            "g":         Top,
+            "<Space>":   Select,
+            "<C-Space>": InvertSelection,
+            "G":         Bottom,
+            "<CR>":      Confirm,
+            "i":         FocusInput,
+            "J":         MoveDown,
+            "<C-d>":     DownHalf,
+            "/":         EnterSearch,
+            "<C-c>":     Close,
+            "<Esc>":     Close,
+            "K":         MoveUp,
+            "D":         Delete,
+        },
+        queue: {
+            "D":       DeleteAll,
+            "<CR>":    Play,
+            "<C-s>":   Save,
+            "a":       AddToPlaylist,
+            "d":       Delete,
+            "i":       ShowInfo,
+            "C":       JumpToCurrent,
+        },
+    ),
+    search: (
+        case_sensitive: false,
+        mode: Contains,
+        tags: [
+            (value: "any",         label: "Any Tag"),
+            (value: "artist",      label: "Artist"),
+            (value: "album",       label: "Album"),
+            (value: "title",       label: "Title"),
+            (value: "filename",    label: "Filename"),
+            (value: "genre",       label: "Genre"),
+            (value: "albumartist", label: "Featured"),
+        ],
+    ),
+    artists: (
+        album_display_mode: SplitByDate,
+        album_sort_by: Date,
+    ),
+cava: (
+    framerate: 60, // default 60
+    autosens: true, // default true
+    sensitivity: 150, // default 100
+    lower_cutoff_freq: 0, // not passed to cava if not provided
+    higher_cutoff_freq: 10000, // not passed to cava if not provided
+    input: (
+        method: Fifo,
+        source: "/tmp/mpd.fifo",
+        sample_rate: 44100,
+        channels: 2,
+        sample_bits: 16,
+    ),
+    smoothing: (
+        noise_reduction: 77, // default 77
+        monstercat: false, // default false
+        waves: false, // default false
+    ),
+    // this is a list of floating point numbers thats directly passed to cava
+    // they are passed in order that they are defined
+    eq: []
+),
+    tabs: [
+    (
+
+        name: "Queue",
+
+        pane: Split(
+
+            direction: Horizontal,
+
+            panes: [
+
+                (size: "38%", pane: Split(
+                    direction: Vertical,
+                    panes: [
+                       (size: "67%", pane: Pane(AlbumArt), vertical_align: top),
+  
+    (size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Property(Song(Album)), style: (fg: "#4c4f69", modifiers: "Bold"),
+                        default: (kind: Text("Unknown Album"), style: (fg: "#4c4f69", modifiers: "Bold"))
+                    )
+                                ],
+                                    align: Center,)), vertical_align: top),
+
+                        (size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Property(Song(Artist)), style: (fg: "#fe640b", modifiers: "Bold"),
+                        default: (kind: Text("Unknown"), style: (fg: "#fe640b", modifiers: "Bold"))
+                    ),
+
+        (kind: Text(" - "), style: (fg : "#4c4f69", modifiers: "Bold") ),
+
+        (kind: Property(Song(Title)), style: (fg: "#df8e1d", modifiers: "Bold"), 
+                        default: (kind: Text("No Song"), style: (fg: "#df8e1d", modifiers: "Bold"))
+                    ),
+
+
+    ],
+
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: top),
+
+(size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Text("("), style: (fg: "#4c4f69")),
+        (kind: Property(Status(Elapsed)), style: (fg: "#4c4f69", modifiers: "Bold"),
+                    ),
+(kind: Text(" / "), style: (fg: "#4c4f69")),
+    (kind: Property(Song(Duration)), style: (fg: "#4c4f69", modifiers: "Bold")),
+        (kind: Text(")"), style: (fg: "#4c4f69")),
+                                ],
+                                    align: Center,)), vertical_align: top),
+
+
+                        (size: "1", pane: Pane(Lyrics), vertical_align: top),
+
+
+
+
+                        (size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Text("")),
+    ],
+
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: top)
+
+                        ],
+
+                    )),
+
+                (size: "100%", pane: Split(
+
+                    direction: Vertical,
+
+                    panes: [
+
+                        (size: "50%", pane: Pane(Queue)),
+
+                        (size: "50%", pane: Pane(Cava), vertical_align: bottom),
+
+                    ],
+
+                )),
+
+            ],
+
+        ),
+
+    ),
+     (
+            name: "Albums",
+            pane: Pane(Albums),
+        ),
+        (
+            name: "Search",
+            pane: Pane(Search),
+        ),
+        (
+            name: "Lyrics",
+            pane: Split(
+
+                direction: Horizontal,
+                panes: [
+
+
+                (size: "38%", pane: Split(
+
+                direction: Vertical,
+
+                        panes: [
+                        
+   (size: "67%", pane: Pane(AlbumArt), vertical_align: Top), 
+
+                        (size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Property(Song(Album)), style: (fg: "#4c4f69", modifiers: "Bold"),
+                        default: (kind: Text("Unknown Album"), style: (fg: "#4c4f69", modifiers: "Bold"))
+                    ) ,
+    ],
+
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: bottom),
+
+
+                        (size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Property(Song(Artist)), style: (fg: "#fe640b", modifiers: "Bold"),
+                        default: (kind: Text("Unknown"), style: (fg: "#fe640b", modifiers: "Bold"))
+                    ),
+
+        (kind: Text(" - "), style: (fg: "#4c4f69")),
+
+        (kind: Property(Song(Title)), style: (fg: "#df8e1d", modifiers: "Bold"), 
+                        default: (kind: Text("No Song"), style: (fg: "#df8e1d", modifiers: "Bold"))
+                    ),
+    ],
+
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: bottom),
+                            (size: "1", pane: Pane(Property(
+
+    content: [
+         (kind: Text("("), style: (fg: "#4c4f69")),
+        (kind: Property(Status(Elapsed)), style: (fg: "#4c4f69", modifiers: "Bold"),
+                    ),
+(kind: Text(" / "), style: (fg: "#4c4f69")),
+    (kind: Property(Song(Duration)), style: (fg: "#4c4f69", modifiers: "Bold")),
+         (kind: Text(")"), style: (fg: "#4c4f69")),
+                                ],
+                                    align: Center,)), vertical_align: top),
+
+                        (size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Text("")),
+    ],
+
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: top),
+
+(size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Text("")),
+    ],
+
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: top),
+
+
+                        ]
+
+                    ),), 
+
+                (size: "62%", pane: Split(
+
+                    direction: Vertical,
+
+                    panes: [
+                        (size: "2", pane: Pane(Property(
+
+    content: [
+        (kind: Text("Lyrics:"), style: (fg: "#40a02b", modifiers: "Bold")),
+    ],
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: top),
+			(size: "50%", pane: Pane(Lyrics), vertical_align: Top),
+                        (size: "50%", pane: Pane(Cava), vertical_align:bottom),
+
+                    ],
+
+                ))                ],
+            ),
+        ),
+ 
+
+        (
+
+        name: "Visualizer",
+
+        pane: Split(
+	direction: Vertical,
+	panes: [
+		(size: "1", pane: Pane(Property(
+
+    content: [
+        (kind: Property(Song(Artist)), style: (fg: "#fe640b", modifiers: "Bold"),
+                        default: (kind: Text("Unknown"), style: (fg: "#fe640b", modifiers: "Bold"))
+                    ),
+
+        (kind: Text(" - ")),
+
+        (kind: Property(Song(Title)), style: (fg: "#df8e1d", modifiers: "Bold"), 
+                        default: (kind: Text("No Song"), style: (fg: "#df8e1d", modifiers: "Bold"))
+                    ),
+
+
+    ],
+
+    align: Center,
+    scroll_speed: 1,
+
+)), vertical_align: top),
+
+		(size: "100%", pane: Pane(Cava), vertical_align:top),
+	]
+	), 
+
+    ),
+
+
+    ],
+
+)

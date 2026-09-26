@@ -1,0 +1,15 @@
+(
+  animations: [
+    (
+      name: "idle",
+      default_delay_ms: Some(150),
+      sprite_ids: [0, 1, 2, 3, 4],
+    ),
+    (
+      name: "walking",
+      default_delay_ms: Some(150),
+      sprite_ids: [2, 3, 4, 3],
+    ),
+  ],
+  current: Some("idle"),
+)

@@ -1,0 +1,11 @@
+({
+    "menu.music.audio": File(
+        path: "audio/menu_music.ogg",
+    ),
+    "menu.button.select": File(
+        path: "audio/select.ogg",
+    ),
+    "menu.button.start": File(
+        path: "audio/start.ogg",
+    ),
+})

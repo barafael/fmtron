@@ -1,0 +1,82 @@
+// this file generated automatically.
+// do not edit while pmb is running!!
+(
+  use_mouse_for_pen: true,
+  stylus_may_be_inverted: true,
+  primary_button: Left,
+  pan_button: Middle,
+  pen_zoom: LControl,
+  toggle_eraser_pen: (
+    keys: [E],
+    repeatable: false,
+  ),
+  brush_increase: (
+    keys: [RBracket],
+    repeatable: true,
+  ),
+  brush_decrease: (
+    keys: [LBracket],
+    repeatable: true,
+  ),
+  undo: (
+    keys: [LControl, Z],
+    repeatable: true,
+  ),
+  redo: (
+    keys: [LControl, LShift, Z],
+    repeatable: true,
+  ),
+  save: (
+    keys: [LControl, S],
+    repeatable: false,
+  ),
+  reset_view: (
+    keys: [Z],
+    repeatable: false,
+  ),
+  open: (
+    keys: [LControl, O],
+    repeatable: false,
+  ),
+  zoom_out: (
+    keys: [LControl, NumpadSubtract],
+    repeatable: false,
+  ),
+  zoom_in: (
+    keys: [LControl, NumpadAdd],
+    repeatable: false,
+  ),
+  tool_for_gesture_1: Pan,
+  tool_for_gesture_2: Pan,
+  tool_for_gesture_3: Pan,
+  tool_for_gesture_4: Pan,
+  window_start_x: None,
+  window_start_y: None,
+  window_start_width: None,
+  window_start_height: None,
+  window_maximized: false,
+  debug_toggle_stylus_invertability: (
+    keys: [],
+    repeatable: false,
+  ),
+  debug_toggle_use_mouse_for_pen: (
+    keys: [],
+    repeatable: false,
+  ),
+  debug_toggle_use_finger_for_pen: (
+    keys: [],
+    repeatable: false,
+  ),
+  debug_clear_strokes: (
+    keys: [],
+    repeatable: false,
+  ),
+  debug_print_strokes: (
+    keys: [],
+    repeatable: false,
+  ),
+  debug_dirty_all_strokes: (
+    keys: [],
+    repeatable: false,
+  ),
+)

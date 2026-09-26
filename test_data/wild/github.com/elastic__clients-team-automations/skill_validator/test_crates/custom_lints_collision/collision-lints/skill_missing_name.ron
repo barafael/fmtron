@@ -1,0 +1,27 @@
+SkillLint(
+    id: "skill_missing_name",
+    human_readable_name: "SKILL.md frontmatter missing name (custom duplicate)",
+    description: "Duplicate of the built-in lint, used to test collision detection.",
+    lint_level: Deny,
+    reference_link: None,
+    query: r#"
+    {
+        Skill {
+            has_frontmatter @filter(op: "=", value: ["$true"])
+            name @filter(op: "is_null")
+
+            skill_file_path @output
+
+            span_: frontmatter_span @optional {
+                filename @output
+                begin_line @output
+                end_line @output
+            }
+        }
+    }"#,
+    arguments: {
+        "true": true,
+    },
+    error_message: "A SKILL.md file's frontmatter is missing the required `name` field.",
+    per_result_error_template: Some("{{skill_file_path}} frontmatter is missing required field: name"),
+)

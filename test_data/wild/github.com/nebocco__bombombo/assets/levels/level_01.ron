@@ -1,0 +1,17 @@
+(
+    board_size: (5, 5),
+    objects: {
+        (x:0, y:2): Rock,
+        (x:2, y:0): Rock,
+        (x:2, y:2): BombMedium,
+        (x:2, y:4): Rock,
+        (x:4, y:2): Rock,
+
+    },
+    fire_coord: (x:2, y:2),
+    meta: (
+        name: "Space to Ignite",
+        min_bombs: 0,
+        min_affected_cells: 13,
+    )
+)

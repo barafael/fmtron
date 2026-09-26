@@ -1,0 +1,10 @@
+/*!
+    @import /amethyst_window/src/config.rs#DisplayConfig
+    DisplayConfig
+*/
+
+(
+  title: "Singularity UI",
+  dimensions: Some((1920, 1080)),
+)
+

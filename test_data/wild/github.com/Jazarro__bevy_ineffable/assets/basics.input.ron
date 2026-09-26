@@ -1,0 +1,43 @@
+InputConfig(
+    bindings: {
+        "PlayerInput": {
+            "Movement": [
+                DualAxis(
+                    x: Hold([Key(KeyA)], [Key(KeyD)]),
+                    y: Hold([Key(KeyS)], [Key(KeyW)]),
+                ),
+                DualAxis(
+                    x: Analog(
+                        input: GamePad(LeftStickX),
+                        sensitivity: Sensitivity(5.0),
+                    ),
+                    y: Analog(
+                        input: GamePad(LeftStickY),
+                        sensitivity: Sensitivity(5.0),
+                    ),
+                ),
+            ],
+            "Rotate": [
+                SingleAxis(Hold([Key(ArrowLeft)], [Key(ArrowRight)])),
+                SingleAxis(Analog(
+                    input: GamePadLeftTrigger2,
+                    inversion: NotInverted,
+                    sensitivity: Sensitivity(5.0),
+                )),
+                SingleAxis(Analog(
+                    input: GamePadRightTrigger2,
+                    inversion: Inverted,
+                    sensitivity: Sensitivity(5.0),
+                )),
+            ],
+            "Blush": [
+                Continuous(Hold([Key(ShiftLeft)])),
+                Continuous(Hold([Gamepad(South)])),
+            ],
+            "Teleport": [
+                Pulse(JustPressed([Key(Space)])),
+                Pulse(JustPressed([Gamepad(North)])),
+            ],
+        },
+    },
+)

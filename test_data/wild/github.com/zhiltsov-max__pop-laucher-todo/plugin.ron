@@ -1,0 +1,13 @@
+(
+    name: "Todo",
+    description: "Add a todo item to your list",
+    bin: (
+        path: "todo.py",
+    ),
+    icon: Name("task-due"),
+    query: (
+        regex: "^todo(:|\\s)",
+        isolate: true,
+        no_sort: true,
+    )
+)

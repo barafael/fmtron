@@ -1,0 +1,646 @@
+// ============================================================================
+// Keyboard Middleware Configuration Example
+// ============================================================================
+//
+// Copy this to: ~/.config/keymux/config.ron
+// View keyboard IDs: keymux list
+// Validate config:   keymux validate
+//
+// TIP: Start simple! Remap a few keys, test, then expand.
+// ============================================================================
+
+(
+    // ============================================================================
+    // TIMING SETTINGS
+    // ============================================================================
+    
+    tapping_term_ms: 130,
+    
+    // How long (ms) to hold before tap becomes hold
+    // - Lower (100-130): More sensitive to holds
+    // - Higher (150-200): More sensitive to taps
+    // - Recommended: 130 for home row mods, 150+ for laptops
+    
+
+
+    // ============================================================================
+    // MT (MOD-TAP) CONFIGURATION
+    // ============================================================================
+    
+    mt_config: (
+        // === BASIC FEATURES ===
+        
+        // Permissive hold: pressing another key while MT is pending resolves to hold
+        // - true: Faster typing, key pressed during hold → immediately activates modifier
+        // - false: Pure timing-based, waits for tapping_term_ms
+        // Recommended: true
+        permissive_hold: true,
+        
+        // Same-hand roll detection: rapid same-hand rolls favor tap
+        // - true: Typing "as" quickly will tap both, not trigger modifiers
+        // - false: Disable roll detection
+        // Recommended: true
+        enable_roll_detection: true,
+        
+        // Opposite-hand chord detection: opposite-hand chords favor hold
+        // - true: Pressing keys on opposite hands simultaneously triggers modifiers
+        // - false: Disable chord detection
+        // Recommended: true
+        enable_chord_detection: true,
+        
+        // Multi-mod detection: multiple mods on same hand all become hold
+        // - true: Pressing multiple home row mods together activates all modifiers
+        // - false: Each key decides independently
+        // Recommended: true
+        enable_multi_mod_detection: true,
+        
+        // Cross-hand unwrap: holding opposite-hand mod unwraps MT keys to tap
+        // - true: Holding left Ctrl + pressing right "J" (MT J/Shift) = Ctrl+J (not Ctrl+Shift+J)
+        // - false: MT keys always behave as modifiers
+        // Recommended: true (prevents Shift+Shift and other conflicts)
+        enable_cross_hand_unwrap: true,
+        
+        // Double-tap-hold: press twice then hold to hold the tap key
+        // - true: Double-tap Space then hold = hold Space key (not Ctrl)
+        // - false: Holding always activates modifier
+        // Recommended: true
+        enable_double_tap_hold: true,
+        
+        // === ADAPTIVE TIMING ===
+        
+        // Adaptive timing: learn your typing patterns and personalize thresholds per key
+        // - true: System learns your tap durations and adjusts thresholds automatically
+        // - false: Use fixed tapping_term_ms for all keys
+        // Recommended: true (stable feature, works well)
+        enable_adaptive_timing: true,
+        
+        // Pause learning during game mode (prevents gaming input from skewing data)
+        // - true: Stop collecting tap statistics when game mode is active
+        // - false: Always collect statistics
+        // Recommended: true
+        pause_learning_in_game_mode: true,
+        
+        // === TIMING THRESHOLDS ===
+        
+        // Roll threshold (ms): keys within this window are considered a same-hand roll
+        // Lower = more strict (only very fast rolls count)
+        // Higher = more lenient (slower rolls still count)
+        // Recommended: 100ms
+        roll_threshold_ms: 100,
+        
+        // Chord threshold (ms): keys within this window are considered an opposite-hand chord
+        // Lower = more strict (only simultaneous presses count)
+        // Higher = more lenient (delayed chords still count)
+        // Recommended: 100ms
+        chord_threshold_ms: 100,
+        
+        // Target margin (ms): safety buffer added to adaptive threshold
+        // Formula: adaptive_threshold = avg_tap_duration + target_margin_ms
+        // Lower = more sensitive to holds (less margin)
+        // Higher = more sensitive to taps (more margin)
+        // Recommended: 30ms
+        target_margin_ms: 30,
+        
+        // === ADAPTIVE LEARNING PARAMETERS ===
+        
+        // Exponential moving average alpha (0.0-1.0)
+        // Lower = slower learning, more stable (~100 sample window at 0.02)
+        // Higher = faster learning, more reactive (~10 sample window at 0.2)
+        // Recommended: 0.02
+        ema_alpha: 0.02,
+        
+        // Auto-save interval (seconds): how often to save statistics to disk
+        // Lower = more frequent saves, more disk I/O
+        // Higher = less frequent saves, more data loss on crash
+        // Recommended: 30 seconds
+        auto_save_interval_secs: 30,
+        
+        // Hold-do-nothing-emits-tap: emit tap when holding then releasing without other action
+        // - true: Hold then release sends the tap key (QMK-inspired behavior)
+        // - false: Hold then release does nothing
+        // Recommended: true
+        hold_do_nothing_emits_tap: true,
+    ),
+
+    // ============================================================================
+    // KEYBOARD SELECTION
+    // ============================================================================
+    
+    enabled_keyboards: [
+        "*",                      // enable all by default
+        // "6913",                   // enable keyboard with 6913 in ID (shorthand)
+        // "Keychron Lemokey X1",   // enable by keyboard name
+        // "1234": Enable,          // explicit enable (map syntax)
+        // "event3": Disable,       // disable by event file (map syntax)
+        // ("1234", "Enable"),      // explicit enable (tuple syntax)
+        // ("6789", "Disable"),     // disable this partial ID (tuple syntax)
+    ],
+    
+    // Which keyboards to process:
+    // - absent: Enable all keyboards (equivalent to ["*"])
+    // - None: Disable all (no keyboards enabled)
+    // - ["*"]: Enable all keyboards
+    // - ["1234", "5678"]: Enable keyboards matching these patterns
+    // - ["*", "1234": Disable]: Enable all except 1234
+    //
+    // Syntax (both work):
+    // - Map style: "pattern": Enable, "pattern": Disable
+    // - Tuple style: ("pattern", "Enable"), ("pattern", "Disable") 
+    // - Bare string: "1234" = enable keyboard matching 1234
+    //
+    // Matching rules:
+    // - "*" matches all keyboards (glob)
+    // - "6913" matches any ID containing 6913 (partial match)
+    // - "event17" matches device at /dev/input/event17
+    // - "1234@3-4.2" matches exact ID with port
+    // - "Keyboard Name" matches keyboard name
+    // - "Keyboard Name" matches keyboard name
+
+    // ============================================================================
+    // BASE LAYER REMAPS
+    // ============================================================================
+    //
+    // Remaps that are always active (unless overridden by layers or game mode)
+    // ============================================================================
+
+    remaps: {
+        // === SIMPLE KEY REMAPS ===
+        
+        // Caps Lock -> Escape (very useful!)
+        // You can use either bare KeyCode syntax: KC_CAPS: KC_ESC
+        // Or explicit Action syntax: KC_CAPS: Key(KC_ESC)
+        // Both work the same way!
+        KC_CAPS: KC_ESC,
+        
+        // Escape -> Backtick (for programmers using Vim/terminal)
+        KC_ESC: KC_GRV,
+
+        // === LAYER SWITCHING ===
+        //
+        // Hold a key to activate a different keymap
+        // Great for navigation, symbols, numpad, etc.
+        //
+        // Example: Hold Left Alt for navigation keys
+        KC_LALT: TO("nav"),
+
+        // === MOD-TAP (MT) - QMK-Style Home Row Mods ===
+        //
+        // Tap for the letter, hold for a modifier
+        // Features:
+        //   - Permissive hold: pressing another key resolves to modifier
+        //   - Same-hand roll detection: fast same-hand typing favors tap
+        //   - Opposite-hand chord detection: opposite-hand combos favor hold
+        //   - Multi-mod support: press multiple mods together
+        //
+        // Best practice: Use home row positions (A S D F / J K L ;)
+        //
+        // How it works:
+        //   - Hold 's' briefly
+        //   - Press 'd' while still holding 's'
+        //   - 's' becomes Alt modifier, 'd' types normally
+        //   - Result: Alt+D (no waiting!)
+        //
+        // Left hand mods (QWERTY home row):
+        KC_A: MT(KC_A, KC_LGUI),  // A = tap 'a', hold for Super/Win/Cmd
+        KC_S: MT(KC_S, KC_LALT),  // S = tap 's', hold for Alt
+        KC_D: MT(KC_D, KC_LCTL),  // D = tap 'd', hold for Ctrl
+        KC_F: MT(KC_F, KC_LSFT),  // F = tap 'f', hold for Shift
+        
+        // Right hand mods (QWERTY home row):
+        KC_J: MT(KC_J, KC_RSFT),  // J = tap 'j', hold for Shift
+        KC_K: MT(KC_K, KC_RCTL),  // K = tap 'k', hold for Ctrl
+        KC_L: MT(KC_L, KC_RALT),  // L = tap 'l', hold for Alt
+        KC_SCLN: MT(KC_SCLN, KC_RGUI),  // ; = tap ';', hold for Super
+
+        // === MT ON OTHER KEYS ===
+        //
+        // MT works on ANY key, not just home row!
+        // Common uses:
+        //   - Space as Ctrl (thumb modifier)
+        //   - Enter as Shift (pinky saver)
+        //   - Tab as Super (window management)
+        //
+        // Example: Space bar tap/hold
+        //   - Tap: Space (normal typing)
+        //   - Hold: Ctrl
+        //   - With permissive hold: instant activation when typing
+        KC_SPC: MT(KC_SPC, KC_LCTL),
+
+        // === COMMAND RUNNER ===
+        //
+        // Execute arbitrary shell commands on key press
+        // Great for media controls, system commands, custom scripts
+        //
+        // Examples:
+        // KC_F1: CMD("/usr/bin/notify-send 'Hello from keyboard!'"),
+        // KC_F2: CMD("/usr/bin/playerctl play-pause"),
+        // KC_F3: CMD("/usr/bin/firefox"),
+        // KC_F4: CMD("/usr/bin/discord"),
+    },
+
+    // ============================================================================
+    // LAYERS (UNLIMITED CUSTOMIZATION!)
+    // ============================================================================
+    //
+    // Define custom layers - you can name them ANYTHING you want!
+    // Activate with TO("layer_name") in your keymaps
+    //
+    // Common layer names: "nav", "num", "sym", "media", "coding"
+    // But you can use: "gaming", "work", "home", "my_custom_layer_123"
+    // ============================================================================
+
+    layers: {
+        "nav": (
+            remaps: {
+                // Keep modifiers accessible on nav layer
+                // (so you can Ctrl+arrow keys)
+                KC_A: KC_LGUI,
+                KC_S: KC_LALT,
+                KC_D: KC_LCTL,
+                KC_F: KC_LSFT,
+                
+                // Vim-style navigation
+                // (IJKL becomes arrow keys)
+                // Using bare KeyCode syntax for cleaner configs!
+                KC_H: KC_LEFT,
+                KC_J: KC_DOWN,
+                KC_K: KC_UP,
+                KC_L: KC_RGHT,
+                
+                // Add navigation helpers
+                KC_U: KC_HOME,    // U = Home
+                KC_I: KC_PGUP,    // I = Page Up
+                KC_N: KC_PGDN,    // N = Page Down
+                KC_M: KC_END,     // M = End
+                
+                // Example: Run custom command on nav layer
+                // KC_BSPC: CMD("/usr/bin/notify-send 'Nav layer active!'"),
+            },
+        ),
+        
+        "num": (
+            remaps: {
+                // Number row becomes numpad
+                KC_Q: Key(KC_1),
+                KC_W: Key(KC_2),
+                KC_E: Key(KC_3),
+                KC_R: Key(KC_4),
+                KC_T: Key(KC_5),
+                KC_Y: Key(KC_6),
+                KC_U: Key(KC_7),
+                KC_I: Key(KC_8),
+                KC_O: Key(KC_9),
+                KC_P: Key(KC_0),
+                
+                // Add numpad operators
+                KC_A: Key(KC_KP_ASTERISK),  // * 
+                KC_S: Key(KC_KP_SLASH),    // /
+                KC_D: Key(KC_KP_MINUS),    // -
+                KC_F: Key(KC_KP_PLUS),     // +
+            },
+        ),
+        
+        // "sym": (
+        //     remaps: {
+        //         // Common symbols - Note: These specific KeyCodes don't exist yet
+        //         // This is just an example of what a symbol layer could look like
+        //         // In practice, you'd need to map to existing keys and use shifted versions
+        //         KC_Q: Key(KC_1),      // Example: remap Q to 1
+        //         KC_W: Key(KC_2),      // Example: remap W to 2
+        //     },
+        // ),
+        
+        "media": (
+            remaps: {
+                // Media control layer
+                KC_Q: CMD("/usr/bin/playerctl previous"),
+                KC_W: CMD("/usr/bin/playerctl play-pause"),
+                KC_E: CMD("/usr/bin/playerctl stop"),
+                KC_R: CMD("/usr/bin/playerctl next"),
+                
+                KC_A: CMD("/usr/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%"),
+                KC_S: CMD("/usr/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%"),
+                KC_D: CMD("/usr/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"),
+                
+                KC_F: CMD("/usr/bin/notify-send 'Media Layer Active'"),
+            },
+        ),
+    },
+
+    // ============================================================================
+    // GAME MODE
+    // ============================================================================
+    //
+    // Special keymap that activates when gaming is detected
+    // Detection is automatic: Steam, Gamescope, or process tree walking
+    // Toggle manually: keymux gamemode [on|off]
+    //
+    // Why separate game mode?
+    //   - Disable MT/layer switches (can interfere with gaming)
+    //   - Enable SOCD for FPS movement (prevents W+S conflicts)
+    //   - Keep essential key remaps (Esc, etc.)
+    // ============================================================================
+
+    game_mode: (
+        remaps: {
+            // Keep essential remaps (using bare KeyCode syntax)
+            KC_CAPS: KC_ESC,
+            KC_ESC: KC_GRV,
+
+            // === SOCD CLEANER FOR GAMING ===
+            //
+            // SOCD = Simultaneous Opposite Cardinal Direction
+            // Solves FPS gaming problems:
+            //   - Prevents W+S (forward + back) from moving
+            //   - Prevents A+D (left + right) from moving
+            // Uses last-input-priority: Pressing W then S = S, release S = W again
+            //
+            // Traditional WASD movement:
+            KC_W: SOCD(KC_W, [KC_S]),     // W opposes S
+            KC_S: SOCD(KC_S, [KC_W]),     // S opposes W
+            KC_A: SOCD(KC_A, [KC_D]),     // A opposes D
+            KC_D: SOCD(KC_D, [KC_A]),     // D opposes A
+            
+            // Arrow keys (can coexist with WASD):
+            KC_UP: SOCD(KC_UP, [KC_DOWN]),
+            KC_DOWN: SOCD(KC_DOWN, [KC_UP]),
+            KC_LEFT: SOCD(KC_LEFT, [KC_RGHT]),
+            KC_RGHT: SOCD(KC_RGHT, [KC_LEFT]),
+            
+            // === COMPLEX SOCD (MULTIPLE OPPOSING KEYS) ===
+            //
+            // You can cancel multiple keys with one SOCD definition
+            // Example: W cancels both S (back) and DOWN (down in nav layer)
+            // KC_W: SOCD(Key(KC_W), [Key(KC_S), Key(KC_DOWN)]),
+        },
+    ),
+
+    // ============================================================================
+    // GLOBAL DAEMON SETTINGS
+    // ============================================================================
+    
+    // Hot config reload: automatically reload config when file changes (default: false)
+    // When enabled, changes to config.ron are immediately applied without restarting daemon
+    // Useful for: Testing configs, live tuning, rapid iteration
+    // WARNING: May cause brief input hiccups during reload
+    hot_config_reload: false,
+    
+    // Per-keyboard configs inherit global layout (default: true)
+    // This controls how per_keyboard_overrides behave:
+    //
+    // true (INHERITING MODE - recommended for most users):
+    //   - Start with your global config
+    //   - MERGE per-keyboard overrides with global config
+    //   - remaps: global remaps + per-keyboard remaps (per-keyboard wins on conflicts)
+    //   - layers: global layers + per-keyboard layers (per-keyboard wins on conflicts)
+    //   - game_mode: global game_mode remaps + per-keyboard game_mode remaps
+    //   - Example: Keep all your home row mods, just add one extra remap for this keyboard
+    //
+    // false (FROM-SCRATCH MODE - for completely different layouts):
+    //   - Start with empty/default config
+    //   - Only use what you specify in per_keyboard_overrides
+    //   - Build a completely independent layout for that keyboard
+    //   - Example: Global has home row mods, per-keyboard has traditional layout
+    //
+    per_keyboard_inherits_global_layout: true,
+
+    // ============================================================================
+    // PER-KEYBOARD OVERRIDES
+    // ============================================================================
+    //
+    // Override settings for specific keyboards
+    // Useful when you have multiple keyboards with different preferences
+    // Find keyboard IDs with: keymux list
+    //
+    // IMPORTANT: The structure is IDENTICAL to the global config!
+    // You can copy ANY section from above and paste it here.
+    // Only the fields you specify will be overridden for that keyboard.
+    //
+    // Behavior depends on per_keyboard_inherits_global_layout:
+    //   - true: Merges with global config (override specific fields)
+    //   - false: Replaces global config (build from scratch)
+    // ============================================================================
+
+    per_keyboard_overrides: {
+        // ========================================================================
+        // INHERITING MODE EXAMPLES (per_keyboard_inherits_global_layout: true)
+        // ========================================================================
+        // These examples show how to override SPECIFIC fields while keeping
+        // everything else from the global config.
+        
+        // Example 1: Override just timing for a laptop keyboard
+        // "2e3c:c365:0110:0003": (
+        //     tapping_term_ms: Some(150),  // Slower timing for laptop keyboard
+        // ),
+        
+        // Example 2: Add/override specific remaps for a specific keyboard
+        // (MERGES with global remaps - keeps all global remaps, adds these)
+        // "1234:5678:0100:0003": (
+        //     remaps: Some({
+        //         KC_CAPS: Key(KC_LCTL),  // Override global caps behavior
+        //         KC_BSPC: CMD("/usr/bin/my-script.sh"),  // Add new remap
+        //         // All other global remaps (home row mods, etc.) are preserved!
+        //     }),
+        // ),
+        
+        // Example 2b: Override a layer while keeping others
+        // "1234:5678:0100:0003": (
+        //     layers: Some({
+        //         "nav": (
+        //             remaps: {
+        //                 // This REPLACES the "nav" layer definition
+        //                 // But keeps all other global layers ("num", "sym", etc.)
+        //                 KC_H: Key(KC_LEFT),
+        //                 KC_J: Key(KC_DOWN),
+        //             },
+        //         ),
+        //     }),
+        // ),
+        
+        // Example 3: Complete override - different layout for different keyboard!
+        // "362d:0210:0111:0003": (
+        //     // Different timing
+        //     tapping_term_ms: Some(150),
+        //     
+        //     // Different MT config
+        //     mt_config: Some((
+        //         permissive_hold: false,  // More conservative on this keyboard
+        //         enable_roll_detection: true,
+        //         enable_chord_detection: true,
+        //         enable_multi_mod_detection: true,
+        //         enable_cross_hand_unwrap: true,
+        //         enable_double_tap_hold: true,
+        //         enable_adaptive_timing: false,
+        //         pause_learning_in_game_mode: true,
+        //         roll_threshold_ms: 100,
+        //         chord_threshold_ms: 100,
+        //         target_margin_ms: 30,
+        //         ema_alpha: 0.02,
+        //         auto_save_interval_secs: 30,
+        //     )),
+        //     
+        //     // Different remaps
+        //     remaps: Some({
+        //         KC_CAPS: Key(KC_LCTL),
+        //         KC_A: Key(KC_A),  // No home row mods on this keyboard
+        //         KC_S: Key(KC_S),
+        //         KC_D: Key(KC_D),
+        //         KC_F: Key(KC_F),
+        //     }),
+        //     
+        //     // Different layers
+        //     layers: Some({
+        //         "nav": (
+        //             remaps: {
+        //                 KC_H: Key(KC_LEFT),
+        //                 KC_J: Key(KC_DOWN),
+        //                 KC_K: Key(KC_UP),
+        //                 KC_L: Key(KC_RGHT),
+        //             },
+        //         ),
+        //     }),
+        //     
+        //     // Different game mode
+        //     game_mode: Some((
+        //         remaps: {
+        //             KC_W: Key(KC_UP),  // Different game controls
+        //         },
+        //     )),
+        // ),
+        
+        // Example 4: Just override one layer for a specific keyboard
+        // (keeps global remaps, other layers, game_mode, mt_config, etc.)
+        // "2e3c:c365:0110:0003": (
+        //     layers: Some({
+        //         "nav": (
+        //             remaps: {
+        //                 // Use arrow keys instead of HJKL for this keyboard
+        //                 KC_UP: Key(KC_UP),
+        //                 KC_DOWN: Key(KC_DOWN),
+        //                 KC_LEFT: Key(KC_LEFT),
+        //                 KC_RGHT: Key(KC_RGHT),
+        //             },
+        //         ),
+        //     }),
+        // ),
+        
+        // ========================================================================
+        // FROM-SCRATCH MODE EXAMPLES (per_keyboard_inherits_global_layout: false)
+        // ========================================================================
+        // When per_keyboard_inherits_global_layout is false, you can build
+        // completely independent layouts for different keyboards!
+        //
+        // Use case: Your global config has home row mods, but you want a
+        // traditional layout (no mods) on your laptop keyboard.
+        
+        // Example 5: Traditional layout for laptop (no home row mods)
+        // Set per_keyboard_inherits_global_layout: false at the top, then:
+        // "2e3c:c365:0110:0003": (
+        //     tapping_term_ms: Some(150),
+        //     
+        //     // No MT keys - just simple remaps
+        //     remaps: Some({
+        //         KC_CAPS: Key(KC_ESC),  // Only remap caps
+        //     }),
+        //     
+        //     // Simple layers if needed
+        //     layers: Some({
+        //         "nav": (
+        //             remaps: {
+        //                 KC_H: Key(KC_LEFT),
+        //                 KC_J: Key(KC_DOWN),
+        //                 KC_K: Key(KC_UP),
+        //                 KC_L: Key(KC_RGHT),
+        //             },
+        //         ),
+        //     }),
+        //     
+        //     // Simple game mode
+        //     game_mode: Some((
+        //         remaps: {
+        //             KC_CAPS: Key(KC_ESC),
+        //         },
+        //     )),
+        // ),
+        
+        // Example 6: Gaming keyboard with specialized layout
+        // "1234:5678:0100:0003": (
+        //     // Fast timing for gaming
+        //     tapping_term_ms: Some(50),
+        //     
+        //     // Minimal remaps - keep most keys default
+        //     remaps: Some({
+        //         KC_CAPS: Key(KC_LCTL),  // Gaming-friendly caps = ctrl
+        //     }),
+        //     
+        //     // Gaming-focused game mode with extensive SOCD
+        //     game_mode: Some((
+        //         remaps: {
+        //             KC_W: SOCD(KC_W, [KC_S]),
+        //             KC_S: SOCD(KC_S, [KC_W]),
+        //             KC_A: SOCD(KC_A, [KC_D]),
+        //             KC_D: SOCD(KC_D, [KC_A]),
+        //         },
+        //     )),
+        // ),
+    },
+)
+
+// ============================================================================
+// HELPFUL COMMANDS
+// ============================================================================
+//
+// List all keyboards and their IDs:
+//     keymux list
+//
+// Validate your config:
+//     keymux validate
+//
+// Reload config (automatic on file save, but manual trigger available):
+//     keymux reload
+//
+// Toggle game mode manually:
+//     keymux gamemode on
+//     keymux gamemode off
+//
+// View adaptive timing statistics:
+//     keymux adaptive-stats
+//
+// Clear adaptive timing statistics (prompts for confirmation):
+//     keymux clear-stats
+//
+// Debug mode (show all keyboard events in real-time):
+//     keymux debug
+//
+// ============================================================================
+// TROUBLESHOOTING
+// ============================================================================
+//
+// Problem: "Config validation failed"
+//   Solution: Run `keymux validate` to see specific errors
+//
+// Problem: "Keys not registering"
+//   Solution: Check `keymux list` - keyboard might not be enabled
+//
+// Problem: "MT triggers hold too fast/slow"
+//   Solution 1: Enable adaptive timing (enabled by default) - system learns your patterns
+//   Solution 2: Adjust `tapping_term_ms` (130 = balanced, 150 = slower hold)
+//   Solution 3: Adjust `target_margin_ms` in mt_config (higher = more tap-sensitive)
+//   View stats: `keymux adaptive-stats`
+//
+// Problem: "MT activates when I don't want it to"
+//   Solution: Try disabling `permissive_hold` in mt_config or increase tapping_term_ms
+//
+// Problem: "Same-hand rolls trigger modifiers"
+//   Solution: Ensure `enable_roll_detection: true` in mt_config (enabled by default)
+//
+// Problem: "Adaptive timing not learning"
+//   Solution: Ensure `enable_adaptive_timing: true` in mt_config (enabled by default)
+//   Check stats: `keymux adaptive-stats`
+//
+// Problem: "W+S both pressed in game, not moving"
+//   Solution: Use SOCD in game_mode (see example above)
+//
+
+//
+// ============================================================================

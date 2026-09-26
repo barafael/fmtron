@@ -1,0 +1,35 @@
+(
+  id: AuthoredId("runenwerk.editor.toolbar"),
+  root: Panel(
+    id: AuthoredId("root"),
+    availability: None,
+    children: [
+      Scroll(
+        id: AuthoredId("scroll"),
+        axis: Horizontal,
+        input: (horizontal: WheelAndMiddleDrag, vertical: WheelOnly),
+        children: [
+          Column(
+            id: AuthoredId("rows"),
+            children: [
+              Row(
+                id: AuthoredId("top_row"),
+                children: [
+                  Button(id: AuthoredId("menu_file"), label: Static(Text("File")), route: Some((id: AuthoredId("editor.toolbar.menu.file"))), availability: None, selected: Some(Slot(AuthoredId("editor.toolbar.menu.file.active")))),
+                  Button(id: AuthoredId("menu_edit"), label: Static(Text("Edit")), route: Some((id: AuthoredId("editor.toolbar.menu.edit"))), availability: None, selected: Some(Slot(AuthoredId("editor.toolbar.menu.edit.active")))),
+                  Button(id: AuthoredId("menu_window"), label: Static(Text("Window")), route: Some((id: AuthoredId("editor.toolbar.menu.window"))), availability: None, selected: Some(Slot(AuthoredId("editor.toolbar.menu.window.active")))),
+                  Separator(id: AuthoredId("separator"), axis: Some(Vertical), length: Some(14.0), thickness: Some(1.0)),
+                  Button(id: AuthoredId("workspace_scene"), label: Static(Text("Scene")), route: Some((id: AuthoredId("editor.workspace.scene.activate"))), availability: None, selected: Some(Slot(AuthoredId("editor.workspace.scene.active")))),
+                  Button(id: AuthoredId("workspace_modelling"), label: Static(Text("Modelling")), route: Some((id: AuthoredId("editor.workspace.modelling.activate"))), availability: None, selected: Some(Slot(AuthoredId("editor.workspace.modelling.active")))),
+                  Button(id: AuthoredId("workspace_plus"), label: Static(Text("+")), route: Some((id: AuthoredId("editor.toolbar.menu.workspace"))), availability: None, selected: Some(Slot(AuthoredId("editor.toolbar.menu.workspace.active")))),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  templates: [],
+  menus: [],
+)

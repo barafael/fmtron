@@ -1,0 +1,5 @@
+ServerConfig(
+    sock_addr: "127.0.0.1:9009",
+    tls: None,
+    heartbeat_interval: Some( Duration( secs: 60, nanos: 0) ) // check connections every 2min
+)

@@ -1,0 +1,6 @@
+(
+    // all of these backgrounds make switching themes hard and quite unreadable
+    cmdbar_bg: Some(Reset),
+    cmdbar_extra_lines_bg: Some(Reset),
+    selection_bg: Some(Reset),
+)

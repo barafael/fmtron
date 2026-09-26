@@ -1,0 +1,34 @@
+// Source line 1: diorama_entity_example = {
+// Source line 2: 	# The asset to show
+// Source line 3: 	entity = "military_barricade_irregular_01_entity"
+// Source line 4: 
+// Source line 5: 	# Group is used in diorama script to determine which entities to pick the entity from for each diorama locator
+// Source line 6: 	group = "barricade"
+// Source line 7: 
+// Source line 8: 	# Trigger to check if the current entity is valid to show in the diorama
+// Source line 9: 	# root - country of the unit
+// Source line 10: 	# scope:country - country of the unit (same as root)
+// Source line 11: 	# scope:culture - culture of the unit
+// Source line 12: 	# scope:combat_unit_type - combat unit type
+// Source line 13: 	trigger = {
+// Source line 14: 		scope:country = {
+// Source line 15: 			has_technology_researched = rifling
+// Source line 16: 		}
+// Source line 17: 		scope:culture = {
+// Source line 18: 			has_culture_graphics = european
+// Source line 19: 		}
+// Source line 20: 		scope:combat_unit_type = unit_type:combat_unit_type_irregular_infantry
+// Source line 21: 	}
+// Source line 22: }
+// Source line 26: ################################################################
+// Source line 27: ####						MISC ASSETS						#####
+// Source line 28: ################################################################
+(schema_version: 1, entries: [
+    Property(key: "military_basecamp_generic_diorama_entity", operator: Assign, value: Block([
+        Property(key: "entity", operator: Assign, value: Text("military_basecamp_generic_entity")),
+        Property(key: "group", operator: Assign, value: Text("basecamp")),
+        Property(key: "trigger", operator: Assign, value: Block([
+            Property(key: "always", operator: Assign, value: Boolean(true)),
+        ])),
+    ])),
+])

@@ -1,0 +1,57 @@
+#![enable(implicit_some)]
+(
+	name: "Sequence -- Basic",
+	description: "Basic Sequence",
+	appenders: [
+		(
+			type: "file",
+			name: "sequence-basic--appender",
+			fileName: "sequence-basic.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "sequence",
+			name: "sequence-basic--entity-name",
+			start: 1,
+			hold: 1,
+			increment: 1,
+		),
+	],
+	entries: [
+		(
+			name: "sequence-basic--entry",
+			entity: "sequence-basic--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "sequence-basic--file-feed",
+			content: (
+				type: "katla",
+				inline: "{{ sequence-basic--entry }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "sequence-basic--flow",
+			timeInterval: "R20000",
+			entries: [
+				"sequence-basic--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "sequence-basic--file-feed",
+					appender: "sequence-basic--appender",
+				),
+			],
+		),
+	],
+)

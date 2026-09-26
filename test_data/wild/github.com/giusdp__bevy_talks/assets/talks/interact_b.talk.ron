@@ -1,0 +1,15 @@
+(
+    actors: [
+      (
+        slug: "ferris",
+        name: "Feri",
+      ),
+    ],
+    script: [
+        (
+            id: 1,
+            actors: ["ferris"],
+            text: Some("What's up? I have no other lines.")
+        ),
+    ]
+)

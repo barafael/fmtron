@@ -1,0 +1,207 @@
+Playlist(
+    name: "Classic Christmas Songs",
+    import: [ Source("yt") ],
+    sources: [ ],
+    tracks: [
+        Track(
+            meta: Meta(
+                name: "Let It Snow!",
+                artist: "Dean Martin",
+            ),
+            src: "yt",
+            input: "2TA3IKH8Y5c",
+        ),
+        Track(
+            meta: Meta(
+                name: "It's Beginning to Look a Lot Like Christmas",
+                artist: "Perry Como",
+            ),
+            src: "yt",
+            input: "KmddeUJJEuU",
+        ),
+        Track(
+            meta: Meta(
+                name: "Have Yourself A Merry Little Christmas",
+                artist: "Bing Crosby",
+            ),
+            src: "yt",
+            input: "kz65UdsF45k",
+        ),
+        Track(
+            meta: Meta(
+                name: "It Came Upon A Midnight Clear",
+                artist: "Frank Sinatra",
+            ),
+            src: "yt",
+            input: "VxqAzDYeV8M",
+        ),
+        Track(
+            meta: Meta(
+                name: "Santa Baby",
+                artist: "Eartha Kitt",
+            ),
+            src: "yt",
+            input: "Mk_GmhD053E",
+        ),
+        Track(
+            meta: Meta(
+                name: "We Need A Little Christmas",
+                artist: "Angela Lansbury",
+            ),
+            src: "yt",
+            input: "OPaVxHOsO-I",
+        ),
+        Track(
+            meta: Meta(
+                name: "Here Comes Santa Claus",
+                artist: "Gene Autry",
+            ),
+            src: "yt",
+            input: "oNwG28tZDsg",
+        ),
+        Track(
+            meta: Meta(
+                name: "Snow",
+                artist: "Rosemary Clooney",
+            ),
+            src: "yt",
+            input: "9sxEZfPIOlI",
+        ),
+        Track(
+            meta: Meta(
+                name: "The Christmas Waltz",
+                artist: "Doris Day",
+            ),
+            src: "yt",
+            input: "w2RGjR9_cFQ",
+        ),
+        Track(
+            meta: Meta(
+                name: "(Everybody's Waitin' For) The Man With The Bag",
+                artist: "Kay Starr",
+            ),
+            src: "yt",
+            input: "Yidb6wp6xoM",
+        ),
+        Track(
+            meta: Meta(
+                name: "The Merriest",
+                artist: "June Christy",
+            ),
+            src: "yt",
+            input: "bhIqIdcopIc",
+        ),
+        Track(
+            meta: Meta(
+                name: "(There's No Place Like) Home For The Holidays",
+                artist: "Perry Como",
+            ),
+            src: "yt",
+            input: "NT8pIpzDX0g",
+        ),
+        Track(
+            meta: Meta(
+                name: "My Favorite Things",
+                artist: "Tony Bennet",
+            ),
+            src: "yt",
+            input: "2fI6QEtB2wQ",
+        ),
+        Track(
+            meta: Meta(
+                name: "Winter Wonderland",
+                artist: "Ella Fitsgerald",
+            ),
+            src: "yt",
+            input: "8fVf6BHIvto",
+        ),
+        Track(
+            meta: Meta(
+                name: "It's The Most Wonderful Time Of The Year",
+                artist: "Andy Williams",
+            ),
+            src: "yt",
+            input: "AN_R4pR1hck",
+        ),
+        Track(
+            meta: Meta(
+                name: "Happy Holiday",
+                artist: "Peggy Lee",
+            ),
+            src: "yt",
+            input: "VHiFDmyC-kw",
+        ),
+        Track(
+            meta: Meta(
+                name: "Jingle Bell Rock",
+                artist: "Brenda Lee",
+            ),
+            src: "yt",
+            input: "cwlQU6wpZnk",
+        ),
+        Track(
+            meta: Meta(
+                name: "Blue Christmas",
+                artist: "Elvis Presley",
+            ),
+            src: "yt",
+            input: "B6WnnZRSKYs",
+        ),
+        Track(
+            meta: Meta(
+                name: "Frosty The Snowman",
+                artist: "The Ronettes",
+            ),
+            src: "yt",
+            input: "PQ-ULzAAb20",
+        ),
+        Track(
+            meta: Meta(
+                name: "White Christmas",
+                artist: "Darlene Love",
+            ),
+            src: "yt",
+            input: "YZVqiyAMw1o",
+        ),
+        Track(
+            meta: Meta(
+                name: "Jingle Bells",
+                artist: "Dean Martin",
+            ),
+            src: "yt",
+            input: "eP3RhTbq3Ds",
+        ),
+        Track(
+            meta: Meta(
+                name: "Rudolph The Red-Nosed Reindeer",
+                artist: "Burl Ives",
+            ),
+            src: "yt",
+            input: "QIODDBdplUM",
+        ),
+        Track(
+            meta: Meta(
+                name: "Sleigh Ride",
+                artist: "Johnny Mathis",
+            ),
+            src: "yt",
+            input: "XZTzai1H9DM",
+        ),
+        Track(
+            meta: Meta(
+                name: "Santa Claus Is Comin' To Town",
+                artist: "Peggy Lee",
+            ),
+            src: "yt",
+            input: "biOCeZl_f1w",
+        ),
+        Track(
+            meta: Meta(
+                name: "Feliz Navidad",
+                artist: "José Feliciano",
+            ),
+            src: "yt",
+            input: "N8NcQzMQN_U",
+        ),
+    ],
+)

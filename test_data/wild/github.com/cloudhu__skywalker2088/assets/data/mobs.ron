@@ -1,0 +1,1523 @@
+{
+	Enemy(MechaSaucetron): (
+		mob_type: Enemy(MechaSaucetron),
+		mob_segment_behaviors: Some({
+			FerritharaxProtectHead: {
+				Enemy(MechaSaucetronBody): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+				],
+				Enemy(MechaSaucetronRightShoulder): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -0.15,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaSaucetronLeftShoulder): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 0.15,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaSaucetronRightArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -0.5,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+					SpawnMob("missile"),
+				],
+				Enemy(MechaSaucetronLeftArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 0.5,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+					SpawnMob("missile"),
+				],
+				Enemy(MechaSaucetronRightClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 1.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaSaucetronLeftClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -1.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+			},
+			FerritharaxAttack: {
+				Enemy(MechaSaucetronBody): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+				],
+				Enemy(MechaSaucetronRightShoulder): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					)
+				],
+				Enemy(MechaSaucetronLeftShoulder): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaSaucetronRightArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaSaucetronLeftArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaSaucetronRightClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaSaucetronLeftClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+			},
+		}),
+		behavior_sequence_type: Some(MechaSaucetron),
+		acceleration: (4.0, 4.0),
+		deceleration: (4.0, 4.0),
+		speed: (80.0, 80.0),
+		collision_damage: 20,
+		colliders: [
+			(
+				dimensions: (12.0, 12.0),
+				position: (0.0, -5.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Boss,
+		health: 2400,
+		density: 3.8,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),	
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Enemy(MechaSaucetronBody),
+				position: (0.0, 80.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 500.0,
+				damping: 500.0,
+			),
+		],
+		mob_spawners: {
+			"mobs-left": [
+				(
+					mob_type: Enemy(Pawn),
+					position: Global((-400.0, 500.0)),
+					period: 7.0,
+				),
+				(
+					mob_type: Enemy(Drone),
+					position: Global((-200.0, 500.0)),
+					period: 5.0,
+				),
+			],
+			"mobs-right": [
+				(
+					mob_type: Enemy(Pawn),
+					position: Global((400.0, 500.0)),
+					period: 7.0,
+				),
+				(
+					mob_type: Enemy(Drone),
+					position: Global((200.0, 500.0)),
+					period: 5.0,
+				),
+			],
+		},
+	),
+	Enemy(MechaFerritharax): (
+		mob_type: Enemy(MechaFerritharax),
+		mob_segment_behaviors: Some({
+			FerritharaxProtectHead: {
+				Enemy(MechaFerritharaxBody): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+				],
+				Enemy(MechaFerritharaxRightShoulder): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -0.15,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaFerritharaxLeftShoulder): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 0.15,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaFerritharaxRightArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -0.5,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+					SpawnMob("missile"),
+				],
+				Enemy(MechaFerritharaxLeftArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 0.5,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+					SpawnMob("missile"),
+				],
+				Enemy(MechaFerritharaxRightClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 1.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaFerritharaxLeftClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -1.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+			},
+			FerritharaxAttack: {
+				Enemy(MechaFerritharaxBody): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+				],
+				Enemy(MechaFerritharaxRightShoulder): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					)
+				],
+				Enemy(MechaFerritharaxLeftShoulder): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaFerritharaxRightArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaFerritharaxLeftArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaFerritharaxRightClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+				Enemy(MechaFerritharaxLeftClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 300.0,
+							damping: 300.0,
+						)
+					),
+				],
+			},
+		}),
+		behavior_sequence_type: Some(MechaFerritharax),
+		acceleration: (4.0, 4.0),
+		deceleration: (4.0, 4.0),
+		speed: (80.0, 80.0),
+		collision_damage: 20,
+		colliders: [
+			(
+				dimensions: (12.0, 12.0),
+				position: (0.0, -5.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Boss,
+		health: 1800,
+		density: 3.5,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),	
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Enemy(MechaFerritharaxBody),
+				position: (0.0, 80.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 500.0,
+				damping: 500.0,
+			),
+		],
+		mob_spawners: {
+			"mobs-left": [
+				(
+					mob_type: Enemy(Pawn),
+					position: Global((-400.0, 500.0)),
+					period: 7.0,
+				),
+				(
+					mob_type: Enemy(Drone),
+					position: Global((-200.0, 500.0)),
+					period: 5.0,
+				),
+			],
+			"mobs-right": [
+				(
+					mob_type: Enemy(Pawn),
+					position: Global((400.0, 500.0)),
+					period: 7.0,
+				),
+				(
+					mob_type: Enemy(Drone),
+					position: Global((200.0, 500.0)),
+					period: 5.0,
+				),
+			],
+		},
+	),
+	Enemy(Ferritharax): (
+		mob_type: Enemy(Ferritharax),
+		mob_segment_behaviors: Some({
+			FerritharaxProtectHead: {
+				Enemy(FerritharaxBody): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+				],
+				Enemy(FerritharaxRightShoulder): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -0.15,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxLeftShoulder): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 0.15,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxRightArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -0.5,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+					SpawnMob("missile"),
+				],
+				Enemy(FerritharaxLeftArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 0.5,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+					SpawnMob("missile"),
+				],
+				Enemy(FerritharaxRightClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: 1.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxLeftClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxProtectHead(
+						(
+							angle: -1.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+			},
+			FerritharaxAttack: {
+				Enemy(FerritharaxBody): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+				],
+				Enemy(FerritharaxRightShoulder): [
+					DealDamageToPlayerOnImpact,
+            		ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxLeftShoulder): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxRightArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxLeftArm): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxRightClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+				Enemy(FerritharaxLeftClaw): [
+					DealDamageToPlayerOnImpact,
+					ReceiveDamageOnImpact,
+					DieAtZeroHealth,
+					FerritharaxAttack(
+						(
+							angle: 0.0,
+							stiffness: 50.0,
+							damping: 50.0,
+						)
+					),
+				],
+			},
+		}),
+		behavior_sequence_type: Some(Ferritharax),
+		acceleration: (3.6, 3.6),
+		deceleration: (3.6, 3.6),
+		speed: (60.0, 60.0),
+		collision_damage: 20,
+		colliders: [
+			(
+				dimensions: (12.0, 12.0),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Boss,
+		health: 1200,
+		density: 2.7,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),	
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Enemy(FerritharaxBody),
+				position: (0.0, 60.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 50.0,
+				damping: 50.0,
+			),
+		],
+		mob_spawners: {
+			"mobs-left": [
+				(
+					mob_type: Enemy(Pawn),
+					position: Global((-400.0, 500.0)),
+					period: 7.0,
+				),
+				(
+					mob_type: Enemy(Drone),
+					position: Global((-200.0, 500.0)),
+					period: 5.0,
+				),
+			],
+			"mobs-right": [
+				(
+					mob_type: Enemy(Pawn),
+					position: Global((400.0, 500.0)),
+					period: 7.0,
+				),
+				(
+					mob_type: Enemy(Drone),
+					position: Global((200.0, 500.0)),
+					period: 5.0,
+				),
+			],
+		},
+	),
+	Enemy(CrustlingRight): (
+		mob_type: Enemy(CrustlingRight),
+		spawnable_behaviors: [MoveDown, ChangeHorizontalDirectionOnImpact, MoveRight],
+		mob_behaviors: [DealDamageToPlayerOnImpact, ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (2.0, 2.0),
+		deceleration: (2.0, 2.0),
+		speed: (80.0, 45.0),
+		collision_damage: 20,
+		defense_interaction: Some(Damage(15)),
+		colliders: [
+			(
+				dimensions: (12.0, 2.0),
+				position: (0.0, -5.0),
+				rotation: 0.0,
+			),
+			(
+				dimensions: (6.0, 8.0),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			),
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 40,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Enemy(CrustlingTentacle1),
+				position: (-20.0, -25.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 30.0,
+				damping: 30.0,
+			),
+			(
+				mob_segment_type: Enemy(CrustlingTentacle2),
+				position: (0.0, -25.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 30.0,
+				damping: 30.0,
+			),
+			(
+				mob_segment_type: Enemy(CrustlingTentacle3),
+				position: (20.0, -25.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 30.0,
+				damping: 30.0,
+			),
+		],
+	),
+	Enemy(CrustlingLeft): (
+		mob_type: Enemy(CrustlingLeft),
+		spawnable_behaviors: [MoveDown, ChangeHorizontalDirectionOnImpact, MoveLeft],
+		mob_behaviors: [DealDamageToPlayerOnImpact, ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (2.0, 2.0),
+		deceleration: (2.0, 2.0),
+		speed: (80.0, 45.0),
+		collision_damage: 20,
+		defense_interaction: Some(Damage(15)),
+		colliders: [
+			(
+				dimensions: (12.0, 2.0),
+				position: (0.0, -5.0),
+				rotation: 0.0,
+			),
+			(
+				dimensions: (6.0, 8.0),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			),
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 40,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Enemy(CrustlingTentacle1),
+				position: (-20.0, -25.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 30.0,
+				damping: 30.0,
+			),
+			(
+				mob_segment_type: Enemy(CrustlingTentacle2),
+				position: (0.0, -25.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 30.0,
+				damping: 30.0,
+			),
+			(
+				mob_segment_type: Enemy(CrustlingTentacle3),
+				position: (20.0, -25.0),
+				joint: Revolute,
+				target_pos: 0,
+				stiffness: 30.0,
+				damping: 30.0,
+			),
+		],
+	),
+	Enemy(Drone): (
+		mob_type: Enemy(Drone),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [DealDamageToPlayerOnImpact, ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 100.0),
+		collision_damage: 12,
+		defense_interaction: Some(Damage(8)),
+		colliders: [
+			(
+				dimensions: (6.5, 6.5),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 30,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		thruster: Some((
+			y_offset: 11.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+	),
+	Enemy(Pawn): (
+		mob_type: Enemy(Pawn),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [
+			ReceiveDamageOnImpact,
+			DealDamageToPlayerOnImpact,
+			DieAtZeroHealth,
+		],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 85.0),
+		collision_damage: 8,
+		defense_interaction: Some(Damage(8)),
+		colliders: [
+			(
+				dimensions: (6.5, 6.5),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 20,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		thruster: Some((
+			y_offset: 11.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+		weapons: Some([(
+			reload_time: 3.0,
+			initial_time: 1.0,
+			fire_mode: Automatic,
+			capacity: 2,
+			projectile_data: (
+				ammunition: Blast(Enemy),
+				damage: 10,
+				position: Local((0.0, -40.0)),
+				speed: 400.0,
+				direction: 4.71239,
+				despawn_time: 2.5,
+				count: 2,
+				spread_pattern: Arc((
+					spread_weights: (0.5, 1.0),
+					max_spread: 1.57080,
+					projectile_gap: 3.14159,
+				)),
+				size: 1.0,
+				sound: EnemyFireBlast,
+			),
+		)]),
+	),
+	Enemy(Shelly): (
+		mob_type: Enemy(Shelly),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [
+			ReceiveDamageOnImpact,
+			DealDamageToPlayerOnImpact,
+			DieAtZeroHealth,
+		],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 75.0),
+		collision_damage: 8,
+		can_rotate: true,
+		defense_interaction: Some(Damage(8)),
+		colliders: [
+			(
+				dimensions: (7.0, 7.5),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 50,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		weapons: Some([
+			(
+				reload_time: 1.6,
+				initial_time: 1.0,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((0.0, -40.0)),
+					speed: 300.0,
+					direction: 4.71239,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+			(
+				reload_time: 1.6,
+				initial_time: 1.2,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((-28.28427, -28.28427)),
+					speed: 300.0,
+					direction: 3.92699,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+			(
+				reload_time: 1.6,
+				initial_time: 1.4,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((-40.0, 0.0)),
+					speed: 300.0,
+					direction: 3.14159,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+			(
+				reload_time: 1.6,
+				initial_time: 1.6,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((-28.28427, 28.28427)),
+					speed: 300.0,
+					direction: 2.35619,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+			(
+				reload_time: 1.6,
+				initial_time: 1.8,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((0.0, 40.0)),
+					speed: 300.0,
+					direction: 1.57080,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+			(
+				reload_time: 1.6,
+				initial_time: 2.0,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((28.28427, 28.28427)),
+					speed: 300.0,
+					direction: 0.78540,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+			(
+				reload_time: 1.6,
+				initial_time: 2.2,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((40.0, 0.0)),
+					speed: 300.0,
+					direction: 0.0,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+			(
+				reload_time: 1.6,
+				initial_time: 2.4,
+				fire_mode: Automatic,
+				capacity: 1,
+				projectile_data: (
+					ammunition: Bullet(Enemy),
+					damage: 10,
+					position: Local((28.28427, -28.28427)),
+					speed: 300.0,
+					direction: 5.49779,
+					despawn_time: 0.3,
+					count: 1,
+					spread_pattern: Random((
+                        speed_range: (
+                            start: 0.75,
+                            end: 1.25,
+                        ),
+                        angle_range: (
+                            start: 0.9,
+                            end: 1.1,
+                        ),
+                    )),
+					size: 1.0,
+					sound: EnemyFireBlast,
+				),
+			),
+		]),
+	),
+	Ally(Hauler3): (
+		mob_type: Ally(Hauler3),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [DealDamageToPlayerOnImpact, ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 70.0),
+		collision_damage: 5,
+		colliders: [
+			(
+				dimensions: (5.25, 3.75),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 506.0,
+		health: 80,
+		animation: (
+			direction: None,
+			frame_duration: 1.0,
+		),
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Neutral(HaulerMiddle),
+				position: (0.0, 28.0),
+				joint: Revolute,
+				target_pos: 0.0,
+				stiffness: 10.0,
+				damping: 10.0,
+			)
+		],
+		thruster: Some((
+			y_offset: 7.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+	),
+	Ally(Hauler2): (
+		mob_type: Ally(Hauler2),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [DealDamageToPlayerOnImpact, ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 70.0),
+		collision_damage: 5,
+		colliders: [
+			(
+				dimensions: (5.25, 3.75),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 506.0,
+		health: 80,
+		animation: (
+			direction: None,
+			frame_duration: 1.0,
+		),
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Neutral(HaulerBack),
+				position: (0.0, 28.0),
+				joint: Revolute,
+				target_pos: 0.0,
+				stiffness: 10.0,
+				damping: 10.0,
+			)
+		],
+		thruster: Some((
+			y_offset: 7.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+	),
+	Ally(TutorialHauler2): (
+		mob_type: Ally(TutorialHauler2),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (0.0, 3.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 100.0),
+		collision_damage: 0,
+		colliders: [
+			(
+				dimensions: (5.25, 3.75),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 506.0,
+		health: 80,
+		animation: (
+			direction: None,
+			frame_duration: 1.0,
+		),
+		mob_segment_anchor_points: [
+			(
+				mob_segment_type: Neutral(TutorialHaulerBack),
+				position: (0.0, 28.0),
+				joint: Revolute,
+				target_pos: 0.0,
+				stiffness: 10.0,
+				damping: 10.0,
+			)
+		],
+		thruster: Some((
+			y_offset: 7.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+	),
+	Enemy(MissileLauncher): (
+		mob_type: Enemy(MissileLauncher),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [
+			ReceiveDamageOnImpact,
+			DealDamageToPlayerOnImpact,
+			DieAtZeroHealth,
+			SpawnMob("missile"),
+		],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 75.0),
+		collision_damage: 6,
+		defense_interaction: Some(Damage(15)),
+		colliders: [
+			(
+				dimensions: (7.5, 10.5),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 50,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		thruster: Some((
+			y_offset: 13.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+		mob_spawners: {
+			"missile": [
+				(
+					mob_type: Enemy(Missile),
+					position: Local((0.0, -70.0)),
+					period: 4.0,
+				),
+			],
+		},
+	),
+	Enemy(Missile): (
+		mob_type: Enemy(Missile),
+		spawnable_behaviors: [RotateToTarget(None), MoveForward],
+		mob_behaviors: [ExplodeOnImpact, DealDamageToPlayerOnImpact, ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (12.0, 2.0),
+		deceleration: (5.0, 5.0),
+		can_rotate: true,
+		speed: (150.0, 150.0),
+		angular_acceleration: 0.5,
+		angular_speed: 1.8,
+		collision_damage: 30,
+		colliders: [
+			(
+				dimensions: (2.25, 6.0),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		health: 15,
+		animation: (
+			direction: Forward,
+			frame_duration: 0.1,
+		),
+		thruster: Some((
+			y_offset: 9.0,
+			animation: (
+				direction: Forward,
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+	),
+	Enemy(StraferRight): (
+		mob_type: Enemy(StraferRight),
+		spawnable_behaviors: [MoveDown, MoveRight, ChangeHorizontalDirectionOnImpact],
+		mob_behaviors: [
+			ReceiveDamageOnImpact,
+			DealDamageToPlayerOnImpact,
+			DieAtZeroHealth,
+		],
+		acceleration: (2.0, 2.0),
+		deceleration: (2.0, 2.0),
+		speed: (75.0, 75.0),
+		collision_damage: 10,
+		defense_interaction: Some(Damage(12)),
+		colliders: [
+			(
+				dimensions: (10.5, 3.0),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 20,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		thruster: Some((
+			y_offset: 7.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+		weapons: Some([(
+			reload_time: 3.0,
+			initial_time: 1.0,
+			fire_mode: Automatic,
+			capacity: 1,
+			projectile_data: (
+				ammunition: Blast(Enemy),
+				damage: 8,
+				position: Local((0.0, -40.0)),
+				speed: 400.0,
+				direction: 4.71239,
+				despawn_time: 1.0,
+				count: 1,
+				spread_pattern: Arc((
+					spread_weights: (0.5, 1.0),
+					max_spread: 1.57080,
+					projectile_gap: 3.14159,
+				)),
+				size: 1.0,
+				sound: EnemyFireBlast,
+			),
+		)]),
+	),
+	Enemy(StraferLeft): (
+		mob_type: Enemy(StraferLeft),
+		spawnable_behaviors: [MoveDown, MoveLeft, ChangeHorizontalDirectionOnImpact],
+		mob_behaviors: [
+			ReceiveDamageOnImpact,
+			DealDamageToPlayerOnImpact,
+			DieAtZeroHealth,
+		],
+		acceleration: (2.0, 2.0),
+		deceleration: (2.0, 2.0),
+		speed: (75.0, 75.0),
+		collision_damage: 10,
+		defense_interaction: Some(Damage(12)),
+		colliders: [
+			(
+				dimensions: (10.5, 3.0),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Standard,
+		health: 20,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+		thruster: Some((
+			y_offset: 7.0,
+			animation: (
+				direction: PingPong(Forward),
+				frame_duration: 0.15,
+			),
+			bloom_color: Srgba (
+				red: 2.8,
+				green: 1.2,
+				blue: 0.0,
+				alpha: 1.0,
+			),
+		)),
+		weapons: Some([(
+			reload_time: 3.0,
+			initial_time: 1.0,
+			fire_mode: Automatic,
+			capacity: 1,
+			projectile_data: (
+				ammunition: Blast(Enemy),
+				damage: 8,
+				position: Local((0.0, -40.0)),
+				speed: 400.0,
+				direction: 4.71239,
+				despawn_time: 1.0,
+				count: 1,
+				spread_pattern: Arc((
+					spread_weights: (0.5, 1.0),
+					max_spread: 1.57080,
+					projectile_gap: 3.14159,
+				)),
+				size: 1.0,
+				sound: EnemyFireBlast,
+			),
+		)]),
+	),
+	Neutral(MoneyAsteroid): (
+		mob_type: Neutral(MoneyAsteroid),
+		spawnable_behaviors: [MoveDown],
+		mob_behaviors: [DealDamageToPlayerOnImpact, ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		can_rotate: true,
+		speed: (0.0, 75.0),
+		collision_damage: 7,
+		z_level: 504.0,
+		consumable_drops: MoneyAsteroid,
+		initial_motion: (
+			random_angvel: Some((-1.0, 1.0)),
+		),
+		colliders: [
+			(
+				dimensions: (7.5, 7.5),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		health: 50,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+	),
+	Neutral(TutorialDrone): (
+		mob_type: Neutral(TutorialDrone),
+		spawnable_behaviors: [MoveDown, BrakeHorizontal],
+		mob_behaviors: [ReceiveDamageOnImpact, DieAtZeroHealth],
+		acceleration: (0.0, 2.0),
+		deceleration: (2.0, 1.0),
+		speed: (0.0, 70.0),
+		collision_damage: 0,
+		defense_interaction: Some(Damage(0)),
+		colliders: [
+			(
+				dimensions: (5.5, 6.5),
+				position: (0.0, 0.0),
+				rotation: 0.0,
+			)
+		],
+		z_level: 705.0,
+		consumable_drops: Nothing,
+		health: 15,
+		animation: (
+			direction: PingPong(Forward),
+			frame_duration: 0.25,
+		),
+	),
+}

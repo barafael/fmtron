@@ -1,0 +1,7 @@
+// blockstar-data built-catalog pin.
+(
+  mirror_tag: "catalog-2026-07-07",
+  asset_url: "https://github.com/bkfunk/blockstar-data/releases/download/catalog-2026-07-07/catalog.sqlite",
+  sha256: "b336bad0847325b3dd8ca08b7cd33aeb96875b2d464979c921d253e775d3cd6d",
+  bytes: 83361792,
+)

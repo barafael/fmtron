@@ -1,0 +1,8 @@
+(
+    title: "Bevy Game Jam #4",
+    alias: "shepherd",
+    cover: "media/shepherd/screen.jpeg",
+    tags: Some("bevy"),
+    teaser: "My entry for the Bevy Game Jam #4. Making a game in rust with the bevy engine in a one-week time frame. With the power of Wasm and Webgl You can play it in the browser!",
+    published: "12.02.2024",
+)

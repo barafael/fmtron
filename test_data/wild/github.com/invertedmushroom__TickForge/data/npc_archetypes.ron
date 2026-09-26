@@ -1,0 +1,69 @@
+// NPC archetypes consumed by dungeon actor spawns and encounter SpawnAdds.
+//
+// Schema: `game_schema::npc_archetype::NpcArchetypeFile`.
+// Reducers persist durable actor config (HP/body/team/abilities), while the
+// worker rehydrates BT/route/goal/loot mappings from the same archetype id.
+//
+// `usage` restricts which authoring surfaces may reference the row:
+//   - `Both` (default): dungeon actor spawns and encounter `SpawnAdds`.
+//   - `ActorOnly`: dungeon `BossSpawn` / `NpcSpawn` only.
+//   - `AddOnly`: encounter `SpawnAdds` only.
+//
+// `kind` must be `Npc` or `Boss`; `Prop` archetypes are not supported here.
+// Prop interactables come straight from the dungeon `InteractKindDef` and
+// bypass this registry.
+
+(
+    archetypes: {
+        "trash": (
+            kind: Npc,
+            max_hp: 100.0,
+            body_shape: Some(NpcCapsule),
+            team_id: Some(2),
+            ability_ids: [1],
+            behavior_tree_id: Some("basic_melee_combat"),
+            usage: AddOnly,
+        ),
+        "elite": (
+            kind: Npc,
+            max_hp: 350.0,
+            body_shape: Some(NpcCapsule),
+            team_id: Some(2),
+            ability_ids: [1],
+            behavior_tree_id: Some("basic_melee_combat"),
+            usage: AddOnly,
+        ),
+        "boss": (
+            kind: Boss,
+            max_hp: 1200.0,
+            body_shape: Some(BossCapsule),
+            team_id: Some(2),
+            ability_ids: [1],
+            behavior_tree_id: Some("basic_melee_combat"),
+            usage: ActorOnly,
+        ),
+        "training_patrol_guard": (
+            kind: Npc,
+            max_hp: 140.0,
+            body_shape: Some(NpcCapsule),
+            team_id: Some(2),
+            ability_ids: [1],
+            route_id: Some("training_patrol_loop"),
+            default_goal: Some("go_idle"),
+            usage: ActorOnly,
+        ),
+        // Shipped crucible_warden add. The idle goal is intentional for this
+        // first data-driven slice: changing this row changes the encounter add
+        // policy without touching Rust.
+        "warden_minion": (
+            kind: Npc,
+            max_hp: 90.0,
+            body_shape: Some(NpcCapsule),
+            team_id: Some(2),
+            ability_ids: [1],
+            behavior_tree_id: Some("scripted_goal_idle"),
+            default_goal: Some("go_idle"),
+            usage: AddOnly,
+        ),
+    },
+)

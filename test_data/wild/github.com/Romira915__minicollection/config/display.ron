@@ -1,0 +1,7 @@
+(
+  title: "minicollection",
+  dimensions: Some((1280,720)),
+  resizable: true,
+  min_dimensions: Some((854,480)),
+  max_dimensions: Some((1920,1080)),
+)

@@ -1,0 +1,6 @@
+(
+    blast_radius: 8.0,
+    detonation_delay: 2.0,
+    cost_nuclear: 50,
+    cost_general: 30,
+)

@@ -1,0 +1,16 @@
+// Skidbladnir RON orchestration flow — a declarative provisioning scenario the
+// `skidbladnir::orchestration::run_flow` interpreter runs end-to-end: boot infra,
+// seed first-boot config, then install the application. Data-driven: a new scenario
+// is a new .ron, not new Rust. See `.nornir/ron-orchestration-design.md`.
+//
+// Each step dispatches to a registered SteeringModule (native-first):
+//   BootOS(Kvm)  → KvmBoot      (REAL — wraps unfold::kvm::KvmTarget)
+//   Seed         → Seed         (records NoCloud config; real authoring = draupnir/seed)
+//   Configure    → Configure    (records params; real = target driver)
+//   InstallApp   → InstallApp   (REAL — reuses the install_product lifecycle)
+[
+    BootOS(backend: Kvm, os: "ubuntu-24.04"),
+    Seed(config: "#cloud-config\npackages: [curl, ca-certificates]\n"),
+    Configure(target: "korp", params: {"KORP_DATA": "/var/lib/korp"}),
+    InstallApp(spec: "korp"),
+]

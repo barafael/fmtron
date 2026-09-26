@@ -1,0 +1,241 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "all",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 20.,
+        height: 20.,
+    ),
+    background: SolidColor(0.988, 0.969, 1.0, 1.0),
+    children: [
+        // Title Left
+        Label(
+            transform: (
+                id: "title_left",
+                x: -416.,
+                y: -90.,
+                width: 800.,
+                height: 150.,
+                tab_order: -1,
+                anchor: TopMiddle,
+            ),
+            text: (
+                text: "Hoppin",
+                font: File("base/font/arial.ttf", ("TTF", ())),
+                font_size: 100.,
+                color: (0.149, 0.376, 0.643, 1.0),
+                align: MiddleRight,
+            )
+        ),
+
+        // Title Right
+        Label(
+            transform: (
+                id: "title_right",
+                x: 416.,
+                y: -90.,
+                width: 800.,
+                height: 150.,
+                tab_order: -1,
+                anchor: TopMiddle,
+            ),
+            text: (
+                text: "World",
+                font: File("base/font/arial.ttf", ("TTF", ())),
+                font_size: 100.,
+                color: (0.988, 0.537, 0.255, 1.0),
+                align: MiddleLeft,
+            )
+        ),
+
+        // Username label
+        Label(
+            transform: (
+                id: "username_label",
+                y: 150.,
+                width: 1000.,
+                height: 75.,
+                tab_order: -1,
+                anchor: Middle,
+                stretch: XY(x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+            ),
+            text: (
+                text: "Email Address",
+                font: File("base/font/arial.ttf", ("TTF", ())),
+                font_size: 60.,
+                color: (0.251, 0.247, 0.298, 1.0),
+                align: Middle,
+            )
+        ),
+
+        // Username field
+        Container(
+            transform: (
+                id: "username_container",
+                y: 75.,
+                width: 1000.,
+                height: 75.,
+                tab_order: -1,
+                anchor: Middle,
+            ),
+            background: SolidColor(0.914, 0.843, 0.345, 1.0),
+            children: [
+                Label(
+                    transform: (
+                        id: "username",
+                        z: 10.,
+                        width: 1000.,
+                        height: 75.,
+                        tab_order: 1,
+                        anchor: Middle,
+                        stretch: XY(x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+                        selectable: 1,
+                        mouse_reactive: true,
+                    ),
+                    text: (
+                        text: "",
+                        font: File("base/font/arial.ttf", ("TTF", ())),
+                        font_size: 45.,
+                        color: (0.251, 0.247, 0.298, 1.0),
+                        align: Middle,
+                        editable: (
+                            max_length: 64,
+                        ),
+                    )
+                ),
+            ]
+        ),
+
+        Label(
+            transform: (
+                id: "password_label",
+                y: -75.,
+                width: 1000.,
+                height: 75.,
+                tab_order: -1,
+                anchor: Middle,
+                stretch: XY(x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+            ),
+            text: (
+                text: "Password",
+                font: File("base/font/arial.ttf", ("TTF", ())),
+                font_size: 60.,
+                color: (0.251, 0.247, 0.298, 1.0),
+                align: Middle,
+            )
+        ),
+
+        // Password field
+        Container(
+            transform: (
+                id: "password_container",
+                y: -150.,
+                width: 1000.,
+                height: 75.,
+                tab_order: -1,
+                anchor: Middle,
+            ),
+            background: SolidColor(0.914, 0.843, 0.345, 1.0),
+            children: [
+                Label(
+                    transform: (
+                        id: "password",
+                        width: 1000.,
+                        height: 75.,
+                        z: 10.,
+                        tab_order: 2,
+                        anchor: Middle,
+                        stretch: XY(x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+                        selectable: 2,
+                        mouse_reactive: true,
+                    ),
+                    text: (
+                        text: "",
+                        font: File("base/font/arial.ttf", ("TTF", ())),
+                        font_size: 45.,
+                        color: (0.251, 0.247, 0.298, 1.0),
+                        align: Middle,
+                        password: true,
+                        editable: (
+                            max_length: 64,
+                        ),
+                    )
+                ),
+            ]
+        ),
+
+        // Login Button
+        Button(
+            transform: (
+                id: "login_button",
+                x: -300.,
+                y: 160.,
+                width: 256.,
+                height: 128.,
+                tab_order: 3,
+                anchor: BottomMiddle,
+                mouse_reactive: true,
+                selectable: 3,
+            ),
+            button: (
+                text: "Login",
+                font: File("base/font/arial.ttf", ("TTF", ())),
+                font_size: 60.,
+                normal_text_color: (0.251, 0.247, 0.298, 1.0),
+                normal_image: SolidColor(0.988, 0.537, 0.255, 1.0),
+                hover_image: SolidColor(0.935, 0.456, 0.157, 1.0),
+                press_image: SolidColor(0.825, 0.335, 0.028, 1.0),
+                //hover_sound: File("audio/boop.ogg", ("Ogg", ())),
+                //press_sound: File("audio/confirm.ogg", ("Ogg", ())),
+            )
+        ),
+
+        // Play as guest button
+        Button(
+            transform: (
+                id: "guest_button",
+                y: 160.,
+                width: 256.,
+                height: 128.,
+                tab_order: 4,
+                anchor: BottomMiddle,
+                mouse_reactive: true,
+                selectable: 4,
+            ),
+            button: (
+                text: "Guest",
+                font: File("base/font/arial.ttf", ("TTF", ())),
+                font_size: 60.,
+                normal_text_color: (0.251, 0.247, 0.298, 1.0),
+                normal_image: SolidColor(0.914, 0.843, 0.345, 1.0),
+                hover_image: SolidColor(0.795, 0.734, 0.304, 1.0),
+                press_image: SolidColor(0.710, 0.646, 0.191, 1.0),
+            )
+        ),
+
+        // Quit Button
+        Button(
+            transform: (
+                id: "quit_button",
+                x: 300.,
+                y: 160.,
+                width: 256.,
+                height: 128.,
+                tab_order: 5,
+                anchor: BottomMiddle,
+                mouse_reactive: true,
+                selectable: 5,
+            ),
+            button: (
+                text: "Quit",
+                font: File("base/font/arial.ttf", ("TTF", ())),
+                font_size: 60.,
+                normal_text_color: (0.251, 0.247, 0.298, 1.0),
+                normal_image: SolidColor(0.914, 0.843, 0.345, 1.0),
+                hover_image: SolidColor(0.795, 0.734, 0.304, 1.0),
+                press_image: SolidColor(0.710, 0.646, 0.191, 1.0),
+            )
+        ),
+    ]
+)

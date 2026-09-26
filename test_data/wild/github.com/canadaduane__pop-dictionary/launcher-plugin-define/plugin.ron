@@ -1,0 +1,11 @@
+(
+    name: "Dictionary Definintion",
+    description: "Syntax: define <word>",
+    query: (
+        regex: "^(define)\\s.*",
+        help: "define",
+        isolate: true
+    ),
+    bin: (path: "define"),
+    icon: Name("accessories-dictionary-symbolic")
+)

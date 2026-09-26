@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/route53",
+    protocol: "binary-tarpc",
+    description: "Manages DNS records with AWS Route53.",
+    stability: "preview"
+)

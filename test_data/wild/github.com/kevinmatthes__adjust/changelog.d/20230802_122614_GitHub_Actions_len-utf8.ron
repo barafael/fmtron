@@ -1,0 +1,10 @@
+(
+  references: {},
+  changes: {
+    "Added": [
+      "call for indent on save",
+      ".indent.pro",
+      "handle Unicode appropriately",
+    ],
+  },
+)

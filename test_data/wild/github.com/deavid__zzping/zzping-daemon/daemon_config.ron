@@ -1,0 +1,85 @@
+ServerConfig(
+    udp_listen_address: "127.0.0.1:7878",
+    udp_client_address: "127.0.0.1:7879",
+    ping_targets: [
+        // Your local router IP
+        TargetHost(
+            address: "192.168.0.1", // Host address
+            frequency: 100,          // Pings per second
+        ),
+        // TargetHost(
+        //     address: "192.168.0.3", 
+        //     frequency: 5,          
+        // ),
+        // TargetHost(
+        //     address: "192.168.0.232",
+        //     frequency: 5,          
+        // ),
+        // Any other host in your home network you want to ping
+        // // Cloudflare DNS
+        TargetHost(
+            address: "1.1.1.1",
+            frequency: 100,          
+        ),
+        // TargetHost(
+        //     address: "1.0.0.1",
+        //     frequency: 2,          
+        // ),
+        // Quad9
+        TargetHost(
+            address: "9.9.9.9",
+            frequency: 100,          
+        ),
+        // TargetHost(
+        //     address: "149.112.112.112",
+        //     frequency: 2,          
+        // ),
+        // Google DNS
+        // TargetHost(
+        //     address: "8.8.8.8",
+        //     frequency: 2,          
+        // ),
+        // TargetHost(
+        //     address: "8.8.4.4",
+        //     frequency: 2,          
+        // ),
+        // // OpenDNS       
+        // TargetHost(
+        //     address: "208.67.222.222",
+        //     frequency: 2,          
+        // ),
+        // TargetHost(
+        //     address: "208.67.220.220",
+        //     frequency: 2,          
+        // ),
+        // // Comodo Secure DNS
+        // TargetHost(
+        //     address: "8.26.56.26",
+        //     frequency: 2,          
+        // ),
+        // TargetHost(
+        //     address: "8.20.247.20",
+        //     frequency: 2,          
+        // ),
+    ],
+    // How long the daemon should keep the packets
+    keep_packets: (
+        // Seconds to wait until a packet is declared lost
+        inflight_secs: 10,
+        // Seconds to forget a lost packet 
+        lost_secs: 10,
+        // Seconds to forget a received packet 
+        recv_secs: 10,
+    ),
+    
+    // Precision multiplier for pinging frequency. 
+    // - <1.0 -> DO NOT USE. Some hosts might not be pinged at all.
+    // - 1.0 -> if you need to save CPU. Hosts may be pinged 20% faster or slower than intended.
+    // - 2.0 -> Good compromise between CPU and precision. +/- 5% error.
+    // - 10.0 -> yields good values. +/- 1% error.
+    precision_mult: 2.0,
+
+    // How many times per second to refresh the CLI, GUI and disk logging.
+    refresh_freq: 50,
+
+)

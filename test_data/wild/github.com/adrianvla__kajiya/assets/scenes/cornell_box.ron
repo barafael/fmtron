@@ -1,0 +1,9 @@
+(
+    instances: [
+        (
+            position: (0, -1, 0),
+            mesh: "/meshes/cornell_box/scene.gltf",
+            scale: (2, 2, 2),
+        ),
+    ]
+)

@@ -1,0 +1,8 @@
+(
+    albedo: (1.0, 1.0, 1.0, 1.0),
+    metallic: 0.0,
+    roughness: 0.8,
+    ao: 1.0,
+    emission_strength: 10.0,
+    emission_color: (0.0, 0.0, 1.0),
+)

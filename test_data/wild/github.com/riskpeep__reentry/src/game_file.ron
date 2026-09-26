@@ -1,0 +1,164 @@
+//
+// Reentry
+//
+// A game by Riskpeep
+//
+// Contains a vector of game objects that describe the game world
+// Objects can have the following fields:
+//      labels      : A list of names that can be used to refer to this object.
+//                    The first label must be globally unique.
+//                  : Vec<String>
+//                  : Required
+//                  : ["foo", "bar"]
+//      description : A short description of the object. Appears to describe
+//                    the object when using the 'look' command to see objects
+//                    present in a location.
+//                  : String
+//                  : Required
+//                  : "the bridge"
+//      location    : When present indicates that this is an object (or path)
+//                    in the game. Lists the name of the location where this
+//                    object is located. If present, must contain the name of
+//                    an existing object in the game. If blank (""), or not
+//                    present, the object is a location in the 'world.'
+//                  : String
+//                  : Required
+//                  : "Bridge"
+//      destination : When present indicates that this object is a path from
+//                    one game location to another. Contains the name of the
+//                    location to which this path will move the player if
+//                    followed. If present, must contain the name of an
+//                    existing object in the game. Note that paths are one way
+//                    if a two way passage is desired, two objects must be used
+//                    to indicate each direction.
+//                  : String
+//                  : Required
+//                  : "Cryochamber"
+World (
+    objects : [
+        (labels     : ["Yourself"],
+        description : "yourself",
+        location    : "Bridge",
+        details     : "You look down at yourself and see coveralls worn from years of use. A nametag on your chest reads 'Woods.' Above the tag a second label bears the letters 'XO.'",
+        capacity    : 20,
+        ),
+        (labels     : ["Bridge"],
+        description : "the bridge",
+        details     : "The bridge surrounds you. From here you can control all ship operations. Dials and blinking lights cover the walls.",
+        capacity    : 9999,
+        ),
+        (labels     : ["Galley"],
+        description : "the galley",
+        details     : "The galley is a cozy space for heating food and warming coffee.",
+        capacity    : 9999,
+        ),
+        (labels     : ["Cryochamber"],
+        description : "the cryochamber",
+        details     : "The cryochamber is a rectangular room. Seven capsules line the walls.",
+        capacity    : 9999,
+        ),
+        (labels     : ["Outside"],
+        description : "the vacuum of space",
+        details     : "Outside, the vacuum of space extends to vast inky darkness. Points of light from distant stars dot the view.",
+        capacity    : 9999,
+        ),
+        (labels     : ["Glossy Photo", "Photo"],
+        description : "a glossy photo of a family. They look familiar",
+        location    : "Bridge",
+        details     : "The glossy photo bears an image of a man, woman and a girl of about 12. The woman and girl look familiar. You feel a warmth when looking at the photo.",
+        weight      : 1,
+        ),
+        (labels     : ["Table"],
+        description : "a large square table",
+        location    : "Galley",
+        details     : "The table is a large square surface about waist high. The top is a plain light green. The top is worn from long use. Scratches and nicks cover its surface",
+        weight      : 25,
+        ),
+        (labels     : ["Cryosuit"],
+        description : "a silver suit that will protect you in cryosleep",
+        location    : "Cryochamber",
+        details     : "The cryosuit is a silver suit with a long zipper down the front. Connection gaskets line the right side. Its thin material is stretchy and would fit closely.",
+        weight      : 5,
+        ),
+        (labels     : ["Wrinkled Photo", "Photo"],
+        description : "a wrinkled photo of a woman. They woman is crying",
+        location    : "Copilot",
+        details     : "The wrinkled photo shows a woman. She is looking away, crying. Her hand lays flat on her chest as if she's trying to comfort herself.",
+        weight      : 1,
+        ),
+        (labels     : ["Copilot"],
+        description : "your copilot sleeping in his cryochamber",
+        location    : "Cryochamber",
+        details     : "The man in the cryochamber is about your height, with a slight beard. A glistening light frost covers his skin.",
+        capacity    : 20,
+        weight      : 20,
+        ),
+        (labels     : ["Pen"],
+        description : "a pen",
+        location    : "Copilot",
+        details     : "The pen is a standard issue zero gravity pen, guaranteed to write in all conditions. Oddly, you don't know how or why you know that.",
+        weight      : 1,
+        ),
+        (labels     : ["Aft"],
+        description : "a passage aft to the galley",
+        location    : "Bridge",
+        destination : "Galley",
+        details     : "The passage is more portal than passage. A bulkhead separates the bridge from the galley. This opening allows passage aft to the galley. An open hatch cover hangs aft into the galley.",
+        text_go     : "You walk through the portal into the galley."
+        ),
+        (labels     : ["Forward"],
+        description : "a passage forward to the bridge",
+        details     : "The passage is more portal than passage. A bulkhead separates the galley from the bridge. This opening allows passage forward to the bridge. The hatch cover is swung into the galley and latched to the galley wall.",
+        location    : "Galley",
+        destination : "Bridge",
+        text_go     : "You walk through the portal into the bridge."
+        ),
+        (labels     : ["Aft"],
+        description : "a passage aft to the cryochamber",
+        location    : "Galley",
+        destination : "Cryochamber",
+        details     : "The passage is more portal than passage. A bulkhead separates the galley from the cryochamber. This opening allows passage aft to the cryochamber.",
+        text_go     : "You walk through the portal into the cryochamber."
+        ),
+        (labels     : ["Forward"],
+        description : "a passage forward to the galley",
+        location    : "Cryochamber",
+        destination : "Galley",
+        details     : "The passage is more portal than passage. A bulkhead separates the cryochamber from the galley. This opening allows passage forward to the galley.",
+        text_go     : "You walk through the portal into the galley."
+        ),
+        (labels     : ["Aft", "airlock"],
+        description : "an airlock aft to exit the ship",
+        location    : "Cryochamber",
+        destination : "Cryochamber",
+        prospect    : "Outside",
+        details     : "The airlock leads outside and the vastness of space.",
+        text_go     : "Through the airlock lies certain death. Surely there is still hope.",
+        ),
+        (labels     : ["Forward", "cryochamber"],
+        description : "an airlock into the ship",
+        location    : "Outside",
+        destination : "Cryochamber",
+        details     : "The airlock leads into the interior of he ship.",
+        text_go     : "Through the cramped airlock the cryochamber opens before you.",
+        ),
+        (labels     : ["Forward", "Port", "Starboard"],
+        description : "a bulkhead covered in switchpanels and gauges",
+        location    : "Bridge",
+        details     : "The walls of the bridge are covered with switchpanels, gauges, and blinking lights.",
+        text_go     : "The walls of the bridge stop you."
+        ),
+        (labels     : ["Port", "Starboard"],
+        description : "a smooth bulkhead with an endless void on the other side",
+        location    : "Galley",
+        details     : "The walls of the galley are smooth panels. Structural supports hold the panels in place.",
+        text_go     : "The walls of the galley stop you."
+        ),
+        (labels     : ["Port", "Starboard"],
+        description : "cryochambers backed by a dense tangle of pipes, tubes, and conduits",
+        location    : "Cryochamber",
+        details     : "The walls of the cryochamber are covered in a rows of pipes, and conduits lined with blue, red, and black striping. Numbers are stenciled on the piping.",
+        text_go     : "The walls of the cryochamber stop you."
+        )
+    ]
+)

@@ -1,0 +1,9 @@
+(
+    body: Some("This is a longer commit message
+Fixes #123"),
+    desc: "rename footer-specific",
+    footer:[],
+    is_breaking_change: false,
+    scope: Some("parser"),
+    ty: "refactor"
+)

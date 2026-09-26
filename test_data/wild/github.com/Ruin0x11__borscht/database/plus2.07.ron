@@ -1,0 +1,68 @@
+#![enable(implicit_some)]
+
+AnalysisConfig(
+  meta: (
+    variant_name: "Elona+",
+    version: "2.07",
+    ax_sha256: "ba5559887e877e504b9eed7412a912e2c752c43fa6c17e9c961cd743abfc5c47"
+  ),
+
+  includes: [
+    "database/plus2.06fix.ron"
+  ],
+
+  variable_groups: {
+    "skill_spact": (
+      variables: [
+        ( name: "SKILL_SPACT_MAGNECOAT", value: 832 ),
+        ( name: "SKILL_SPACT_LINEAR_LAUNCHER", value: 833 ),
+        ( name: "SKILL_SPACT_E_MAG_CAGE", value: 834 ),
+        ( name: "SKILL_SPACT_E_MAG_TORNADO", value: 835 ),
+        ( name: "SKILL_SPACT_WIRE_WORLD", value: 836 ),
+
+        ( name: "MAX_SKILL", value: 837, code_value: "SKILL_SPACT_WIRE_WORLD + 1" ),
+      ]
+    ),
+    "animation_id": (
+      variables: [
+        ( name: "ANIMATION_LINEAR_LAUNCHER", value: 58 ),
+      ]
+    ),
+    "chara_bit": (
+      variables: [
+        ( name: "CHARA_BIT_VINDALIAN_JIUJITSU_ACTIVE", value: 1028 ),
+        ( name: "CHARA_BIT_MAGNETISM_S_POLE", value: 1029 ),
+        ( name: "CHARA_BIT_MAGNETISM_N_POLE", value: 1030 ),
+      ]
+    ),
+  },
+
+  arrays: {},
+
+  expressions: {},
+
+  functions: {},
+
+  labels: {
+    "*convert_guide": (
+      after: "*convert_word"
+    ),
+    "*convert_talk": (
+      after: "*convert_guide"
+    ),
+    "*guide_talk_2": (
+      after: "*convert_talk"
+    ),
+    "*guide_talk": (
+      after: "*guide_talk_2"
+    ),
+    "*spec_talk": (
+      after: "*guide_talk"
+    ),
+    "*random_talk": (
+      after: "*spec_talk"
+    ),
+  },
+
+  files: {}
+)

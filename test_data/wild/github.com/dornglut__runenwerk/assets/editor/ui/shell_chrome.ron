@@ -1,0 +1,32 @@
+(
+  id: AuthoredId("runenwerk.editor.shell_chrome"),
+  root: Scroll(
+    id: AuthoredId("root"),
+    axis: Horizontal,
+    input: (horizontal: WheelAndMiddleDrag, vertical: WheelOnly),
+    children: [
+      Row(
+        id: AuthoredId("tab_stack_chrome"),
+        children: [
+          Repeat(id: AuthoredId("tabs"), items: (id: AuthoredId("shell.tabs")), template: AuthoredId("runenwerk.editor.shell_chrome.tab"), axis: Some(Horizontal)),
+          Button(id: AuthoredId("new_tab"), label: Static(Text("+")), route: Some((id: AuthoredId("shell.tab.create"))), availability: None, selected: None),
+        ],
+      ),
+    ],
+  ),
+  templates: [
+    (
+      id: AuthoredId("runenwerk.editor.shell_chrome.tab"),
+      root: Row(
+        id: AuthoredId("tab_item"),
+        children: [
+          Button(id: AuthoredId("tab"), label: Slot(AuthoredId("tab.label")), route: Some((id: AuthoredId("shell.tab.activate"))), availability: None, selected: Some(Slot(AuthoredId("tab.active")))),
+          Button(id: AuthoredId("close"), label: Static(Text("x")), route: Some((id: AuthoredId("shell.tab.close"))), availability: None, selected: None),
+        ],
+      ),
+      templates: [],
+      menus: [],
+    ),
+  ],
+  menus: [],
+)

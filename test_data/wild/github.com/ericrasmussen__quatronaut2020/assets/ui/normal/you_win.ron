@@ -1,0 +1,70 @@
+#![enable(implicit_some)]
+// Detailed field information can be found at https://docs.amethyst.rs/master/amethyst_ui/enum.UiWidget.html and related pages
+Container(
+    transform: (
+        id: "background",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 20.,
+        height: 20.,
+    ),
+    children: [
+        Image(
+          transform: (
+              id: "background",
+              stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+              tab_order: 1,
+              anchor: Middle,
+          ),
+          image: Texture(File("ui/quatronaut_menu_no_title.jpg", ("IMAGE", ()))),
+        ),
+        Image(
+          transform: (
+              id: "you_win",
+              x: 0.,
+              y: 250.,
+              // TODO: why do these values need to be the computed retina display values?
+              // may need separate configs for retina displays
+              // win is 357 x 217
+              // game over is 454 x 217
+              width: 535.5,
+              height: 325.9,
+              tab_order: 2,
+              anchor: Middle,
+          ),
+          image: Texture(File("ui/end_win.png", ("IMAGE", ()))),
+        ),
+        Container(
+            transform: (
+                id: "container_menu",
+                y: -400,
+                width: 508.,
+                height: 100.,
+                anchor: Middle,
+            ),
+            background: SolidColor(1.0, 0.61, 0.94, 1.0),
+            children: [
+
+                Button(
+                    transform: (
+                        id: "menu",
+                        width: 503.,
+                        height: 95.,
+                        tab_order: 1,
+                        anchor: Middle,
+                        mouse_reactive: true,
+                    ),
+                    button: (
+                        text: "I DID IT!",
+                        font: File("fonts/font_over.otf", ("TTF", ())),
+                        font_size: 50.,
+                        normal_text_color: (1.0, 0.61, 0.94, 1.0), // ff9ef1
+                        normal_image: SolidColor(0., 0., 0., 1.),
+                        hover_image: SolidColor(0.1, 0.1, 0.1, 1.),
+                        press_image: SolidColor(0.15, 0.15, 0.15, 1.),
+                    )
+                ),
+            ]
+        ),
+    ],
+)

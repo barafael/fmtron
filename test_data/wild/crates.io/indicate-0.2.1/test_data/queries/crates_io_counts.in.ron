@@ -1,0 +1,21 @@
+FullQuery(
+    query: r#"
+{
+    RootPackage {
+        name @output
+        version @output
+        cratesIo {
+            totalDownloads @output
+            recentDownloads @output
+            versionDownloads @output
+            versionsCount @output
+            yanked @output
+            yankedVersions @output
+            yankedVersionsCount @output
+            yankedRatio @output
+        }
+    }
+}
+"#,
+    args: {}
+)

@@ -1,0 +1,33 @@
+(
+    id: "a3574a00-0000-4000-8000-00000000f201",
+    schema_version: 1,
+    name: "Pulse Wave (Custom WESL)",
+    inputs: [
+        (
+            id: "a3574a00-0000-4000-8000-00000000f211",
+            name: "Phase",
+            value_type: Float,
+        ),
+        (
+            id: "a3574a00-0000-4000-8000-00000000f212",
+            name: "Width",
+            value_type: Float,
+        ),
+    ],
+    outputs: [
+        (
+            id: "a3574a00-0000-4000-8000-00000000f231",
+            name: "Pulse",
+            value_type: Float,
+            expression: "a3574a00-0000-4000-8000-00000000f221",
+        ),
+    ],
+    expressions: [],
+    custom_wesl: Some((
+        evaluation_domain: Fragment,
+        source: "fn pulse_wave(phase: f32, width: f32) -> f32 {\n    let centered = abs(fract(phase) - 0.5) * 2.0;\n    return 1.0 - smoothstep(clamp(width, 0.001, 1.0), 1.0, centered);\n}\n",
+        entry_points: {
+            "a3574a00-0000-4000-8000-00000000f231": "pulse_wave",
+        },
+    )),
+)

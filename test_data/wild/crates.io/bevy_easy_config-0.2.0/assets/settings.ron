@@ -1,0 +1,5 @@
+Settings (
+    // You can change this at runtime, and then save the file to hot reload.
+    // You can try KeyW for W, KeyR for R, or any other valid KeyCode enum value.
+    action_keybind: Space
+)

@@ -1,0 +1,25 @@
+(
+    schema_version: 2,
+    id: "a3574a00-0000-4000-8000-00000000a106",
+    display_name: "Ghost",
+    description: "Creates a translucent spectral body with a pale cyan Fresnel silhouette.",
+    category: Shaping,
+    tags: ["ghost", "spectral", "transparent", "fresnel", "ethereal"],
+    recipe: Graph((
+        nodes: [
+            (name: "normal", kind: Input(Normal)),
+            (name: "view", kind: Input(ViewDirection)),
+            (name: "power", kind: Constant(Float(1.6))),
+            (name: "fresnel", kind: Function(Fresnel), inputs: {"Normal": Node("normal"), "ViewDirection": Node("view"), "Power": Node("power")}),
+            (name: "edge_strength", kind: Constant(Float(0.72))),
+            (name: "edge", kind: Function(Multiply), inputs: {"A": Node("fresnel"), "B": Node("edge_strength")}),
+            (name: "body", kind: Constant(Float(0.16))),
+            (name: "spectral_alpha", kind: Function(Add), inputs: {"A": Node("body"), "B": Node("edge")}),
+            (name: "opacity", kind: Function(Multiply), inputs: {"A": Source, "B": Node("spectral_alpha")}),
+            (name: "ghost_tint", kind: Constant(ColorSrgb((0.42, 0.92, 0.94, 1.0)))),
+            (name: "color", kind: Function(Multiply), inputs: {"A": ProgramColor, "B": Node("ghost_tint")}),
+        ],
+        output: Node("opacity"),
+        program_outputs: {Color: Node("color"), Alpha: Node("opacity")},
+    )),
+)

@@ -1,0 +1,10 @@
+{
+    "run_left": (
+        keyframes: KeyframesRange((start: 1, end: 7)),
+        duration: 0.6,
+    ),
+    "run_right": (
+        keyframes: KeyframesRange((start: 8, end: 14)),
+        duration: 0.6,
+    ),
+}

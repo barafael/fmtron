@@ -1,0 +1,12 @@
+(
+    id: "pirates_iou",
+    label: "Pirate's IOU",
+    description: "I owe you one not-shooting. Redeemable never.",
+    slot: weapon1,
+    rarity: junk,
+    base_value: 4,
+    icon: Some("#"),
+    icon_path: None,
+    modifiers: [],
+    on_kill: None,
+)

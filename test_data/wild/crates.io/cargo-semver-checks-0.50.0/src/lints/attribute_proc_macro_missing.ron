@@ -1,0 +1,51 @@
+SemverQuery(
+    id: "attribute_proc_macro_missing",
+    human_readable_name: "attribute proc macro removed",
+    description: "An attribute proc macro that previously existed is no longer available.",
+    required_update: Major,
+    lint_level: Deny,
+    reference_link: Some("https://doc.rust-lang.org/reference/procedural-macros.html#attribute-macros"),
+    query: r#"
+    {
+        CrateDiff {
+            baseline {
+                item {
+                    ... on AttributeProcMacro {
+                        visibility_limit @filter(op: "=", value: ["$public"])
+                        name @output
+
+                        importable_path {
+                            path @output @tag
+                            public_api @filter(op: "=", value: ["$true"])
+                        }
+
+                        span_: span @optional {
+                            filename @output
+                            begin_line @output
+                            end_line @output
+                        }
+                    }
+                }
+            }
+            current @fold @transform(op: "count") @filter(op: "=", value: ["$zero"]) {
+                item {
+                    ... on AttributeProcMacro {
+                        visibility_limit @filter(op: "=", value: ["$public"])
+
+                        importable_path {
+                            path @filter(op: "=", value: ["%path"])
+                        }
+                    }
+                }
+            }
+        }
+    }"#,
+    arguments: {
+        "public": "public",
+        "zero": 0,
+        "true": true,
+    },
+    error_message: "A previously available attribute macro has been removed, breaking code that uses attribute syntax on annotated items.",
+    per_result_error_template: Some("macro #[{{name}}] in {{span_filename}}:{{span_begin_line}}"),
+    witness: None,
+)

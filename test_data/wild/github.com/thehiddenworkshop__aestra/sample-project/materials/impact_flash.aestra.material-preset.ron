@@ -1,0 +1,25 @@
+(
+    schema_version: 2,
+    id: "a3574a00-0000-4000-8000-00000000a108",
+    display_name: "Impact Flash",
+    description: "Creates a short white-hot impact that rapidly falls into a warm residual glow.",
+    category: Shaping,
+    tags: ["impact", "flash", "hit", "burst", "particle age"],
+    recipe: Graph((
+        nodes: [
+            (name: "age", kind: Input(ParticleNormalizedAge)),
+            (name: "zero", kind: Constant(Float(0.0))),
+            (name: "flash_end", kind: Constant(Float(0.24))),
+            (name: "decay_ramp", kind: Function(Smoothstep), inputs: {"LowerEdge": Node("zero"), "UpperEdge": Node("flash_end"), "Value": Node("age")}),
+            (name: "one", kind: Constant(Float(1.0))),
+            (name: "flash", kind: Function(Subtract), inputs: {"A": Node("one"), "B": Node("decay_ramp")}),
+            (name: "opacity", kind: Function(Multiply), inputs: {"A": Source, "B": Node("flash")}),
+            (name: "white_hot", kind: Constant(ColorSrgb((1.0, 1.0, 0.92, 1.0)))),
+            (name: "warm", kind: Constant(ColorSrgb((1.0, 0.32, 0.04, 1.0)))),
+            (name: "flash_tint", kind: Function(Lerp), inputs: {"Start": Node("white_hot"), "End": Node("warm"), "Factor": Node("decay_ramp")}),
+            (name: "color", kind: Function(Multiply), inputs: {"A": ProgramColor, "B": Node("flash_tint")}),
+        ],
+        output: Node("opacity"),
+        program_outputs: {Color: Node("color"), Alpha: Node("opacity")},
+    )),
+)

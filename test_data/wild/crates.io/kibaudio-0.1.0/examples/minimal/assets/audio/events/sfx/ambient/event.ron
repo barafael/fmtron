@@ -1,0 +1,9 @@
+// A looping ambient sound (wind, room tone, etc.)
+// Fades in over 2 seconds for a smooth entrance.
+(
+    playlist: (sounds: [( file: "ambient.wav" )]),
+    volume: ( base: -6.0 ),
+    looping: true,
+    fade_in: 2.0,
+    max_instances: 1,
+)

@@ -1,0 +1,5 @@
+(
+    scaling_mode: WindowSize,
+    zoom: 1,
+    aspect_ratio: None,
+)

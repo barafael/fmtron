@@ -1,0 +1,27 @@
+Scatter(
+	title: "Sinusoidal Best Fit",
+	canvas_pixel_size: (840, 600),
+	x_axis_label: "Time (ms)",
+	x_axis_resolution: 11, // Number of times the x-axis will be divided to show your data scale. Advised to make it a ratio of your largest x value
+	y_axis_label: "Energy (kJ)",
+	y_axis_resolution: 11, // Number of times the y-axis will be divided to show your data scale. Advised to make it a ratio of your largest y value
+	has_grid: false, // Should the graph have a light grey background grid
+	has_legend: false, // should a legend be generated? Only really useful with multiple data sets
+	// data sets can be sourced from the same csv or from different ones and each can be configured with different colours/symbols
+	data_sets: [
+		DataSet(
+			data_path: "scatter.csv",
+			has_headers: true, // if your data has headers set to `true` so they can be ignored
+			x_axis_csv_column: 0, // which column contains the x values
+			x_axis_error_bar_csv_column: None, // which column contains x uncertainty Some(usize) or None
+			y_axis_csv_column: 1, // which column contains the y values
+			y_axis_error_bar_csv_column: None, // which column contains y uncertainty Some(usize) or None
+			name: "Very interesting", // legend will indicate which colour and symbol correspond to which data set
+			colour: White, // the colour to render a data point
+			symbol: Point, // the shape a plotted data point should take
+			symbol_radius: 5, // The size of a drawn symbol in (1+ symbol_radius) pixels
+			symbol_thickness: 0, // The thinkness of a drawn symbol in (1 + symbol_thickness) pixels
+			best_fit: Some(Sine(amplitude: 2.0, period: 1.0, phase_shift: 0.0, vertical_shift: 3.0, colour: Black)), // A curve to fit to the axes. Some(BestFit) or None
+		),
+	],
+)

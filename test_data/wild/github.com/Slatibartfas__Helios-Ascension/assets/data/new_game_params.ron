@@ -1,0 +1,59 @@
+// === GRA-358 PR-A: New Game parameters defaults (LGD-owned content) ===
+//
+// Default values for the player-facing knobs on the New Game subview.
+// The Coder reads this file at Startup and inserts the values into
+// `NewGameParamsDefaults` (src/persistence/params.rs). The subview
+// seeds the live `NewGameSubviewState::params` from these values on
+// first render.
+//
+// Loader rules (Coder implements in src/persistence/params.rs):
+//   1. Every field is `#[serde(default)]` — partial RONs round-trip
+//      to the corresponding `NewGameParamsDefaults::default()` value.
+//   2. `default_star_count` MUST be `<= max_star_count`; the loader
+//      emits a `warn!` and continues if violated.
+//   3. `default_starting_tech_tier` MUST be in `1..=5`; out-of-range
+//      values trigger a warn (the subview falls back to a sane tier).
+//   4. `default_game_speed` MUST be finite and `>= 0.0`. Negative or
+//      NaN values trigger a warn; the subview's "Paused" preset (0.0)
+//      is the safe fallback.
+//   5. `max_star_count` is the SOFT ceiling for the star-count
+//      slider. The Rust type `NewGameParams::star_count` has no
+//      in-type cap — a future chunked-galaxy abstraction will
+//      subdivide this count without a schema bump (operator follow-up
+//      `71e4a442-…`).
+//   6. The default game speed (3600.0 = "1.0 hr/s") matches the
+//      `TimeScale::new()` default in src/ui/time.rs, so a player who
+//      immediately hits Begin sees the same speed they would have
+//      seen under the pre-PR-A quick-play path.
+
+(
+    // Soft upper bound for the star-count slider. 1000 is the
+    // v0.5.x ceiling — beyond that the procedural generator's
+    // allocator budget is exceeded on the minimum-spec target. LGD
+    // can tune this without a Rust recompile; the subview's slider
+    // picks the new ceiling up on next launch.
+    max_star_count: 1000,
+
+    // Initial slider value for `star_count`. 60 is the v0.5.x
+    // baseline (≈ the original `solar_system.ron` size); LGD can
+    // raise this once chunked procedural-gen lands.
+    default_star_count: 60,
+
+    // 0 means a single-player campaign. LGD can ship campaign
+    // presets with non-zero defaults via the
+    // `difficulty_presets.ron::NewGameParamsOverride` field in a
+    // follow-up; this baseline stays at 0.
+    default_ai_faction_count: 0,
+
+    // Off by default — the artifact layer is opt-in until QA
+    // confirms the spawn-rate values land in a reasonable range.
+    default_artifacts_enabled: false,
+
+    // Tier 1 (earliest). LGD may ship presets that override this
+    // (e.g. "Veteran Commander" starting at tier 3) without
+    // touching this file.
+    default_starting_tech_tier: 1,
+
+    // Matches `TimeScale::new()` in src/ui/time.rs.
+    default_game_speed: 3600.0,
+)

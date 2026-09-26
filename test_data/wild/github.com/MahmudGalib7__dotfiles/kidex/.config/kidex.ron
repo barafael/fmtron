@@ -1,0 +1,10 @@
+Config(
+   ignored: [], // A list of patterns to be ignored in all directories
+  directories: [
+    WatchDir(
+      path: "/home/galib/", // The root folder to be indexed
+      recurse: true, // Recursively index and watch all subfolders
+      ignored: [], // Ignore patterns specifically for this directory
+    ),
+  ],
+)

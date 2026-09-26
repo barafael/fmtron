@@ -1,0 +1,206 @@
+(
+	version : (0, 0, 2),
+	program : (
+		explicate : false,
+		native_interface : (
+			types : {
+				0 : I32,
+			},
+			external_functions : {
+				2 : CpuPureOperation((name : "do_thing_on_cpu", input_types : [0], output_types : [0])),
+				0 : GpuKernel((
+					name : "do_thing_on_gpu", input_types : [0], output_types : [0], entry_point : "main", resource_bindings : [(group : 0, binding : 0, input : Some(0), output : None), (group : 0, binding : 1, input : None, output : Some(0))],
+					dimensionality : 3,
+					shader_module : Glsl
+					("
+						#version 450
+						layout(set = 0, binding = 0) readonly buffer Input_0 {
+							int field_0;
+						} input_0;
+						layout(set = 0, binding = 1) buffer Output_0 {
+							int field_0;
+						} output_0;
+						layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+						void main() {
+							output_0.field_0 = input_0.field_0 + 1;
+						}
+					")
+				)),
+				1 : GpuKernel((
+					name : "do_thing_on_gpu_2", input_types : [0], output_types : [0], entry_point : "main", resource_bindings : [(group : 0, binding : 0, input : Some(0), output : Some(0))],
+					dimensionality : 0,
+					shader_module : Glsl
+					("
+						#version 450
+						layout(set = 0, binding = 0) buffer InputOutput_0 {
+							int field_0;
+						} input_output_0;
+						layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+						void main() {
+							input_output_0.field_0 = input_output_0.field_0 + 1;
+						}
+					")
+				)),
+				3 :  CpuEffectfulOperation((
+					name : "loop",
+					input_types : [],
+					output_types : [],
+				))
+			},
+			effects : {
+				0 : FullyConnected(effectful_function_ids : [3])
+			}
+		),
+		function_classes : {
+			0 : (name : "test_value_function", input_types : [0], output_types : [0], default_funclet_id : Some(9)),
+			1 : (name : "looping_value_function", input_types : [0], output_types : [0], default_funclet_id : Some(19)),
+			3 : (input_types : [0], output_types : [0], external_function_ids : [2]),
+			4 : (input_types : [0], output_types : [0], external_function_ids : [0]),
+			5 : (input_types : [0], output_types : [0], external_function_ids : [1])
+		},
+		types : {
+			0 : NativeValue(storage_type : 0),
+			1 : Ref(storage_type : 0, storage_place : Local, buffer_flags : BufferFlags()),
+			2 : Event,
+			3 : Ref(storage_type : 0, storage_place : Gpu, buffer_flags : BufferFlags() ),
+			4 : Fence( queue_place : Gpu ),
+			5 : Ref(storage_type : 0, storage_place : Gpu, buffer_flags : BufferFlags() ),
+			6 : Buffer(storage_place : Gpu, static_layout_opt : Some((alignment_bits : 0, byte_size : 4096)), flags : BufferFlags() ),
+			7 : BufferSpace,
+		},
+		funclets : {
+			0 : (
+				kind : Value,
+				input_types : [0],
+				output_types : [0],
+				nodes : [
+					Phi(index : 0),
+					Constant(value: I64(1), type_id : 0),
+					CallFunctionClass(function_id : 3, arguments : [0]),
+					ExtractResult(node_id : 2, index : 0),
+					CallFunctionClass(function_id : 4, arguments : [1, 1, 1, 3], dimensions : [1, 1, 1]),
+					ExtractResult(node_id : 4, index : 0)
+				],
+				tail_edge : Return(return_values : [5])
+			),
+			1 : (
+				kind : Value,
+				input_types : [0],
+				output_types : [0],
+				nodes : [
+					Phi(index : 0),
+					Constant(value: I64(1), type_id : 0),
+					CallFunctionClass(function_id : 4, arguments : [1, 1, 1, 0], dimensions : [1, 1, 1]),
+					ExtractResult(node_id : 2, index : 0),
+					CallFunctionClass(function_id : 4, arguments : [1, 1, 1, 3], dimensions : [1, 1, 1]),
+					ExtractResult(node_id : 4, index : 0)
+				],
+				tail_edge : Return(return_values : [5])
+			),
+			9 : (
+				kind : Value,
+				input_types : [0],
+				output_types : [0],
+				nodes : [
+					Phi(index : 0),
+					Constant(value: I64(1), type_id : 0),
+					CallFunctionClass(function_id : 4, arguments : [1, 1, 1, 0], dimensions : [1, 1, 1]),
+					ExtractResult(node_id : 2, index : 0),
+				],
+				tail_edge : Return(return_values : [3])
+			),
+			10 : (
+				kind : Value,
+				input_types : [0],
+				output_types : [0],
+				nodes : [
+					Phi(index : 0),
+					CallFunctionClass(function_id : 0, arguments : [0]),
+					ExtractResult(node_id : 1, index : 0),
+				],
+				tail_edge : Return(return_values : [2])
+			),
+
+			11 : (
+				kind : ScheduleExplicit,
+				input_types : [0],
+				output_types : [0],
+				spec_binding : ScheduleExplicit(
+					value : (
+						funclet_id_opt : Some(0),
+						input_tags : [(quot: Input(index : 0), flow: Usable)],
+						output_tags : [(quot: None, flow: Usable)],
+					),
+					spatial : (
+						funclet_id_opt : Some(18),
+						input_tags : [(quot: None, flow: Usable)],
+						output_tags : [(quot: None, flow: Usable)],
+					),
+					timeline : (
+						funclet_id_opt : Some(15),
+						input_tags : [(quot: Input(index : 0), flow: Usable)],
+						output_tags : [(quot: Output(index : 0), flow: Usable)],
+						implicit_in_tag : (quot: Input(index : 0), flow: Usable),
+						implicit_out_tag : (quot: Output(index : 0), flow: Usable)
+					)
+				),
+				nodes : [
+					Phi(index : 0),
+					AllocTemporary(place : Local, storage_type : 0, buffer_flags : BufferFlags() ),
+					LocalDoBuiltin(operation : Node(node_id : 1), inputs : [], outputs : [1]),
+					AllocTemporary(place : Local, storage_type : 0, buffer_flags : BufferFlags(copy_src: true)),
+					LocalDoExternal(operation : Node(node_id : 2), external_function_id : 2, inputs : [0], outputs : [3]),
+					AllocTemporary(place : Gpu, storage_type : 0, buffer_flags : BufferFlags(storage : true, copy_dst : true)),
+					AllocTemporary(place : Gpu, storage_type : 0, buffer_flags : BufferFlags(storage : true, map_read : true)),
+					BeginEncoding(place : Gpu, event: Node(node_id : 1), encoded: [5, 6], fences : []),
+					EncodeCopy(encoder : 7, input : 3, output : 5),
+					ReadRef(source : 1, storage_type : 0),
+					EncodeDoExternal(encoder : 7, operation : Node(node_id : 4), external_function_id : 0, inputs : [9, 9, 9, 5], outputs : [6]),
+					AllocTemporary(place : Local, storage_type : 0, buffer_flags : BufferFlags(map_write: true)),
+					Submit(encoder : 7, event : Node(node_id : 4)),
+					SyncFence(fence : 12, event : Node(node_id : 5)),
+					LocalCopy(input : 6, output : 11),
+					ReadRef(source: 11, storage_type: 0),
+				],
+				tail_edge : Return(return_values : [15])
+			),
+
+			15 : (
+				kind : Timeline,
+				input_types : [2],
+				output_types : [2],
+
+				nodes : [
+					Phi(index : 0),
+					EncodingEvent(local_past: 0, remote_local_pasts : []),
+					ExtractResult(node_id: 1, index: 0),
+					ExtractResult(node_id: 1, index: 1),
+					SubmissionEvent(local_past : 3),
+					SynchronizationEvent(local_past : 2, remote_local_past : 4),
+				],
+				tail_edge : Return(return_values : [5])
+			),
+
+			18 : (
+				kind : Spatial,
+				input_types : [7],
+				output_types : [7],
+
+				nodes : [
+					Phi(index : 0),
+				],
+				tail_edge : Return(return_values : [0])
+			),
+		},
+		pipelines : [
+			(name : "pipeline_1", entry_funclet : 11),
+		],
+	),
+	debug_info : DebugInfo (
+		type_map: {},
+		ffi_type_map: {},
+		function_class_map: {},
+		external_function_map: {},
+		funclet_map: {},
+	)
+)

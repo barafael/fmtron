@@ -1,0 +1,61 @@
+(
+    actions: {
+        "": ActionInfo(
+            condition_name: "Start",
+            condition_description: "At the start of a new chain, ",
+            condition_icon: "image/module/icon/nothing_condition.png",
+            effect_name: "End",
+            effect_description: "end the chain",
+            effect_repeat_description: "end the chain",
+            effect_icon: "image/module/icon/nothing_effect.png",
+        ),
+
+        "repair": ActionInfo(
+            condition_name: "Repair",
+            condition_description: "After repairing the hull, ",
+            condition_icon: "image/module/icon/repair_condition.png",
+            condition_heat: -1,
+            effect_name: "Repair",
+            effect_description: "repair the hull",
+            effect_repeat_description: "repair the hull again",
+            effect_icon: "image/module/icon/repair_effect.png",
+            effect_heal: 3,
+            effect_heat: -1,
+        ),
+
+        "missile": ActionInfo(
+            condition_name: "Missile",
+            condition_description: "After launching a missile, ",
+            condition_icon: "image/module/icon/missile_condition.png",
+            effect_name: "Missile",
+            effect_description: "launch a missile",
+            effect_repeat_description: "launch another missile",
+            effect_icon: "image/module/icon/missile_effect.png",
+            effect_projectile: "missile",
+        ),
+
+        "laser": ActionInfo(
+            condition_name: "Laser",
+            condition_description: "After firing a laser, ",
+            condition_icon: "image/module/icon/laser_condition.png",
+            effect_name: "Laser",
+            effect_description: "fire a laser",
+            effect_repeat_description: "fire another laser",
+            effect_icon: "image/module/icon/laser_effect.png",
+            effect_projectile: "laser",
+            effect_heat: 1,
+        ),
+
+        "fireball": ActionInfo(
+            condition_name: "Fireball",
+            condition_description: "After unleashing a fireball, ",
+            condition_icon: "image/module/icon/fireball_condition.png",
+            effect_name: "Fireball",
+            effect_description: "unleash a fireball and end the chain",
+            effect_repeat_description: "unleash another fireball and end the chain",
+            effect_icon: "image/module/icon/fireball_effect.png",
+            effect_projectile: "fireball",
+            effect_heat: 4,
+        ),
+    },
+)

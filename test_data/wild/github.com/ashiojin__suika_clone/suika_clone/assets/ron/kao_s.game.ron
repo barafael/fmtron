@@ -1,0 +1,220 @@
+(
+    balls: [
+        (
+            physics_radius: 25.199999,
+            view_width: 61.440002,
+            view_height: 61.440002,
+            image_asset_path: "images/kao/kao_01.png",
+        ),
+        (
+            physics_radius: 31.05,
+            view_width: 75.70286,
+            view_height: 75.70286,
+            image_asset_path: "images/kao/kao_02.png",
+        ),
+        (
+            physics_radius: 39.149998,
+            view_width: 95.45142,
+            view_height: 95.45142,
+            image_asset_path: "images/kao/kao_03.png",
+        ),
+        (
+            physics_radius: 49.5,
+            view_width: 120.685715,
+            view_height: 120.685715,
+            image_asset_path: "images/kao/kao_04.png",
+        ),
+        (
+            physics_radius: 62.1,
+            view_width: 151.40572,
+            view_height: 151.40572,
+            image_asset_path: "images/kao/kao_05.png",
+        ),
+    ],
+    effects: [
+        Scattering(
+            (
+                image_asset_paths: [
+                    "images/effects/rectangle_16x16.png",
+                ],
+                alpha: ([0.5, 1.0, 1.0, 0.7, 0.0]),
+                red:   ([1.0, 1.0, 0.3, 0.3, 0.3]),
+                green: ([0.0, 0.3, 1.0, 0.3, 0.3]),
+                blue:  ([0.0, 0.3, 0.3, 1.0, 1.0]),
+                image_scale: 0.5,
+                theta: (-45.0, 45.0),
+                velocity: (0.0, 10.0),
+                rotation: (1.0, 3.0),
+                accelation: ((0.0, -30.0), (0.0, -30.0)),
+                num: (6, 10),
+                time: (0.3, 1.2),
+            )
+        ),
+        Scattering(
+            (
+                image_asset_paths: [
+                    "images/effects/rectangle_16x16.png",
+                ],
+                alpha: ([0.5, 1.0, 1.0, 0.7, 0.0]),
+                red:   ([1.0, 1.0, 0.3, 0.3, 0.3]),
+                green: ([0.0, 0.3, 1.0, 0.3, 0.3]),
+                blue:  ([0.0, 0.3, 0.3, 1.0, 1.0]),
+                image_scale: 1.0,
+                theta: (-45.0, 45.0),
+                velocity: (0.0, 20.0),
+                rotation: (1.0, 3.0),
+                accelation: ((0.0, -30.0), (0.0, -30.0)),
+                num: (8, 12),
+                time: (0.3, 1.2),
+            )
+        ),
+        Scattering(
+            (
+                image_asset_paths: [
+                    "images/effects/rectangle_16x16.png",
+                ],
+                alpha: ([0.5, 1.0, 1.0, 0.7, 0.0]),
+                red:   ([1.0, 1.0, 0.3, 0.3, 0.3]),
+                green: ([0.0, 0.3, 1.0, 0.3, 0.3]),
+                blue:  ([0.0, 0.3, 0.3, 1.0, 1.0]),
+                image_scale: 2.0,
+                theta: (-45.0, 45.0),
+                velocity: (0.0, 40.0),
+                rotation: (1.0, 3.0),
+                accelation: ((0.0, -30.0), (0.0, -30.0)),
+                num: (12, 16),
+                time: (0.3, 1.2),
+            )
+        ),
+        Scattering(
+            (
+                image_asset_paths: [
+                    "images/effects/rectangle_16x16.png",
+                ],
+                alpha: ([0.5, 1.0, 1.0, 0.7, 0.0]),
+                red:   ([1.0, 1.0, 0.3, 0.3, 0.3]),
+                green: ([0.0, 0.3, 1.0, 0.3, 0.3]),
+                blue:  ([0.0, 0.3, 0.3, 1.0, 1.0]),
+                image_scale: 5.0,
+                theta: (-45.0, 45.0),
+                velocity: (0.0, 60.0),
+                rotation: (0.1, 1.0),
+                accelation: ((0.0, -30.0), (0.0, -30.0)),
+                num: (12, 16),
+                time: (0.3, 2.4),
+            )
+        ),
+    ],
+    drop_ball_level_max: 3,
+    player: (
+        view_width: 128.0,
+        view_height: 128.0,
+        offset_x: 0.0,
+        offset_y: 25.0,
+        image_asset_path: "images/kao/player.png",
+        guide_color: Rgba(
+            red: 0.3,
+            green: 0.9,
+            blue: 0.9,
+            alpha: 0.7,
+        ),
+        speed: 6.0,
+    ),
+    bottle: (
+        fg_image_asset_path: "images/bottle_fg_toriaezu.png",
+        bg_image_asset_path: "images/bottle_bg_toriaezu.png",
+        image_border: 30.0,
+        inner_width: 666.0,
+        inner_height: 585.0,
+        thickness: 27.0,
+        offset: (0.0, -100.0),
+    ),
+    background: (
+        bg_image_asset_path: "images/bg_toriaezu_1280x840.png",
+        offset: (0.0, 0.0),
+    ),
+    sounds: (
+        bgm_asset_path: "sounds/bgm.ogg",
+        bgm_scale: 0.50,
+        se_combine_asset_path: "sounds/se_combine.ogg",
+        se_combine_scale: 1.0,
+    ),
+    ui: (
+        hold_view: (
+            bg_image_asset_path: "images/border1.png",
+            border_width: 20.0,
+            font_color: Rgba(
+                red: 0.0,
+                green: 0.0,
+                blue: 0.0,
+                alpha: 1.0,
+            ),
+            width: 240.0,
+            height: 240.0,
+        ),
+        score_view: (
+            bg_image_asset_path: "images/border1.png",
+            border_width: 20.0,
+            font_color: Rgba(
+                red: 0.0,
+                green: 0.0,
+                blue: 0.0,
+                alpha: 1.0,
+            ),
+            width: 240.0,
+            height: 160.0,
+        ),
+        manual_view: (
+            bg_image_asset_path: "images/border1.png",
+            border_width: 20.0,
+            font_color: Rgba(
+                red: 0.0,
+                green: 0.0,
+                blue: 0.0,
+                alpha: 1.0,
+            ),
+            width: 240.0,
+            height: 180.0,
+        ),
+        view_margin_left: 60.0,
+        view_margin_y: 10.0,
+        popup: (
+            bg_image_asset_path: "images/popup2_128x128_32.png",
+            border_width: 32.0,
+            font_color: Rgba(
+                red: 1.0,
+                green: 1.0,
+                blue: 1.0,
+                alpha: 1.0,
+            ),
+            font_color_sub: Rgba(
+                red: 0.9,
+                green: 0.9,
+                blue: 1.0,
+                alpha: 1.0,
+            ),
+        ),
+    ),
+    ball_physics: (
+        friction: (
+            dynamic_coef: 0.1,
+            static_coef: 0.2,
+        ),
+        restitution: (
+            coef: 0.3,
+        ),
+    ),
+    bottle_physics: (
+        friction: (
+            dynamic_coef: 0.1,
+            static_coef: 0.2,
+        ),
+        restitution: (
+            coef: 0.05,
+        ),
+    ),
+    physics: (
+        gravity: 1962.0, // 9.81 * 200
+        air_damping_coef: 0.000005,
+    ),
+)

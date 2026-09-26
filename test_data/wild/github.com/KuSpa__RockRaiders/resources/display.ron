@@ -1,0 +1,10 @@
+(
+  title: "RockRaiders",
+  dimensions: None,
+  max_dimensions: None,
+  min_dimensions: None,
+  fullscreen: true,
+  multisampling: 1,
+  visibility: true,
+  vsync: true,
+)

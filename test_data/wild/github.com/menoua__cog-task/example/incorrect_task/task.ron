@@ -1,0 +1,14 @@
+(
+    name: "Incorrect",
+    version: "X",
+
+    blocks: [
+        (
+            name: "Block 1",
+            tree: timeout((
+                "this field should be a float",
+                counter(()),
+            ))
+        ),
+    ]
+)

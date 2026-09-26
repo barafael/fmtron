@@ -1,0 +1,6 @@
+(
+    minimum_time_scale: 0.1,
+    maximum_time_scale: 1.0,
+    time_scale_positive_scaling_factor: 2.0,
+    time_scale_negative_scaling_factor: -2.0
+)

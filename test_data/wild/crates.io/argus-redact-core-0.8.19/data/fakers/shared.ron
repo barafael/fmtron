@@ -1,0 +1,11 @@
+// Reserved-range faker pools for cross-language (RFC-reserved) PII types (SSOT).
+// Transcribed verbatim from src/argus_redact/specs/fakers_shared_reserved.py.
+// Pool ORDER is load-bearing for choice_index() — must match the Python tuples.
+SharedFakerData(
+    // RFC 2606 reserved email domains (choice order preserved)
+    rfc2606_domains: ["example.com", "example.org", "example.net"],
+    // RFC 5737 TEST-NET-1/2/3 IPv4 prefixes (choice order preserved)
+    rfc5737_prefixes: ["192.0.2", "198.51.100", "203.0.113"],
+    // RFC 7042 documentation MAC prefix
+    rfc7042_mac_prefix: "00:00:5E:00:53",
+)

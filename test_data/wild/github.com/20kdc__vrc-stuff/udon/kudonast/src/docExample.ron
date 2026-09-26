@@ -1,0 +1,140 @@
+(
+	code: [
+		Op("PUSH"), I(4),
+		Op("PUSH"), I(0),
+		Op("COPY"),
+		Op("PUSH"), I(0),
+		Op("EXTERN"), I(11),
+		Op("JUMP"), I(0xFFFFFFFC),
+		Op("PUSH"), I(7),
+		Op("PUSH"), I(6),
+		Op("COPY"),
+		Op("PUSH"), I(6),
+		Op("PUSH"), I(5),
+		Op("EXTERN"), I(12),
+		Op("PUSH"), I(5),
+		Op("EXTERN"), I(11),
+		Op("JUMP"), I(0xFFFFFFFC)
+	],
+	min_heap_capacity: Some(512),
+	data: [
+		("SystemObject", P(Null)),
+		("SystemString", P(String("NetworkEventTest"))),
+		("SystemInt32", P(Int(5))),
+		("SystemType", RType("System.String, mscorlib")),
+		("SystemString", P(Null)),
+		("SystemObject", P(Null)),
+		("UnityEngineGameObject", This),
+		("UnityEngineGameObject", This),
+		("SystemSingle", P(Float(0.0))),
+		("SystemSingle", P(Float(0.0))),
+		("UnityEngineObject", OdinASTInsert(
+			(
+				file: (
+					refs: {},
+					root: ExternalRefIdx(0),
+				),
+				unity_objects: [
+					Ref("e10ab24bd1c8f7abca1605dfcddbc499", 2100000)
+				]
+			)
+		)),
+		("SystemString", P(String("UnityEngineDebug.__Log__SystemObject__SystemVoid"))),
+		("SystemString", P(String("UnityEngineGameObject.__get_name__SystemString"))),
+	],
+	code_syms: [
+		(
+			name: "_interact",
+			address: I(44),
+			mode: Public
+		),
+		(
+			name: "NetworkEventTest",
+			address: I(0),
+			mode: Public
+		)
+	],
+	data_syms: [
+		(
+			name: "__message_0",
+			address: I(0),
+			udon_type: Some("SystemObject"),
+			mode: Symbol
+		),
+		(
+			name: "__message_1",
+			address: I(5),
+			udon_type: Some("SystemObject"),
+			mode: Symbol
+		),
+		(
+			name: "__GameObject_0",
+			address: I(7),
+			udon_type: Some("UnityEngineGameObject"),
+			mode: Symbol
+		),
+		(
+			name: "__Parameter1_type_0",
+			address: I(3),
+			udon_type: Some("SystemType"),
+			mode: Symbol
+		),
+		(
+			name: "floatLinear",
+			address: I(9),
+			udon_type: Some("SystemSingle"),
+			mode: Public
+		),
+		(
+			name: "__instance_0",
+			address: I(6),
+			udon_type: Some("UnityEngineGameObject"),
+			mode: Symbol
+		),
+		(
+			name: "__EventName_0",
+			address: I(1),
+			udon_type: Some("SystemString"),
+			mode: Symbol
+		),
+		(
+			name: "ofAllTheThingsToWork",
+			address: I(10),
+			udon_type: Some("UnityEngineObject"),
+			mode: Public
+		),
+		(
+			name: "NetworkEventTest_Parameter1",
+			address: I(4),
+			udon_type: Some("SystemString"),
+			mode: Symbol
+		),
+		(
+			name: "__MaxEventsPerSecond_0",
+			address: I(2),
+			udon_type: Some("SystemInt32"),
+			mode: Symbol
+		),
+		(
+			name: "floatSmooth",
+			address: I(8),
+			udon_type: Some("SystemSingle"),
+			mode: Public
+		)
+	],
+	sync_metadata: [
+		("floatSmooth", "this", 2),
+		("floatLinear", "this", 1)
+	],
+	network_call_metadata: [
+		(
+			name: "NetworkEventTest",
+			max_events_per_second: 5,
+			parameters: [
+				("NetworkEventTest_Parameter1", "SystemString")
+			]
+		)
+	],
+	internal_syms: {
+	}
+)

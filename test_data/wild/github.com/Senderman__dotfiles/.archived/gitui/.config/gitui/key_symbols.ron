@@ -1,0 +1,11 @@
+(
+    enter: Some("Enter"),
+    page_up: Some("PgUp"),
+    page_down: Some("PgDown"),
+    tab: Some("Tab"),
+    delete: Some("Del"),
+    insert: Some("Ins"),
+    esc: Some("Esc"),
+    shift: Some("Shift-"),
+    alt: Some("Alt-")
+)

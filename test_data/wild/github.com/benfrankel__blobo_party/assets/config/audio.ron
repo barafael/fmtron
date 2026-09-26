@@ -1,0 +1,9 @@
+(
+    global_volume: 0.6,
+
+    music_volume: 0.7,
+    music_bpm: 122,
+    music_zeroth_beat: 0.19,
+    music_loop_start: 0.19,
+    music_loop_end: 126.1,
+)

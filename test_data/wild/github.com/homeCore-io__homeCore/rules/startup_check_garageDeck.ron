@@ -1,0 +1,34 @@
+Rule(
+    id: "14111fa1-2889-4a6b-9eef-ccef4179435e",
+    name: "Startup Check - Garage Deck Door Open",
+    enabled: false,
+    priority: 5,
+    tags: [
+        "deck",
+        "door-alerts",
+        "startup",
+    ],
+    trigger: SystemStarted,
+    conditions: [
+        DeviceState(
+            device_id: "yolink_d88b4c01000e82eb",
+            attribute: "open",
+            op: Eq,
+            value: true,
+        ),
+    ],
+    actions: [
+        RuleAction(
+            enabled: true,
+            action: Notify(
+                channel: "telegram",
+                message: "Garage deck door was open when homeCore started",
+                title: None,
+            ),
+        ),
+    ],
+    log_events: false,
+    log_triggers: false,
+    log_actions: false,
+    cancel_on_false: false,
+)

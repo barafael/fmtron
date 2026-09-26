@@ -1,0 +1,10 @@
+(
+    decorations: false,
+    transparent: true,
+    style: Style(
+        panel_fill: ((0, 0, 0, 0)),
+    ),
+    content: AppList(
+        exit_after_selection: true,
+    ),
+)

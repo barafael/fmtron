@@ -1,0 +1,9 @@
+// Fixture `choice-not-offered` (M9 wave 1): no marker settles the choice and no conversation offers it.
+[
+    (
+        schema_version: 1,
+        id: "fixture-region",
+        name: "Fixture Region",
+        biome: Settlement,
+    ),
+]

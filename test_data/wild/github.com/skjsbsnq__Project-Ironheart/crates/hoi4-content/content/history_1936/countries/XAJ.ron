@@ -1,0 +1,18 @@
+#![enable(implicit_some)]
+(
+    tag: "XAJ",
+    population: 7800000,
+    gdp_1936_gbp: 320000000.0,
+    gdp_quality: Rough,
+    sector_shares: (agriculture: 0.64, mining: 0.05, heavy_industry: 0.02, light_industry: 0.05, services: 0.10, government: 0.10, military_industry: 0.04),
+    urbanization: 0.10,
+    literacy: 0.20,
+    unemployment: 0.04,
+    industrial_capacity_index: 0.5,
+    military_spending_share: 0.13,
+    construction_capacity_index: 0.4,
+    gold_reserve_gbp: 2500000.0,
+    foreign_exchange_reserve_gbp: 1000000.0,
+    public_debt_gbp: 40000000.0,
+    initial_laws: (conscription: "limited_conscription", economy: "interventionism", trade: "import_substitution", taxation: "medium_taxation", civil_rights: "limited_rights", information_control: "regulated_press"),
+)

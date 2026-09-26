@@ -1,0 +1,42 @@
+State(
+    step: 24576,
+    restart: 2,
+    next_eval_step: None,
+    agent: "<blob:msgpack>",
+    value_function: None,
+    optimizer: "<blob:msgpack>",
+    vf_optimizer: None,
+    obs_space: ObsSpace(
+        global_features: [],
+        entities: {
+            "SnakeSegment": Entity(
+                features: [
+                    "x",
+                    "y",
+                ],
+            ),
+            "Head": Entity(
+                features: [
+                    "x",
+                    "y",
+                ],
+            ),
+            "Food": Entity(
+                features: [
+                    "x",
+                    "y",
+                ],
+            ),
+        },
+    ),
+    action_space: {
+        "action": CategoricalActionSpace(
+            index_to_label: [
+                "Up",
+                "Down",
+                "Left",
+                "Right",
+            ],
+        ),
+    },
+)

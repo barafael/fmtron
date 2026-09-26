@@ -1,0 +1,138 @@
+("Loop forever", Repeater((
+    repeat: Forever,
+)), [
+    ("Do in this order", Sequencer((
+        random: false,
+    )), [
+        ("Do a thing", Debug((
+            message: (
+                prop: Value(""),
+            ),
+            fail: (
+                prop: Value(false),
+            ),
+            duration: (
+                prop: Value(1.0),
+            ),
+        )), [], (
+            pos: (600.0, 0.0),
+        )),
+        ("Do another", Debug((
+            message: (
+                prop: Value(""),
+            ),
+            fail: (
+                prop: Value(false),
+            ),
+            duration: (
+                prop: Value(0.0),
+            ),
+        )), [], (
+            pos: (600.0, 200.0),
+        )),
+        ("Do side work", Selector((
+            random: true,
+        )), [
+            ("A little side work", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+                duration: (
+                    prop: Value(1.0),
+                ),
+            )), [], (
+                pos: (800.0, 400.0),
+            )),
+            ("Flip it", Inverter(()), [
+                ("Another side work", Debug((
+                    message: (
+                        prop: Value(""),
+                    ),
+                    fail: (
+                        prop: Value(false),
+                    ),
+                    duration: (
+                        prop: Value(1.0),
+                    ),
+                )), [], (
+                    pos: (1000.0, 600.0),
+                )),
+            ], (
+                pos: (800.0, 600.0),
+            )),
+        ], (
+            pos: (600.0, 400.0),
+        )),
+        ("Rest for a bit", Selector((
+            random: true,
+        )), [
+            ("Browser", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+                duration: (
+                    prop: Value(1.0),
+                ),
+            )), [], (
+                pos: (800.0, 800.0),
+            )),
+            ("Sleep", Debug((
+                message: (
+                    prop: Value(""),
+                ),
+                fail: (
+                    prop: Value(false),
+                ),
+                duration: (
+                    prop: Value(3.0),
+                ),
+            )), [], (
+                pos: (800.0, 1000.0),
+            )),
+            ("Go on vacation", Sequencer((
+                random: false,
+            )), [
+                ("Sit on the beach", Debug((
+                    message: (
+                        prop: Value(""),
+                    ),
+                    fail: (
+                        prop: Value(false),
+                    ),
+                    duration: (
+                        prop: Value(1.0),
+                    ),
+                )), [], (
+                    pos: (1000.0, 1200.0),
+                )),
+                ("Go back to work", Debug((
+                    message: (
+                        prop: Value(""),
+                    ),
+                    fail: (
+                        prop: Value(false),
+                    ),
+                    duration: (
+                        prop: Value(3.0),
+                    ),
+                )), [], (
+                    pos: (1000.0, 1400.0),
+                )),
+            ], (
+                pos: (800.0, 1200.0),
+            )),
+        ], (
+            pos: (600.0, 800.0),
+        )),
+    ], (
+        pos: (400.0, 0.0),
+    )),
+], (
+    pos: (200.0, 0.0),
+))

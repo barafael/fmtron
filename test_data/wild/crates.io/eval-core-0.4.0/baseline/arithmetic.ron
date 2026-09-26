@@ -1,0 +1,86 @@
+// ============================================================================================
+// BASELINE CAPABILITY SUITE — arithmetic
+// ============================================================================================
+//
+// Basic mental/calculator math. Run this against your agent with:
+//
+//     let report = eval_core::run_suite(&my_agent, &eval_core::baseline());
+//
+// ...or COPY this file as the starting template for your own suite (dump the embedded files via
+// `eval_core::baseline_files()`), then edit instructions/values to taste.
+//
+// PORTABILITY — read this:
+//   * The number/text assertions below (`FinalNumberEquals`) are PORTABLE: they only inspect the
+//     agent's final reply, so they work whether the agent uses a calculator tool OR computes the
+//     answer inline. These are the honest, agent-agnostic core of this file.
+//   * A small, clearly-labelled TOOL-USE subset at the bottom additionally asserts the agent
+//     reached for a `calculator` tool. That is NOT fair for every agent (a capable model may just
+//     do the arithmetic in its head), so it is segregated and OPT-IN: delete those cases, or adapt
+//     the tool name, if your agent computes inline. Do not treat a tool-use failure here as a math
+//     failure.
+//
+// Each case `name` is stable; adapt freely.
+
+[
+    // --- PORTABLE: pure number checks (no tool assertion) -----------------------------------
+    // Trivial addition. `NoToolCalls` asserts the agent did NOT reach for a tool for mental math
+    // it can plainly do itself — drop this predicate if your agent always routes math to a tool.
+    (
+        name: "arith_addition_trivial",
+        instruction: "What is 2 + 2? Reply with just the number.",
+        expect: [
+            NoError,
+            FinalNumberEquals(value: 4.0),
+            NoToolCalls,
+        ],
+    ),
+    // Subtraction yielding a negative result (exercises the signed-number extractor).
+    (
+        name: "arith_subtraction_negative",
+        instruction: "What is 12 - 30?",
+        expect: [
+            NoError,
+            FinalNumberEquals(value: -18.0),
+        ],
+    ),
+    // Multiplication.
+    (
+        name: "arith_multiplication",
+        instruction: "What is 13 times 7?",
+        expect: [
+            NoError,
+            FinalNumberEquals(value: 91.0),
+        ],
+    ),
+    // Division that does NOT terminate — assert with a tolerance so a rounded reply passes.
+    (
+        name: "arith_division_with_tolerance",
+        instruction: "Divide 10 by 3 and give the result to two decimal places.",
+        expect: [
+            NoError,
+            FinalNumberEquals(value: 3.33, tolerance: 0.01),
+        ],
+    ),
+    // --- TOOL-USE SUBSET (opt-in; assumes a tool literally named `calculator`) --------------
+    // These additionally require the agent to call a `calculator` tool. Adapt the tool name to
+    // your agent, or delete these cases if your agent computes arithmetic inline. The numeric
+    // assertion is kept too, so the case still checks the ANSWER, not only the tool call.
+    (
+        name: "arith_uses_calculator_tool_add",
+        instruction: "Use your calculator to compute 128 + 256.",
+        expect: [
+            NoError,
+            CalledTool(tool: "calculator"),
+            FinalNumberEquals(value: 384.0),
+        ],
+    ),
+    (
+        name: "arith_calculator_called_with_args",
+        instruction: "Use the calculator tool to add 2 and 2.",
+        expect: [
+            NoError,
+            CalledToolWith(tool: "calculator", args: { "op": "add" }),
+            FinalNumberEquals(value: 4.0),
+        ],
+    ),
+]

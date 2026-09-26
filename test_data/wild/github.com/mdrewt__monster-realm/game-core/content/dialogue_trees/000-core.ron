@@ -1,0 +1,46 @@
+[
+    (
+        id: "elder_oak_talk",
+        root_node_id: "greeting",
+        nodes: [
+            (
+                id: "greeting",
+                text: "The ancient oak spirit greets you.",
+                entry_conditions: [],
+                auto_effects: [SetFlag("met_elder_oak")],
+                choices: [
+                    (
+                        text: "I seek a quest.",
+                        conditions: [],
+                        effects: [StartQuest("quest_001")],
+                        next_node: None,
+                    ),
+                ],
+            ),
+        ],
+    ),
+    // uxd2 (ADR-0161 D4): the shopkeeper's genuinely INERT one-node greeting.
+    // The Shop affordance derives from NpcInteraction, never from choice text,
+    // so this tree stays a plain greeting with a single conversation-ending
+    // Leave choice — no conditions, no effects (re-enterable without farming).
+    (
+        id: "shopkeeper_greeting",
+        root_node_id: "greeting",
+        nodes: [
+            (
+                id: "greeting",
+                text: "Hello, customer!",
+                entry_conditions: [],
+                auto_effects: [],
+                choices: [
+                    (
+                        text: "Leave",
+                        conditions: [],
+                        effects: [],
+                        next_node: None,
+                    ),
+                ],
+            ),
+        ],
+    ),
+]

@@ -1,0 +1,110 @@
+#![enable(implicit_some)]
+#![enable(unwrap_variant_newtypes)]
+(
+    windows: {
+        "bottom-taskbar": (
+            config: Taskbar(
+                spacing: 8,
+                start: [
+                    StartMenu(),
+                    Separator(
+                        separator: None,
+                    ),
+                    Audio(),
+                    Separator(
+                        separator: None,
+                    ),
+                    Brightness(),
+                    Separator(
+                        separator: None,
+                    ),
+                ],
+                center: [
+                    Media(),
+                ],
+                end: [
+                    Separator(
+                        separator: None,
+                    ),
+                    Bluetooth(),
+                    Separator(
+                        separator: None,
+                    ),
+                    Network(),
+                    Separator(
+                        separator: None,
+                    ),
+                    Time(
+                        format: "%d/%m/%y",
+                    ),
+                    Separator(
+                        separator: None,
+                    ),
+                    Time(
+                        format: "%H:%M",
+                    ),
+                    Separator(
+                        separator: None,
+                    ),
+                ],
+            ),
+            layer_shell: (
+                namespace: "taskbar",
+                layer: Top,
+                anchors: [
+                    Left,
+                    Right,
+                    Bottom,
+                ],
+                exclusive_zone: Auto,
+            ),
+            lazy: false,
+            monitor: All,
+        ),
+        "top-taskbar": (
+            config: Taskbar(
+                spacing: 8,
+                start: [
+                    Separator(
+                        separator: None,
+                    ),
+                    Search(
+                        top_down: false,
+                    ),
+                    Separator(
+                        separator: None,
+                    ),
+                    Shortcut(
+                        desktop_entry: "foot.desktop",
+                    ),
+                ],
+                center: [
+                    Time(
+                        format: "%A, %B %d, %Y",
+                    ),
+                ],
+                end: [
+                    Separator(
+                        separator: None,
+                    ),
+                    Notification(),
+                    Separator(
+                        separator: None,
+                    ),
+                ],
+            ),
+            layer_shell: (
+                namespace: "taskbar",
+                layer: Top,
+                anchors: [
+                    Left,
+                    Right,
+                    Top,
+                ],
+                exclusive_zone: Auto,
+            ),
+            lazy: false,
+            monitor: All,
+        ),
+    },
+)

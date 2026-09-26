@@ -1,0 +1,6 @@
+PipelineConfig(
+	font: "/Kenney Future.ttf",
+	target: "/numbers.png",
+	size: 16.0,
+	game_config_path: "/config.ron",
+)

@@ -1,0 +1,31 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "app-menu-toggle-row",
+    parameters: ["command", "state", "icon", "label"],
+    root: Pressable(
+        id: "toggle",
+        press: Command(id: "$command"),
+        child: Row(
+            size: (w: Fill, h: Fixed(26.0)),
+            pad_x: 10.0,
+            gap: 8.0,
+            children: [
+                Glyph(
+                    id: "icon",
+                    icon: "$icon",
+                    style: Menu,
+                    color: Line,
+                    active_color: Accent,
+                    active: Model(id: "$state"),
+                ),
+                Text(
+                    id: "label",
+                    size: (w: Fill, h: Fill),
+                    style: Mono,
+                    label: "$label",
+                ),
+            ],
+        ),
+    ),
+)

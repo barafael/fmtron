@@ -1,0 +1,35 @@
+[
+    (
+        name: "material-party",
+        material_mappings: [
+            ("cube", BaseColor, Keyframes([
+                (0.0, Vector3((1.0, 1.0, 1.0)), CubicInOut),
+                (1.0, Vector3((1.0, 0.5, 0.5)), CubicInOut),
+                (2.0, Vector3((0.5, 1.0, 0.5)), CubicInOut),
+                (3.0, Vector3((0.5, 0.5, 1.0)), CubicInOut),
+            ])),
+            ("cube", Roughness, Keyframes([
+                (0.0, Scalar(1.0), CubicInOut),
+                (1.5, Scalar(0.0), CubicInOut),
+                (3.0, Scalar(1.0), CubicInOut),
+            ])),
+            ("cube", Metallic, Constant(Scalar(0.75))),
+            ("plane", Roughness, Keyframes([
+                (0.0, Scalar(1.0), CubicInOut),
+                (1.5, Scalar(0.0), CubicInOut),
+                (3.0, Scalar(0.5), CubicInOut),
+            ])),
+            ("plane", Metallic, Constant(Scalar(0.75))),
+        ],
+        sky_elevation_deg: Constant(45.0),
+        sky_azimuth_deg: Keyframes([
+            (0.0, 0.0, CubicInOut),
+            (3.0, 180.0, CubicInOut),
+        ]),
+        sky_turbidity: Constant(3.0),
+        sky_albedo: Constant((1.0, 1.0, 1.0)),
+        text_annotations: [
+            SkyParameters,
+        ],
+    ),
+]

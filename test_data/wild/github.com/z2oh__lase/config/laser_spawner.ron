@@ -1,0 +1,4 @@
+(
+    spawn_rate: 20,
+    spawn_dist: 150.0,
+)

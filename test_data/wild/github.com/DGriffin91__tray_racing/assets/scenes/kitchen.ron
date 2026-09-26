@@ -1,0 +1,10 @@
+(
+    model_path: "assets/obj/kitchen.obj",
+    camera: (
+        eye: (3.0, 1.5, 1.4),
+        look_at: (-3.9438584, 1.5, -1.7303504),
+        fov: 90.0,
+        exposure:  -1.0,
+    ),
+    sun_direction: (-0.27, -0.24, 1.0),
+)

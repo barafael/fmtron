@@ -1,0 +1,16 @@
+{
+	"large": (
+		features: [],
+		tests: { 
+			"copy": (
+				jobs: ["init", "copy", "copy", "copy", "copy"],
+			),
+			"blit": (
+				jobs: ["init", "blit", "blit", "blit", "blit"],
+			),
+			"shader-copy": (
+				jobs: ["init", "shader", "shader", "shader", "shader"],
+			),
+		},
+	),
+}

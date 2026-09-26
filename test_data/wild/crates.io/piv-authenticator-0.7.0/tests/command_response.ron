@@ -1,0 +1,524 @@
+[
+    IoTest(
+        name: "Verify",
+        cmd_resp: [
+            VerifyApplicationPin(),
+            VerifyApplicationPin(pin: "3131313131313131", expected_status: RemainingRetries(2)),
+            VerifyGlobalPin(expected_status: KeyReferenceNotFound),
+        ]
+    ),
+    IoTest(
+        name: "Select",
+        cmd_resp: [
+            Select
+        ]
+    ),
+    IoTest(
+        name: "Bad management key",
+        cmd_resp: [
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 FFFFFFFFFFFFFFFF"
+                ),
+                mutual: false,
+                expected_status_response: IncorrectDataParameter,
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+                expected_status_challenge: IncorrectP1OrP2Parameter,
+            ),
+            // Admin commands then must fail
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                expected_status: SecurityStatusNotSatisfied,
+            ),
+        ]
+    ),
+    IoTest(
+        name: "Default management key",
+        cmd_resp: [
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            )
+        ]
+    ),
+    IoTest(
+        name: "Aes management key",
+        cmd_resp: [
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                )
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            )
+        ]
+    ),
+    IoTest(
+        name: "Bad Aes management key",
+        cmd_resp: [
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                )
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 FFFFFFFFFFFFFFFF"
+                ),
+                mutual: false,
+                expected_status_response: IncorrectDataParameter,
+            )
+        ]
+    ),
+    IoTest(
+        name: "unauthenticated set management key",
+        cmd_resp: [
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                expected_status: SecurityStatusNotSatisfied,
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+                expected_status_challenge: IncorrectP1OrP2Parameter,
+            )
+        ]
+    ),
+    IoTest(
+        name: "Bad management key Mutual Auth",
+        cmd_resp: [
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 FFFFFFFFFFFFFFFF"
+                ),
+                expected_status_response: IncorrectDataParameter,
+            ),
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                expected_status_challenge: IncorrectP1OrP2Parameter,
+            ),
+            // Admin commands then must fail
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                expected_status: SecurityStatusNotSatisfied,
+            ),
+        ]
+    ),
+    IoTest(
+        name: "Default management key Mutual Auth",
+        cmd_resp: [
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                )
+            )
+        ]
+    ),
+    IoTest(
+        name: "Aes management key Mutual Auth",
+        cmd_resp: [
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                )
+            ),
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                )
+            ),
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                )
+            )
+        ]
+    ),
+    IoTest(
+        name: "Bad Aes management key Mutual Auth",
+        cmd_resp: [
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                )
+            ),
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                )
+            ),
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 FFFFFFFFFFFFFFFF"
+                ),
+                expected_status_response: IncorrectDataParameter,
+            )
+        ]
+    ),
+    IoTest(
+        name: "unauthenticated set management key Mutual Auth",
+        cmd_resp: [
+            SetManagementKey(
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                expected_status: SecurityStatusNotSatisfied,
+            ),
+            AuthenticateManagement(
+                mutual: true,
+                key: (
+                    algorithm: Aes256,
+                    key: "0102030405060708 0102030405060708 0102030405060708 0102030405060708"
+                ),
+                expected_status_challenge: IncorrectP1OrP2Parameter,
+            )
+        ]
+    ),
+    IoTest(
+        name: "Generate key",
+        cmd_resp: [
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            IoData(
+                input: "00 47 009A 05
+                                AC 03
+                                     80 01 11",
+                output: Len(70),
+            )
+        ]
+    ),
+    IoTest(
+        name: "PUT DATA",
+        cmd_resp: [
+            GetData(
+                input: "5C 01 7E",
+                output: Data("7e 12 4f 0b a000000308000010000100 5f2f 02 4010")
+            ),
+            GetData(
+                input: "5C 03 5FC102",
+                output: Len(61)
+            ),
+            PutData(
+                input: "5C 03 5FC102 53 10 000102030405060708090A0B0C0D0E0F",
+                expected_status: SecurityStatusNotSatisfied
+            ),
+            GetData(
+                input: "5C 03 5FC102",
+                output: Len(61)
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            PutData(
+                input: "5C 03 5FC102 53 10 000102030405060708090A0B0C0D0E0F",
+            ),
+            GetData(
+                input: "5C 03 5FC102",
+                output: Data("53 10 000102030405060708090A0B0C0D0E0F")
+            ),
+            PutData(
+                input: "5C 01 7E 53 10 000102030405060708090A0B0C0D0E0F",
+            ),
+            GetData(
+                input: "5C 01 7E",
+                output: Data("7e 10 000102030405060708090A0B0C0D0E0F")
+            ),
+        ]
+    ),
+    IoTest(
+        name: "RESET FAILED",
+        cmd_resp: [
+            Reset(
+                expected_status: ConditionsOfUseNotSatisfied,
+            ),
+            VerifyApplicationPin(pin: "3131313131313131", expected_status: RemainingRetries(2)),
+            VerifyApplicationPin(pin: "3131313131313131", expected_status: RemainingRetries(1)),
+            VerifyApplicationPin(pin: "3131313131313131", expected_status: OperationBlocked),
+            Reset(),
+        ]
+    ),
+    IoTest(
+        name: "UUID",
+        uuid_config: None,
+        cmd_resp: [
+            GetData(
+                input: "5C 03 5FC102",
+                output: Len(61),
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            PutData(
+                input: "5C 03 5FC102 53 3b 3019d4e739d821086c1084210d8360d8210842108421804210c3f3341000112233445566778899aabbccddeeff350839393939313233313e00fe00",
+            ),
+            GetData(
+                input: "5C 03 5FC102",
+                output: Data("53 3b 3019d4e739d821086c1084210d8360d8210842108421804210c3f3341000112233445566778899aabbccddeeff350839393939313233313e00fe00"),
+            ),
+        ]
+    ),
+    IoTest(
+        name: "With UUID",
+        uuid_config: WithUuid("00112233445566778899AABBCCDDEEFF"),
+        cmd_resp: [
+            GetData(
+                input: "5C 03 5FC102",
+                output: Data("53 3b 3019d4e739d821086c1084210d8360d8210842108421804210c3f3341000112233445566778899aabbccddeeff350839393939313233313e00fe00"),
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            PutData(
+                input: "5C 03 5FC102 53 3b 3019d4e739d821086c1084210d8360d8210842108421804210c3f33410B0BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB30839393939313233313e00fe00",
+            ),
+            GetData(
+                input: "5C 03 5FC102",
+                output: Data("53 3b 3019d4e739d821086c1084210d8360d8210842108421804210c3f33410B0BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB30839393939313233313e00fe00"),
+            ),
+        ]
+    ),
+    IoTest(
+        name: "Change reference with too short PIN",
+        cmd_resp: [
+            ChangePin(
+                new: "31323334FFFFFFFF",
+                expected_status: IncorrectDataParameter,
+            ),
+        ],
+    ),
+    IoTest(
+        name: "Change reference with too short PIN",
+        cmd_resp: [
+            ChangePin(
+                new: "3232323232323232",
+                old: "3333333333FFFFFF",
+                expected_status: IncorrectDataParameter,
+            ),
+        ],
+    ),
+    IoTest(
+        name: "Pin and Puk",
+        uuid_config: WithBoth("00112233445566778899AABBCCDDEEFF"),
+        cmd_resp: [
+            ChangePin(
+                new: "313131313131FFFF",
+            ),
+            ChangePuk(
+                new: "0102030405060708",
+            ),
+            VerifyApplicationPin(pin: "313233343536FFFF", expected_status: RemainingRetries(2)),
+            ResetRetryCounter(puk: "FFFFFFFFFFFFFFFF", new_pin: "3132333435363738", expected_status: RemainingRetries(2)),
+            VerifyApplicationPin(pin: "3132333435363738", expected_status: RemainingRetries(1)),
+            ResetRetryCounter(puk: "0102030405060708", new_pin: "3132333435363738"),
+            VerifyApplicationPin(pin: "3132333435363738"),
+            ChangePuk(
+                old: "0102030405060708",
+                new: "AABBCCDDEEFF0011",
+            ),
+        ]
+    ),
+    IoTest(
+        name: "RSA 2048 bit signature value",
+        uuid_config: WithBoth("00112233445566778899AABBCCDDEEFF"),
+        cmd_resp: [
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            ImportRsaKey(
+                p: "f39c20ab767b26d5a086b6b4d3bf354d1e08fed0d6d473f70ca89240ddd6f4727c16d0085879d24474d200858a13d17fe388237a5c0477ceb43b0a38111d062378fdec70acb10d0c1970b23ed14f920e8d235d67df7d09006b1d38c58d6ee68df046a00f67e190c466660a27775bc595c914d82959a0d327725311e9291f7829",
+                q: "c96dc86e7c16b50c520c6eddedc8a0f3a899bdd2e0c1ea78361466fc4e6733dd1677afb69bd3d049b4bf50725e998a75d1c5e0257754bc48181acb6cdef217033db29d992c487e75ee6d312b51e3d11472c8393bfb004b666afccdfcd6f3950fc5aeac0a7ee1d599ae95deaf32370c47b811ec04feeb21f09162133b0e9d24c1",
+                e: "010001",
+                // dq: "8c6cfdd390acdff143ee29088d32568b27da6eccea26268941e27d5d9e6732700aaecc103998b457fe2b763115a46333fa57c2093ca515520983fc97dce1d78b49e3111ded12691f5c6641661b04010a096f6eff52e084b0551c039b265bd06a9b7d47b1557da9c5274292697f4f833f28a34df0b9ab41110eb9da004d12dec1",
+                // dp: "ec67f3f0512f5bd56e4dad1ab86e531c7e6c3e548e56681f34429683aa84c27e235bc4108543db40a19975f621b3efd7cb07bf5e2bd40e2c230d34728a70ff1707806ba6408024e83bfbf88e2b73ab8ac17eb3536d379ab7b43b0c6ff23bd033a81bf19261be2d4ddb0d65073db66a7d5c410530c390e5b8df222c3c77b2d959",
+                // qinv: "aceae8faeb532417a93170013886844ea6842ce48d3563ccaa5d76c2b4508a8c1dffa112466e04523626f0bafb113c615bccd36d57044fbbd35e71a34baf2578b10966dcd551109819830df4879948ae59a1f0f7c6475fcc6aabef9017f0a840fbee9521564aedbea12726a3d85fd07fdb37624a318fd50ddd02153d98d83f7e",
+            ),
+            VerifyApplicationPin(),
+            Sign(
+                algo: 0x07,
+                key_reference: 0x9A,
+                data: "01111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+                output: Data("
+                    7c 82 0104
+                        82 820100
+                        0b2c35952261a19225aff67826bceadc9ae8ad2b1093bfefa59c54eb578f98a2031e88bdaa9a01630bd7fd0045d105adc9f8d8a0ba09559ef54336a526a64ddca659182f9db713b59ab54ad5aa9dc252e93d817e4a74a237f37704e5e95f4db86618572de02f20a563bf30b04fcea0a17dcc5d45903448b776cadf1dcc0413f6fbc2130fa2570035bac0173410af7e7ac30cbc76bae5f17cff3deaeff1dd674e33dc16d00078d07f10f6cabadc7ce781c6fd81f9b52540a163629d2feb3bd47e548e07c78336724875f801fcc9bcf847a459161ab3cba623e2c52a8a61d4ba271a2bc526f99052d4bcfea7c9b391baeec2326cc5b44a3c4b26b3aeba38fde759
+                "),
+            )
+        ]
+    ),
+    IoTest(
+        name: "RSA 3072 signature value",
+        uuid_config: WithBoth("00112233445566778899AABBCCDDEEFF"),
+        cmd_resp: [
+            AuthenticateManagement(
+                mutual: false,
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                )
+            ),
+            ImportRsaKey(
+                p: "d669e08e7586b2dae421e717f74138f24e469d64b272b3c76bfcb437c99fdda060af53f3d9d455deec8681f89fc55602eee5ec645d9e813748b044b77d73be7860bf793468ae0eac9990245e975662bbc3a80064b85b8d4980ccd0d746e2c06271e66371ffc76798811fc66e8d708792db92ac3a310df5326045aadb7faf74aa65b75332fe51633bc77f36571989584819efd75e0f1b2fceb4bd32676ff6fdddb71434b2d15763a2788af9b73bdb85701bd7e3314f5c0f9442f11fbe698d41ef",
+                q: "f19fb71ecddd8fce1e405a282b6577485bf9f25e9dd9ef3f73421bcde0f212c630d6033088fb0d8298e7b2a457eb25d7d9994bf5601be14f9eb9e014109bb5a36361bba4122a35ece0e3d92168b32826de5d4209b2ebcf49a84586ea888d71fa89deec64dde6b8cb6a0a4c4d6e0099a6a8b168cc702341d59649e0c7ce4ca59c4b08bc8658e6ec52b4b9c951e1f9234ca081216b6a3cd8a1492069d22b28197c8c8bfc532c037577617ad02a5cbd515e2b7354adb4ad62a9398dd316f712328b",
+                e: "010001",
+            ),
+            VerifyApplicationPin(),
+            Sign(
+                algo: 0x07,
+                key_reference: 0x9A,
+                data: "011111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+                output: Data("
+                    7c 82 0184
+                        82 820180
+                        8381de65f2583fa2b6e77e4b6cedb9e8b87d6374aef1dc9cd25f09af0ea49b08df11e4421d3ac0fc24c5718bcb7473d3bd9c3b8b4d7e7b957caf0ceb98442e04c65d7b7a430a0d3f82b62771abdfe47e7e385e2a68b2c799c3c6d8847a4c7fd32f1ef6660c61fd5e73cd75884cc582dc9e13dacea59b23bb318c2d193a0fb1115888c0e3cc1605428d683644c66119b1508dcffa08069dab530153489ccb43bec74bb43d1a1b89ca29ae7635d951a144bd1634e38021e0d251f4ce0f7f0ca8c82b83677dbe9b905ff465b311a297943382e120f0fc6c6b6c89998389a14c98507c7d3bdda978f7e356d27dd427028ca8f1d1a3aaea869b4b5d8273d93d52445959b9321e71bc8f2df43fb27dde1d7e54737e659bf436ddb3f100339bb9d8d12d7a3e4601d272152cc10d2053f62750af1c9337fb3778df71c8f5002787bc2c57c651d55ff374ed0da8489c1eddc8ed185193673f9fa343f2d53c883575371316e82dc53104ef8e5cf178ebc66cb0b102cc132b55c768f3809996532d0f36c791
+                "),
+            )
+        ]
+    ),
+    IoTest(
+        name: "RSA 4096 signature value",
+        uuid_config: WithBoth("00112233445566778899AABBCCDDEEFF"),
+        cmd_resp: [
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            ImportRsaKey(
+                p: "c4e56357f7910f2bcf5095dfbda9485adcd416c7dd5c794be72c4667397f05c840b0cd89f04c4ef12f7bcbf7bfad8c9ef96d695fa6fe4322b7fec913cf3d0976260c22d86f11c01af214d518bdb1c9260bf55e92c838fe60712fac04d0c2beae68a063b81cdc3f3afed2df32146a6d04a63ddb7885e4fe1880f710bae2ca5711e5883834559a331a1e5a8fad9a397f2fa064f36db9aa522d3816aa378c91940473cc1f347b6e0ae21182ba2939fee1f9824678b72a15cc35ebf27899b42494b09d26d0d5efa6fd4ad380b88c64c0687287d902c9a0546f1d06416992853cdcbb9e080dc0989b72514513da9f6dd332fdc46347f4a70b558cc6c6431e308dbfb7",
+                q: "cb100ef4dd07f17f4ceae3017aeb5cd6a63ef8bd048d181ff8e02dc45857ea1954513340c90db5fe67fcbac1d5dbe681f3ceb26bbc72e4720854ef17e8a340e270c3217c9f61f0734ec3600e3f9b24a648d7b8547117d16107ff1d1413ccc8e858cadbda8264b84fd7bd1fde14d285248d608083e2b40b328c58cfb37f37b6e9f4c416c972c3c6abee6bcccb34975fa5b335c7ba98b846f954e55cfcaba9f3dd9ab84e2b31c7e54967480bfced52c14d5a3a56235ee53f5c1aa994ee5e314bb2bb75ae3266e7e42cc6eb2229e911d95d483659371af5ba001381f278d063e082c99bf238daec1dcd8af07641c6e9bd8d8ea04dfe68d9c1833c9701d820a5cdd3",
+                e: "010001",
+            ),
+            VerifyApplicationPin(),
+            Sign(
+                algo: 0x07,
+                key_reference: 0x9A,
+                data: "0111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+                output: Data("
+                    7c 82 0204
+                        82 820200
+                        5b89c77459c1d0d8c6c0a0c0628cde7d76aca80340fce8ec27dc80adecca8e16968c921972d95071a8f1b10c260b81242c119bd0fbe091675952b26d0877fe4e82975aae901c4b8f26ebe965df40abfb9fa1782b4dfde1c0dd6e278d0575695d5f2523af5de01ac2f26abcbac0e2956a02799f7905cba2f223f2e609b079b841b428e90e610e24cd284d039413977d48ae7ca522a2070f7e0dbdeac0b812b4d46392d4085dbf527a7560231199627d84b8569ea1b54a19f4144914a20e2ce32d6915c1db7bcc5559deed24f6bc6683b05afedd384a34a7b1ae51af2b391e8d6f7d5075b5a0bd4b0e13336d834956288341c30808d150b799a8f9f5e2a2c50d9569ebd6f3e06b411931e7286699b4cd409598d0ead0a7a77486143996e92cdb7cdfa9c3777501e25940fe6a280080f377a2552a552f8e009cc4bc1d24cf2c3941a01c09d07a1117bae9637ed749fc0a4d98dd59451061d7c4af323265324a770adf92c63e0a0bc67ef1b326534d047a6683c0491c13f983e320fc2f398f4215ab01a9ac024b31aabf488ace1750d8eb0f6f411c5a8a62b2468ba7ad0c11f1ff108a7bbb8fc5a655a7dffd977eb0377fb6ffc9a2bf6e850e11d2762b6e72f80b44e03dd208071f2f7673566ba3853d3b04759c59b53a8c4138862f55702d25014f4bb2eb1cf2b2d047605f6b4a3f09b55212562bbb9cd35d5c3b3b9a543de3189f
+                "),
+            )
+        ]
+    ),
+    IoTest(
+        name: "Protected DOS",
+        uuid_config: WithBoth("00112233445566778899AABBCCDDEEFF"),
+        cmd_resp: [
+            GetData(
+                input: "5C 03 5FC108",
+                expected_status: SecurityStatusNotSatisfied,
+            ),
+            AuthenticateManagement(
+                key: (
+                    algorithm: Tdes,
+                    key: "0102030405060708 0102030405060708 0102030405060708"
+                ),
+                mutual: false,
+            ),
+            GetData(
+                input: "5C 03 5FC108",
+                expected_status: SecurityStatusNotSatisfied,
+            ),
+            VerifyApplicationPin(),
+            GetData(
+                input: "5C 03 5FC108",
+                output: All(),
+                expected_status: NotFound,
+            ),
+            PutData(
+                input: "5C 03 5FC108 53 10 000102030405060708090A0B0C0D0E0F",
+            ),
+            GetData(
+                input: "5C 03 5FC108",
+                output: Data("53 10 000102030405060708090A0B0C0D0E0F"),
+            ),
+        ],
+    ),
+]

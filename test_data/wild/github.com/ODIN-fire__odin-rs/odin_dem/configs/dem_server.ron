@@ -1,0 +1,4 @@
+ServerConfig(
+    sock_addr: "127.0.0.1:9019",
+    tls: None
+)

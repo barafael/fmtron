@@ -1,0 +1,64 @@
+PassConfig(
+    compute: {
+        "skybox" : (
+            pipeline: "sky",
+        ),
+    },
+    material: {
+        "bounds": (
+            pipeline: "wireframe",
+            scene_layout: [
+                CameraViewProj,
+            ],
+            flags: "BOUNDS"
+        ),
+        "select": (
+            pipeline: "wireframe",
+            scene_layout: [
+                CameraViewProj,
+            ],
+            flags: "SELECTED"
+        ),
+        "wire": (
+            pipeline: "wireframe",
+            scene_layout: [
+                CameraViewProj,
+            ],
+            flags: "ENTITY"
+        ),
+        "depth": (
+            pipeline: "depth",
+            scene_layout: [
+                CameraViewProj,
+            ],
+            flags: "ENTITY | OPAQUE"
+        ),
+        "forward_simple": (
+            scene_layout: [
+                CameraViewProj,
+            ],
+            flags: "ENTITY"
+        ),
+        "forward": (
+            scene_layout: [
+                CameraPosition,
+                CameraViewProj,
+                LightDirection,
+                LightColor,
+                LightAmbientColor,
+            ],
+            flags: "ENTITY"
+        ),
+        "ui": (
+            scene_layout: [
+                CameraViewPort,
+            ],
+            flags: "UI"
+        ),
+    },
+    present: {
+        "present": (
+            target: "draw",
+        )
+    },
+) 

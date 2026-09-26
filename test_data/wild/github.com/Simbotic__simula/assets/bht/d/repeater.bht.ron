@@ -1,0 +1,19 @@
+("Do a few times", Repeater((
+    repeat: Times(10),
+)), [
+    ("Say hi", Debug((
+        message: (
+            prop: Value("Hello, from DebugMessage0!"),
+        ),
+        fail: (
+            prop: Value(false),
+        ),
+        duration: (
+            prop: Value(0.0),
+        ),
+    )), [], (
+        pos: (400.0, 0.0),
+    )),
+], (
+    pos: (200.0, 0.0),
+))

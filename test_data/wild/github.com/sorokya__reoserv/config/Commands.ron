@@ -1,0 +1,365 @@
+(
+    commands: [
+        (
+            name: "warp",
+            alias: "w",
+            description: "Warp to a location",
+            usage: "$warp 5 25 25",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "map",
+                    type: "UInt",
+                    required: true,
+                    min: 1,
+                ),
+                (
+                    name: "x",
+                    type: "UInt",
+                ),
+                (
+                    name: "y",
+                    type: "UInt",
+                ),
+            ],
+        ),
+        (
+            name: "warptome",
+            alias: "wtm",
+            description: "Warp target player to your location",
+            usage: "$warptome player",
+            admin_level: "GameMaster",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "warpmeto",
+            alias: "wmt",
+            description: "Warp yourself to target player",
+            usage: "$warpmeto player",
+            admin_level: "LightGuide",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "player",
+            alias: "p",
+            description: "View player information",
+            usage: "$player player",
+            admin_level: "LightGuide",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "inventory",
+            alias: "i",
+            description: "View player inventory and account information",
+            usage: "$inventory player",
+            admin_level: "LightGuide",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "jail",
+            alias: "j",
+            description: "Jail a player",
+            usage: "$jail player",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "free",
+            alias: "f",
+            description: "Unjail a player",
+            usage: "$unjail player",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "freeze",
+            alias: "l",
+            description: "Freeze a player's movement",
+            usage: "$freeze player",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "unfreeze",
+            alias: "u",
+            description: "Un-freeze a player's movement",
+            usage: "$unfreeze player",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "mute",
+            alias: "m",
+            description: "Mute a player",
+            usage: "$mute player",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "kick",
+            alias: "k",
+            description: "Kick a player",
+            usage: "$kick player",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "skick",
+            alias: "sk",
+            description: "Silently kick a player",
+            usage: "$skick player",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+        (
+            name: "global",
+            alias: "g",
+            description: "Toggle global chat on/off",
+            usage: "$global",
+            admin_level: "Guardian",
+            args: [],
+        ),
+        (
+            name: "quake",
+            alias: "q",
+            description: "Cause an earthquake for all players",
+            usage: "$quake magnitude",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "magnitude",
+                    type: "UInt",
+                    required: false,
+                ),
+            ],
+        ),
+        (
+            name: "ban",
+            alias: "b",
+            description: "Ban a player",
+            usage: "$ban player {2h,1d} (omit duration for permanent ban)",
+            admin_level: "GameMaster",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "duration",
+                    type: "String",
+                    required: false,
+                ),
+            ],
+        ),
+        (
+            name: "sban",
+            alias: "sb",
+            description: "Silently ban a player",
+            usage: "$sban player {2h,1d} (omit duration for permanent ban)",
+            admin_level: "GameMaster",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "duration",
+                    type: "String",
+                    required: false,
+                ),
+            ],
+        ),
+        (
+            name: "remap",
+            alias: "remap",
+            description: "Reloads a map file",
+            usage: "$remap",
+            admin_level: "GameMaster",
+            args: [],
+        ),
+        (
+            name: "evacuate",
+            alias: "e",
+            description: "Start evacuate event",
+            usage: "$e",
+            admin_level: "GameMaster",
+            args: [],
+        ),
+        (
+            name: "spawnitem",
+            alias: "si",
+            description: "Spawn an item into your inventory",
+            usage: "$si gold 100",
+            admin_level: "HighGameMaster",
+            args: [
+                (
+                    name: "item",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "amount",
+                    type: "UInt",
+                    required: false,
+                )
+            ]
+        ),
+        (
+            name: "dropitem",
+            alias: "di",
+            description: "Spawn an item at your feet",
+            usage: "$di gold 100",
+            admin_level: "HighGameMaster",
+            args: [
+                (
+                    name: "item",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "amount",
+                    type: "UInt",
+                    required: false,
+                )
+            ]
+        ),
+        (
+            name: "hide",
+            alias: "x",
+            description: "Toggle hide state",
+            usage: "$x",
+            admin_level: "Guardian",
+            args: []
+        ),
+        (
+            name: "spawnnpc",
+            alias: "sn",
+            description: "Spawn an npc at your position",
+            usage: "$sn goat",
+            admin_level: "GameMaster",
+            args: [
+                (
+                    name: "npc",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "amount",
+                    type: "UInt",
+                    required: false,
+                )
+            ]
+        ),
+        (
+            name: "captcha",
+            alias: "c",
+            description: "Show a captcha to a player",
+            usage: "$c noob 1000",
+            admin_level: "Guardian",
+            args: [
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "experience",
+                    type: "UInt",
+                    required: true,
+                )
+            ]
+        ),
+        (
+            name: "set",
+            alias: "s",
+            description: "Set property of a character",
+            usage: "$s title goron The Great",
+            admin_level: "GameMaster",
+            args: [
+                (
+                    name: "property",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "player",
+                    type: "String",
+                    required: true,
+                ),
+                (
+                    name: "value",
+                    type: "String",
+                    required: true,
+                ),
+            ],
+        ),
+    ]
+)

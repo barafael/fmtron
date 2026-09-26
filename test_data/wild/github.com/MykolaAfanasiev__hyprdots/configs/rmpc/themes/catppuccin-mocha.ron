@@ -1,0 +1,86 @@
+#![enable(implicit_some)]
+#![enable(unwrap_newtypes)]
+#![enable(unwrap_variant_newtypes)]
+
+(
+    background_color: "#1e1e2e",
+    text_color: "#cdd6f4",
+
+    header_background_color: None,
+    modal_background_color: "#181825",
+
+    preview_label_style: (
+        fg: "#cba6f7",
+    ),
+
+    preview_metadata_group_style: (
+        fg: "#cba6f7",
+        modifiers: "Bold",
+    ),
+
+    tab_bar: (
+        enabled: true,
+
+        active_style: (
+            fg: "#1e1e2e",
+            bg: "#89b4fa",
+            modifiers: "Bold",
+        ),
+
+        inactive_style: (
+            fg: "#a6adc8",
+        ),
+    ),
+
+    highlighted_item_style: (
+        fg: "#f5c2e7",
+        modifiers: "Bold",
+    ),
+
+    current_item_style: (
+        fg: "#1e1e2e",
+        bg: "#89b4fa",
+        modifiers: "Bold",
+    ),
+
+    borders_style: (
+        fg: "#6c7086",
+    ),
+
+    highlight_border_style: (
+        fg: "#89b4fa",
+    ),
+
+    progress_bar: (
+        symbols: ["━", "━", "●"],
+
+        track_style: (
+            fg: "#313244",
+        ),
+
+        elapsed_style: (
+            fg: "#89b4fa",
+        ),
+
+        thumb_style: (
+            fg: "#cba6f7",
+            bg: "#313244",
+        ),
+    ),
+
+    scrollbar: (
+        symbols: ["│", "█", "▲", "▼"],
+
+        track_style: (
+            fg: "#313244",
+        ),
+
+        ends_style: (
+            fg: "#6c7086",
+        ),
+
+        thumb_style: (
+            fg: "#89b4fa",
+        ),
+    ),
+)

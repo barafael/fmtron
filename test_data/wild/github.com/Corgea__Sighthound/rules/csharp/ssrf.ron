@@ -1,0 +1,27 @@
+(
+    rules: [
+        // HttpClient content helpers fetch a (typically dynamic) URL server-side.
+        // These methods exist only to perform an outbound HTTP request, so matching
+        // them by name is high-signal for SSRF when the URL is request-influenced.
+        (
+            id: Some("csharp-ssrf-httpclient"),
+            name: Some("Server-side request via HttpClient"),
+            category: Some("ssrf"),
+            mode: "search",
+            patterns: Some([
+                "GetStringAsync",
+                "GetByteArrayAsync",
+                "GetStreamAsync",
+            ]),
+            finding_type: Some("SSRF"),
+            severity: Some("High"),
+            confidence: Some("Medium"),
+            cwe_id: Some("cwe-918"),
+            description: Some("HttpClient fetches a URL server-side; if the URL is attacker-influenced this is SSRF"),
+            file_types: Some((
+                extensions: Some([".cs"])
+            )),
+            tags: Some(["ssrf", "csharp", "cwe-918"])
+        ),
+    ]
+)

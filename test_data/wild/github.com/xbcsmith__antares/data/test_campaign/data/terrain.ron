@@ -1,0 +1,36 @@
+// terrain.ron - Test campaign terrain overrides and additions
+//
+// This file is the test fixture for campaign terrain merge tests.
+// It overrides the built-in Grass definition (13001) and adds a new
+// campaign-specific Volcanic Ash terrain type (13100).
+//
+// TerrainMeshStyle variants: Flat, Water, Mountain
+// TerrainVegetation variants: None, GrassCover, Forest
+
+[
+    // ── Campaign Grass (13001 override) ───────────────────────────────────────
+    (
+        id: 13001,
+        name: "Campaign Grass",
+        texture_path: "assets/textures/terrain/grass.png",
+        roughness: 0.92,
+        mesh_style: Flat,
+        vegetation: GrassCover,
+        blocked: false,
+        height: 0.0,
+        color: (0.2, 0.7, 0.2),
+    ),
+
+    // ── Volcanic Ash (13100 new) ───────────────────────────────────────────────
+    (
+        id: 13100,
+        name: "Volcanic Ash",
+        texture_path: "assets/textures/terrain/ground.png",
+        roughness: 0.70,
+        mesh_style: Flat,
+        vegetation: None,
+        blocked: false,
+        height: 0.0,
+        color: (0.2, 0.2, 0.2),
+    ),
+]

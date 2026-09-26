@@ -1,0 +1,40 @@
+Rule(
+    id: "d12062ac-32f8-41c5-9dab-38adc0de6dd0",
+    name: "Door Opened - Bathroom",
+    enabled: true,
+    priority: 10,
+    tags: [],
+    trigger: DeviceStateChanged(
+        device_id: "yolink_d88b4c0400064299",
+        attribute: Some("open"),
+        to: Some(true),
+    ),
+    conditions: [],
+    actions: [
+        RuleAction(
+            enabled: true,
+            action: SetDeviceState(
+                device_id: "sonos_bathroom",
+                state: {
+                    "action": "stop",
+                },
+                track_event_value: false,
+            ),
+        ),
+        RuleAction(
+            enabled: true,
+            action: SetDeviceState(
+                device_id: "timer_bathroom",
+                state: {
+                    "command": "start",
+                    "duration_secs": 300,
+                },
+                track_event_value: false,
+            ),
+        ),
+    ],
+    log_events: false,
+    log_triggers: false,
+    log_actions: false,
+    cancel_on_false: false,
+)

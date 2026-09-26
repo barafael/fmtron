@@ -1,0 +1,9 @@
+// Video configuration
+(
+    resolution: (1920, 1080),
+    fullscreen: false,
+    vsync: true,
+    fps_limit: 144,
+    fov: 90.0,
+    render_distance: 1000.0,
+)

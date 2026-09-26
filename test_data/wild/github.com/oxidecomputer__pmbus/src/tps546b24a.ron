@@ -1,0 +1,96 @@
+(
+    all: [
+        // These are unsupported, and marked to prevent from automatic queries
+        (0x81, "STATUS_FANS_1_2", Illegal, Illegal),
+        (0x82, "STATUS_FANS_3_4", Illegal, Illegal),
+        (0x9c, "MFR_LOCATION", Illegal, Illegal),
+        (0x9d, "MFR_DATE", Illegal, Illegal),
+
+        (0xb1, "COMPENSATION_CONFIG", WriteBlock, ReadBlock),
+        (0xb5, "POWER_STAGE_CONFIG", WriteBlock, ReadBlock),
+        (0xd0, "TELEMETRY_CONFIG", WriteBlock, ReadBlock),
+        (0xda, "READ_ALL", Illegal, ReadBlock),
+        (0xdb, "STATUS_ALL", Illegal, ReadBlock),
+        (0xdc, "STATUS_PHASE", WriteWord, ReadWord),
+        (0xe3, "PGOOD_CONFIG", WriteWord, ReadWord),
+        (0xe4, "SYNC_CONFIG", WriteByte, ReadByte),
+        (0xec, "STACK_CONFIG", WriteWord, ReadWord),
+        (0xed, "MISC_OPTIONS", WriteWord, ReadWord),
+        (0xee, "PIN_DETECT_OVERRIDE", WriteWord, ReadWord),
+        (0xef, "ADDRESS", WriteByte, ReadByte),
+        (0xf0, "NVM_CHECKSUM", Illegal, ReadWord),
+        (0xf1, "SIMULATE_FAULT", WriteWord, ReadWord),
+        (0xfc, "FUSION_ID0", WriteWord, ReadWord),
+        (0xfd, "FUSION_ID1", WriteBlock, ReadBlock),
+    ],
+
+    numerics: [
+        ("VOUT_TRANSITION_RATE", Linear11, VoltsPerMicrosecond),
+        ("VOUT_SCALE_LOOP", Linear11, Unitless),
+        ("FREQUENCY_SWITCH", Linear11, Kilohertz),
+        ("VIN_ON", Linear11, Volts),
+        ("VIN_OFF", Linear11, Volts),
+        ("IOUT_CAL_GAIN", Linear11, Unitless),
+        ("IOUT_CAL_OFFSET", Linear11, Amperes),
+        ("VOUT_OV_FAULT_LIMIT", VOutMode(Unsigned), Volts),
+        ("VOUT_OV_WARN_LIMIT", VOutMode(Unsigned), Volts),
+        ("VOUT_UV_WARN_LIMIT", VOutMode(Unsigned), Volts),
+        ("VOUT_UV_FAULT_LIMIT", VOutMode(Unsigned), Volts),
+        ("IOUT_OC_FAULT_LIMIT", Linear11, Amperes),
+        ("IOUT_OC_WARN_LIMIT", Linear11, Amperes),
+        ("OT_FAULT_LIMIT", Linear11, Celsius),
+        ("OT_WARN_LIMIT", Linear11, Celsius),
+        ("VIN_OV_FAULT_LIMIT", Linear11, Volts),
+        ("VIN_UV_WARN_LIMIT", Linear11, Volts),
+        ("TON_DELAY", Linear11, Milliseconds),
+        ("TON_RISE", Linear11, Milliseconds),
+        ("TON_MAX_FAULT_LIMIT", Linear11, Milliseconds),
+        ("TOFF_DELAY", Linear11, Milliseconds),
+        ("TOFF_FALL", Linear11, Milliseconds),
+        ("READ_VIN", Linear11, Volts),
+        ("READ_VOUT", VOutMode(Unsigned), Volts),
+        ("READ_IOUT", Linear11, Amperes),
+        ("READ_TEMPERATURE_1", Linear11, Celsius),
+    ],
+
+    structured: {
+        "STATUS_MFR_SPECIFIC": {
+            "POR": (
+                name: "Power-on-reset fault",
+                bits: Bit(7),
+                values: Sentinels({
+                    "NoFault": (0b0, "no fault"),
+                    "Fault": (0b1, "fault"),
+                }),
+            )
+        },
+
+        "READ_ALL": {
+            "READ_VIN": (
+                name: "READ_VIN command",
+                bits: Bitrange(High(79), Low(64)),
+                values: Scalar(Unsigned),
+            ),
+            "READ_TEMPERATURE1": (
+                name: "READ_TEMPERATURE1 command",
+                bits: Bitrange(High(63), Low(48)),
+                values: Scalar(Unsigned),
+            ),
+            "READ_IOUT": (
+                name: "READ_IOUT command",
+                bits: Bitrange(High(47), Low(32)),
+                values: Scalar(Unsigned),
+            ),
+            "READ_VOUT": (
+                name: "READ_VOUT command",
+                bits: Bitrange(High(31), Low(16)),
+                values: Scalar(Unsigned),
+            ),
+            "STATUS_WORD": (
+                name: "STATUS_WORD command",
+                bits: Bitrange(High(15), Low(0)),
+                values: Scalar(Unsigned),
+            ),
+        }
+    }
+)

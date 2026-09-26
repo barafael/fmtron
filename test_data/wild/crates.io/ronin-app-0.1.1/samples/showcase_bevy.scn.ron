@@ -1,0 +1,45 @@
+// showcase_bevy.scn.ron — a Bevy DynamicScene the app recognizes as a scene.
+//
+// Recognition is by file EXTENSION (`.scn.ron` -> Mode::Bevy, see bevy/mode.rs)
+// AND by shape: bevy/scene.rs reads a top-level struct-like value carrying a
+// `resources` map (type-path string -> value) and an `entities` map (integer id
+// -> ( components: { type-path string -> component value } )). This scene has
+// resources + entities + components, with enum-variant, Option, and tuple
+// component values so the Bevy surfaces have one of each to interpret.
+(
+    resources: {
+        "showcase::GameConfig": (
+            difficulty: Hard,        // enum-variant resource value
+            seed: 1234,
+        ),
+        "showcase::Ambient": (
+            color: (0.1, 0.1, 0.15), // tuple value inside a resource
+        ),
+    },
+    entities: {
+        0: (
+            components: {
+                // a tuple component (e.g. a 3-float translation)
+                "showcase::Transform": (1.0, 2.0, 3.0),
+                // an enum-variant component
+                "showcase::State": Running,
+                // an Option component (Some)
+                "showcase::Target": Some(7),
+            },
+        ),
+        1: (
+            components: {
+                "showcase::Transform": (0.0, 0.0, 0.0),
+                // an Option component (None)
+                "showcase::Target": None,
+                "showcase::State": Idle,
+            },
+        ),
+        2: (
+            components: {
+                "showcase::Transform": (5.0, 5.0, 5.0),
+                "showcase::State": Paused,
+            },
+        ),
+    },
+)

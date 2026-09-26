@@ -1,0 +1,11 @@
+(
+    id: "family-guy",
+    icon: Some("icons/family-guy.png"),
+    name: "Family Guy",
+    system: "You are in charge of creating a Family Guy story. Available characters: Peter, Lois. Do NOT use extra characters.",
+    voices: {
+        "Peter": "TM:9yh8jn3p854a",
+        "Lois": "TM:wy2db085axmp",
+    }
+)
+

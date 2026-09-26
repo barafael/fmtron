@@ -1,0 +1,74 @@
+#![enable(implicit_some)]
+
+AnalysisConfig(
+  meta: (
+    variant_name: "Elona+",
+    version: "2.13",
+    ax_sha256: "48e781b063d1870d202eba408e9ebd92bc6f62127cd2a60913da2ed7370457d3"
+  ),
+
+  includes: [
+    "database/plus2.12.ron"
+  ],
+
+  variable_groups: {
+    "item_id": (
+      variables: [
+        ( name: "ITEM_ID_STARFIBER", value: 1252 ),
+        ( name: "ITEM_ID_SURVIVABILITY_EXTENDER_Y", value: 1253 ),
+        ( name: "ITEM_ID_SURVIVABILITY_EXTENDER_X", value: 1254 ),
+        ( name: "ITEM_ID_SPIRITIUM", value: 1255 ),
+        ( name: "ITEM_ID_MASTER_OF_SPADE", value: 1256 ),
+        ( name: "ITEM_ID_MASTER_OF_CLUB", value: 1257 ),
+        ( name: "ITEM_ID_MASTER_OF_HEART", value: 1258 ),
+        ( name: "ITEM_ID_MASTER_OF_DIAMOND", value: 1259 ),
+        ( name: "ITEM_ID_LASER_BAZOOKA", value: 1260 ),
+        ( name: "ITEM_ID_CORK_PACK", value: 1261 ),
+
+        ( name: "MAX_ITEM_ID", value: 1264, code_value: "ITEM_ID_CORK_PACK + 3", exclude: true ),
+      ],
+    ),
+    "item_effect": (
+      variables: [
+        ( name: "EFFECT_STARFIBER", value: 129 ),
+        ( name: "EFFECT_SPIRITIUM", value: 130 ),
+        ( name: "EFFECT_SURVIVABILITY_EXTENDER_X", value: 131 ),
+        ( name: "EFFECT_SURVIVABILITY_EXTENDER_Y", value: 132 ),
+        ( name: "EFFECT_LASER_BAZOOKA", value: 133 ),
+        ( name: "EFFECT_MASTER_OF", value: 134 ),
+        ( name: "EFFECT_CORK_PACK", value: 135 ),
+      ]
+    ),
+    "sound_id": (
+        variables: [
+        ( name: "SOUNDLIST_GUN10", value: 301, ),
+
+        ( name: "SOUNDLIST_MAX", value: 302, code_value: "SOUNDLIST_GUN10 + 1", exclude: true ),
+      ],
+    ),
+    "animation_id": (
+      variables: [
+        ( name: "ANIMATION_LASER_BAZOOKA", value: 62 ),
+      ]
+    ),
+    "rf_id": (
+      variables: [
+        ( name: "RF_BLANKET", value: 9028, code_value: "EXT_RF + 28", override: true ),
+
+        ( name: "MAX_RF", value: 9029, code_value: "RF_BLANKET + 1" ),
+      ]
+    ),
+  },
+
+  arrays: {},
+
+  expressions: {},
+
+  functions: {
+  },
+
+  labels: {
+  },
+
+  files: {}
+)

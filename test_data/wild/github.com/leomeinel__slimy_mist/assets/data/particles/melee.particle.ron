@@ -1,0 +1,27 @@
+(
+    spawn_rate: 0.1,
+    spawn_amount: 3,
+    emission_shape: Point,
+    lifetime: (0.5, 0.6),
+    linear_speed: Some((150.0, 0.3)),
+    linear_acceleration: None,
+    // NOTE: We need to have a baseline to allow randomization
+    direction: Some(((-0.1, 0.1), 1.0)),
+    angular_speed: None,
+    angular_acceleration: None,
+    scale: None,
+    color: None,
+    gravity_direction: None,
+    gravity_speed: None,
+    linear_damp: None,
+    angular_damp: None,
+    scale_curve: Some((points: [(2.5, 0.0, None), (0.0, 1.0, Some(CubicIn))])),
+    color_curve: Some((
+            points: [
+                ((red: 0.92156863, green: 0.9411765, blue: 0.93333334, alpha: 0.7), 0.0, None), // RGB_PALETTE[8]
+                ((red: 0.10980392, green: 0.13725491, blue: 0.14117648, alpha: 0.25), 1.0, None), // RGB_PALETTE[0]
+            ]
+        )),
+    attractors: None,
+    relative_positioning: Some(false)
+)

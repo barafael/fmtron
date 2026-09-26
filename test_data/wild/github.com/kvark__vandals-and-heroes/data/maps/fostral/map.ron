@@ -1,0 +1,4 @@
+(
+    radius: (start: 10.0, end: 15.0),
+    density: 10.0,
+)

@@ -1,0 +1,50 @@
+Rule(
+    id: "841818bd-f732-46df-bbb3-5c444f97846f",
+    name: "Door Alert - OH1 Open 10min",
+    enabled: false,
+    priority: 5,
+    tags: [
+        "garage",
+        "door-alerts",
+    ],
+    trigger: DeviceStateChanged(
+        device_id: "timer_garage_close",
+        attribute: Some("state"),
+        to: Some("finished"),
+    ),
+    conditions: [
+        DeviceState(
+            device_id: "yolink_d88b4c01000cf2e5",
+            attribute: "open",
+            op: Eq,
+            value: true,
+        ),
+    ],
+    actions: [
+        RuleAction(
+            enabled: true,
+            action: Delay(
+                duration_secs: 60,
+                cancelable: false,
+            ),
+        ),
+        RuleAction(
+            enabled: true,
+            action: Conditional(
+                condition: "device_state(\"yolink_d88b4c01000cf2e5\")[\"open\"] == true",
+                then_actions: [
+                    Notify(
+                        channel: "telegram",
+                        message: "Garage door (OH1) has been open for 10+ minutes",
+                        title: None,
+                    ),
+                ],
+                else_actions: [],
+            ),
+        ),
+    ],
+    log_events: false,
+    log_triggers: false,
+    log_actions: false,
+    cancel_on_false: false,
+)

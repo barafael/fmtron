@@ -1,0 +1,4 @@
+(
+  title: "montecarlorust",
+  dimensions: Some((500, 500)),
+)

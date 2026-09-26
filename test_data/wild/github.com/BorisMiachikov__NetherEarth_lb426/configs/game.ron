@@ -1,0 +1,8 @@
+(
+    seconds_per_day: 30.0,
+    map_width: 512,
+    map_height: 512,
+    scout_speed: 8.0,
+    scout_min_altitude: 1.0,
+    scout_max_altitude: 10.0,
+)

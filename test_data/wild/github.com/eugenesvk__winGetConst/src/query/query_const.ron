@@ -1,0 +1,23 @@
+SemverQuery(id     	: "query_const",
+human_readable_name	: "list Constants and their data",
+description        	: "A pub const query",
+reference_link     	: None,
+query : r#"{Crate { # List 'public' constants, their expr/values
+item {
+  ... on Constant                   	{                                	# unicode_normalization 0.1.22
+  visibility_limit                  	@filter(op:"=",value:["$public"])	#
+  name: name                        	@output                          	# UNICODE_VERSION
+  id                                	@output                          	# 0:329:1673
+  expr                              	@output                          	# 16
+  value                             	@output                          	# 16usize
+  #type_                            	@output                          	# excluded from scheme, use ID in Rust to get value from Crate
+  #type: type_                      	@output                          	# works with r#type
+  is_literal                        	@output                          	# true
+  importable_path {path_import: path	@output}                         	# unicode_normalization,       UNICODE_VERSION
+  }
+ }
+} }"#,
+arguments: {"public":"public",},
+error_message: "err",
+per_result_error_template: Some("{{name}} in file {{span_filename}}:{{span_begin_line}}"),
+)

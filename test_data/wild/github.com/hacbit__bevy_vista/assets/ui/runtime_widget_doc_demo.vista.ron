@@ -1,0 +1,36 @@
+(
+    version: 1,
+    roots: [1],
+    nodes: [
+        (
+            id: 1,
+            name: "screen",
+            widget_path: "common/node",
+            children: [2, 3],
+        ),
+        (
+            id: 2,
+            name: "title",
+            widget_path: "common/label",
+            props: {
+                "text": "Runtime Title",
+            },
+            children: [],
+        ),
+        (
+            id: 3,
+            name: "cta",
+            widget_path: "common/button",
+            children: [4],
+        ),
+        (
+            id: 4,
+            name: "cta-label",
+            widget_path: "common/label",
+            props: {
+                "text": "Press Space",
+            },
+            children: [],
+        ),
+    ],
+)

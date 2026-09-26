@@ -1,0 +1,125 @@
+(
+    sprinkles_version: "0.3",
+    name: "Tube Trails",
+    dimension: D3,
+    emitters: [
+        (
+            name: "Tubes",
+            time: (
+                lifetime: 2.0,
+            ),
+            draw_pass: (
+                mesh: TubeTrail(
+                    radius: 0.05,
+                    radial_steps: 6,
+                    sections: 8,
+                    section_rings: 3,
+                ),
+                material: Standard((
+                    base_color: (1.0, 1.0, 1.0, 1.0),
+                    alpha_mode: Opaque,
+                    perceptual_roughness: 0.5,
+                    reflectance: 0.5,
+                )),
+            ),
+            emission: (
+                particles_amount: 50,
+            ),
+            scale: (
+                range: (
+                    min: 0.75,
+                    max: 1.0,
+                ),
+            ),
+            colors: (
+                initial_color: Gradient(
+                    gradient: (
+                        stops: [
+                            (
+                                color: (0.6392157, 0.9019608, 0.20784312, 1.0),
+                                position: 0.0,
+                            ),
+                            (
+                                color: (0.17647058, 0.83137256, 0.7490195, 1.0),
+                                position: 0.25,
+                            ),
+                            (
+                                color: (0.6549019, 0.54509807, 0.98039216, 1.0),
+                                position: 0.5,
+                            ),
+                            (
+                                color: (0.95686275, 0.44705886, 0.71372557, 1.0),
+                                position: 0.75,
+                            ),
+                            (
+                                color: (0.88235295, 0.11372548, 0.28235313, 1.0),
+                                position: 1.0,
+                            ),
+                        ],
+                    ),
+                ),
+                color_over_lifetime: (
+                    stops: [
+                        (
+                            color: (1.0, 1.0, 1.0, 1.0),
+                            position: 0.0,
+                        ),
+                        (
+                            color: (1.0, 1.0, 1.0, 1.0),
+                            position: 1.0,
+                        ),
+                    ],
+                ),
+            ),
+            velocities: (
+                initial_direction: (0.0, 1.0, 0.0),
+                spread: 45.0,
+                initial_velocity: (
+                    min: 4.0,
+                    max: 6.0,
+                ),
+                radial_velocity: (),
+                angular_velocity: (),
+            ),
+            accelerations: (
+                gravity: (0.0, -9.8, 0.0),
+            ),
+            collision: (
+                base_size: 0.01,
+            ),
+            trail: (
+                enabled: true,
+                stretch_time: 0.3,
+                thickness_curve: Some((
+                    x: (
+                        points: [
+                            (
+                                position: 0.0,
+                                value: 0.0,
+                                mode: DoubleCurve,
+                                tension: 0.0,
+                                easing: Power,
+                            ),
+                            (
+                                position: 1.0,
+                                value: 1.0,
+                                mode: DoubleCurve,
+                                tension: 1.0,
+                                easing: Sine,
+                            ),
+                        ],
+                        range: (
+                            min: 0.0,
+                            max: 1.0,
+                        ),
+                    ),
+                )),
+            ),
+            particle_flags: "",
+        ),
+    ],
+    colliders: [],
+    authors: (
+        submitted_by: "DoceAzedo",
+    ),
+)

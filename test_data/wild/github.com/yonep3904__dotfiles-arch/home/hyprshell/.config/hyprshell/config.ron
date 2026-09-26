@@ -1,0 +1,85 @@
+// Edit with `hyprshell config edit`
+(
+    version: 4,
+    windows: (
+        scale: 8.5,
+        items_per_row: 5,
+        overview: (
+            launcher: (
+                default_terminal: None,
+                launch_modifier: "ctrl",
+                width: 650,
+                max_items: 5,
+                show_when_empty: true,
+                plugins: (
+                    applications: (
+                        run_cache_weeks: 8,
+                        show_execs: true,
+                        show_actions_submenu: true,
+                    ),
+                    terminal: (),
+                    shell: None,
+                    websearch: (
+                        engines: [
+                            (
+                                url: "https://www.google.com/search?q={}",
+                                name: "Google",
+                                key: 'g',
+                            ),
+                            (
+                                url: "https://en.wikipedia.org/wiki/Special:Search?search={}",
+                                name: "Wikipedia",
+                                key: 'w',
+                            ),
+                        ],
+                    ),
+                    calc: (),
+                    path: (),
+                    actions: (
+                        actions: [
+                            lock_screen,
+                            hibernate,
+                            logout,
+                            reboot,
+                            shutdown,
+                            suspend,
+                            custom(
+                                names: [
+                                    "Kill",
+                                    "Stop",
+                                ],
+                                details: "Kill or stop a process by name",
+                                command: "pkill \"{}\" && notify-send hyprshell \"stopped {}\"",
+                                icon: "remove",
+                            ),
+                            custom(
+                                names: [
+                                    "Reload Hyprshell",
+                                ],
+                                details: "Reload Hyprshell",
+                                command: "sleep 1; hyprshell socat \'\"Restart\"\'",
+                                icon: "system-restart",
+                            ),
+                        ],
+                    ),
+                ),
+            ),
+            key: "space",
+            top_offset: 430,
+            modifier: "super",
+            filter_by: [],
+            exclude_workspaces: "special:.*",
+        ),
+        switch: (
+            modifier: "alt",
+            key: "Tab",
+            filter_by: [
+                current_monitor,
+            ],
+            switch_workspaces: false,
+            exclude_workspaces: "",
+            kill_key: 'q',
+        ),
+        switch_2: None,
+    ),
+)

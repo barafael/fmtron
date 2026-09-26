@@ -1,0 +1,8 @@
+(
+    body: Some("This is a body without a footer following it."),
+    desc: "short msg",
+    footer:[],
+    is_breaking_change: false,
+    scope: Some("scope"),
+    ty: "fix"
+)

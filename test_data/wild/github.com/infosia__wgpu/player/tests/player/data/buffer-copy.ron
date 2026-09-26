@@ -1,0 +1,30 @@
+(
+    features: "MAPPABLE_PRIMARY_BUFFERS",
+    expectations: [
+        (
+            name: "basic",
+            buffer: PointerId(0x10),
+            offset: 0,
+            data: Raw([0x00, 0x00, 0x80, 0xBF]),
+        )
+    ],
+    actions: [
+        CreateBuffer(
+            PointerId(0x10),
+            (
+                label: Some("dummy"),
+                size: 16,
+                usage: "MAP_READ | COPY_DST | VERTEX",
+                mapped_at_creation: false,
+            ),
+        ),
+        WriteBuffer(
+            id: PointerId(0x10),
+            data: File("data1.bin"),
+            offset: 0,
+            size: 16,
+            queued: true,
+        ),
+        Submit(1, []),
+    ],
+)

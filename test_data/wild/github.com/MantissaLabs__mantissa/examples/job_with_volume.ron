@@ -1,0 +1,54 @@
+(
+    name: "job-with-volume",
+    execution_platform: "oci",
+    isolation_mode: "sandboxed",
+    isolation_profile: Some("oci-default"),
+    volumes: [
+        (
+            name: "workspace",
+            driver: local((
+                source: managed,
+            )),
+            access_mode: read_write_once,
+            binding_mode: wait_for_first_consumer,
+            reclaim_policy: retain,
+            capacity_mb: Some(256),
+            labels: [
+                (
+                    key: "app",
+                    value: "job-with-volume",
+                ),
+            ],
+        ),
+    ],
+    execution: (
+        image: "alpine:3.20",
+        command: [
+            "sh",
+            "-lc",
+            "echo 'mantissa job volume demo' > /workspace/output.txt && cat /workspace/output.txt",
+        ],
+        resources: (
+            cpu_millis: 250,
+            memory_mb: 128,
+        ),
+        termination_grace_period_secs: Some(30),
+        volumes: [
+            (
+                source: "workspace",
+                target: "/workspace",
+                read_only: false,
+            ),
+        ],
+        networks: ["jobs-demo"],
+    ),
+    retry_policy: (
+        max_retries: 0,
+        backoff_secs: 2,
+    ),
+    deployment: (
+        progress_deadline_secs: 600,
+        healthy_deadline_secs: 600,
+        min_healthy_secs: 1,
+    ),
+)

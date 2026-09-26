@@ -1,0 +1,189 @@
+(
+    // ========================================
+    // IDENTITY
+    // ========================================
+    name: "stone",
+    id: 1,
+    tags: ["stone", "mineable_pickaxe", "building_block"],
+    
+    // ========================================
+    // VISUAL PROPERTIES
+    // ========================================
+    
+    // Texture Configuration
+    // Single texture for all faces:
+    texture: "textures/blocks/stone.png",
+    // OR per-face textures (comment out 'texture' above and uncomment below):
+    // textures: (
+    //     top: "textures/blocks/stone_top.png",
+    //     bottom: "textures/blocks/stone_bottom.png",
+    //     side: "textures/blocks/stone_side.png",
+    // ),
+    
+    // Color multiplier applied to texture (1.0, 1.0, 1.0 = no tint)
+    color_tint: (1.0, 1.0, 1.0),
+    
+    // Rendering mode:
+    //   "solid" = fully opaque block (stone, dirt)
+    //   "transparent" = see-through with alpha blending (glass, water)
+    //   "cutout" = binary transparency, no blending (leaves, flowers)
+    //   "cutout_mipped" = cutout with mipmapping (grass, plants)
+    render_type: "solid",
+    
+    // Whether light can pass through this block
+    transparent: false,
+    
+    // ========================================
+    // PHYSICAL PROPERTIES
+    // ========================================
+    
+    // Does this block occupy space and block movement?
+    solid: true,
+    
+    // Movement friction when walking on this block (0.0 = no friction, 1.0 = max friction)
+    friction: 0.6,
+    
+    // How slippery the surface is (ice = 0.98, normal = 0.6)
+    slipperiness: 0.6,
+    
+    // Does this block fall when unsupported? (true for sand, gravel)
+    affected_by_gravity: false,
+    
+    // Damage multiplier when this block falls on entities (1.0 = normal, 2.0 = double damage)
+    fall_damage_multiplier: 1.0,
+    
+    // Can players climb this block? (true for ladders, vines)
+    climbable: false,
+    
+    // Climbing speed multiplier (only used if climbable = true)
+    climb_speed: 2.0,
+    
+    // Can players grab and hang from the top edge of this block?
+    can_grab_ledge: false,
+    
+    // Collision box shape:
+    //   "full" = entire 1x1x1 block
+    //   "none" = no collision (walk through)
+    //   Custom((min: (x, y, z), max: (x, y, z))) = custom hitbox
+    collision_box: "full",
+    
+    // ========================================
+    // BREAKING & MINING
+    // ========================================
+    
+    // Can this block be broken by the player?
+    breakable: true,
+    
+    // Time to break with correct tool (0.0 = instant, higher = longer)
+    hardness: 1.5,
+    
+    // Which tool type is required? (None = breakable by hand)
+    tool_required: Some("pickaxe"),
+    
+    // Minimum tool tier required (0 = wood, 1 = stone, 2 = iron, 3 = diamond, etc.)
+    // Using wrong tier = block breaks but drops nothing
+    tool_tier: 1,
+    
+    // Resistance to explosion damage (dirt = 0.5, stone = 6.0, obsidian = 1200.0)
+    blast_resistance: 6.0,
+    
+    // ========================================
+    // DROPS
+    // ========================================
+    
+    // What item drops when this block is broken
+    drop_item: "stone",
+    
+    // How many items drop (can be overridden by fortune enchantments)
+    drop_count: 1,
+    
+    // ========================================
+    // LIGHTING
+    // ========================================
+    
+    // Light level emitted by this block (0 = no light, 15 = brightest)
+    // Examples: torch = 14, lava = 15, glowstone = 15
+    light_level: 0,
+    
+    // ========================================
+    // FIRE PROPERTIES
+    // ========================================
+    
+    // Can this block catch fire?
+    flammable: false,
+    
+    // How long this block burns when on fire (seconds, 0.0 = doesn't burn)
+    burn_time: 0.0,
+    
+    // Chance per tick to spread fire to adjacent blocks (0.0 = never, 1.0 = always)
+    fire_spread_chance: 0.0,
+    
+    // ========================================
+    // INTERACTION
+    // ========================================
+    
+    // Does right-clicking this block trigger an action?
+    interactable: false,
+    
+    // Type of interaction (None, Some("chest"), Some("furnace"), Some("door"), etc.)
+    interaction_type: None,
+    
+    // Can other blocks be placed in the same space? (true for tall grass, flowers)
+    replaceable: false,
+    
+    // ========================================
+    // UPDATES & TICKING
+    // ========================================
+    
+    // Does this block actively update? (redstone, crops, water flow)
+    ticks: false,
+    
+    // How many times per second this block updates (only used if ticks = true)
+    tick_rate: 1.0,
+    
+    // Does this block receive random tick updates? (grass spreading, crop growth)
+    random_tick: false,
+    
+    // ========================================
+    // ITEM PROPERTIES (when in inventory)
+    // ========================================
+    
+    // Maximum number that can stack in one inventory slot
+    max_stack_size: 64,
+    
+    // Tool durability (None for blocks, Some(uses) for tools)
+    durability: None,
+    
+    // ========================================
+    // AUDIO
+    // ========================================
+    
+    // Sound effects for this block
+    sounds: (
+        break_sound: "sounds/blocks/stone_break.ogg",  // Played when block is broken
+        place_sound: "sounds/blocks/stone_place.ogg",  // Played when block is placed
+        step_sound: "sounds/blocks/stone_step.ogg",    // Played when walking on block
+    ),
+    
+    // ========================================
+    // ADVANCED FEATURES
+    // ========================================
+    
+    // Mechanical system properties (for Create-like mechanics)
+    mechanical: None,
+    // Example:
+    // Some(Mechanical((
+    //     type: "shaft",           // "shaft", "gearbox", "waterwheel", etc.
+    //     power_input: true,       // Can receive power?
+    //     power_output: true,      // Can transmit power?
+    //     rotation_axis: "y",      // Which axis rotates ("x", "y", or "z")
+    // )))
+    
+    // Multi-block structure properties (for large machines)
+    multiblock: None,
+    // Example:
+    // Some(Multiblock((
+    //     size: (3, 3, 1),         // Dimensions: width, height, depth (in blocks)
+    //     origin: (1, 1, 0),       // Which block is the "center" (0-indexed)
+    // )))
+)

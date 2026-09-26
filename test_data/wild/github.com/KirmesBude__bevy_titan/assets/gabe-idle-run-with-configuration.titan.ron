@@ -1,0 +1,25 @@
+(
+    configuration: (
+        /* We can try to optimize the TextureAtlas */
+        initial_size: (84, 84), /* We go for a square that should hold all rectangles */
+        max_size: (84, 84), /* This ensures it will be exactly 84x84 */
+        padding: (2, 2), /* Let's add some padding to combat spill */
+        format: "rg8unorm", /* Just to have a different format; conversion is not supported for a lot of formats on bevy side */
+        auto_format_conversion: true, /* We keep this to the default value, so the `format` option has an effect */
+    ),
+    textures: [
+        (
+            path: "gabe-idle-run.png",
+            sprite_sheet: Homogeneous (
+                tile_size: (24, 24),
+                columns: 7,
+                rows: 1,
+                /* These can be optionally defined; Our spritesheet does not have offset or padding, though */
+                /*
+                padding: (2, 2),
+                offset: (10, 10),
+                */
+            ),
+        ),
+    ]
+)

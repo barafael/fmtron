@@ -1,0 +1,37 @@
+(
+    next_id: 1,
+    defs: [
+        (
+            id: 0,
+            name: "Red Potion",
+            rules_text: "",
+            flavor_text: "A vibrant red potion. Probably safe to drink.",
+            icon: "sprite/icon/red_potion.png",
+            item_type: Miscellaneous,
+            item_rarity: Common,
+            max_stack: 60,
+            buy_value: 10,
+            sell_value: 5,
+            equipment_def: (
+                slot: None,
+                armor: 0,
+            ),
+        ),
+        (
+            id: 1,
+            name: "Shoe",
+            rules_text: "",
+            flavor_text: "A super rad shoe. Unfortunately the second one is nowhere to be found.",
+            icon: "sprite/icon/shoe.png",
+            item_type: Equipment,
+            item_rarity: Uncommon,
+            max_stack: 1,
+            buy_value: 200,
+            sell_value: 100,
+            equipment_def: (
+                slot: Feet,
+                armor: 5,
+            ),
+        ),
+    ],
+)

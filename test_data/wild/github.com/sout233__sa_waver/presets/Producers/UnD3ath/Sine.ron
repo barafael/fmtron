@@ -1,0 +1,77 @@
+(
+  curve: (
+    knots: [
+    (
+      position: (0.0, 0.0),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: -1.9283147,
+        mode: Aligned,
+        weight: None,
+      ),
+      right_tangent: (
+        slope: -1.9283147,
+        mode: Aligned,
+        weight: None,
+      ),
+    ),
+    (
+      position: (0.3, -0.3),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: -0.009117276,
+        mode: Aligned,
+        weight: None,
+      ),
+      right_tangent: (
+        slope: -0.009117276,
+        mode: Aligned,
+        weight: None,
+      ),
+    ),
+    (
+      position: (0.5, -0.0),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: 2.061985,
+        mode: Aligned,
+        weight: None,
+      ),
+      right_tangent: (
+        slope: 2.061985,
+        mode: Aligned,
+        weight: None,
+      ),
+    ),
+    (
+      position: (0.7, 0.3),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: -0.0052584712,
+        mode: Aligned,
+        weight: None,
+      ),
+      right_tangent: (
+        slope: -0.0052584712,
+        mode: Aligned,
+        weight: None,
+      ),
+    ),
+    (
+      position: (1.0, 0.0),
+      interpolation: Cubic,
+      left_tangent: (
+        slope: -1.8479501,
+        mode: Aligned,
+        weight: None,
+      ),
+      right_tangent: (
+        slope: -1.8479501,
+        mode: Aligned,
+        weight: None,
+      ),
+    ),
+    ],
+  ),
+  symmetry_mode: 1,
+)

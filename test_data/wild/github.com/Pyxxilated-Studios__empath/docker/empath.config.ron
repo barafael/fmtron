@@ -1,0 +1,409 @@
+Empath (
+    // Docker development configuration.
+    // Keep this file in sync with the default template, but use container paths.
+    smtp: (
+        listeners: [
+            {
+                // Address/port to bind (IPv4/IPv6). Required.
+                "socket": "[::]:1025",
+                "context": {
+                    "service": "smtp",
+                },
+                // Server-side timeout configuration (RFC 5321 compliant defaults)
+                // These timeouts prevent resource exhaustion from slow or malicious clients
+                "timeouts": (
+                    command_secs: 300,          // 5 minutes for regular commands (EHLO, MAIL FROM, etc.)
+                    data_init_secs: 120,        // 2 minutes for DATA command
+                    data_block_secs: 180,       // 3 minutes between data chunks
+                    data_termination_secs: 600, // 10 minutes for processing after final dot
+                    connection_secs: 1800,      // 30 minutes maximum session lifetime
+                ),
+                // Require DKIM verification to pass before accepting message data
+                // Default: false
+                "require_dkim": false,
+                // Enforce DMARC policy failures (reject/quarantine)
+                // Default: false
+                "dmarc_enforce": false,
+                // SMTP extensions advertised after EHLO.
+                // Default: empty list (no extensions).
+                "extensions": [
+                    // SIZE - maximum message size in bytes (0 = unlimited).
+                    { "size": 10000 },
+
+                    // STARTTLS - enable TLS upgrade (requires cert/key).
+                    // {
+                    //     "starttls": {
+                    //         "id": "smtp-primary",
+                    //         "active_profile": "default",
+                    //         "profiles": {
+                    //             "default": {
+                    //                 "key": "/etc/empath/tls/private.key",
+                    //                 "certificate": "/etc/empath/tls/certificate.crt",
+                    //             },
+                    //         },
+                    //     }
+                    // },
+                ]
+            },
+            // Optional second listener (implicit TLS is not supported; use STARTTLS).
+            // {
+            //     "socket": "[::]:1026",
+            //     "context": {
+            //         "service": "smtp-alt",
+            //     },
+            // },
+        ],
+    ),
+    // Docker dev image ships example modules under /empath/modules.
+    // NOTE: Python/Wasm support requires enabling those features at build time.
+    modules: [
+        (
+            type: "Python",
+            path: "/empath/modules/simple.py",
+        ),
+        (
+            type: "Python",
+            path: "/empath/modules/spam_filter.py",
+        ),
+        (
+            type: "SharedLibrary",
+            name: "/empath/modules/libevent.so",
+            args: [],
+        ),
+        (
+            type: "SharedLibrary",
+            name: "/empath/modules/libexample.so",
+            args: [],
+        ),
+        (
+            type: "Wasm",
+            path: "/empath/modules/simple_validator.wasm",
+            enable_wasi: true,
+        ),
+    ],
+    // Module dispatch configuration
+    // Timeout fields are in seconds; set to None to disable.
+    module_dispatch: (
+        // Default: None (no timeout)
+        validation_timeout_secs: None,
+        // Default: None (no timeout)
+        event_timeout_secs: None,
+        // Default: fail_closed (reject on module failure)
+        validation_failure_mode: fail_closed,
+        // Default: fail_open (allow on module failure)
+        event_failure_mode: fail_open,
+        // Default: none (no isolation)
+        isolation: none,
+    ),
+    // Spool configuration (message persistence)
+    // Default path is /var/spool/empath; /tmp is convenient for local dev.
+    spool: (
+        type: "File",
+        path: "/tmp/spool/empath",
+    ),
+    // In-memory spool example (useful for tests/dev)
+    // spool: (
+    //     type: "Memory",
+    //     capacity: 1000, // Optional; omit for unlimited
+    // ),
+    delivery: {
+        // How often to scan the spool for new messages (seconds).
+        // Default: 30
+        "scan_interval_secs": 30,
+        // How often to process the delivery queue (seconds).
+        // Default: 10
+        "process_interval_secs": 10,
+        // Maximum concurrent delivery tasks.
+        // Default: number of CPU cores
+        // max_concurrent_deliveries: 8,
+
+        // Retry policy (flattened into delivery config)
+        // Default max_attempts: 25
+        "max_attempts": 25,
+
+        // Exponential backoff configuration for retry scheduling
+        // Base delay for first retry (in seconds). Subsequent retries double this delay.
+        // Default: 300 seconds (5 minutes)
+        "base_retry_delay_secs": 300,
+
+        // Maximum delay between retry attempts (in seconds). Caps exponential growth.
+        // Default: 86400 seconds (24 hours)
+        "max_retry_delay_secs": 86400,
+
+        // Jitter factor for randomizing retry delays (0.0 to 1.0)
+        // Adds ±10% randomness to prevent thundering herd. Default: 0.1
+        "retry_jitter_factor": 0.1,
+
+        // Message expiration time (in seconds)
+        // Messages older than this will be marked as expired.
+        // Set to None to never expire messages. Default: None
+        // Example: 604800 = 7 days
+        "message_expiration_secs": None,
+
+        // SECURITY WARNING: Accept invalid TLS certificates globally (for testing only)
+        // Default: false (secure). Only enable for testing with self-signed certificates.
+        "accept_invalid_certs": false,
+
+        // TLS delivery policy for outbound connections.
+        // Options: "opportunistic" (default), "required", "disabled" (testing only).
+        "tls_policy": opportunistic,
+
+        // SMTP operation timeout configuration (all values in seconds)
+        // These timeouts prevent hung connections and ensure timely failure detection
+        "smtp_timeouts": (
+            connect_secs: 30,      // Initial connection establishment
+            ehlo_secs: 30,         // EHLO/HELO commands
+            starttls_secs: 30,     // STARTTLS command and TLS upgrade
+            mail_from_secs: 30,    // MAIL FROM command
+            rcpt_to_secs: 30,      // RCPT TO command (per recipient)
+            data_secs: 120,        // DATA command and message transmission (longer for large messages)
+            quit_secs: 10,         // QUIT command
+        ),
+
+        // DNS resolver configuration
+        "dns": (
+            timeout_secs: 5,        // Query timeout
+            cache_ttl_secs: None,   // Override TTL (None = use DNS records)
+            min_cache_ttl_secs: 60, // Minimum cached TTL
+            max_cache_ttl_secs: 3600, // Maximum cached TTL
+            cache_size: 1000,       // Cache size hint
+            dnssec_enabled: false,  // Enable DNSSEC validation
+            dnssec_strict: false,   // Fail lookups on bogus/indeterminate
+        ),
+
+        // SMTP client connection pool configuration
+        "smtp_pool": (
+            enabled: true,
+            max_per_domain: 4,
+            idle_ttl_secs: 60,
+            health_check_on_acquire: true,
+            cleanup_interval_secs: 30,
+        ),
+
+        // DSN (bounce) generation configuration
+        "dsn": (
+            enabled: true,
+            reporting_mta: "localhost",
+            postmaster: "postmaster@localhost",
+        ),
+
+        // Per-domain rate limit configuration (token bucket)
+        "rate_limit": (
+            messages_per_second: 10.0,
+            burst_size: 20,
+            domain_limits: {},
+        ),
+
+        // Circuit breaker configuration for repeated failures
+        "circuit_breaker": (
+            failure_threshold: 5,
+            failure_window_secs: 60,
+            timeout_secs: 300,
+            success_threshold: 1,
+            domain_overrides: {},
+        ),
+
+        // Cleanup configuration for failed spool deletions
+        // Default: 60 seconds, 3 attempts
+        "cleanup_interval_secs": 60,
+        "max_cleanup_attempts": 3,
+
+        // MTA-STS policy fetching and enforcement
+        // When enabled, Empath fetches the policy and enforces it if the
+        // policy mode is "enforce". When disabled, no policy is fetched.
+        // Default: enabled
+        "mta_sts": (
+            enabled: true,
+            min_cache_age_secs: 300,   // Minimum cached policy age (seconds)
+            max_cache_age_secs: 86400, // Maximum cached policy age (seconds)
+        ),
+
+        // Outbound binding configuration (optional)
+        // Bindings control source IP/interface and HELO/TLS behavior per delivery.
+        // Modules can override by setting transaction["outbound_binding"].
+        "outbound_bindings": (
+            // Default binding name (optional)
+            default: "primary",
+            // Default binding health configuration (optional)
+            // Defaults: failure_threshold=5, open_timeout_secs=300, success_threshold=1
+            // health: (
+            //     failure_threshold: 5,
+            //     open_timeout_secs: 300,
+            //     success_threshold: 1,
+            // ),
+            bindings: {
+                "primary": (
+                    // Use either source_ip or source_interface (not both)
+                    source_ip: "192.0.2.10",
+                    helo_domain: "mx1.example.com",
+                    tls: (attempt_starttls: true),
+                    // Optional per-binding SMTP timeouts
+                    // smtp_timeouts: (
+                    //     connect_secs: 20,
+                    //     ehlo_secs: 20,
+                    //     starttls_secs: 20,
+                    //     mail_from_secs: 20,
+                    //     rcpt_to_secs: 20,
+                    //     data_secs: 120,
+                    //     quit_secs: 10,
+                    // ),
+                    // Optional per-binding retry policy
+                    // retry_policy: (
+                    //     max_attempts: 10,
+                    //     base_retry_delay_secs: 60,
+                    //     max_retry_delay_secs: 3600,
+                    //     retry_jitter_factor: 0.2,
+                    // ),
+                    // Allow retry failover to another binding once this policy is exhausted
+                    // Default: false
+                    // allow_failover: false,
+                    // Override whether MTA-STS is fetched for this binding
+                    // Default: None (uses global mta_sts.enabled)
+                    // mta_sts_enabled: true,
+                    // Optional per-binding health overrides
+                    // health: (
+                    //     failure_threshold: 5,
+                    //     open_timeout_secs: 300,
+                    //     success_threshold: 1,
+                    // ),
+                ),
+                "backup": (
+                    source_interface: "eth1",
+                    helo_domain: "mx2.example.com",
+                    tls: (attempt_starttls: true),
+                    // mta_sts_enabled: false,
+                ),
+            },
+        ),
+
+        // Per-domain configuration for testing and custom settings
+        "domains": {
+            // Route test.example.com to local SMTP server for integration testing
+            "test.example.com": (
+                mx_override: "localhost:1025",
+                // Accept self-signed certs for this test domain only
+                accept_invalid_certs: true,
+                // Prefer the backup binding for this domain
+                binding: "backup",
+                // Disable MTA-STS fetch for this domain
+                // mta_sts_enabled: false,
+            ),
+            // Example: Require TLS for a specific domain
+            "secure.example.com": (
+                require_tls: true,
+                // Or use a policy override:
+                // tls_policy: required,
+                max_connections: 5,
+                // Explicitly require valid certificates (overrides global setting)
+                accept_invalid_certs: false,
+            ),
+            // Example: Rate limiting for a high-volume domain
+            "gmail.com": (
+                max_connections: 10,
+                rate_limit: 100, // messages per minute
+            ),
+        },
+    },
+    // Control socket path (optional, defaults to /tmp/empath.sock)
+    control_socket: "/tmp/empath.sock",
+    // Control socket authentication (optional)
+    // control_auth: (
+    //     enabled: true,
+    //     tokens: [
+    //         (
+    //             // SHA-256 hash of "read-token"
+    //             hash: "0328587016f9e316b9c31c94f944a2c453e1494a564062b5eab68039c75b58bf",
+    //             role: "read_only",
+    //         ),
+    //         (
+    //             // SHA-256 hash of "admin-token"
+    //             hash: "10a4c7c9fc5206d6f36dc6944a81bb6f4a3cb0e25014ae3b12e6c3e52712292a",
+    //             role: "admin",
+    //         ),
+    //     ],
+    // ),
+    // Control socket command rate limiting (optional)
+    // control_rate_limit: (
+    //     enabled: true,
+    //     window_secs: 10,
+    //     max_requests: 5,
+    //     // commands: [reload_config, reload_tls, queue_retry, queue_process_now, list_bindings],
+    // ),
+    // OpenTelemetry metrics configuration
+    // Metrics are pushed to an OpenTelemetry Collector via OTLP/HTTP
+    // The Collector can then expose them in Prometheus format for scraping
+    // Architecture: Empath MTA → OTLP → OTel Collector → Prometheus → Grafana
+    metrics: (
+        // Enable/disable metrics collection
+        // When disabled, all metrics operations become no-ops with minimal overhead
+        enabled: true,
+
+        // OTLP endpoint URL for metrics export
+        // Metrics will be pushed to this OpenTelemetry Collector endpoint
+        // Common values:
+        //   - "http://localhost:4318/v1/metrics" (local development, OTLP HTTP)
+        //   - "http://otel-collector:4318/v1/metrics" (Docker Compose, service name)
+        // Default: http://localhost:4318/v1/metrics
+        // NOTE: When running in Docker Compose, use the service name (otel-collector)
+        endpoint: "http://otel-collector:4318/v1/metrics",
+
+        // Limit for unique domain label cardinality
+        // Default: 1000
+        max_domain_cardinality: 1000,
+
+        // Domains that should always be tracked individually
+        // Default: empty list
+        high_priority_domains: [],
+
+        // Optional API key for OTLP collector auth (plaintext)
+        // api_key: "replace-with-token",
+    ),
+    // Health check endpoints configuration
+    // Provides /health/live and /health/ready endpoints for Kubernetes probes
+    health: (
+        // Enable/disable health check server
+        // When disabled, the health server will not start
+        enabled: true,
+
+        // Address to bind the health check server
+        // Common values:
+        //   - "[::]:8080" (IPv6 any address, port 8080)
+        //   - "0.0.0.0:8080" (IPv4 any address, port 8080)
+        //   - "127.0.0.1:8080" (localhost only, port 8080)
+        // Default: [::]:8080
+        listen_address: "[::]:8080",
+
+        // Maximum queue size threshold for readiness probe
+        // If the delivery queue exceeds this size, the readiness probe will fail
+        // This prevents the service from accepting new traffic when overwhelmed
+        // Default: 10000
+        max_queue_size: 10000,
+    ),
+    // Audit logging configuration for compliance and security monitoring
+    // Logs all message lifecycle events (received, delivery attempts, success, failure)
+    audit: {
+        // Enable/disable audit logging
+        // When disabled, audit events will not be logged
+        // Default: true
+        "enabled": true,
+
+        // Redact sender email addresses from audit logs (PII protection)
+        // When enabled, sender addresses are redacted to [REDACTED]@domain.com
+        // Useful for GDPR/HIPAA compliance
+        // Default: false (full sender address logged)
+        "redact_sender": false,
+
+        // Redact recipient email addresses from audit logs (PII protection)
+        // When enabled, recipient addresses are redacted to [REDACTED]@domain.com
+        // Default: false (full recipient addresses logged)
+        "redact_recipients": false,
+
+        // Redact message content from audit logs (PII protection)
+        // When enabled, message content previews are not included in logs
+        // Default: true (content is redacted)
+        "redact_message_content": true,
+    },
+    // Shutdown drain timeout (seconds)
+    // Default: 10
+    shutdown_timeout_secs: 10,
+)

@@ -1,0 +1,59 @@
+(
+    name: "Pug in training",
+    intro: "Shepherd Bob: This farm owns Llamas. They taste terrible and hate sheep. Why would anyone keep them around? Get the sheep to the ship! I don't care about the Llamas.",
+    win: "Good boy! Let's rob the next farm!",
+    loose: "Bad boy! You messed up! Do a better job or I'll have to find another dog!",
+    sheeps_per_spawn: 200,
+    win_percent: 50,
+    animal_behavior: Some(
+        (
+            alignment: 1.0,
+            cohesion: 0.5,
+            separation: 0.1,
+            sheep_speed: 25.0,
+            vision: 20.0,
+            fear: 1.0,
+            motivation: 0.1,
+            dog_speed: 64.0,
+            llama_stomp_rate: 4.,
+            llama_stomp_range: 32.,
+            llama_stomp_force: 600.,
+        ),
+    ),
+    layout:
+"
+########################
+#----------------------#
+#----------------------#
+#----------------------#
+#---------------S------#
+#-----D----------------#
+#----------------------#
+#----------------------#
+#----------------------#
+#-------################
+#---------------TTTTTTT#
+#---------------------T#
+#---------------------T#
+#-----------L---------T#
+#---------------------T#
+#---------------------T#
+#---------------------T#
+#---------------------T#
+#TTTTTTTT-------------T#
+#########-------------T#
+#TTTTTTTT-------------T#
+#GG-------------------T#
+#GG-------------------T#
+#GG-------------------T#
+#GG-------------------T#
+#GG-------------------T#
+#GG---------L---------T#
+#GG-------------------T#
+#GG-------------------T#
+#GG-------------------T#
+#GG-------------------T#
+#TTTTTTTTTTTTTTTTTTTTTT#
+########################
+",
+)

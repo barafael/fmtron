@@ -1,0 +1,28 @@
+(
+  validation: (
+    subject: "REOSERV Confirmation Code",
+    body: "Hi {name},
+
+Thank you for choosing to play on our game server! Your confirmation code is: {code}.
+
+Please enter this code to continue with account registration.
+
+Best regards,
+
+REOSERV Team"
+  ),
+  recovery: (
+    subject: "REOSERV Account Recovery Code",
+    body: "Hi {name}
+
+We've received a request to recover your account. To proceed, please use the following confirmation code: {code}
+
+Enter this code to initiate the account recovery process and regain access to your account. If you didn't request this, please contact our support team immediately.
+
+If you need any assistance or have any concerns, don't hesitate to reach out.
+
+Best regards,
+
+REOSERV Team"
+  )
+)

@@ -1,0 +1,16 @@
+(
+  counts: {
+    Red: 200,
+    Green: 1500
+  },
+  forces: {
+    (Green, Green): -0.1,
+    (Red, Red): 0.5,
+
+    (Green, Red): -0.5,
+    (Red, Green): 0.1
+  },
+  speed: 1.0,
+  damp: 4.0,
+  radius: 80.0
+)

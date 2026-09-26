@@ -1,0 +1,42 @@
+[
+    (
+        id:0,
+        input:[
+            (staff_id:0,num_needed:1),
+            // (staff_id:2,num_needed:2),
+            // (staff_id:4,num_needed:3),
+            // (staff_id:3,num_needed:4),
+        ],
+        // 合成烟花
+        output: [
+            (staff_id:5,num_needed:4),
+        ],
+        base_on:None,
+        desc:"测试使用的合成烟花的公式(测试一个合成多个)",
+    ),
+    (
+        id:1,
+        input:[
+            (staff_id:0,num_needed:1),
+        ],
+        // 合成测试方块
+        output: [
+            (staff_id:12,num_needed:1),
+        ],
+        base_on:None,
+        desc:"合成测试使用的摆放方块",
+    ),
+     (
+        id:2,
+        input:[
+            (staff_id:11,num_needed:4),
+            (staff_id:8,num_needed:4),
+        ],
+        // 合成工作台
+        output: [
+            (staff_id:13,num_needed:1),
+        ],
+        base_on:None,
+        desc:"合成工作台",
+    ),
+]

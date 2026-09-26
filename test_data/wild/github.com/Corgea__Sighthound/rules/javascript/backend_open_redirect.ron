@@ -1,0 +1,25 @@
+(
+    rules: [
+        // ==================== CWE-601: Open Redirect ====================
+        (
+            id: Some("js-node-open-redirect-001"),
+            name: Some("Open Redirect via caller-controlled target"),
+            category: Some("open-redirect"),
+            mode: "search",
+            patterns: Some([
+                "regex:NextResponse.redirect\\(\\s*[A-Za-z_$][\\w$]*(?:key)?",
+                "regex:res.redirect\\(\\s*req",
+                "regex:redirectAfterLogin\\(\\s*[A-Za-z_$](?:key)?",
+                "regex:redirectToTarget\\(\\s*[A-Za-z_$](?:key)?",
+                "regex:redirectWithFallback\\(\\s*[A-Za-z_$](?:key)?",
+            ]),
+            finding_type: Some("Open Redirect"),
+            severity: Some("Medium"),
+            confidence: Some("High"),
+            cwe_id: Some("cwe-601"),
+            description: Some("Redirect target is derived from caller-controlled input"),
+            file_types: Some((extensions: Some([".js", ".jsx", ".ts", ".tsx"]))),
+            tags: Some(["open-redirect", "backend", "cwe-601"])
+        ),
+    ],
+)

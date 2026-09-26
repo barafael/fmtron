@@ -1,0 +1,60 @@
+#![enable(implicit_some)]
+(
+	name: "Sequence -- Extended",
+	description: "Extended Sequence",
+	appenders: [
+		(
+			type: "file",
+			name: "sequence-extended--appender",
+			fileName: "sequence-extended.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "sequence",
+			name: "sequence-extended--entity-name",
+			start: -11,
+			hold: 2,
+			increment: -3,
+			minimum: -27,
+			maximum: -12,
+			cycle: true,
+		),
+	],
+	entries: [
+		(
+			name: "sequence-extended--entry",
+			entity: "sequence-extended--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "sequence-extended--file-feed",
+			content: (
+				type: "katla",
+				inline: "{{ sequence-extended--entry }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "sequence-extended--flow",
+			timeInterval: "R20000",
+			entries: [
+				"sequence-extended--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "sequence-extended--file-feed",
+					appender: "sequence-extended--appender",
+				),
+			],
+		),
+	],
+)

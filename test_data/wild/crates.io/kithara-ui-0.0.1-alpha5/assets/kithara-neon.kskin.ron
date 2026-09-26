@@ -1,0 +1,56 @@
+// Neon: near-black with a cyan accent, for the other end of the range a
+// palette can be pushed to. It also gives the nav taller rows and a wider
+// marker, so a skin is shown to carry measurements and not only colour.
+(
+    schema: "kithara.skin",
+    version: 1,
+    id: "kithara-neon",
+    base: "kithara-dark.kskin.ron",
+    pictures: {
+        "spinner": (source: "sprites/spinner-neon.png", columns: 8, rows: 1),
+    },
+    // Fewer, brighter bars: an extension is dressed setting by setting, so the
+    // ink and the ground this restates nothing about stay the ones it inherits.
+    custom: {
+        "level-ladder": {
+            "bar_low": Color("#0d3a4a"),
+            "bar_high": Role(Accent),
+            "bars": Number(8),
+        },
+    },
+    palette: (
+        bg: "#05060a",
+        bg_deep: "#000103",
+        bg_inset: "#0a0d16",
+        bg_panel: "#0e1220",
+        bg_footer: "#080b14",
+        bg_panel_2: "#131a2c",
+        bg_select: "#17203a",
+        line: "#24406b",
+        line_dim: "#16233c",
+        line_inner: "#1b2c4a",
+        line_soft: "#1b2c4a",
+        line_hi: "#2f6fb0",
+        line_pop: "#1f3560",
+        text: "#e8fbff",
+        text_dim: "#8fd7e8",
+        muted: "#4f7f92",
+        accent: "#00e5ff",
+        accent_strong: "#6bf5ff",
+        accent_soft: "#00e5ff2e",
+        danger: "#ff2d6f",
+        success: "#27ff9c",
+        warning: "#ffd23f",
+        wave_low: "#ff2d95",
+        wave_mid: "#ffe14d",
+        wave_high: "#00e5ff",
+        shadow: "#000000",
+    ),
+    chrome: (
+        frame: (radius: 0.0, border_width: 2.0, border: LineHi),
+    ),
+    nav: (
+        item_height: 34.0,
+        marker_width: 3.0,
+    ),
+)

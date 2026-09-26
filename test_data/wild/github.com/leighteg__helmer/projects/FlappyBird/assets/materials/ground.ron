@@ -1,0 +1,12 @@
+(
+    albedo: (0.23272753, 1.0, 0.0, 1.0),
+    metallic: 0.0,
+    roughness: 0.8,
+    ao: 1.0,
+    emission_strength: 0.0,
+    emission_color: (0.0, 0.0, 0.0),
+    albedo_texture: None,
+    normal_texture: None,
+    metallic_roughness_texture: None,
+    emission_texture: None,
+)

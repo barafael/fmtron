@@ -1,0 +1,7 @@
+(
+    approval_format_version: 1,
+    preview_sha256: "ecfe76857d05742e39fb9c0558a7a7bac46d5e4a4a3fc0000e932bdb8fbc76f4",
+    allow_provider_call: true,
+    author: "org.weave.reviewer.fixture",
+    rationale: "Approve the exact visible offline scope for this original synthetic fixture.",
+)

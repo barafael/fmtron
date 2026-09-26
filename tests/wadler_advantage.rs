@@ -135,3 +135,46 @@ fn container_map_key_breaks_when_its_line_overruns() {
         "{\n    Foo(\n        3.5,\n        1e10,\n    ): {1: 2},\n    [1]: Bar(a: 1),\n}"
     );
 }
+
+/// W2: a one-element wrapper around a container (`Some((…))`, a newtype
+/// variant) hugs when the element must break anyway, as `ron`'s own
+/// pretty-printer writes it; when the element fits flat on its own line, the
+/// wrapper breaks around it like any container; when everything fits, flat.
+#[test]
+fn single_container_wrappers_hug_only_when_the_child_must_break() {
+    let hugged = formatted(
+        "(env: Some((a: 1, b: 2, c: 3)), tint: Some(((red: 1.0, green: 0.5))))",
+        20,
+    );
+    assert_eq!(
+        hugged,
+        "(\n    env: Some((\n        a: 1,\n        b: 2,\n        c: 3,\n    )),\n    tint: Some(((\n        red: 1.0,\n        green: 0.5,\n    ))),\n)"
+    );
+    // The child fits on its own line: break around it instead of hugging.
+    assert_eq!(
+        formatted("TupleNewtypeTupleStruct(TupleStruct(4, false))", 40),
+        "TupleNewtypeTupleStruct(\n    TupleStruct(4, false),\n)"
+    );
+    // Everything fits: flat. Nested wrappers hug together.
+    assert_eq!(formatted("Some(Some([1, 2]))", 40), "Some(Some([1, 2]))");
+    assert_eq!(
+        formatted("Some(Some([111, 222, 333]))", 12),
+        "Some(Some([\n    111,\n    222,\n    333,\n]))"
+    );
+    // An atom never hugs: a long string still gets its own line.
+    assert_eq!(
+        formatted(r#"Some("a long string that cannot fit")"#, 20),
+        "Some(\n    \"a long string that cannot fit\",\n)"
+    );
+    for (input, width) in [
+        (
+            "(env: Some((a: 1, b: 2, c: 3)), tint: Some(((red: 1.0, green: 0.5))))",
+            20,
+        ),
+        ("Some(Some([111, 222, 333]))", 12),
+    ] {
+        let out = formatted(input, width);
+        assert!(max_line_len(&out) <= width, "overran width {width}:\n{out}");
+        assert_eq!(formatted(&out, width), out, "not idempotent");
+    }
+}

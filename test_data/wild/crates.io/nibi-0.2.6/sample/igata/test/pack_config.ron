@@ -1,0 +1,10 @@
+(
+    additional_renders: Some({
+        "common.css": "assets/common.css",
+        "common.js": "assets/common.js",
+    }),
+    static_copy: Some({
+        "assets": "assets",
+    }),
+    values: {},
+)

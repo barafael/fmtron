@@ -1,0 +1,31 @@
+(
+    colors: ThemeColorList((
+        // White
+        Srgba(Srgba(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)),
+        // Invisible
+        Srgba(Srgba(red: 0.000, green: 0.000, blue: 0.000, alpha: 0.000)),
+
+        // Body
+        Srgba(Srgba(red: 0.157, green: 0.157, blue: 0.157, alpha: 1.000)),
+        // BodyText
+        Srgba(Srgba(red: 0.925, green: 0.925, blue: 0.925, alpha: 1.000)),
+
+        // Primary
+        Srgba(Srgba(red: 0.700, green: 0.400, blue: 0.700, alpha: 1.000)),
+        // PrimaryHovered
+        Srgba(Srgba(red: 0.850, green: 0.500, blue: 0.820, alpha: 1.000)),
+        // PrimaryPressed
+        Srgba(Srgba(red: 0.500, green: 0.300, blue: 0.500, alpha: 1.000)),
+        // PrimaryDisabled
+        Srgba(Srgba(red: 0.400, green: 0.200, blue: 0.400, alpha: 1.000)),
+        // PrimaryText
+        Srgba(Srgba(red: 0.157, green: 0.157, blue: 0.157, alpha: 1.000)),
+
+        // Popup
+        Srgba(Srgba(red: 0.106, green: 0.118, blue: 0.122, alpha: 0.900)),
+        // PopupBorder
+        Srgba(Srgba(red: 0.300, green: 0.300, blue: 0.300, alpha: 1.000)),
+        // Overlay
+        Srgba(Srgba(red: 0.000, green: 0.000, blue: 0.000, alpha: 0.500)),
+    )),
+)

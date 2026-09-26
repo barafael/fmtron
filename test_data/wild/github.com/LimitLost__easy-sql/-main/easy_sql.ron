@@ -1,0 +1,602 @@
+CompilationData(
+    tables: {
+        "43af18d0-f056-4b18-9958-3fadb41e4334": TableData(
+            saved_versions: {
+                2: TableDataVersion(
+                    table_name: "doc_comments",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "post_id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "body",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {
+                        "PostTable,cascade": [
+                            "post_id",
+                        ],
+                    },
+                ),
+            },
+            latest_version: 2,
+        ),
+        "9e0ab3c7-2e5d-4f13-b6d8-7c8ea17a3cf2": TableData(
+            saved_versions: {
+                1: TableDataVersion(
+                    table_name: "migration_test_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                2: TableDataVersion(
+                    table_name: "migration_test_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "age",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("0"),
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                3: TableDataVersion(
+                    table_name: "migration_test_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "age",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("0"),
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "score",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("100"),
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                4: TableDataVersion(
+                    table_name: "migration_test_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "full_name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "age",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("0"),
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "score",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("100"),
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                5: TableDataVersion(
+                    table_name: "migration_test_table_renamed",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "full_name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "age",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("0"),
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "score",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("100"),
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                6: TableDataVersion(
+                    table_name: "migration_test_table_renamed",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "full_name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "age",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("0"),
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "score",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("100"),
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "nickname",
+                            ty_to_bytes: false,
+                            field_type: "Option<String>",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+            },
+            latest_version: 6,
+        ),
+        "a1b2c3d4-0001-4abc-8def-000000000001": TableData(
+            saved_versions: {
+                1: TableDataVersion(
+                    table_name: "fk_rebuild_parent",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "label",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+            },
+            latest_version: 1,
+        ),
+        "a1b2c3d4-0002-4abc-8def-000000000002": TableData(
+            saved_versions: {
+                1: TableDataVersion(
+                    table_name: "fk_rebuild_child",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "parent_id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "note",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                2: TableDataVersion(
+                    table_name: "fk_rebuild_child",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "parent_id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "note",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {
+                        "FkRebuildParent,cascade": [
+                            "parent_id",
+                        ],
+                    },
+                ),
+            },
+            latest_version: 2,
+        ),
+        "a1b2c3d4-0003-4abc-8def-000000000003": TableData(
+            saved_versions: {
+                1: TableDataVersion(
+                    table_name: "fk_selfref",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "parent_id",
+                            ty_to_bytes: false,
+                            field_type: "Option<i32>",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                2: TableDataVersion(
+                    table_name: "fk_selfref",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "parent_id",
+                            ty_to_bytes: false,
+                            field_type: "Option<i32>",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {
+                        "FkSelfRefV2,cascade": [
+                            "parent_id",
+                        ],
+                    },
+                ),
+            },
+            latest_version: 2,
+        ),
+        "b17e5c0a-0001-4d2e-9a3f-000000000001": TableData(
+            saved_versions: {
+                1: TableDataVersion(
+                    table_name: "bytes_compat_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "payload",
+                            ty_to_bytes: true,
+                            field_type: "Vec<String>",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                2: TableDataVersion(
+                    table_name: "bytes_compat_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "payload",
+                            ty_to_bytes: true,
+                            field_type: "std::collections::HashMap<String,i32>",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+            },
+            latest_version: 2,
+        ),
+        "b17e5c0a-0002-4d2e-9a3f-000000000002": TableData(
+            saved_versions: {
+                1: TableDataVersion(
+                    table_name: "bytes_compat_opt_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "payload",
+                            ty_to_bytes: true,
+                            field_type: "Option<Vec<String>>",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                2: TableDataVersion(
+                    table_name: "bytes_compat_opt_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "payload",
+                            ty_to_bytes: true,
+                            field_type: "Option<std::collections::HashMap<String,i32>>",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+            },
+            latest_version: 2,
+        ),
+        "f726b8aa-6d36-4c0a-92c4-9f6f0e8df5d1": TableData(
+            saved_versions: {
+                1: TableDataVersion(
+                    table_name: "migration_repeat_versioned_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+                2: TableDataVersion(
+                    table_name: "migration_repeat_versioned_table",
+                    fields: [
+                        TableField(
+                            name: "id",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "name",
+                            ty_to_bytes: false,
+                            field_type: "String",
+                            default: None,
+                            is_unique: false,
+                        ),
+                        TableField(
+                            name: "age",
+                            ty_to_bytes: false,
+                            field_type: "i32",
+                            default: Some("0"),
+                            is_unique: false,
+                        ),
+                    ],
+                    primary_keys: [
+                        "id",
+                    ],
+                    auto_increment: true,
+                    foreign_keys: {},
+                ),
+            },
+            latest_version: 2,
+        ),
+    },
+    used_table_names: {},
+    default_drivers: [],
+)

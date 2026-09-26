@@ -1,0 +1,17 @@
+// data/plots/plot_001.ron
+(
+  plot_id: "plot_001",
+  plot_type: "raised_bed",
+  area_m2: 1.0,
+  plant_slots: 8,
+
+  cover_state: "open",
+  light_access_factor: 1.0,
+
+  substrate_id: "substrate_001",
+  plant_ids: ["plant_001"],
+
+  irrigation_attachment_id: None,
+  lighting_attachment_id: None,
+  sensor_attachment_ids: [],
+)

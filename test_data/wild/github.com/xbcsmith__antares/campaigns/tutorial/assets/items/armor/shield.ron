@@ -1,0 +1,33 @@
+(
+    id: 9104,
+    name: "ItemMeshShield",
+    meshes: [
+        (
+            name: Some("shield"),
+            vertices: [(0.0000, 0.0000, 0.2600), (0.1800, 0.0000, 0.0500), (0.1080, 0.0000, -0.1560), (0.0000, 0.0000, -0.2600), (-0.1080, 0.0000, -0.1560), (-0.1800, 0.0000, 0.0500)],
+            indices: [0, 1, 5, 1, 2, 4, 1, 4, 5, 2, 3, 4],
+            normals: Some([(0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000), (0.0000, 1.0000, 0.0000)]),
+            uvs: None,
+            color: (0.50, 0.50, 0.52, 1.00),
+            lod_levels: None,
+            lod_distances: None,
+            material: Some((
+                base_color: (0.50, 0.50, 0.52, 1.00),
+                metallic: 0.40,
+                roughness: 0.50,
+                emissive: None,
+                alpha_mode: Opaque,
+            )),
+            texture_path: None,
+        ),
+    ],
+    mesh_transforms: [
+        (
+            translation: (0.0, 0.0, 0.0),
+            rotation: (0.0, 0.0, 0.0),
+            scale: (1.0, 1.0, 1.0),
+        ),
+    ],
+    scale: 1.4,
+    color_tint: None,
+)

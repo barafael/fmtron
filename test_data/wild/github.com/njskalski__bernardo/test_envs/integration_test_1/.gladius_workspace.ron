@@ -1,0 +1,9 @@
+(
+    scopes: [
+        (
+            lang_id: RUST,
+            path: "",
+            handler_id_op: Some("mock"),
+        ),
+    ],
+)

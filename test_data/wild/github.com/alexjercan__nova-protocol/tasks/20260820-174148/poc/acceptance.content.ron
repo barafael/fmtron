@@ -1,0 +1,63 @@
+// The channel's flight-acceptance world: one armed player corvette and one
+// hostile raider parked on the burn line, close enough for radar and
+// turrets. Loaded loose - never installed - by the flight drivers:
+//   nova-protocol --norender --scenario-file <this file> --channel step
+// The raider station-keeps under a long engage grace, so the world holds
+// still until the driver shoots; being shot ends the grace and it fights.
+// Each turret gets its own free key (U / I), so `section.<id>` presses one
+// mount and never its neighbour.
+[
+    Scenario((
+        id: "channel_acceptance",
+        name: "Channel Acceptance",
+        description: "One raider on the burn line for the wire's flight drivers.",
+        // A loose file registers no `dep://` source; the base pack's cubemap
+        // is reachable over the default asset root instead.
+        cubemap: "base/textures/cubemap.png",
+        hidden: true,
+        events: [
+            (
+                name: OnStart,
+                actions: [
+                    SpawnScenarioObject((
+                        base: (
+                            id: "player",
+                            name: "Player Spaceship",
+                            position: (0.0, 0.0, 0.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "cargoa"),
+                            controller: Player((
+                                input_mapping: {
+                                    "turret_port": [
+                                        Keyboard(KeyU),
+                                    ],
+                                    "turret_starboard": [
+                                        Keyboard(KeyI),
+                                    ],
+                                },
+                                speed_cap: None,
+                                infinite_ammo: false,
+                            )),
+                        )),
+                    )),
+                    SpawnScenarioObject((
+                        base: (
+                            id: "raider_1",
+                            name: "Acceptance Raider",
+                            position: (0.0, 0.0, -280.0),
+                            rotation: (0.0, 0.0, 0.0, 1.0),
+                        ),
+                        kind: Spaceship((
+                            design: Prototype(id: "cargoa_raider"),
+                            controller: AI((
+                                engage_delay: Some(600.0),
+                            )),
+                        )),
+                    )),
+                ],
+            ),
+        ],
+    )),
+]

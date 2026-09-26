@@ -1,0 +1,7 @@
+#![enable(implicit_some)]
+
+HttpdConfig (
+    host: "127.0.0.1",
+    port: 8779,
+    allowed_methods: ["GET", "HEAD"], // All servers must serve GET and HEAD requests
+)

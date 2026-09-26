@@ -1,0 +1,15 @@
+(
+    schema: "kithara.module",
+    version: 1,
+    id: "library",
+    parameters: ["read", "columns"],
+    root: Column(
+        children: [
+            Table(
+                id: "tracks",
+                read: Model(id: "$read"),
+                columns: "$columns",
+            ),
+        ],
+    ),
+)

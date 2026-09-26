@@ -1,0 +1,11 @@
+(
+    max_lightmap_size: 2048,
+    lightmap_pix_per_m: 6.0,
+    fake_ambient: ((0.05, 0.05, 0.05)),
+    reflectivity_factor: 1.0,
+    max_samples: 3000,
+    indirect_depth: 3,
+    sky_color: ((0.7, 0.7, 0.8)),
+    sky_box: Some("sky_purply"),
+    spherical_harmonics: true,
+)

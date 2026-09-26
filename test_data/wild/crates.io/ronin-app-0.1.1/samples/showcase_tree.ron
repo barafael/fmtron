@@ -1,0 +1,54 @@
+// showcase_tree.ron — exercises every TreeNodeKind + scalar leaf class.
+//
+// The tree/form view classifies each value-position node into a TreeNodeKind
+// (Struct, Map, List, Tuple, EnumVariant, Leaf) and each scalar leaf into a
+// ScalarClass (Integer, Float, Str, Char, Bool, Unit, Other). This document
+// nests them several levels deep so the projection contains one of each.
+Showcase(
+    // --- a NAMED struct (this top-level value) holding an ANONYMOUS struct ---
+    anon_struct: (
+        x: 1,
+        y: 2,
+    ),
+    // --- a map (non-string keys exercised in the kitchen-sink sample) ---
+    settings: {
+        "width": 640,
+        "height": 480,
+    },
+    // --- a list of scalars ---
+    tags: ["editor", "ron", "rust"],
+    // --- a positional tuple (distinct from a list) ---
+    position: (1.0, 2.0, 3.0),
+    // --- a BARE enum variant ---
+    mode: Fast,
+    // --- a STRUCT-LIKE enum variant ---
+    window: Floating(
+        width: 800,
+        height: 600,
+    ),
+    // --- all scalar leaf classes ---
+    count: 42,            // Integer leaf
+    ratio: 0.75,          // Float leaf
+    title: "RONin",       // Str leaf
+    initial: 'R',         // Char leaf
+    enabled: true,        // Bool leaf
+    nothing: (),          // Unit leaf
+    // --- Option Some(..) and None ---
+    nickname: Some("ron"),
+    fallback: None,
+    // --- nested several levels deep: struct -> list -> struct -> tuple/map ---
+    deep: (
+        layers: [
+            (
+                name: "a",
+                point: (0, 0),
+                attrs: { "k": "v" },
+            ),
+            (
+                name: "b",
+                point: (1, 1),
+                attrs: { "k": "w" },
+            ),
+        ],
+    ),
+)

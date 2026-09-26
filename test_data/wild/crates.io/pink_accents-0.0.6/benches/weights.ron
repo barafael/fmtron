@@ -1,0 +1,19 @@
+(
+    normalize_case: true,
+
+    patterns: [
+        ("a", Weights([(1, Simple("B"))])),
+        ("VeryLongNonExistent12344343243244234", Weights([(10000, Original)])),
+        ("you", Weights([
+            (1, Weights([(1, Simple("1"))])),
+            (2, Weights([(1, Simple("2"))])),
+            (3, Weights([(1, Simple("3"))])),
+            (4, Weights([(1, Simple("4"))])),
+            (5, Weights([(1, Simple("5"))])),
+            (6, Weights([(1, Simple("6"))])),
+            (7, Weights([(1, Simple("7"))])),
+            (8, Weights([(1, Simple("8"))])),
+            (9, Weights([(1, Simple("9"))])),
+        ])),
+    ],
+)

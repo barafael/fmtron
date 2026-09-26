@@ -1,0 +1,6 @@
+ConnectorManifest(
+    shortname: "aws/acm",
+    protocol: "binary-tarpc",
+    description: "Manages AWS Certificate Manager resources, primarily certificates & validation.",
+    stability: "preview"
+)

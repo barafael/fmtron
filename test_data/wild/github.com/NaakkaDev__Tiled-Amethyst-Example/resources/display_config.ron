@@ -1,0 +1,9 @@
+(
+  title: "Tiled Amethyst Example",
+  dimensions: Some((640, 640)),
+  max_dimensions: None,
+  min_dimensions: None,
+  multisampling: 1,
+  visibility: true,
+  vsync: true,
+)

@@ -1,0 +1,13 @@
+(
+    name : "Test Module",
+    author : "Herbert Wolverson",
+    description : "A not-fun module designed to test all the aspects of the Pyrite Engine.",
+    module_start_event: "ModuleStart",
+    starting_map_idx: 0,
+    ui_images: [
+        ("Rolf", "rolf.png"),
+    ],
+    sprites: [
+        ("Rolf", "rolf-sprite.png"),
+    ]
+)

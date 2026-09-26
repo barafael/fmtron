@@ -1,0 +1,16 @@
+(
+    player_keyboard: [
+        (MoveUp, KeyW),
+        (MoveDown, KeyS),
+        (MoveLeft, KeyA),
+        (MoveRight, KeyD),
+        (Dash, ShiftLeft),
+        (SlotOneAbility, KeyQ),
+        (SlotTwoAbility, KeyE),
+        (SlotThreeAbility, KeyR),
+    ],
+    player_mouse: [
+        (LightAttack, Left),
+        (HeavyAttack, Right),
+    ],
+)

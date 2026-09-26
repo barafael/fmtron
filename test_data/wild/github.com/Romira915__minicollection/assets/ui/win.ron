@@ -1,0 +1,32 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "win_root",
+        anchor: Middle,
+        stretch: XY( x_margin: 0., y_margin: 0., keep_aspect_ratio: false),
+        width: 20.,
+        height: 20.,
+    ),
+    background: SolidColor(0.0, 0.0, 0.0, 0.0),
+    children: [
+        Label(
+            transform: (
+                id: "win",
+                y: 80.0,
+                width: 750.,
+                height: 145.,
+                anchor: Middle,
+                mouse_reactive: true,
+                selectable: 0,
+                hidden: true
+            ),
+            text: (
+                text: "Win",
+                font_size: 80.,
+                color: (255, 0, 0, 1),
+                font: File("font/rounded-mplus-1p-bold.ttf", ("TTF", ())),
+                align: Middle
+            )
+        ),
+    ],
+)

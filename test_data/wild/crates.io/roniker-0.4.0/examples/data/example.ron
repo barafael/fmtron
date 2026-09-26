@@ -1,0 +1,17 @@
+// Example RON configuration file
+// Open this file with the LSP running to see completions and diagnostics.
+//
+// This is a value of `AppConfig`, the root type parsed from
+// `examples/data/config_types.rs` by the analyze_lsp example.
+
+AppConfig(
+    debug: true,
+    port: 8080,
+    server: ServerConfig(
+        host: "localhost",
+        max_connections: 50,
+        timeout: Some(30),
+        mode: Production,
+    ),
+    features: ["auth", "metrics"],
+)

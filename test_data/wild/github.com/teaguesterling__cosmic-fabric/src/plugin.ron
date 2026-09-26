@@ -1,0 +1,11 @@
+(
+    name: "Fabric",
+    description: "Syntax: fab <pattern>\nRun a fabric pattern on the current selection",
+    query: (
+        regex: "^(fab(ric)? )+",
+        help: "fab ",
+        isolate: true,
+    ),
+    bin: (path: "cosmic-fabric-launcher"),
+    icon: Name("text-x-generic"),
+)

@@ -1,0 +1,32 @@
+(
+  counts: {
+    Orange:  500,
+    Pink:   500,
+    Yellow: 200,
+    Blue:   100,
+  },
+  
+  forces: {
+    
+    (Yellow,Yellow):   0.5,
+
+    (Yellow, Orange): -0.25,
+    (Yellow, Pink):   -0.25,
+    (Yellow, Blue):    0.15,
+
+    (Blue, Pink):      0.2,
+    (Blue, Orange):    0.2,
+    (Orange, Yellow):  0.2,
+    (Pink, Yellow):    0.2,
+    
+    (Orange, Orange): -0.1,
+    (Pink, Pink):     -0.1,
+    (Orange, Pink):   -0.1,
+    (Pink, Orange):   -0.1,
+    
+  },
+  
+  speed:   1.0,
+  damp:    2.5,
+  radius: 120.0
+)

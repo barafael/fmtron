@@ -1,0 +1,52 @@
+#![enable(implicit_some)]
+// Detailed field information can be found at https://docs.amethyst.rs/master/amethyst_ui/enum.UiWidget.html and related pages
+Container(
+    transform: (
+        id: "container_help_text",
+        width: 1.,
+        height: 1.,
+        percent: true,
+        anchor: Middle,
+    ),
+    background: SolidColor(0.0, 0.0, 0.0, 0.0),
+    children: [
+        Label(
+            transform: (
+                id: "usage_text",
+                width: 800.,
+                height: 100.,
+                y: -50,
+                x: 200,
+                anchor: TopLeft,
+                percent: false,
+            ),
+            text: (
+                text: "Arrow: Move | Space: Hold\nEsc: Exit | R: Reload | M: Mute",
+                line_mode: Wrap,
+                font_size: 30.,
+                font: File("font/square.ttf", ("TTF", ())),
+                color: (1.0, 1.0, 1.0, 1.0),
+            ),
+        ),
+        Label(
+            transform: (
+                id: "mission_text",
+                width: 800.,
+                height: 100.,
+                y: -50,
+                x: -150,
+                anchor: TopRight,
+                percent: false,
+            ),
+            text: (
+                text: "Get to the exit",
+                line_mode: Wrap,
+                font_size: 30.,
+                font: File("font/square.ttf", ("TTF", ())),
+                color: (1.0, 1.0, 1.0, 1.0),
+            ),
+        ),
+    ],
+)
+
+

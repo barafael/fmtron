@@ -1,0 +1,59 @@
+// showcase_kitchen_sink.ron — one deeply-nested document combining every surface:
+// structs, maps, lists, tuples, enums, options, all scalar classes, several
+// nested record tables at different depths, non-string map keys, and comments
+// (line + block). It stresses the tree, table, text, scroll, breadcrumb, and
+// indent-guide surfaces all at once.
+/* The top-level value is a named struct; drill into `fleet` and `world` to find
+   record tables nested several levels deep. */
+Project(
+    // --- scalars: one of every class ---
+    name: "RONin Showcase",   // string
+    version: 7,               // integer
+    scale: 1.5,               // float
+    glyph: 'R',               // char
+    active: true,             // bool
+    placeholder: (),          // unit
+    // --- option arms ---
+    homepage: Some("https://example.invalid"),
+    license: None,
+    // --- enum variants: bare + struct-like ---
+    quality: High,
+    render: Deferred(
+        msaa: 4,
+        hdr: true,
+    ),
+    // --- a non-string-keyed map (integer keys) whose values are uniform records
+    //     -> a RecordMap section with a leading key column ---
+    palette: {
+        0: Swatch(r: 10, g: 20, b: 30),
+        1: Swatch(r: 40, g: 50, b: 60),
+        2: Swatch(r: 70, g: 80, b: 90),
+    },
+    // --- a nested RecordList several levels deep (Project -> fleet -> ships),
+    //     each row carrying a nested tuple cell (origin) and a nested list cell
+    //     (crew -> NestedTable drill-in) ---
+    fleet: (
+        flagship: "Interceptor",
+        ships: [
+            Ship(name: "Interceptor", hp: 100, origin: (0, 0), crew: ["ann", "bob"]),
+            Ship(name: "Frigate", hp: 180, origin: (1, 2), crew: ["cy", "dee"]),
+            Ship(name: "Scout", hp: 60, origin: (3, 4), crew: ["fay"]),
+        ],
+    ),
+    // --- another nested table at a different depth: world -> regions is a
+    //     RecordMap whose values hold their own nested `tiles` TupleList ---
+    world: (
+        seed: 999,
+        regions: {
+            "north": Region(biome: Tundra, tiles: [(0, 0), (0, 1), (0, 2)]),
+            "south": Region(biome: Desert, tiles: [(1, 0), (1, 1)]),
+            "east": Region(biome: Forest, tiles: [(2, 0), (2, 1), (2, 2)]),
+        },
+    ),
+    // --- a top-level uniform RecordList too (events) for the root-level table ---
+    events: [
+        Event(at: 0, kind: Spawn, payload: Some(1)),
+        Event(at: 5, kind: Move, payload: None),
+        Event(at: 9, kind: Despawn, payload: Some(3)),
+    ],
+)

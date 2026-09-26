@@ -1,0 +1,84 @@
+Scene (
+    camera: (
+        look_from: (
+            x: -2.0,
+            y: 2.0,
+            z: 1.0,
+        ),
+        look_at: (
+            x: 0.0,
+            y: 0.0,
+            z: -1.0,
+        ),
+        vup: (
+            x: 0.0,
+            y: 1.0,
+            z: 0.0,
+        ),
+        vfov: 20.0,
+        focus_dist: 1.0,
+        aperture: 0.0,
+    ),
+
+    materials: {
+        "ground": Lambertian (
+            albedo: (0.8, 0.8, 0.0),
+        ),
+
+        "center": Lambertian (
+            albedo: (0.6, 0.3, 0.3),
+        ),
+
+        "left": Metal (
+            albedo: (0.8, 0.8, 0.8),
+            fuzz: 0.3,
+        ),
+
+        "right": Metal (
+            albedo: (0.8, 0.6, 0.2),
+            fuzz: 1.0,
+        ),
+    },
+
+    shapes: [
+        Sphere (
+            center: (
+                x: 0.0,
+                y: -100.5,
+                z: -1.0,
+            ),
+            radius: 100.0,
+            material: Ref("ground"),
+        ),
+
+        Sphere (
+            center: (
+                x: 0.0,
+                y: 0.0,
+                z: -1.0,
+            ),
+            radius: 0.5,
+            material: Ref("center"),
+        ),
+
+        Sphere (
+            center: (
+                x: -1.0,
+                y: 0.0,
+                z: -1.0,
+            ),
+            radius: 0.5,
+            material: Ref("left"),
+        ),
+
+        Sphere (
+            center: (
+                x: 1.0,
+                y: 0.0,
+                z: -1.0,
+            ),
+            radius: 0.5,
+            material: Ref("right"),
+        ),
+    ],
+)

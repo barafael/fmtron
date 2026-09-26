@@ -1,0 +1,22 @@
+// Package identity and selection.
+//
+// `host_excludes` replaces the shell script's `HOST_PKGS` string, which had to
+// be word-split with two `shellcheck disable=SC2086` pragmas. Here it is a
+// list, and each entry becomes its own `--exclude` argument.
+Packages(
+    target_crate: "ph-color",
+    exercise_crate: "ph-color-exercise",
+    host_excludes: ["ph-color-exercise"],
+
+    // Host checks and every embedded target link all four combinations.
+    feature_powerset: [
+        [],
+        ["f32"],
+        ["oklab"],
+        ["f32", "oklab"],
+    ],
+
+    // The 2 KiB shipped-const-table budget is asserted by this unit test in
+    // the target crate, not by measuring the linked binary.
+    const_table_test: "default_tables_fit_2kib",
+)

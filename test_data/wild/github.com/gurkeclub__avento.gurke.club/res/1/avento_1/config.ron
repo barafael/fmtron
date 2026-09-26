@@ -1,0 +1,124 @@
+(
+    view: (
+        bpm: 87.20,
+        width: 640,
+        height: 192,
+        fullscreen: false,
+        target_fps: 50,
+        dynamic: true,
+        vsync: true,
+        screenshot: false,
+        screenshot_path: "output/",
+        locked_speed: false,
+    ),
+    server: (
+        ip: "127.0.0.1",
+        port: 3000,
+        enable: false,
+    ),
+    inputs: {
+       "GraffImage": (   
+            type: "Video",
+            path: "res/tv_540p.mp4",
+            width: 960, 
+            height: 540,
+            speed: (Fps: 25.0),
+        ),
+
+       "Snow": (
+            type: "Video",
+            path: "res/snow_540p.mp4",
+            width: 960,
+            height: 540,
+            speed: (Fps: 25.0),
+        ),
+
+        "DiffuseImage": (
+            type: "Picture",
+            path: "res/1_DIFFUSE.jpg",
+            width: 1024,
+            height: 1024,
+        ),
+        "NormalMap": (
+            type: "Picture",
+            path: "res/1_NORMAL.jpg",
+            width: 1024,
+            height: 1024,
+        ),
+        "BumpMap": (
+            type: "Picture",
+            path: "res/1_DISP.jpg",
+            width: 1024,
+            height: 1024,
+        ),
+        "SpecularMap": (   
+            type: "Picture",
+            path: "res/1_SPECULAR.jpg",
+            width: 1024, 
+            height: 1024,
+        ),
+    },
+    filters: {
+        "bumpmap": (
+            inputs: [
+                "iChannel0",
+                "iChannel1",
+                "iChannel2",
+                "iChannel3",
+                "iChannel4",
+                "iChannel5",
+            ],
+            vertex_shader: [
+                "#std/default.vs.glsl",
+            ],
+            fragment_shader: [
+                "#std/header.glsl",
+                "#std/noise.glsl",
+                "#std/misc.glsl",
+                "src/bumpmap.fs.glsl",
+            ],
+            variables: {},
+        ),
+        "target": (
+            inputs: [
+                "iChannel0",
+            ],  
+            vertex_shader: [
+                "#std/default.vs.glsl",
+            ],  
+            fragment_shader: [
+                "#std/header.glsl",
+                "#std/noise.glsl",
+                "#std/misc.glsl",
+                "src/target.fs.glsl",
+            ],  
+            variables: {},
+        ),
+    },
+    render_chain: [  
+        (
+            name: "Bumpmap",
+            filter: "bumpmap",
+            inputs: {
+                "iChannel0": Mipmaps("DiffuseImage"),
+                "iChannel1": Mipmaps("NormalMap"),
+                "iChannel2": Mipmaps("BumpMap"),
+                "iChannel3": Mipmaps("SpecularMap"),
+                "iChannel4": Mipmaps("GraffImage"),
+                "iChannel5": Mipmaps("Snow"),
+            },
+            variables: {},
+            precision: F32,
+        ),
+    ],
+
+    final_stage: (
+        name: "target",
+        filter: "target",
+        inputs: {
+            "iChannel0": Mipmaps("Bumpmap"),
+        },
+        variables: {},
+        precision: U8,
+    ),
+)

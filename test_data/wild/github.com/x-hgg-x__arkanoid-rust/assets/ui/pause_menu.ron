@@ -1,0 +1,116 @@
+#![enable(implicit_some)]
+Container(
+    transform: (
+        id: "pause_menu",
+        anchor: Middle,
+        pivot: Middle,
+        width: 1.0,
+        height: 1.0,
+        percent: true,
+    ),
+    background: SolidColor(0.0, 0.0, 0.0, 0.7),
+    children: [
+        Label(
+            transform: (
+                id: "cursor_resume",
+                x: -140.0,
+                y: 100.0,
+                width: 100.0,
+                height: 50.0,
+                anchor: Middle,
+                pivot: Middle,
+            ),
+            text: (
+                text: "\u{25ba}",
+                font: File("lfs/fonts/hack.ttf", ("TTF", ())),
+                font_size: 50.0,
+                color: (1.0, 1.0, 1.0, 1.0),
+            ),
+        ),
+        Label(
+            transform: (
+                id: "cursor_main_menu",
+                x: -195.0,
+                y: 0.0,
+                width: 100.0,
+                height: 50.0,
+                anchor: Middle,
+                pivot: Middle,
+            ),
+            text: (
+                text: "\u{25ba}",
+                font: File("lfs/fonts/hack.ttf", ("TTF", ())),
+                font_size: 50.0,
+                color: (1.0, 1.0, 1.0, 0.0),
+            ),
+        ),
+        Label(
+            transform: (
+                id: "cursor_exit",
+                x: -110.0,
+                y: -100.0,
+                width: 100.0,
+                height: 50.0,
+                anchor: Middle,
+                pivot: Middle,
+            ),
+            text: (
+                text: "\u{25ba}",
+                font: File("lfs/fonts/hack.ttf", ("TTF", ())),
+                font_size: 50.0,
+                color: (1.0, 1.0, 1.0, 0.0),
+            ),
+        ),
+        Label(
+            transform: (
+                id: "resume",
+                y: 100.0,
+                width: 300.0,
+                height: 50.0,
+                anchor: Middle,
+                pivot: Middle,
+                mouse_reactive: true,
+            ),
+            text: (
+                text: "RESUME",
+                font: File("lfs/fonts/joystix.ttf", ("TTF", ())),
+                font_size: 50.0,
+                color: (1.0, 1.0, 1.0, 1.0),
+            ),
+        ),
+        Label(
+            transform: (
+                id: "main_menu",
+                y: 0.0,
+                width: 350.0,
+                height: 50.0,
+                anchor: Middle,
+                pivot: Middle,
+                mouse_reactive: true,
+            ),
+            text: (
+                text: "MAIN MENU",
+                font: File("lfs/fonts/joystix.ttf", ("TTF", ())),
+                font_size: 50.0,
+                color: (1.0, 1.0, 1.0, 1.0),
+            ),
+        ),
+        Label(
+            transform: (
+                id: "exit",
+                y: -100.0,
+                width: 150.0,
+                height: 50.0,
+                anchor: Middle,
+                pivot: Middle,
+                mouse_reactive: true,
+            ),
+            text: (
+                text: "EXIT",
+                font: File("lfs/fonts/joystix.ttf", ("TTF", ())),
+                font_size: 50.0,
+                color: (1.0, 1.0, 1.0, 1.0),
+            ),
+        ),
+    ]
+)

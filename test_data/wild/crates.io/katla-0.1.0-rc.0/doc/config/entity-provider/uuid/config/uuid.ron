@@ -1,0 +1,54 @@
+#![enable(implicit_some)]
+(
+	name: "UUID",
+	description: "UUID",
+	appenders: [
+		(
+			type: "file",
+			name: "uuid--appender",
+			fileName: "uuid.txt",
+		),
+	],
+	entityProviders: [
+		(
+			type: "uuid",
+			name: "uuid--entity-name",
+		),
+	],
+	entries: [
+		(
+			name: "uuid--entry",
+			entity: "uuid--entity-name",
+		),
+	],
+	feeds: [
+		(
+			type: "file",
+			name: "uuid--file-feed",
+			content: (
+				type: "katla",
+				inline: "{{ uuid--entry }}\n",
+			),
+			pagination: (
+				type: "inFile",
+				count: 1000,
+			),
+		),
+	],
+	flows: [
+		(
+			name: "uuid--flow",
+			timeInterval: "R20000",
+			entries: [
+				"uuid--entry",
+			],
+			outputs: [
+				(
+					duration: "PT0S",
+					feed: "uuid--file-feed",
+					appender: "uuid--appender",
+				),
+			],
+		),
+	],
+)
