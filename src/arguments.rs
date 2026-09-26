@@ -2,16 +2,35 @@ use clap::{Parser, ValueEnum};
 use std::path::PathBuf;
 
 /// Formatting options left unset fall back to the nearest `fmt.ron` (or
-/// `.fmt.ron`), searched from the input file's directory upward, and then to
-/// the built-in defaults.
+/// `.fmt.ron`), searched from each file's directory upward, and then to the
+/// built-in defaults.
 #[derive(Debug, Parser)]
 #[command(author, version, long_about = Some("Utility for autoformatting RON files.\n\n\
+    Formats the given files in place; directories are searched for *.ron files, respecting \
+    .gitignore. With no paths, or `-`, reads stdin and writes stdout.\n\n\
     Settings come from, in increasing priority: built-in defaults, the nearest fmt.ron \
-    (or .fmt.ron) in the input file's directory or any parent, and command-line flags."))]
+    (or .fmt.ron) in the file's directory or any parent, and command-line flags."))]
 pub struct Arguments {
-    /// Sets which file to format
-    #[arg(short, long, required_unless_present = "print_config")]
-    pub input: Option<PathBuf>,
+    /// Files or directories to format; `-` (or no paths) reads stdin
+    pub paths: Vec<PathBuf>,
+
+    /// Write nothing; print a diff for each file that would change and exit
+    /// with status 1 if any would
+    #[arg(long, conflicts_with_all = ["stdout", "backup"])]
+    pub check: bool,
+
+    /// Print the formatted output instead of writing it (one input only)
+    #[arg(short = 'd', long = "stdout")]
+    pub stdout: bool,
+
+    /// Copy each changed file to <file>.bak before replacing it
+    #[arg(long)]
+    pub backup: bool,
+
+    /// When reading stdin: the path it stands for, used to find fmt.ron and
+    /// in messages
+    #[arg(long, value_name = "PATH")]
+    pub stdin_filepath: Option<PathBuf>,
 
     /// Sets soft max line width for formatting heuristics [default: 100]
     #[arg(short)]
@@ -20,10 +39,6 @@ pub struct Arguments {
     /// Sets indentation size in spaces [default: 4]
     #[arg(short)]
     pub tab_size: Option<usize>,
-
-    /// Prints output to console instead of overwriting the input file
-    #[arg(short, default_value_t = false)]
-    pub debug: bool,
 
     /// Maximum container-nesting depth accepted before the input is rejected
     /// (guards against stack overflow on adversarial input) [default: 512]
@@ -49,7 +64,8 @@ pub struct Arguments {
     #[arg(long)]
     pub no_config: bool,
 
-    /// Print the effective configuration as a fmt.ron and exit
+    /// Print the effective configuration (for the first path, or the
+    /// current directory) as a fmt.ron and exit
     #[arg(long)]
     pub print_config: bool,
 }

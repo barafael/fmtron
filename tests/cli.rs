@@ -5,8 +5,8 @@ fn run_cli(input: &str, args: &[&str]) -> std::process::Output {
     let mut file = tempfile::NamedTempFile::new().expect("temp file");
     write!(file, "{input}").expect("write temp file");
     Command::new(env!("CARGO_BIN_EXE_fmtron"))
-        .args(["-i", file.path().to_str().unwrap()])
         .args(args)
+        .arg(file.path())
         .output()
         .expect("run fmtron")
 }
@@ -23,12 +23,15 @@ fn invalid_input_is_a_clean_error_not_a_panic() {
 #[test]
 fn missing_file_is_a_clean_error_not_a_panic() {
     let out = Command::new(env!("CARGO_BIN_EXE_fmtron"))
-        .args(["-d", "-i", "/nonexistent/fmtron/no.ron"])
+        .args(["-d", "/nonexistent/fmtron/no.ron"])
         .output()
         .expect("run fmtron");
     assert!(!out.status.success());
     let stderr = String::from_utf8_lossy(&out.stderr);
-    assert!(stderr.contains("unable to read"));
+    assert!(
+        stderr.contains("no such file or directory"),
+        "stderr: {stderr}"
+    );
     assert!(!stderr.contains("panicked"));
 }
 
@@ -104,7 +107,7 @@ fn output_ends_with_exactly_one_newline() {
         let mut file = tempfile::NamedTempFile::new().expect("temp file");
         write!(file, "{input}").expect("write temp file");
         let status = Command::new(env!("CARGO_BIN_EXE_fmtron"))
-            .args(["-i", file.path().to_str().unwrap()])
+            .arg(file.path())
             .status()
             .expect("run fmtron");
         assert!(status.success());
@@ -113,7 +116,6 @@ fn output_ends_with_exactly_one_newline() {
             written, stdout,
             "in-place output differs from -d for {input:?}"
         );
-        let _ = std::fs::remove_file(format!("{}.bak", file.path().display()));
     }
 }
 
@@ -170,7 +172,8 @@ fn closed_stdout_is_not_a_panic() {
     let mut file = tempfile::NamedTempFile::new().expect("temp file");
     write!(file, "[{}]", "1,".repeat(200_000)).expect("write temp file");
     let mut child = Command::new(env!("CARGO_BIN_EXE_fmtron"))
-        .args(["-d", "-w", "5", "-i", file.path().to_str().unwrap()])
+        .args(["-d", "-w", "5"])
+        .arg(file.path())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
@@ -217,7 +220,7 @@ fn project(config: &str, input: &str) -> (tempfile::TempDir, std::path::PathBuf)
 fn fmtron_on(file: &std::path::Path, args: &[&str]) -> std::process::Output {
     Command::new(env!("CARGO_BIN_EXE_fmtron"))
         .args(args)
-        .args(["-i", file.to_str().unwrap()])
+        .arg(file)
         .output()
         .expect("run fmtron")
 }

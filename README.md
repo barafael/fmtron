@@ -14,15 +14,57 @@ identity to the crates.io team. The project was therefore renamed to `fmtron`.
 
 ## How to use
 
-`fmtron -i file_to_format.ron`
+```sh
+fmtron assets/level.ron          # format a file in place
+fmtron assets/ config.ron        # several files and directories
+fmtron --check .                 # CI: print diffs, exit 1 if anything would change
+fmtron < in.ron > out.ron        # stdin to stdout (also `fmtron -`)
+```
 
-- On use, the tool will create a backup file called `<source_file_name>.bak` in the same directory. Only the latest backup is kept. Add `*.bak` to your `.gitignore` if you would like to keep your repo clean.
-- Use `-d` flag to write the formatted output to the terminal instead of overwriting the source file
+- Directories are searched for `*.ron` files, skipping hidden files and anything your `.gitignore` excludes; a file named explicitly is always formatted
+- Files are only rewritten if their formatting changes, and the new content replaces the old atomically. Symlinks and file permissions are preserved, and read-only files are refused
+- `--check` writes nothing; it prints a unified diff for every file that would change
+- `-d` / `--stdout` prints the formatted result of a single file instead of writing it
+- With stdin, `--stdin-filepath <path>` says which file the input stands for: it picks the `fmt.ron` and names the input in messages. This is what editor integrations need
+- `--backup` copies each changed file to `<file>.bak` before replacing it (no backups are made by default)
+- Exit status: 0 on success; 1 if any file could not be formatted, or, with `--check`, if any file needs formatting. All files are processed and every error is reported
 - Set tab size with `-t <size>` (4 by default)
 - Set max line width with `-w <width>` (100 by default). This is a soft limit, so long or deeply-nested values may sometimes overrun it
 - Cap container nesting with `--max-depth <depth>` (512 by default); deeper input is rejected cleanly instead of overflowing the stack
 - Set the upper bound enforced on `-t` with `--max-tab <size>` (1024 by default); a larger `-t` is rejected
 - Choose how blank lines are treated with `--blank-lines <keep|remove>`. `keep` (the default) preserves one blank line wherever the input separates elements or comments with one or more; `remove` drops them all, so the output depends only on the input's tokens and comments
+
+### In CI and editors
+
+```yaml
+# GitHub Actions
+- run: cargo install fmtron && fmtron --check .
+```
+
+```yaml
+# .pre-commit-config.yaml
+- repo: local
+  hooks:
+    - id: fmtron
+      name: fmtron
+      entry: fmtron
+      language: system
+      files: \.ron$
+```
+
+For format-on-save, have the editor pipe the buffer through
+`fmtron --stdin-filepath <path of the file>` and replace it with the output.
+Parse errors point at the problem in terms of RON, for example:
+
+```
+unable to parse RON:
+parse error:  --> levels/one.ron:2:2
+  |
+2 |  b: 2)
+  |  ^---
+  |
+  = expected `,` or `)`, found `b`
+```
 
 ## Configuration file: `fmt.ron`
 

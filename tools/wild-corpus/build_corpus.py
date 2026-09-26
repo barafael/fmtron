@@ -104,8 +104,7 @@ lines += ["    ],", ")", ""]
 manifest = os.path.join(DEST, "manifest.ron")
 open(manifest, "w").write("\n".join(lines))
 # Dogfood: keep the manifest in fmtron's own canonical format.
-subprocess.run([os.path.join(REPO, "target", "release", "fmtron"), "-w", "100", "-i", manifest], check=True)
-os.remove(manifest + ".bak")
+subprocess.run([os.path.join(REPO, "target", "release", "fmtron"), "-w", "100", manifest], check=True)
 
 size = sum(os.path.getsize(os.path.join(d, f)) for d, _, fs in os.walk(DEST) for f in fs)
 print(f"kept {len(kept)} files from {len(by_source)} sources ({size / 1e6:.1f} MB); skipped: {dict(skipped)}")

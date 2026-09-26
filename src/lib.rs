@@ -1,5 +1,6 @@
 mod ast;
 mod config_file;
+mod parse_error;
 pub mod pretty;
 
 pub use ast::{Kind, RonFile, Value};
@@ -138,7 +139,7 @@ pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
             None => Err(FormatError::Empty),
         },
         Err(_) if RonParser::parse(Rule::no_value, input).is_ok() => Err(FormatError::Empty),
-        Err(e) => Err(Box::new(e).into()),
+        Err(e) => Err(Box::new(parse_error::improve(input, e)).into()),
     }
 }
 

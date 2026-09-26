@@ -19,13 +19,15 @@ exclude = ["test_data/wild", "tools"]
 
 [dependencies]
 clap = { version = "4.6.7", features = ["derive"] }
+ignore = "0.4.33"
 pest = "2.9"
 pest_derive = "2.9"
 ron = "0.12"
 serde = { version = "1", features = ["derive"] }
+similar = "3.2.0"
+tempfile = "3.27.0"
 thiserror = "2"
 unicode-width = "0.2"
 
 [dev-dependencies]
 fs-walk = "0.2"
-tempfile = "3.27.0"
