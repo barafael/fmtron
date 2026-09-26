@@ -37,6 +37,22 @@ pub struct Config {
     pub max_nesting: usize,
     /// Upper bound enforced on `tab_size`; larger values are clamped.
     pub max_tab: usize,
+    /// Whether blank lines between elements are kept.
+    pub blank_lines: BlankLines,
+}
+
+/// How blank lines in the input are treated.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum BlankLines {
+    /// Keep one blank line wherever the input has one or more between two
+    /// elements, comments or header items. A container holding one always
+    /// breaks. Blank lines right after an opening or before a closing bracket
+    /// are dropped.
+    #[default]
+    Keep,
+    /// Remove all blank lines, so the output depends only on the input's
+    /// tokens and comments, never on its layout.
+    Remove,
 }
 
 impl Default for Config {
@@ -46,6 +62,7 @@ impl Default for Config {
             max_width: 40,
             max_nesting: MAX_NESTING,
             max_tab: MAX_TAB,
+            blank_lines: BlankLines::Keep,
         }
     }
 }

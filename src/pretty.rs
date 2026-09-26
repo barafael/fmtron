@@ -115,22 +115,39 @@ pub fn render_with_newline(doc: &Doc, width: usize, newline: &str) -> String {
     let mut out = Out {
         buf: String::new(),
         newline,
+        pending_indent: 0,
     };
     best(&mut out, doc, width, 0, 0, Mode::Break);
     out.buf
 }
 
 /// The output buffer plus the line ending to emit at breaks.
+///
+/// Indentation is written lazily, just before the next non-empty text, so a
+/// line that receives no text (a blank line, or a break followed directly by
+/// another) carries no trailing whitespace.
 struct Out<'a> {
     buf: String,
     newline: &'a str,
+    /// Indentation owed to the current line before its first text.
+    pending_indent: usize,
 }
 
 impl Out<'_> {
-    /// A line break followed by `indent` spaces.
+    /// A line break; the next text on the new line is indented by `indent`.
     fn break_line(&mut self, indent: usize) {
         self.buf.push_str(self.newline);
-        self.buf.extend(std::iter::repeat_n(' ', indent));
+        self.pending_indent = indent;
+    }
+
+    fn text(&mut self, s: &str) {
+        if !s.is_empty() {
+            self.buf.extend(std::iter::repeat_n(
+                ' ',
+                std::mem::take(&mut self.pending_indent),
+            ));
+            self.buf.push_str(s);
+        }
     }
 }
 
@@ -142,7 +159,7 @@ fn best(out: &mut Out, doc: &Doc, width: usize, indent: usize, col: usize, mode:
     match doc {
         Doc::Nil => col,
         Doc::Text(s) => {
-            out.buf.push_str(s);
+            out.text(s);
             col + s.width()
         }
         Doc::Line { soft } => match mode {
@@ -150,7 +167,7 @@ fn best(out: &mut Out, doc: &Doc, width: usize, indent: usize, col: usize, mode:
                 if *soft {
                     col
                 } else {
-                    out.buf.push(' ');
+                    out.text(" ");
                     col + 1
                 }
             }
@@ -218,7 +235,7 @@ fn best_seq(
                         inner,
                         Mode::Break,
                     );
-                    out.buf.push(',');
+                    out.text(",");
                     out.break_line(indent);
                     best(out, close, width, indent, c + 1, Mode::Break)
                 } else {

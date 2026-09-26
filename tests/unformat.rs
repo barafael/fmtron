@@ -1,7 +1,9 @@
 //! Canonicality / uniformity harness ("un-format" test).
 //!
 //! A formatter is *canonical* when its output depends only on the token
-//! stream, never on the input's incidental whitespace. To verify that, every
+//! stream, never on the input's incidental whitespace. fmtron is canonical
+//! with `BlankLines::Remove`, which this harness uses; the default
+//! `BlankLines::Keep` deliberately preserves the author's blank lines. To verify that, every
 //! corpus file is deliberately re-messed ("un-formatted") into many different
 //! layouts, and each layout must format to byte-identical output as the
 //! original file. If any layout disagrees, the printer is reading something
@@ -26,7 +28,7 @@
 //!
 //! Deterministic: default seed `0xCAFE_D00D`, override via `FMTRON_FUZZ_SEED`.
 
-use fmtron::{Config, format_ron};
+use fmtron::{BlankLines, Config, format_ron};
 
 const DEFAULT_SEED: u64 = 0xCAFE_D00D;
 const SCRAMBLES_PER_FILE: usize = 30;
@@ -447,16 +449,19 @@ fn corpus_formats_canonically_regardless_of_layout() {
         Config {
             tab_size: 4,
             max_width: 40,
+            blank_lines: BlankLines::Remove,
             ..Config::default()
         },
         Config {
             tab_size: 2,
             max_width: 80,
+            blank_lines: BlankLines::Remove,
             ..Config::default()
         },
         Config {
             tab_size: 4,
             max_width: 24,
+            blank_lines: BlankLines::Remove,
             ..Config::default()
         },
     ];

@@ -1,12 +1,13 @@
-//! Runs fmtron over `test_data/wild/`: real-world RON collected from public
-//! forges and crates.io, with attribution in `test_data/wild/manifest.ron`.
+//! Runs fmtron, in both blank-line modes, over `test_data/wild/`: real-world
+//! RON collected from public forges and crates.io, with attribution in
+//! `test_data/wild/manifest.ron`.
 //!
 //! For every file the reference `ron` crate accepts, the formatted output must
 //! be accepted too, deserialize to the same value, be a fixed point, and keep
 //! every token and every comment. Comments may move (e.g. from before a
 //! colon to after it), but none may be lost or duplicated.
 
-use fmtron::{Config, format_ron};
+use fmtron::{BlankLines, Config, format_ron};
 use std::path::{Path, PathBuf};
 
 fn ron_files(dir: &Path, out: &mut Vec<PathBuf>) {
@@ -131,14 +132,21 @@ fn wild_corpus_formats_faithfully() {
         files.len()
     );
 
-    let config = Config {
-        max_width: 100,
-        ..Config::default()
-    };
     let mut failures = Vec::new();
     let mut checked = 0;
-    for path in &files {
-        let name = path.strip_prefix(&root).unwrap().display().to_string();
+    for (path, blank_lines) in files
+        .iter()
+        .flat_map(|p| [(p, BlankLines::Keep), (p, BlankLines::Remove)])
+    {
+        let config = Config {
+            max_width: 100,
+            blank_lines,
+            ..Config::default()
+        };
+        let name = format!(
+            "{} ({blank_lines:?})",
+            path.strip_prefix(&root).unwrap().display()
+        );
         let input = std::fs::read_to_string(path).unwrap();
         let Ok(before) = ron::from_str::<ron::Value>(&input) else {
             // Uses syntax the reference rejects (e.g. an unknown extension):
@@ -176,8 +184,8 @@ fn wild_corpus_formats_faithfully() {
         }
     }
     assert!(
-        checked > 100,
-        "only {checked} files accepted by the reference"
+        checked > 200,
+        "only {checked} runs accepted by the reference"
     );
     assert!(
         failures.is_empty(),

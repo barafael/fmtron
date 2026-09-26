@@ -1,0 +1,13 @@
+[package]
+name = "wild-harness"
+version = "0.1.0"
+edition = "2024"
+publish = false
+description = "Checks fmtron against the ron crate on a list of real-world files (see ../README.md)."
+
+[dependencies]
+fmtron = { path = "../../.." }
+ron = "0.12"
+
+# Standalone: not a member of the fmtron workspace.
+[workspace]

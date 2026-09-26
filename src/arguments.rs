@@ -1,4 +1,4 @@
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use std::path::PathBuf;
 
 #[derive(Debug, Parser)]
@@ -29,4 +29,25 @@ pub struct Arguments {
     /// rejected instead of emitting pathologically wide indentation
     #[arg(long, default_value_t = fmtron::MAX_TAB)]
     pub max_tab: usize,
+
+    /// Whether blank lines between elements are kept (runs collapse to one)
+    /// or removed
+    #[arg(long, value_enum, default_value_t = BlankLines::Keep)]
+    pub blank_lines: BlankLines,
+}
+
+/// The `--blank-lines` choices, mirroring [`fmtron::BlankLines`].
+#[derive(Debug, Clone, Copy, ValueEnum)]
+pub enum BlankLines {
+    Keep,
+    Remove,
+}
+
+impl From<BlankLines> for fmtron::BlankLines {
+    fn from(b: BlankLines) -> Self {
+        match b {
+            BlankLines::Keep => Self::Keep,
+            BlankLines::Remove => Self::Remove,
+        }
+    }
 }

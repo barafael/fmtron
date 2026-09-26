@@ -2,3 +2,7 @@
 **/*.rs.bk
 /.idea
 *.bak
+/tools/wild-corpus/harness/target
+/tools/wild-corpus/harness/Cargo.lock
+__pycache__/
+wild-work/

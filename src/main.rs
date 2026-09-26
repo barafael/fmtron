@@ -64,6 +64,7 @@ fn run() -> Result<(), Error> {
         max_width: args.width,
         max_nesting: args.max_depth,
         max_tab: args.max_tab,
+        blank_lines: args.blank_lines.into(),
     };
 
     let file = std::fs::read_to_string(&args.input).map_err(|source| Error::Read {

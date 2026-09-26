@@ -184,3 +184,18 @@ fn closed_stdout_is_not_a_panic() {
         out.status
     );
 }
+
+// S1: blank lines are kept by default; `--blank-lines remove` drops them.
+#[test]
+fn blank_lines_option() {
+    let input = "(\n    a: 1,\n\n\n    b: 2,\n)";
+    let keep = run_cli(input, &["-d"]);
+    assert!(keep.status.success());
+    assert_eq!(
+        String::from_utf8_lossy(&keep.stdout),
+        "(\n    a: 1,\n\n    b: 2,\n)\n"
+    );
+    let remove = run_cli(input, &["-d", "--blank-lines", "remove"]);
+    assert!(remove.status.success());
+    assert_eq!(String::from_utf8_lossy(&remove.stdout), "(a: 1, b: 2)\n");
+}
