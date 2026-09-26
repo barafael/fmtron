@@ -1,16 +1,23 @@
 WHITESPACE = _{ " " | "\n" | "\t" | "\r" }
 
 COMMENT = { line_comment | block_comment }
-line_comment = { "//" ~ line_comment_inner ~ (NEWLINE | &EOI) }
-line_comment_inner = { (!NEWLINE ~ ANY)* }
+// Only `\n` ends a line comment (a lone `\r` does not), matching the
+// reference parser; a `\r` before the `\n` is trimmed when rendering.
+line_comment = { "//" ~ line_comment_inner ~ ("\n" | &EOI) }
+line_comment_inner = { (!"\n" ~ ANY)* }
 block_comment = { "/*" ~ (!"*/" ~ (block_comment | ANY))* ~ "*/" }
 
-ident = @{ ("r#")? ~ ident_first ~ ident_rest* }
-ident_first = { ASCII_ALPHA | "_" | non_ascii }
-ident_rest = { ASCII_ALPHANUMERIC | "_" | non_ascii }
-non_ascii = { !('\u{00}' .. '\u{7F}' | '\u{FEFF}' .. '\u{FEFF}') ~ ANY }
+// Per the RON grammar: `XID_Start | "_"` then `XID_Continue`; a raw identifier
+// (`r#type`, `r#1`, `r#a.b-c`) may also start with and contain `.`, `+`, `-`.
+ident = @{ "r#" ~ ident_raw_rest+ | ident_first ~ ident_rest* }
+ident_first = { XID_START | "_" }
+ident_rest = { XID_CONTINUE }
+ident_raw_rest = { XID_CONTINUE | "." | "+" | "-" }
 
 ron_file = { SOI ~ attribute* ~ value ~ EOI }
+// Input with no value at all: blank, comments only, or attributes only. Tried
+// after `ron_file` fails, to report "no RON data" instead of a parse error.
+no_value = { SOI ~ attribute* ~ EOI }
 
 attribute = {
     "#" ~ "!" ~ "[" ~ ( enable_attr | type_attr | schema_attr ) ~ "]"
@@ -23,10 +30,11 @@ enable_attr = {
 type_attr = { "type" ~ "=" ~ string }
 schema_attr = { "schema" ~ "=" ~ string }
 
-value = { float | signed_int | bool | char | byte_string | string | list | map | tuple_type | fields_type | unit_type }
+value = { float | signed_int | bool | char | byte_char | byte_string | string | list | map | tuple_type | fields_type | unit_type }
 
-// booleans
-bool = { "true" | "false" }
+// booleans — like `inf`/`NaN`, only at an identifier boundary, so they
+// don't shadow identifiers such as `trueish` or `false_value`.
+bool = @{ ("true" | "false") ~ !ident_rest }
 
 // numbers
 sign = { "+" | "-" }
@@ -58,12 +66,15 @@ float_exp = { ("e" | "E") ~ sign? ~ exp_digits }
 exp_digits = @{ "_"* ~ ASCII_DIGIT+ ~ ( "_"* ~ ASCII_DIGIT+ )* ~ "_"* }
 float_suffix = { "f32" | "f64" }
 // `inf`/`NaN` must not shadow longer identifiers (`inf32`, `NaNfoo`): the
-// keyword is only a special float when no identifier continuation follows.
-special_float = @{ sign? ~ ("inf" | "NaN") ~ !ident_rest ~ float_suffix? }
+// keyword (plus optional suffix, e.g. `-NaNf32`) is only a special float when
+// no identifier continuation follows.
+special_float = @{ sign? ~ ("inf" | "NaN") ~ float_suffix? ~ !ident_rest }
 
 // chars
 char = ${ "'" ~ char_inner ~ "'" }
-char_inner = { "\\" ~ escape_code | !("'" | "\\" | NEWLINE) ~ ANY }
+// Any single unescaped char, including `'` itself (`'''`) and a raw `\n` or
+// `\r`, as the reference parser accepts.
+char_inner = { "\\" ~ char_escape_code | !"\\" ~ ANY }
 
 // strings
 string = ${ string_std | string_raw }
@@ -78,6 +89,11 @@ byte_string = ${ byte_string_raw | byte_string_std }
 byte_string_raw = { "br" ~ PUSH("#"*) ~ "\"" ~ string_raw_inner ~ "\"" ~ POP }
 byte_string_std = { "b" ~ "\"" ~ string_std_inner ~ "\"" }
 
+// A byte literal such as `b'a'` or `b'\xFF'`: one ASCII character or a byte
+// escape (no `\u{...}`). A raw newline is accepted, as the reference does.
+byte_char = ${ "b'" ~ byte_char_inner ~ "'" }
+byte_char_inner = { "\\" ~ byte_escape_code | !"\\" ~ ASCII }
+
 // The escapes the reference parser accepts: `\n \r \t \\ \' \" \0`, exactly
 // two hex digits after `\x`, and `\u{...}` with 1-6 hex digits. Anything else
 // (`\z`, `\12`, `\x4`) is rejected. `\u{...}` values above U+10FFFF are
@@ -87,6 +103,20 @@ escape_code = {
     "n" | "r" | "t" | "\\" | "'" | "\"" | "0"
     | "x" ~ ASCII_HEX_DIGIT{2}
     | "u" ~ "{" ~ ASCII_HEX_DIGIT{1,6} ~ "}"
+}
+
+// A char is one scalar value, so its `\x` escape must be ASCII (`\x00`-`\x7F`);
+// strings may chain `\xHH` escapes into multi-byte UTF-8.
+char_escape_code = {
+    "n" | "r" | "t" | "\\" | "'" | "\"" | "0"
+    | "x" ~ '0'..'7' ~ ASCII_HEX_DIGIT
+    | "u" ~ "{" ~ ASCII_HEX_DIGIT{1,6} ~ "}"
+}
+
+// A byte literal takes any `\xHH` but no `\u{...}`.
+byte_escape_code = {
+    "n" | "r" | "t" | "\\" | "'" | "\"" | "0"
+    | "x" ~ ASCII_HEX_DIGIT{2}
 }
 
 // collections

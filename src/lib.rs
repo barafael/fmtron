@@ -10,6 +10,7 @@ use pest_derive::Parser;
 pub struct RonParser;
 
 pub use pest::Parser;
+use pest::error::LineColLocation;
 
 /// Default maximum container-nesting depth. Guards against the stack overflow
 /// that pest's recursive descent would otherwise hit on deeply nested input.
@@ -46,19 +47,17 @@ impl Default for Config {
 /// The error type returned by [`format_ron`].
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum FormatError {
-    /// The input contains no RON value.
+    /// The input contains no RON value: it is blank, or holds only comments
+    /// and attributes.
     #[error("no RON data found")]
     Empty,
     /// The input is too deeply nested; formatting it would overflow the stack.
     /// `max` is the configured [`Config::max_nesting`] limit.
-    #[error(
-        "input is nested {depth} levels deep, exceeding the limit of {max} — \
-         raise with a larger `max_nesting`"
-    )]
+    #[error("input is nested {depth} levels deep, exceeding the limit of {max}")]
     TooDeep { depth: usize, max: usize },
     /// The input is not valid RON. The inner error carries line/column
     /// information and a rendering of the offending input position.
-    #[error("parse error: {0}")]
+    #[error("parse error: {}", render_parse_error(.0))]
     Parse(#[from] Box<pest::error::Error<Rule>>),
 }
 
@@ -92,14 +91,52 @@ pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
             Some(pair) => Ok(RonFile::parse_from(pair, input, effective).to_string()),
             None => Err(FormatError::Empty),
         },
+        Err(_) if RonParser::parse(Rule::no_value, input).is_ok() => Err(FormatError::Empty),
         Err(e) => Err(Box::new(e).into()),
     }
+}
+
+/// Lines longer than this (in chars) are shown as an excerpt around the error
+/// column. pest echoes the whole offending line, padded out to the caret, so
+/// one bad byte in a multi-megabyte single-line file would print megabytes.
+const MAX_ERROR_LINE: usize = 200;
+/// Chars of context shown on each side of the error column in an excerpt.
+const EXCERPT_RADIUS: usize = 40;
+
+fn render_parse_error(e: &pest::error::Error<Rule>) -> String {
+    let line = e.line().trim_end_matches(['\n', '\r']);
+    let len = line.chars().count();
+    if len <= MAX_ERROR_LINE {
+        return e.to_string();
+    }
+    let (row, col) = match e.line_col {
+        LineColLocation::Pos(p) | LineColLocation::Span(p, _) => p,
+    };
+    let start = col.saturating_sub(1 + EXCERPT_RADIUS);
+    let excerpt: String = line.chars().skip(start).take(2 * EXCERPT_RADIUS).collect();
+    let (lead, trail) = (
+        if start > 0 { "…" } else { "" },
+        if start + 2 * EXCERPT_RADIUS < len {
+            "…"
+        } else {
+            ""
+        },
+    );
+    let pad = " ".repeat(col - 1 - start + lead.chars().count());
+    // Same layout as pest's own rendering, gutter sized to the line number.
+    let gutter = " ".repeat(row.to_string().len());
+    format!(
+        "{gutter}--> {row}:{col}\n{gutter} |\n{row} | {lead}{excerpt}{trail}\n\
+         {gutter} | {pad}^---\n{gutter} |\n{gutter} = {}",
+        e.variant.message()
+    )
 }
 
 /// The deepest `[`, `(` or `{` nesting reached in `input`, measured lexically.
 ///
 /// String, char, byte-string, raw-string and comment bodies are skipped so
-/// brackets inside them don't count. This is an *iterative* scan — unlike the
+/// brackets inside them don't count; nested `/* /* */ */` comments count as
+/// nesting levels, since pest recurses on them too. This is an *iterative* scan — unlike the
 /// recursive pest parse and the AST renderer, it cannot overflow the stack, so
 /// [`format_ron`] runs it as a cheap guard against adversarial input.
 fn nesting_depth(input: &str) -> usize {
@@ -134,11 +171,15 @@ fn nesting_depth(input: &str) -> usize {
                 continue;
             }
             b'/' if b.get(i + 1) == Some(&b'*') => {
+                // pest's `block_comment` recurses once per nested `/*`, so
+                // comment nesting counts toward the depth budget too.
                 let mut d = 1;
+                peak = peak.max(depth + d);
                 i += 2;
                 while i < b.len() && d > 0 {
                     if b[i] == b'/' && b.get(i + 1) == Some(&b'*') {
                         d += 1;
+                        peak = peak.max(depth + d);
                         i += 2;
                     } else if b[i] == b'*' && b.get(i + 1) == Some(&b'/') {
                         d -= 1;
@@ -177,16 +218,30 @@ fn scan_quoted(b: &[u8], i: usize) -> Option<usize> {
 }
 
 /// `'…'` (a single char, possibly escaped): index just past the close, or None.
+///
+/// Only a well-formed char literal is skipped. A stray `'` must not hide the
+/// brackets up to some later `'` from the depth count.
 fn scan_char(b: &[u8], i: usize) -> Option<usize> {
-    let mut k = i + 1;
-    while k < b.len() {
-        match b[k] {
-            b'\\' => k = k.saturating_add(2),
-            b'\'' => return Some(k + 1),
-            _ => k += 1,
-        }
+    let body = i + 1;
+    let close = if b.get(body) == Some(&b'\\') {
+        // The longest escape is `\u{10FFFF}` (10 bytes); none contains `'`
+        // except `\'`, whose `'` sits at `body + 1`.
+        (body + 2..(body + 11).min(b.len())).find(|&k| b[k] == b'\'')?
+    } else {
+        // One unescaped (possibly multi-byte) char, which may itself be `'`.
+        body + utf8_len(*b.get(body)?)
+    };
+    (b.get(close) == Some(&b'\'')).then_some(close + 1)
+}
+
+/// Byte length of the UTF-8 sequence starting with `lead`.
+fn utf8_len(lead: u8) -> usize {
+    match lead {
+        0x00..=0x7F => 1,
+        0xC0..=0xDF => 2,
+        0xE0..=0xEF => 3,
+        _ => 4,
     }
-    None
 }
 
 /// `r"…"`, `r#"…"#`, `br#"…"#`: index just past the close, or None. A bare `r`

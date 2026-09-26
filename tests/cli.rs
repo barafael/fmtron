@@ -68,6 +68,9 @@ fn too_deep_input_is_a_clean_error() {
     assert!(!out.status.success());
     let stderr = String::from_utf8_lossy(&out.stderr);
     assert!(stderr.contains("levels deep"), "stderr: {stderr}");
+    // R6: a depth rejection is not a parse error, and names the CLI flag.
+    assert!(stderr.contains("--max-depth"), "stderr: {stderr}");
+    assert!(!stderr.contains("unable to parse"), "stderr: {stderr}");
     assert!(!stderr.contains("panicked"));
 }
 
@@ -80,4 +83,33 @@ fn max_depth_override_admits_deeper_input() {
         "stderr: {}",
         String::from_utf8_lossy(&out.stderr)
     );
+}
+
+// N8: output always ends in exactly one newline, both in-place and with -d,
+// whether or not it ends in a comment.
+#[test]
+fn output_ends_with_exactly_one_newline() {
+    for input in ["[1,2]", "[1,2] // c", "[1,2]\n// d\n"] {
+        let out = run_cli(input, &["-d"]);
+        assert!(out.status.success());
+        let stdout = String::from_utf8_lossy(&out.stdout);
+        assert!(
+            stdout.ends_with('\n') && !stdout.ends_with("\n\n"),
+            "-d output for {input:?}: {stdout:?}"
+        );
+
+        let mut file = tempfile::NamedTempFile::new().expect("temp file");
+        write!(file, "{input}").expect("write temp file");
+        let status = Command::new(env!("CARGO_BIN_EXE_fmtron"))
+            .args(["-i", file.path().to_str().unwrap()])
+            .status()
+            .expect("run fmtron");
+        assert!(status.success());
+        let written = std::fs::read_to_string(file.path()).unwrap();
+        assert_eq!(
+            written, stdout,
+            "in-place output differs from -d for {input:?}"
+        );
+        let _ = std::fs::remove_file(format!("{}.bak", file.path().display()));
+    }
 }

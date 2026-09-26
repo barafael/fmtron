@@ -4,16 +4,27 @@ use crate::{Config, Rule};
 use pest::iterators::Pair;
 
 pub struct RonFile {
-    attributes: Vec<Attribute>,
+    header: Vec<HeaderItem>,
     value: Box<Value>,
     dangling: Vec<String>,
     config: Config,
+}
+
+/// Everything before the value, in source order.
+pub enum HeaderItem {
+    Attribute(Attribute),
+    /// A comment, rendered on its own line (layout-independent, like every
+    /// other leading comment).
+    Comment(String),
 }
 
 pub enum Attribute {
     Enable(Vec<String>),
     Type(String),
     Schema(String),
+    /// An attribute with comments inside it, kept exactly as written:
+    /// normalizing it would have to relocate or drop those comments.
+    Verbatim(String),
 }
 
 pub struct Value {
@@ -68,6 +79,14 @@ fn prepend_leading(v: &mut Value, mut pending: Vec<String>) {
 impl Attribute {
     fn from(pair: Pair<Rule>) -> Self {
         assert!(pair.as_rule() == Rule::attribute, "expected attribute pair");
+        if pair
+            .clone()
+            .into_inner()
+            .flatten()
+            .any(|p| p.as_rule() == Rule::COMMENT)
+        {
+            return Attribute::Verbatim(pair.as_str().into());
+        }
         let inner = pair.into_inner().next().unwrap();
         match inner.as_rule() {
             Rule::enable_attr => {
@@ -86,8 +105,7 @@ impl RonFile {
     pub fn parse_from(pair: Pair<Rule>, src: &str, config: Config) -> Self {
         assert!(pair.as_rule() == Rule::ron_file, "expected ron_file pair");
 
-        let mut attributes = Vec::new();
-        let mut pre_comments: Vec<String> = Vec::new();
+        let mut header: Vec<HeaderItem> = Vec::new();
         let mut value: Option<Box<Value>> = None;
         let mut value_end: Option<usize> = None;
         let mut trailing: Vec<String> = Vec::new();
@@ -95,7 +113,7 @@ impl RonFile {
 
         for p in pair.into_inner() {
             match p.as_rule() {
-                Rule::attribute => attributes.push(Attribute::from(p)),
+                Rule::attribute => header.push(HeaderItem::Attribute(Attribute::from(p))),
                 Rule::value => {
                     value_end = Some(p.as_span().end());
                     value = Some(Box::new(Value::from(p, src)));
@@ -104,7 +122,7 @@ impl RonFile {
                     let txt = comment_text(&p);
                     let cs = p.as_span().start();
                     match (value.is_some(), value_end) {
-                        (false, _) => pre_comments.push(txt),
+                        (false, _) => header.push(HeaderItem::Comment(txt)),
                         (true, Some(ve)) => {
                             if !newline_between(src, ve, cs) {
                                 trailing.push(txt);
@@ -120,15 +138,10 @@ impl RonFile {
         }
 
         let mut value = value.expect("ron_file must contain a value");
-        value.leading = {
-            let mut v = pre_comments;
-            v.append(&mut value.leading);
-            v
-        };
         value.trailing.append(&mut trailing);
 
         Self {
-            attributes,
+            header,
             value,
             dangling,
             config,
@@ -143,6 +156,7 @@ impl Value {
             | Rule::char
             | Rule::string
             | Rule::byte_string
+            | Rule::byte_char
             | Rule::signed_int
             | Rule::float
             | Rule::unit_type => {

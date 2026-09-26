@@ -28,8 +28,10 @@ enum Error {
         path: PathBuf,
         source: std::io::Error,
     },
+    #[error("{0}; raise the limit with --max-depth")]
+    TooDeep(fmtron::FormatError),
     #[error("unable to parse RON:\n{0}")]
-    Format(#[from] fmtron::FormatError),
+    Format(fmtron::FormatError),
     #[error("invalid configuration: {0}")]
     Config(String),
 }
@@ -64,10 +66,16 @@ fn run() -> Result<(), Error> {
         source,
     })?;
 
-    let formatted = fmtron::format_ron(&file, &config)?;
+    let formatted = fmtron::format_ron(&file, &config).map_err(|e| match e {
+        fmtron::FormatError::TooDeep { .. } => Error::TooDeep(e),
+        e => Error::Format(e),
+    })?;
+    // Emit a text file: exactly one final newline, whether or not the output
+    // ends in a comment line (which the formatter already terminates).
+    let formatted = format!("{}\n", formatted.trim_end_matches('\n'));
 
     if args.debug {
-        println!("{formatted}");
+        print!("{formatted}");
     } else {
         let mut backup = OsString::from(&args.input);
         backup.push(".bak");

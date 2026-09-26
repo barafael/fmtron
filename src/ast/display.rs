@@ -1,20 +1,19 @@
-use super::{Attribute, Field, Kind, RonFile, Value};
+use super::{Attribute, Field, HeaderItem, Kind, RonFile, Value};
 use crate::pretty::{Doc, comma, concat, group, hard_line, line, nest, render, soft_line, text};
 use std::fmt::{self, Display, Formatter};
 
 impl Display for RonFile {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let Self {
-            attributes,
+            header,
             value,
             dangling,
             config,
         } = self;
-        for attr in attributes {
-            match attr {
-                Attribute::Enable(ids) => writeln!(f, "#![enable({})]", ids.join(", "))?,
-                Attribute::Type(s) => writeln!(f, "#![type = {s}]")?,
-                Attribute::Schema(s) => writeln!(f, "#![schema = {s}]")?,
+        for item in header {
+            match item {
+                HeaderItem::Comment(text) => writeln!(f, "{text}")?,
+                HeaderItem::Attribute(attr) => writeln!(f, "{}", AttributeDisplay(attr))?,
             }
         }
         let doc = concat(vec![value_doc(value, config.tab_size), trailing_doc(value)]);
@@ -29,6 +28,19 @@ impl Display for RonFile {
             writeln!(f, "{c}")?;
         }
         Ok(())
+    }
+}
+
+struct AttributeDisplay<'a>(&'a Attribute);
+
+impl Display for AttributeDisplay<'_> {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        match self.0 {
+            Attribute::Enable(ids) => write!(f, "#![enable({})]", ids.join(", ")),
+            Attribute::Type(s) => write!(f, "#![type = {s}]"),
+            Attribute::Schema(s) => write!(f, "#![schema = {s}]"),
+            Attribute::Verbatim(s) => write!(f, "{s}"),
+        }
     }
 }
 
