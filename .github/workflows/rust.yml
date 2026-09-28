@@ -22,5 +22,8 @@ jobs:
       run: cargo clippy --all-targets -- -D warnings
     - name: Build
       run: cargo build --verbose
+    # Fails if fmtron's output changed; see tests/stability.rs.
+    - name: Output stability
+      run: cargo test --test stability
     - name: Run tests
       run: cargo test --verbose

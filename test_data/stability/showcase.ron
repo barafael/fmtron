@@ -1,0 +1,187 @@
+// fmtron formatting showcase.
+//
+// This file is written messily on purpose: odd spacing, missing and extra
+// commas, stray blank lines, comments in every position. It exercises nearly
+// every construct fmtron formats. Its formatted output is pinned next to it
+// (`showcase.<config>.ron`) and checked by `tests/stability.rs`, so any change
+// to what users get from fmtron is caught.
+
+
+
+/* A block comment in the header. */
+#![enable( implicit_some ,unwrap_newtypes,
+    unwrap_variant_newtypes, )]
+
+
+#![type="fmtron::Showcase"]
+#![schema   =   "showcase.schema.ron"]
+#![enable(/* a comment keeps an attribute verbatim */ implicit_some)]
+// The value starts here.
+Showcase (
+
+
+    // ── Scalars ──────────────────────────────────────────────────────────
+    name:"fmtron showcase",version:(0,10,0), enabled:true,disabled : false,
+    nothing:(), also_nothing:( ), unit_struct:Nothing,
+    maybe:None, surely:Some( 42 ), nested_option:Some(Some(())),
+	tab_indented :	"tabs are whitespace too",
+    trueish: trueish, false_value: false_value,
+
+    // Integers in every base, with separators, signs and suffixes.
+    integers: [0, -42, +7, 1_000_000, 0xDEAD_BEEF, 0xff, 0b1010_1010, 0o755, 255u8, -128i8, 1_u64,
+        18_446_744_073_709_551_615u64, 0x7FFF_FFFF_FFFF_FFFFi64, 1__000__],
+    floats: [3.14, -0.5, .5, 1., 1e10, 2.5E-3, +1e+3, 1e_3, 6.022_140_76e23, 7f32, 0.1f64, -2.0f32],
+    special_floats: [inf, -inf, +inf, NaN, -NaNf32, inf64_is_an_identifier],
+    chars: ['a', 'Z', '\'', '"', '\\', '\n', '\t', '\0', '\x7F', '\u{e9}', 'é', '🦀', '字', '''],
+    bytes: [b'a', b'\'', b'\n', b'\xFF', b'\x00'],
+
+    strings: (
+        plain: "hello, world",
+        escapes: "tab\tnewline\ncarriage\rquote\"backslash\\nul\0",
+        hex_and_unicode: "\x41\x42 \u{1F980} \u{e9}",
+        unicode: "Grüße, 世界! 🦀",
+        literal_newline: "first line
+    second line, its indentation kept as written",
+        raw: r"C:\no\escapes\here",
+        raw_hashes: r#"she said "hi""#,
+        raw_more_hashes: r##"a "# does not end this"##,
+        raw_multiline: r#"
+            {
+                "json": ["inside", "a", "raw", "string"]
+            }
+        "#,
+        bytes: b"bytes\x00\xFF\n",
+        raw_bytes: br#"raw "bytes" \x00"#,
+        empty: "", empty_raw: r"",
+    ),
+
+    identifiers: (r#type: "raw identifier for a keyword", r#match : r#fn,
+        café: "Unicode identifier", 名前: "XID identifier", _leading_underscore: 1,
+        r#a.b-c: "raw identifier with punctuation"),
+
+    // ── Collections ──────────────────────────────────────────────────────
+    empties: ([], [ ], {}, { }, (), Empty(), EmptyStruct( )),
+    short_list: [1,2,3,],
+    no_trailing_comma: [
+        "a",
+        "b"
+    ],
+    one_element_tuple: (42,),
+    // Exactly 100 columns, trailing comma included: stays on one line.
+    exactly_filled: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"],
+    // One column more: breaks, one element per line.
+    one_over_limit: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten!"],
+    // The key counts too.
+    a_rather_long_field_name_that_eats_into_the_line: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    // Widths are display columns: each CJK character takes two. 100 columns:
+    cjk_fits: ["漢字は二列の幅を取る", "表示幅で測る", "文字数ではない", "折り返しの判定", "全角!"],
+    // 101 columns, though only 71 characters:
+    cjk_breaks: ["漢字は二列の幅を取る", "表示幅で測る", "文字数ではない", "折り返しの判定", "全角"],
+    emoji: ["🦀", "👩‍🔬", "🏳️‍🌈"],
+    matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+    big_matrix: [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]],
+    tuples: [(1, "one"), (2, "two"), (3, "three")],
+    points: [Point(1.0, -2.0), Point(3.5, 4.25),],
+    long_strings: ["a fairly long string that takes up space", "another fairly long string", "and a third"],
+    a_long_string: "a single string longer than the line width cannot be broken, so it overruns the limit",
+
+    maps: (
+        string_keys: {"alpha": 1, "beta" :2,"gamma":3},
+        int_keys: {1: "one", -2: "minus two", 0xFF: "hex"},
+        char_keys: {'a': 1, 'b': 2},
+        bool_keys: {true: "yes", false: "no"},
+        enum_keys: {Red: (255, 0, 0), Green: (0, 255, 0), Blue: (0, 0, 255), Custom: (18, 52, 86)},
+        tuple_keys: {(0, 0): "origin", (1, -1): "diagonal"},
+        struct_keys: {(x: 1, y: 2): "anonymous struct", Point(3, 4): "tuple struct"},
+        container_keys: {[1, 2, 3]: "list as key", {1: 2}: "map as key"},
+        nested: {"outer": {"inner": {"innermost": [1, 2, 3]}}, "sibling": {}},
+        long: {"a key that is quite long": "and a value that is quite long", "another key": "another value"},
+        long_key: {["a", "container", "key", "long", "enough", "to", "break", "on", "its", "own"]: "value"},
+    ),
+
+    // ── Structs, tuples and enums ────────────────────────────────────────
+    structs: [
+        Player(name: "Ferris", hp: 100, position: (x: 1.5, y: -3.25), inventory: ["sword", "shield"]),
+        (anonymous: true, fields: 2),
+        Monster(kind: Crab, level: 7),
+        Unit,
+        Tagged("newtype variant"),
+        Variant(1, 2.0, "three", '4', [5], {6: 7}, (8,), Some(9)),
+    ],
+    deep: (level1: (level2: (level3: (level4: (level5: (level6: [1, 2, 3], note: "six levels deep"),),),),),),
+
+    // A lone container in a tuple or newtype stays with its parentheses.
+    fits_flat: Some((x: 1, y: 2)),
+    breaks_around: Some(["this list fits on a line of its own", "but not after the key and Some(", "so it breaks"]),
+    hugs: Some(["this list does not even fit on a line of its own", "so it hugs its parentheses", "instead of breaking"]),
+    hug_struct: Wrapper((name: "a lone struct", description: "too long for a line of its own", tags: ["hugs", "its", "wrapper"])),
+    hug_chain: Outer(Inner(Innermost(first: "nested wrappers", second: "each one hugging the next", third: "and so on"))),
+    atoms_do_not_hug: Some("a long string is an atom: it goes on a line of its own instead of hugging"),
+    comments_prevent_hugging: Some( // this comment
+        [1, 2, 3]),
+    two_elements_do_not_hug: Pair(["a list that is long enough", "to need breaking"], ["and another one"]),
+
+    // ── Comments ─────────────────────────────────────────────────────────
+    comments: (
+        // A leading line comment, on its own line.
+        leading: 1,
+        trailing: 2, // A trailing line comment.
+        trailing_block: 3, /* A trailing block comment. */
+        /* A leading block comment. */ block_before: 4,
+        before_colon /* between name and colon */ : 5,
+        after_colon: /* between colon and value */ 6,
+        hoisted: // A line comment after the colon moves above the field.
+            7,
+        nested_block: /* outer /* nested */ still outer */ 8,
+        /*
+         * A multi-line block comment
+         * keeps its text as written.
+         */
+        multi_line: 9,
+        /// A doc-style line comment.
+        //! An inner-doc-style line comment.
+        /** A doc-style block comment. */
+        doc_styles: 10,
+        in_list: [
+            1, // one
+            // before two
+            2,
+            3 /* before the comma */,
+            // dangling at the end of the list
+        ],
+        in_map: {
+            // before the first key
+            "key" /* after the key */ : "value", // after the entry
+            "other": // hoisted from after the colon
+                "value",
+        },
+        in_empty_list: [ // nothing here yet
+        ],
+        in_empty_struct: Config( /* nothing to configure */ ),
+        forces_parents_to_break: [[[1, 2 /* deep comment */]]],
+        next_to_brackets: [/* first */ 1, 2 /* last */],
+    ),
+
+    // ── Blank lines ──────────────────────────────────────────────────────
+    blank_lines: [
+
+        "blank lines right after an opening bracket are dropped",
+        "one blank line between elements is kept",
+
+        "several are collapsed into one",
+
+
+
+        // A comment separated by blank lines keeps them.
+
+        "blank lines before a closing bracket are dropped",
+
+    ],
+    short_but_blank: [1,
+
+    2],
+) // A trailing comment on the root value.
+
+
+// A dangling comment after the value.
+/* And a block comment at the very end. */

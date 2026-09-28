@@ -1,0 +1,3 @@
+# The stability test compares formatter output byte for byte: keep these
+# files exactly as committed, line endings included.
+/test_data/stability/** -text
