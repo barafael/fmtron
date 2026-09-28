@@ -38,6 +38,18 @@ fn messages_name_expected_tokens_and_what_was_found() {
             (1, 6),
         ),
         ("[\"a\" \"b\"]", "expected `,` or `]`, found `\"`", (1, 6)),
+        // A complete number is not continued by "a value".
+        ("(a: 1.", "expected `,` or `)`, found end of input", (1, 7)),
+        // A number that breaks off after its sign or `.`.
+        ("(a: -)", "expected a value, found `)`", (1, 6)),
+        ("-", "expected a value, found end of input", (1, 2)),
+        ("[.x]", "expected a value, found `x`", (1, 3)),
+        // `(` is named when nothing else fits.
+        (
+            "#![enable implicit_some)]\n()",
+            "expected `(`, found `i`",
+            (1, 11),
+        ),
     ];
     for (input, message, pos) in cases {
         assert_eq!(error(input), (message.to_string(), pos), "for {input:?}");
@@ -76,10 +88,15 @@ fn broken_literals_are_explained_where_they_start() {
     for (input, message, pos) in cases {
         assert_eq!(error(input), (message.to_string(), pos), "for {input:?}");
     }
-    // A quote inside a comment is not a literal.
+    // A quote inside a comment is not a literal, and non-ASCII text in a
+    // block comment is stepped over.
     assert_eq!(
         error("// \"quote\n[1 2]").0,
         "expected `,` or `]`, found `2`"
+    );
+    assert_eq!(
+        error("/* café */ [1 2]"),
+        ("expected `,` or `]`, found `2`".to_string(), (1, 15))
     );
 }
 
@@ -105,6 +122,7 @@ fn common_mistakes_get_a_hint() {
         ("[0x_FF]", "invalid number literal `0x_FF`", (1, 2)),
         ("(a: -0b12)", "invalid number literal `-0b12`", (1, 5)),
         ("(a: 1e)", "invalid number literal `1e`", (1, 5)),
+        ("[1, /* note\n2]", "unterminated block comment", (1, 5)),
     ];
     for (input, message, pos) in cases {
         assert_eq!(error(input), (message.to_string(), pos), "for {input:?}");
@@ -137,4 +155,23 @@ fn rendering_keeps_excerpt_path_and_truncation() {
         .to_string();
     assert!(msg.len() < 500, "{} bytes", msg.len());
     assert!(msg.contains("unexpected character `@`"), "{msg}");
+}
+
+/// Explaining an error uses no process-global state, so every thread
+/// formatting at the same time gets the full message.
+#[test]
+fn errors_are_explained_alike_on_many_threads() {
+    let expected = (
+        "expected `,` or `]`, found end of input".to_string(),
+        (1, 6),
+    );
+    std::thread::scope(|s| {
+        for _ in 0..8 {
+            s.spawn(|| {
+                for _ in 0..200 {
+                    assert_eq!(error("[1, 2"), expected);
+                }
+            });
+        }
+    });
 }

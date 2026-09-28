@@ -1,31 +1,57 @@
 //! Readable parse errors.
 //!
-//! pest reports what it expected by *rule*, and since `COMMENT` is an
-//! implicit rule, a missing `,` or `]` comes out as `expected COMMENT`. On
-//! failure, the input is parsed once more with pest's error detail enabled,
-//! which records the literal tokens tried at the failing position; those
-//! are turned into a message such as ``expected `,` or `]`, found end of
-//! input``.
+//! pest reports what it expected by *rule*, never by literal token, so a
+//! missing `,` or `]` would come out as `expected COMMENT`. After a failed
+//! parse, the input is parsed once more by a variant of the grammar whose
+//! punctuation consists of rules (`comma`, `rbracket`, …). Its error names
+//! the tokens that would have continued the input, which become a message
+//! such as ``expected `,` or `]`, found end of input``. No pest global state
+//! is involved, so formatting can run on several threads at once.
+//!
+//! Inside a string, char or number literal the rules tried say little; the
+//! literal's own text is examined instead.
 
 use pest::Parser;
-use pest::error::{Error, ErrorVariant};
+use pest::error::{Error, ErrorVariant, InputLocation};
 
 use crate::{RonParser, Rule};
+use named::{NamedParser, Rule as Named};
 
-/// Tokens that close or separate container elements, in reporting order.
-const STRUCTURAL: [&str; 5] = [",", ":", "]", ")", "}"];
+/// The RON grammar with its punctuation as rules of their own. Every
+/// punctuation token then shows up in the parse tree, which would slow
+/// formatting down, so this parser only runs once formatting has failed.
+mod named {
+    #[derive(pest_derive::Parser)]
+    #[grammar = "ron.pest"]
+    #[grammar_inline = r#"
+comma = { "," }
+colon = { ":" }
+lbracket = { "[" }
+rbracket = { "]" }
+lparen = { "(" }
+rparen = { ")" }
+lbrace = { "{" }
+rbrace = { "}" }
+"#]
+    pub struct NamedParser;
+}
 
-/// Tokens that can start a value (besides identifiers, which pest reports
-/// as a built-in rule, and digits, reported as a range).
-const VALUE_START: [&str; 17] = [
-    "\"", "'", "(", "[", "{", "+", "-", ".", "true", "false", "inf", "NaN", "b", "b'", "br", "r",
-    "r#",
+/// The punctuation rules and their tokens, in reporting order.
+const PUNCTUATION: [(Named, &str); 8] = [
+    (Named::comma, ","),
+    (Named::colon, ":"),
+    (Named::rbracket, "]"),
+    (Named::rparen, ")"),
+    (Named::rbrace, "}"),
+    (Named::lparen, "("),
+    (Named::lbracket, "["),
+    (Named::lbrace, "{"),
 ];
 
 /// `error`, reworded where a clearer message can be derived. The position is
 /// kept, so pest's excerpt, caret and `with_path` still work.
 pub(crate) fn improve(input: &str, error: Error<Rule>) -> Error<Rule> {
-    match describe(input, &error) {
+    match describe(input) {
         Some((offset, message)) => match pest::Position::new(input, offset) {
             Some(pos) => Error::new_from_pos(ErrorVariant::CustomError { message }, pos),
             None => error,
@@ -34,22 +60,27 @@ pub(crate) fn improve(input: &str, error: Error<Rule>) -> Error<Rule> {
     }
 }
 
-fn describe(input: &str, error: &Error<Rule>) -> Option<(usize, String)> {
-    // The flag is process-global: another thread parsing right now merely
-    // collects detail it does not need.
-    pest::set_error_detail(true);
-    let detailed = RonParser::parse(Rule::ron_file, input).err();
-    pest::set_error_detail(false);
-    let attempts = detailed?.parse_attempts()?;
-    let pos = attempts.max_position.min(input.len());
+fn describe(input: &str) -> Option<(usize, String)> {
+    let error = NamedParser::parse(Named::ron_file, input).err()?;
+    let ErrorVariant::ParsingError { positives, .. } = &error.variant else {
+        return None;
+    };
+    let pos = match error.location {
+        InputLocation::Pos(p) | InputLocation::Span((p, _)) => p,
+    }
+    .min(input.len());
 
-    // Inside a string or char literal, the tokens tried say little; look at
-    // the literal itself instead.
+    // pest points at the start of a malformed literal (or just past a valid
+    // prefix of a number); look at the literal itself.
     if let Some(found) = enclosing_literal(input, pos).and_then(|s| literal_problem(input, s)) {
         return Some(found);
     }
     if let Some(found) = hash_comment(input, pos).or_else(|| bad_number(input, pos)) {
         return Some(found);
+    }
+    // A closed comment would have been skipped as whitespace.
+    if input[pos..].starts_with("/*") {
+        return Some((pos, "unterminated block comment".into()));
     }
     if input[pos..].starts_with("::") {
         return Some((
@@ -58,45 +89,45 @@ fn describe(input: &str, error: &Error<Rule>) -> Option<(usize, String)> {
         ));
     }
 
-    let expects_eoi = matches!(&error.variant,
-        ErrorVariant::ParsingError { positives, .. } if positives.contains(&Rule::EOI));
-    // After an identifier or number character, alphanumeric tokens (and `(`,
-    // `.`, `_`) would only continue the current token, not start a new one.
-    let ident_char = |c: char| c.is_alphanumeric() || c == '_';
-    let continues = input[..pos].chars().next_back().is_some_and(ident_char);
+    // A failure at the very start is reported as the whole `ron_file`.
+    let value = positives.contains(&Named::value) || positives.contains(&Named::ron_file);
+    // A number that breaks off right after its sign or `.` (`-x`, `.e`):
+    // pest points at the number's start, but it goes wrong one later.
+    if value && input[pos..].starts_with(['+', '-', '.']) {
+        return Some(expected_found(input, pos + 1, "a value"));
+    }
+
     // `Foo (…)` is a struct too: after an identifier, even across
-    // whitespace, `(` continues it rather than starting a value.
+    // whitespace, `(` would only continue it, so it is named only when
+    // nothing else fits.
     let after_ident = input[..pos]
         .trim_end()
         .chars()
         .next_back()
-        .is_some_and(ident_char);
-    let tokens: Vec<String> = attempts
-        .expected_tokens()
+        .is_some_and(|c| c.is_alphanumeric() || c == '_');
+    let mut expected: Vec<String> = PUNCTUATION
         .iter()
-        .map(ToString::to_string)
-        .filter(|t| !(continues && is_continuation(t)) && !(after_ident && t == "("))
+        .filter(|&&(rule, token)| positives.contains(&rule) && !(after_ident && token == "("))
+        .map(|(_, token)| format!("`{token}`"))
         .collect();
-
-    let mut expected: Vec<String> = STRUCTURAL
-        .iter()
-        .filter(|s| tokens.iter().any(|t| t == *s))
-        .map(|s| format!("`{s}`"))
-        .collect();
-    let value_start = tokens.iter().any(|t| {
-        VALUE_START.contains(&t.as_str()) || t == "0..9" || t.starts_with("BUILTIN") || t == "0"
-    });
-    if value_start {
+    // A struct's field name is reported as `ident`; it starts like a value.
+    if value || positives.contains(&Named::ident) {
         expected.push("a value".into());
     }
-    if expects_eoi && expected.is_empty() {
+    if expected.is_empty() && positives.contains(&Named::EOI) {
         expected.push("end of input".into());
+    }
+    if expected.is_empty() && positives.contains(&Named::lparen) {
+        expected.push("`(`".into());
     }
     if expected.is_empty() {
         return None;
     }
-    let expected = join_or(&expected);
+    Some(expected_found(input, pos, &join_or(&expected)))
+}
 
+/// "expected …, found …" at `pos`.
+fn expected_found(input: &str, pos: usize, expected: &str) -> (usize, String) {
     let message = match input[pos..].chars().next() {
         None => format!("expected {expected}, found end of input"),
         Some(c) if is_stray(c) => {
@@ -104,17 +135,7 @@ fn describe(input: &str, error: &Error<Rule>) -> Option<(usize, String)> {
         }
         Some(c) => format!("expected {expected}, found `{}`", show(c)),
     };
-    Some((pos, message))
-}
-
-/// A token that only extends what precedes it: digits, identifier
-/// characters, number suffixes and exponents, `(` after a struct name.
-fn is_continuation(token: &str) -> bool {
-    token == "0..9"
-        || token == "("
-        || token == "."
-        || token.starts_with("BUILTIN")
-        || token.chars().all(|c| c.is_alphanumeric() || c == '_')
+    (pos, message)
 }
 
 /// A `#` that is not an attribute's `#!`, at or just before `pos`: likely a
@@ -201,13 +222,15 @@ fn enclosing_literal(input: &str, pos: usize) -> Option<usize> {
         if rest.starts_with("//") {
             i += rest.find('\n').unwrap_or(rest.len());
         } else if rest.starts_with("/*") {
+            // Byte-wise: `k` steps through multi-byte characters in the
+            // comment, where slicing `input` would panic.
             let mut depth = 0;
             let mut k = i;
             while k < b.len() {
-                if input[k..].starts_with("/*") {
+                if b[k..].starts_with(b"/*") {
                     depth += 1;
                     k += 2;
-                } else if input[k..].starts_with("*/") {
+                } else if b[k..].starts_with(b"*/") {
                     depth -= 1;
                     k += 2;
                     if depth == 0 {

@@ -20,12 +20,12 @@ ron_file = { SOI ~ attribute* ~ value ~ EOI }
 no_value = { SOI ~ attribute* ~ EOI }
 
 attribute = {
-    "#" ~ "!" ~ "[" ~ ( enable_attr | type_attr | schema_attr ) ~ "]"
+    "#" ~ "!" ~ lbracket ~ ( enable_attr | type_attr | schema_attr ) ~ rbracket
 }
 enable_attr = {
-    "enable" ~ "(" ~
-    ident ~ ("," ~ ident)* ~ ","? ~
-    ")"
+    "enable" ~ lparen ~
+    ident ~ (comma ~ ident)* ~ comma? ~
+    rparen
 }
 type_attr = { "type" ~ "=" ~ string }
 schema_attr = { "schema" ~ "=" ~ string }
@@ -119,30 +119,36 @@ byte_escape_code = {
     | "x" ~ ASCII_HEX_DIGIT{2}
 }
 
+// The punctuation between values (`comma`, `colon`, `lbracket`, `rbracket`,
+// `lparen`, `rparen`, `lbrace`, `rbrace`) is defined next to each parser:
+// silent for formatting (`RonParser` in lib.rs), and as rules of their own
+// for explaining parse errors (parse_error.rs), since pest's errors only name
+// the rules that would have continued the input, never literal tokens.
+
 // collections
 list = {
-    "[" ~
-    (value ~ ("," ~ value)* ~ ","?)? ~
-    "]"
+    lbracket ~
+    (value ~ (comma ~ value)* ~ comma?)? ~
+    rbracket
 }
 
 map = {
-    "{" ~
-    (map_entry ~ ("," ~ map_entry)* ~ ","?)? ~
-    "}"
+    lbrace ~
+    (map_entry ~ (comma ~ map_entry)* ~ comma?)? ~
+    rbrace
 }
-map_entry = { value ~ ":" ~ value }
+map_entry = { value ~ colon ~ value }
 
 unit_type = { ident }
 tuple_type = {
-    ident? ~ "(" ~
-    (value ~ ("," ~ value)* ~ ","?)? ~
-    ")"
+    ident? ~ lparen ~
+    (value ~ (comma ~ value)* ~ comma?)? ~
+    rparen
 }
 
 fields_type = {
-    ident? ~ "(" ~
-    (field ~ ("," ~ field)* ~ ","?)? ~
-    ")"
+    ident? ~ lparen ~
+    (field ~ (comma ~ field)* ~ comma?)? ~
+    rparen
 }
-field = { ident ~ ":" ~ value }
+field = { ident ~ colon ~ value }

@@ -8,8 +8,20 @@ pub use config_file::{CONFIG_FILE_NAMES, FileConfig, FileConfigError};
 
 use pest_derive::Parser;
 
+/// The RON parser the formatter uses. Punctuation is silent here, so it adds
+/// nothing to the parse tree; `parse_error` has a variant that names it.
 #[derive(Parser)]
 #[grammar = "ron.pest"]
+#[grammar_inline = r#"
+comma = _{ "," }
+colon = _{ ":" }
+lbracket = _{ "[" }
+rbracket = _{ "]" }
+lparen = _{ "(" }
+rparen = _{ ")" }
+lbrace = _{ "{" }
+rbrace = _{ "}" }
+"#]
 pub struct RonParser;
 
 pub use pest::Parser;
