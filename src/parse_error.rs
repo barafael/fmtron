@@ -189,10 +189,14 @@ fn bad_number(input: &str, pos: usize) -> Option<(usize, String)> {
     (!complete).then(|| (start, format!("invalid number literal `{token}`")))
 }
 
-/// `c` for a message: as itself, or escaped if it is a control character.
+/// `c` for a message: as itself, or escaped if it would not show: a control
+/// character (`\n`), whitespace other than a space (`\u{a0}`), or one that
+/// is invisible (`\u{feff}`) or combines with the next.
 fn show(c: char) -> String {
     if c.is_control() {
         c.escape_debug().to_string()
+    } else if (c.is_whitespace() && c != ' ') || c.escape_debug().nth(1) == Some('u') {
+        c.escape_unicode().to_string()
     } else {
         c.to_string()
     }

@@ -5,7 +5,8 @@
 //! For every file the reference `ron` crate accepts, the formatted output must
 //! be accepted too, deserialize to the same value, be a fixed point, and keep
 //! every token and every comment. Comments may move (e.g. from before a
-//! colon to after it), but none may be lost or duplicated.
+//! colon to after it) and a block comment's later lines are re-indented, but
+//! no comment text may be lost or duplicated.
 
 use fmtron::{BlankLines, Config, format_ron};
 use std::path::{Path, PathBuf};
@@ -37,7 +38,9 @@ fn norm(v: ron::Value) -> ron::Value {
 
 /// Splits RON source into (tokens, comments): `tokens` is every character
 /// outside comments except whitespace and commas, in order; `comments` is the
-/// sorted list of comment texts (line comments without their line ending).
+/// sorted list of comment texts (line comments without their line ending;
+/// block comments without the indentation and line endings of their later
+/// lines, which follow the file's layout).
 fn lex(src: &str) -> (String, Vec<String>) {
     let b: Vec<char> = src.chars().collect();
     let (mut tokens, mut comments) = (String::new(), Vec::new());
@@ -73,7 +76,16 @@ fn lex(src: &str) -> (String, Vec<String>) {
                     k += 1;
                 }
             }
-            comments.push(b[i..k].iter().collect());
+            let text: String = b[i..k].iter().collect();
+            let lines: Vec<&str> = text
+                .split('\n')
+                .enumerate()
+                .map(|(n, l)| {
+                    let l = l.strip_suffix('\r').unwrap_or(l);
+                    if n == 0 { l } else { l.trim_start() }
+                })
+                .collect();
+            comments.push(lines.join("\n"));
             i = k;
             continue;
         } else if c == '"' {

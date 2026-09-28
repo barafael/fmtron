@@ -156,13 +156,77 @@ pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
 }
 
 /// The line ending of `input`: `"\r\n"` if its first line break is CRLF,
-/// otherwise `"\n"`. The formatter emits this between output lines. Line
-/// breaks inside string literals and comments are kept as written.
+/// otherwise `"\n"`. The formatter emits this between output lines, including
+/// those inside block comments. A line break inside a string or char literal
+/// is part of its value, not of the layout: it is skipped here and kept as
+/// written.
 pub fn line_ending(input: &str) -> &'static str {
-    match input.find('\n') {
-        Some(i) if input[..i].ends_with('\r') => "\r\n",
-        _ => "\n",
+    let b = input.as_bytes();
+    let mut i = 0;
+    while i < b.len() {
+        let skip = match b[i] {
+            b'\n' if i > 0 && b[i - 1] == b'\r' => return "\r\n",
+            b'\n' => return "\n",
+            b'"' => scan_quoted(b, i),
+            b'\'' => scan_char(b, i),
+            b'b' | b'r' => scan_raw(b, i),
+            // Up to the line break that ends the comment, so quotes in it
+            // start no literal.
+            b'/' if b.get(i + 1) == Some(&b'/') => Some(
+                b[i..]
+                    .iter()
+                    .position(|&c| c == b'\n')
+                    .map_or(b.len(), |n| i + n),
+            ),
+            // To its first line break or its end, whichever comes first.
+            b'/' if b.get(i + 1) == Some(&b'*') => Some(block_comment_break(b, i)),
+            _ => None,
+        };
+        i = skip.unwrap_or(i + 1);
     }
+    "\n"
+}
+
+/// In the block comment starting at `i`: the index of its first `\n`, or
+/// else the index just past its end.
+fn block_comment_break(b: &[u8], i: usize) -> usize {
+    let mut depth = 0;
+    let mut k = i;
+    while k < b.len() {
+        if b[k..].starts_with(b"/*") {
+            depth += 1;
+            k += 2;
+        } else if b[k..].starts_with(b"*/") {
+            depth -= 1;
+            k += 2;
+            if depth == 0 {
+                return k;
+            }
+        } else if b[k] == b'\n' {
+            return k;
+        } else {
+            k += 1;
+        }
+    }
+    k
+}
+
+/// Whitespace between tokens, as in the grammar's `WHITESPACE` and the
+/// reference parser: Unicode's `Pattern_White_Space`.
+pub(crate) const fn is_whitespace(c: char) -> bool {
+    matches!(
+        c,
+        ' ' | '\t'
+            | '\n'
+            | '\r'
+            | '\u{0B}'
+            | '\u{0C}'
+            | '\u{85}'
+            | '\u{200E}'
+            | '\u{200F}'
+            | '\u{2028}'
+            | '\u{2029}'
+    )
 }
 
 /// Lines longer than this (in chars) are shown as an excerpt around the error

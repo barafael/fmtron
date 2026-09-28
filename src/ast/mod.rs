@@ -1,6 +1,6 @@
 mod display;
 
-use crate::{BlankLines, Config, Rule};
+use crate::{BlankLines, Config, Rule, is_whitespace};
 use pest::iterators::Pair;
 
 pub struct RonFile {
@@ -65,10 +65,36 @@ pub struct Field {
     value: Value,
 }
 
+/// A comment as written, without trailing whitespace (which, for a line
+/// comment, includes the line break ending it).
+fn raw_comment<'i>(p: &Pair<'i, Rule>) -> &'i str {
+    p.as_str().trim_end_matches(is_whitespace)
+}
+
+/// A comment's text, ready to render. A block comment spanning several
+/// lines gets `\n` line breaks (the renderer emits the file's line ending),
+/// and its later lines lose the indentation of the line it starts on, so
+/// that they move with that line when it is re-indented. Their indentation
+/// relative to it, and all other text, is kept.
 fn comment_text(p: &Pair<Rule>) -> String {
-    p.as_str()
-        .trim_end_matches(['\n', '\r', ' ', '\t'])
-        .to_string()
+    let text = raw_comment(p);
+    if !text.contains('\n') {
+        return text.to_string();
+    }
+    let span = p.as_span();
+    let src = span.get_input();
+    let line = &src[src[..span.start()].rfind('\n').map_or(0, |i| i + 1)..];
+    let indent = line.len() - line.trim_start_matches([' ', '\t']).len();
+    let mut lines = text.split('\n').map(|l| l.strip_suffix('\r').unwrap_or(l));
+    let mut out = lines.next().unwrap_or_default().to_string();
+    for l in lines {
+        out.push('\n');
+        if !l.chars().all(is_whitespace) {
+            let lead = l.len() - l.trim_start_matches([' ', '\t']).len();
+            out.push_str(&l[lead.min(indent)..]);
+        }
+    }
+    out
 }
 
 /// Marks a blank line in a list of comments (leading, dangling, header): the
@@ -84,7 +110,7 @@ fn blank_line_between(src: &str, from: usize, to: usize) -> bool {
         match c {
             '\n' if after_newline => return true,
             '\n' => after_newline = true,
-            ' ' | '\t' | '\r' => {}
+            c if is_whitespace(c) => {}
             _ => after_newline = false,
         }
     }
@@ -93,8 +119,8 @@ fn blank_line_between(src: &str, from: usize, to: usize) -> bool {
 
 /// Where a comment's text ends: a line comment's span includes its `\n`,
 /// which belongs to the gap after it.
-fn comment_end(p: &Pair<Rule>, text: &str) -> usize {
-    p.as_span().start() + text.len()
+fn comment_end(p: &Pair<Rule>) -> usize {
+    p.as_span().start() + raw_comment(p).len()
 }
 
 fn newline_between(src: &str, from: usize, to: usize) -> bool {
@@ -169,7 +195,7 @@ impl RonFile {
                     let txt = comment_text(&p);
                     let cs = p.as_span().start();
                     let blank = blank_since(prev_end, cs);
-                    prev_end = Some(comment_end(&p, &txt));
+                    prev_end = Some(comment_end(&p));
                     match (value.is_some(), value_end) {
                         (false, _) => {
                             if blank {
@@ -394,7 +420,7 @@ fn collect_children<'a>(
             Rule::COMMENT => {
                 let txt = comment_text(&p);
                 let cs = p.as_span().start();
-                prev_end = Some(comment_end(&p, &txt));
+                prev_end = Some(comment_end(&p));
                 if let Some(le) = last_end
                     && !newline_between(src, le, cs)
                 {

@@ -1,4 +1,5 @@
 use super::{Attribute, Field, HeaderItem, Kind, RonFile, Value};
+use crate::MAX_INDENT;
 use crate::pretty::{
     Doc, comma, concat, group, hard_line, hug, line, nest, render_with_newline, soft_line, text,
 };
@@ -15,11 +16,16 @@ impl Display for RonFile {
         } = self;
         for item in header {
             match item {
-                HeaderItem::Comment(text) => write!(f, "{text}{nl}")?,
+                HeaderItem::Comment(text) => {
+                    write!(f, "{}{nl}", comment_lines(text, config.tab_size).join(nl))?;
+                }
                 HeaderItem::Attribute(attr) => write!(f, "{}{nl}", AttributeDisplay(attr))?,
             }
         }
-        let doc = concat(vec![value_doc(value, config.tab_size), trailing_doc(value)]);
+        let doc = concat(vec![
+            value_doc(value, config.tab_size),
+            trailing_doc(value, config.tab_size),
+        ]);
         write!(f, "{}", render_with_newline(&doc, config.max_width, nl))?;
         // The rendered value ends without a trailing newline. Terminate the
         // value's line before any comments follow — inline trailing comments
@@ -28,7 +34,7 @@ impl Display for RonFile {
             write!(f, "{nl}")?;
         }
         for c in dangling {
-            write!(f, "{c}{nl}")?;
+            write!(f, "{}{nl}", comment_lines(c, config.tab_size).join(nl))?;
         }
         Ok(())
     }
@@ -94,10 +100,10 @@ fn item_sep(force: bool, is_last: bool) -> Doc {
 
 /// One container element: its rendered segments plus separator and inline
 /// trailing comments.
-fn item_doc(segments: Vec<Doc>, v: &Value, force: bool, is_last: bool) -> Doc {
+fn item_doc(segments: Vec<Doc>, v: &Value, force: bool, is_last: bool, tab: usize) -> Doc {
     let mut parts = segments;
     parts.push(item_sep(force, is_last));
-    parts.push(trailing_doc(v));
+    parts.push(trailing_doc(v, tab));
     concat(parts)
 }
 
@@ -109,11 +115,44 @@ fn open_ident(ident: Option<&str>) -> String {
     }
 }
 
+/// The lines of a comment. A later line's leading tabs (its indentation
+/// relative to the comment's line) become `tab` spaces each, like all other
+/// indentation, unless that would exceed [`MAX_INDENT`].
+fn comment_lines(c: &str, tab: usize) -> Vec<String> {
+    c.split('\n')
+        .enumerate()
+        .map(|(i, line)| {
+            let lead = &line[..line.len() - line.trim_start_matches([' ', '\t']).len()];
+            let width = lead.chars().fold(0usize, |w, c| {
+                w.saturating_add(if c == '\t' { tab } else { 1 })
+            });
+            if i == 0 || !lead.contains('\t') || width > MAX_INDENT {
+                line.to_string()
+            } else {
+                format!("{}{}", " ".repeat(width), &line[lead.len()..])
+            }
+        })
+        .collect()
+}
+
+/// A comment. The lines of a multi-line block comment are joined by hard
+/// breaks, so they take the current indentation and the file's line ending.
+fn comment_doc(c: &str, tab: usize) -> Doc {
+    let mut parts: Vec<Doc> = Vec::new();
+    for (i, line) in comment_lines(c, tab).into_iter().enumerate() {
+        if i > 0 {
+            parts.push(hard_line());
+        }
+        parts.push(text(line));
+    }
+    concat(parts)
+}
+
 /// Leading comments, each on its own line before the value.
-fn leading_doc(v: &Value) -> Doc {
+fn leading_doc(v: &Value, tab: usize) -> Doc {
     let mut parts: Vec<Doc> = Vec::new();
     for c in &v.leading {
-        parts.push(text(c.clone()));
+        parts.push(comment_doc(c, tab));
         parts.push(hard_line());
     }
     concat(parts)
@@ -133,23 +172,28 @@ fn hoisted_doc(v: &Value) -> Doc {
 
 /// Block comments between a key/name and its value, kept inline after the
 /// colon: `delay: /* seconds */ 5`.
-fn inline_doc(v: &Value) -> Doc {
+fn inline_doc(v: &Value, tab: usize) -> Doc {
     concat(
         v.inline
             .iter()
             .filter(|c| c.starts_with("/*"))
-            .map(|c| text(format!("{c} ")))
+            .map(|c| concat(vec![comment_doc(c, tab), text(" ")]))
             .collect(),
     )
 }
 
 /// Trailing comments, inline after the value/comma.
-fn trailing_doc(v: &Value) -> Doc {
-    concat(v.trailing.iter().map(|c| text(format!(" {c}"))).collect())
+fn trailing_doc(v: &Value, tab: usize) -> Doc {
+    concat(
+        v.trailing
+            .iter()
+            .map(|c| concat(vec![text(" "), comment_doc(c, tab)]))
+            .collect(),
+    )
 }
 
 fn value_doc(v: &Value, tab: usize) -> Doc {
-    concat(vec![leading_doc(v), kind_doc(v, tab)])
+    concat(vec![leading_doc(v, tab), kind_doc(v, tab)])
 }
 
 fn kind_doc(v: &Value, tab: usize) -> Doc {
@@ -163,7 +207,13 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 .iter()
                 .enumerate()
                 .map(|(i, e)| {
-                    item_doc(vec![leading_doc(e), kind_doc(e, tab)], e, force, i + 1 == n)
+                    item_doc(
+                        vec![leading_doc(e, tab), kind_doc(e, tab)],
+                        e,
+                        force,
+                        i + 1 == n,
+                        tab,
+                    )
                 })
                 .collect();
             container(force, "[", "]", items, dangling, tab)
@@ -178,16 +228,17 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 .map(|(i, (k, val))| {
                     item_doc(
                         vec![
-                            leading_doc(k),
+                            leading_doc(k, tab),
                             hoisted_doc(val),
                             kind_doc(k, tab),
                             text(": "),
-                            inline_doc(val),
+                            inline_doc(val, tab),
                             kind_doc(val, tab),
                         ],
                         val,
                         force,
                         i + 1 == n,
+                        tab,
                     )
                 })
                 .collect();
@@ -213,7 +264,13 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 .iter()
                 .enumerate()
                 .map(|(i, e)| {
-                    item_doc(vec![leading_doc(e), kind_doc(e, tab)], e, force, i + 1 == n)
+                    item_doc(
+                        vec![leading_doc(e, tab), kind_doc(e, tab)],
+                        e,
+                        force,
+                        i + 1 == n,
+                        tab,
+                    )
                 })
                 .collect();
             container(
@@ -239,15 +296,16 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                 .map(|(i, Field { name, value })| {
                     item_doc(
                         vec![
-                            leading_doc(value),
+                            leading_doc(value, tab),
                             hoisted_doc(value),
                             text(format!("{name}: ")),
-                            inline_doc(value),
+                            inline_doc(value, tab),
                             kind_doc(value, tab),
                         ],
                         value,
                         force,
                         i + 1 == n,
+                        tab,
                     )
                 })
                 .collect();
@@ -308,7 +366,7 @@ fn container(
             if i > 0 || !inner.is_empty() {
                 inner.push(hard_line());
             }
-            inner.push(text(c.clone()));
+            inner.push(comment_doc(c, tab));
         }
         concat(vec![
             text(open),

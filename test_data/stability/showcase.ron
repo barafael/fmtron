@@ -160,7 +160,22 @@ Showcase (
         in_empty_struct: Config( /* nothing to configure */ ),
         forces_parents_to_break: [[[1, 2 /* deep comment */]]],
         next_to_brackets: [/* first */ 1, 2 /* last */],
+        // The later lines of a block comment move with the line it starts on
+        // and keep their indentation relative to it.
+        moved_block: [
+/* written at the margin,
+   its later lines move with it
+*/
+                1],
+        trailing_block_lines: 11, /* a trailing comment
+                                     over two lines */
     ),
+
+    // ── Whitespace ───────────────────────────────────────────────────────
+    // Separated by vertical tab, form feed, next line (U+0085), the
+    // left-to-right and right-to-left marks, and the line and paragraph
+    // separators: whitespace to RON as to Rust source.
+    unusual_whitespace: [1,2,3,4,‎5,‏6, 7, 8],
 
     // ── Blank lines ──────────────────────────────────────────────────────
     blank_lines: [

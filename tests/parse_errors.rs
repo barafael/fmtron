@@ -50,6 +50,14 @@ fn messages_name_expected_tokens_and_what_was_found() {
             "expected `(`, found `i`",
             (1, 11),
         ),
+        // Characters that would not show are escaped.
+        (
+            "(a: 1,\u{feff} b: 2)",
+            "unexpected character `\\u{feff}`, expected `)` or a value",
+            (1, 7),
+        ),
+        ("(a:\u{a0}1)", "expected a value, found `\\u{a0}`", (1, 4)),
+        ("[1\t2]", "expected `,` or `]`, found `2`", (1, 4)),
     ];
     for (input, message, pos) in cases {
         assert_eq!(error(input), (message.to_string(), pos), "for {input:?}");

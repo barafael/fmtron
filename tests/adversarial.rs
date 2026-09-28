@@ -466,15 +466,15 @@ fn parse_error_on_a_huge_line_is_bounded() {
     assert!(short.contains("1 | [@]"), "{short}");
 }
 
-// M2: a CRLF file stays CRLF, including around comments; line breaks inside
-// literals are kept exactly as written.
+// M2: a CRLF file stays CRLF, including around and inside comments; line
+// breaks inside literals are kept exactly as written.
 #[test]
 fn crlf_line_endings_are_preserved() {
     let input = "// header\r\n(\r\n  a: 1, /* multi\r\n  line */\r\n  b: \"x\ny\",\r\n)\r\n";
     let out = format_ron(input, &cfg(10)).unwrap();
     assert_eq!(
         out,
-        "// header\r\n(\r\n    a: 1, /* multi\r\n  line */\r\n    b: \"x\ny\",\r\n)"
+        "// header\r\n(\r\n    a: 1, /* multi\r\n    line */\r\n    b: \"x\ny\",\r\n)"
     );
     assert_eq!(format_ron(&out, &cfg(10)).unwrap(), out, "not idempotent");
     assert_eq!(

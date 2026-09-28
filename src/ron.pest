@@ -1,4 +1,9 @@
-WHITESPACE = _{ " " | "\n" | "\t" | "\r" }
+// As the reference parser (and `is_whitespace` in lib.rs): Unicode's
+// Pattern_White_Space, which adds vertical tab, form feed, next line, the
+// left-to-right and right-to-left marks, and the line and paragraph
+// separators to the usual four. Unicode never changes this property, and
+// pest's built-in is faster than listing the characters.
+WHITESPACE = _{ PATTERN_WHITE_SPACE }
 
 COMMENT = { line_comment | block_comment }
 // Only `\n` ends a line comment (a lone `\r` does not), matching the
