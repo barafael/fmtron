@@ -1,6 +1,6 @@
 //! `fmt.ron` parsing, application and discovery (`fmtron::FileConfig`).
 
-use fmtron::{BlankLines, Config, FileConfig};
+use fmtron::{BlankLines, Config, FileConfig, StyleEdition};
 use indoc::indoc;
 use std::str::FromStr;
 
@@ -8,13 +8,9 @@ use std::str::FromStr;
 fn every_field_is_optional() {
     assert_eq!(FileConfig::from_str("()").unwrap(), FileConfig::default());
     let partial = FileConfig::from_str("(max_width: 80)").unwrap();
-    assert_eq!(
-        partial,
-        FileConfig {
-            max_width: Some(80),
-            ..FileConfig::default()
-        }
-    );
+    let mut expected = FileConfig::default();
+    expected.max_width = Some(80);
+    assert_eq!(partial, expected);
 }
 
 #[test]
@@ -27,19 +23,18 @@ fn full_file_with_comments_parses() {
             /* Keep | Remove */ blank_lines: Remove,
             max_depth: 1000,
             max_tab: 16,
+            style_edition: 2026,
         )
     "})
     .unwrap();
-    assert_eq!(
-        file,
-        FileConfig {
-            max_width: Some(80),
-            tab_size: Some(2),
-            blank_lines: Some(BlankLines::Remove),
-            max_depth: Some(1000),
-            max_tab: Some(16),
-        }
-    );
+    let mut expected = FileConfig::default();
+    expected.max_width = Some(80);
+    expected.tab_size = Some(2);
+    expected.blank_lines = Some(BlankLines::Remove);
+    expected.max_depth = Some(1000);
+    expected.max_tab = Some(16);
+    expected.style_edition = Some(StyleEdition::Edition2026);
+    assert_eq!(file, expected);
     // `Some(..)` is accepted as well as the bare value.
     assert_eq!(
         FileConfig::from_str("(tab_size: Some(2))")
@@ -70,11 +65,9 @@ fn apply_overrides_only_what_is_set() {
     FileConfig::from_str("(tab_size: 2, blank_lines: Remove)")
         .unwrap()
         .apply(&mut config);
-    let expected = Config {
-        tab_size: 2,
-        blank_lines: BlankLines::Remove,
-        ..Config::default()
-    };
+    let expected = Config::default()
+        .with_tab_size(2)
+        .with_blank_lines(BlankLines::Remove);
     assert_eq!(
         config.to_file_config_string(),
         expected.to_file_config_string()

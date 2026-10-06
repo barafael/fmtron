@@ -12,11 +12,11 @@ policy, API, CLI) is routine once they are.
 | 0 | Measure the candidates | S (~1d) | corpus numbers + sample diffs for each candidate rule — **done**, see Results |
 | 1 | **Decide** D1–D3 | (you) | one line per decision, recorded below — **done** |
 | 2 | Implement the chosen style | M (2–3d) | rules landed, showcase extended, snapshots re-blessed — **done** (uncommitted) |
-| 3 | Soak as 0.11.0 | 2–4 weeks | real users on the new style before it is frozen |
-| 4 | Stability contract | S (~0.5d) | README policy; `style_edition` in `fmt.ron` and CLI |
-| 5 | Public API for 1.0 | S (~0.5d) | minimal, `#[non_exhaustive]`, no pest types exposed |
-| 6 | CLI and config contract | S | flags and `fmt.ron` fields reviewed; `rust-version` set |
-| 7 | Release 1.0.0 | S | changelog, tag, publish |
+| 3 | Soak as 1.0.0-rc.N | 2–4 weeks | real users on the new style before it is frozen — **rc.1 published 2026-10-06** |
+| 4 | Stability contract | S (~0.5d) | STABILITY.md; `style_edition` in `fmt.ron` and CLI — **done** |
+| 5 | Public API for 1.0 | S (~0.5d) | minimal, `#[non_exhaustive]`, no pest types exposed — **done** |
+| 6 | CLI and config contract | S | flags and `fmt.ron` fields reviewed; `rust-version` set — **done** (`--max-tab` kept: it is a resource limit, like `--max-depth`) |
+| 7 | Release 1.0.0 | S | CHANGELOG.md started; tag, publish |
 
 Phase 3 can overlap with 4–6; they do not change output.
 
@@ -245,6 +245,26 @@ Release the new style as 0.11.0 and say in the release notes that this is the
 1.0 candidate style. Run it on a few real repositories (bevy examples, a COSMIC
 theme repo from the corpus) and fix what comes up. A rule change is still
 free here; after 1.0 it is not.
+
+## Phases 4–6 — done
+
+What was decided while doing them, beyond the plan below:
+
+- The public API was shaped around embedding fmtron in a program such as a
+  web page that formats RON: `format_ron`, a `Config` built from
+  `Config::default()` (`#[non_exhaustive]`, with `with_*` builders), and a
+  `ParseError` with `line()`, `column()`, `offset()`, `message()` and
+  `with_path()`. `pest` and `ron` types are gone from the API, so those
+  dependencies can be upgraded in minor releases.
+- The binary is behind a default `cli` feature; the library alone builds for
+  `wasm32-unknown-unknown`, checked in CI.
+- The reference printer that cross-checks the formatter lives in the crate
+  (`src/reference.rs`, test-only), so the `pretty` module and the parser are
+  private.
+- `rust-version = "1.88"` (let chains), checked in CI; raising it is a minor
+  change.
+- `--max-tab` stays: it is a resource limit like `--max-depth`, which a
+  program formatting untrusted input wants.
 
 ## Phase 4 — Stability contract
 

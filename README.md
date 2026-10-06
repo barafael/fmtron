@@ -33,6 +33,7 @@ fmtron < in.ron > out.ron        # stdin to stdout (also `fmtron -`)
 - Cap container nesting with `--max-depth <depth>` (512 by default); deeper input is rejected cleanly instead of overflowing the stack
 - Set the upper bound enforced on `-t` with `--max-tab <size>` (1024 by default); a larger `-t` is rejected
 - Choose how blank lines are treated with `--blank-lines <keep|remove>`. `keep` (the default) preserves one blank line wherever the input separates elements or comments with one or more; `remove` drops them all
+- Choose the set of layout rules with `--style-edition <year>` (2026, the only one so far). A future change of style will be a new edition that stays opt-in until fmtron 2.0; see [STABILITY.md](STABILITY.md) for what may change when
 
 ### In CI and editors
 
@@ -81,6 +82,7 @@ optional:
     blank_lines: Keep,  // --blank-lines: Keep or Remove
     max_depth: 512,     // --max-depth
     max_tab: 1024,      // --max-tab
+    style_edition: 2026, // --style-edition
 )
 ```
 
@@ -102,6 +104,35 @@ fmtron lays out values by these rules:
   Strings and identifiers written one per line stay that way. A blank line between elements starts a new line, after a blank one
 - A tuple or newtype variant around a single container, such as `Some((…))` or `Wrapper([…])`, hugs it: if it does not fit on one line, the container breaks inside the parentheses (`Some((` … `))`), as `ron`'s own pretty-printer writes it
 - Comments force their container to break, one element per line
+
+## As a library
+
+The same formatter is a crate, for an editor plugin, a build step or a web
+page that formats RON:
+
+```toml
+[dependencies]
+fmtron = { version = "1.0.0-rc.2", default-features = false }
+```
+
+Without the default `cli` feature it has no file-system or terminal
+dependencies and builds for `wasm32-unknown-unknown`.
+
+```rust
+use fmtron::{Config, FormatError, format_ron};
+
+let config = Config::default().with_max_width(80);
+match format_ron(input, &config) {
+    Ok(formatted) => editor.replace(formatted),
+    // Where and what, for the editor to mark: 1-based line and column, and
+    // a message such as "expected `,` or `)`, found `b`".
+    Err(FormatError::Parse(e)) => editor.mark(e.line(), e.column(), e.message()),
+    Err(e) => editor.notify(e.to_string()),
+}
+```
+
+The API is documented on [docs.rs](https://docs.rs/fmtron); what it promises
+across releases is in [STABILITY.md](STABILITY.md).
 
 ## Features
 

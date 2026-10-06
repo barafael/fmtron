@@ -115,10 +115,7 @@ fn block_comments_are_reindented_with_their_line() {
         fmt("[\n\t/* one\n\t\ttwo */\n\t1,\n]"),
         "[\n    /* one\n        two */\n    1,\n]"
     );
-    let two = Config {
-        tab_size: 2,
-        ..Config::default()
-    };
+    let two = Config::default().with_tab_size(2);
     assert_eq!(
         format_ron("[\n\t/* one\n\t\ttwo */\n\t1,\n]", &two).unwrap(),
         "[\n  /* one\n    two */\n  1,\n]"

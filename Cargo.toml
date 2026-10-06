@@ -13,21 +13,33 @@ categories = ["command-line-utilities", "development-tools", "value-formatting"]
 license = "MIT"
 repository = "https://github.com/barafael/fmtron"
 edition = "2024"
+# Checked in CI; raising it is a minor change (STABILITY.md).
+rust-version = "1.88"
 # The real-world corpus and its collection tools are only for the repo's own
 # tests.
 exclude = ["test_data/wild", "tools"]
 
+[features]
+default = ["cli"]
+# The `fmtron` binary. Without it, the crate is the formatting library alone,
+# with no file-system or terminal dependencies (it builds for wasm).
+cli = ["dep:clap", "dep:ignore", "dep:similar", "dep:tempfile"]
+
 [dependencies]
-clap = { version = "4.6.7", features = ["derive"] }
-ignore = "0.4.33"
+clap = { version = "4.6.7", features = ["derive"], optional = true }
+ignore = { version = "0.4.33", optional = true }
 pest = "2.9"
 pest_derive = "2.9"
 ron = "0.12"
 serde = { version = "1", features = ["derive"] }
-similar = "3.2.0"
-tempfile = "3.27.0"
+similar = { version = "3.2.0", optional = true }
+tempfile = { version = "3.27.0", optional = true }
 thiserror = "2"
 unicode-width = "0.2"
+
+[[bin]]
+name = "fmtron"
+required-features = ["cli"]
 
 [dev-dependencies]
 fs-walk = "0.2"

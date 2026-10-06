@@ -56,6 +56,11 @@ pub struct Arguments {
     #[arg(long, value_enum)]
     pub blank_lines: Option<BlankLines>,
 
+    /// The set of layout rules, named by year; a new style stays opt-in until
+    /// the next major version [default: 2026]
+    #[arg(long, value_name = "YEAR")]
+    pub style_edition: Option<fmtron::StyleEdition>,
+
     /// Use this configuration file instead of searching for fmt.ron
     #[arg(long, value_name = "PATH", conflicts_with = "no_config")]
     pub config: Option<PathBuf>,

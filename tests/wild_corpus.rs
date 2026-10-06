@@ -150,11 +150,7 @@ fn wild_corpus_formats_faithfully() {
         .iter()
         .flat_map(|p| [(p, BlankLines::Keep), (p, BlankLines::Remove)])
     {
-        let config = Config {
-            max_width: 100,
-            blank_lines,
-            ..Config::default()
-        };
+        let config = Config::default().with_blank_lines(blank_lines);
         let name = format!(
             "{} ({blank_lines:?})",
             path.strip_prefix(&root).unwrap().display()

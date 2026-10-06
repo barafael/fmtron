@@ -11,11 +11,111 @@
 //! Inside a string, char or number literal the rules tried say little; the
 //! literal's own text is examined instead.
 
+use std::fmt;
+
 use pest::Parser;
-use pest::error::{Error, ErrorVariant, InputLocation};
+use pest::error::{Error, ErrorVariant, InputLocation, LineColLocation};
 
 use crate::{RonParser, Rule};
 use named::{NamedParser, Rule as Named};
+
+/// Where and why input failed to parse as RON; the error inside
+/// [`FormatError::Parse`](crate::FormatError::Parse).
+///
+/// Its `Display` form shows the offending line with a caret and the message,
+/// the way compilers do; [`ParseError::with_path`] adds the file name to it.
+/// The accessors give the parts, for an editor or a web page that marks the
+/// position itself.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct ParseError {
+    inner: Box<Error<Rule>>,
+}
+
+impl ParseError {
+    pub(crate) fn new(error: Error<Rule>) -> Self {
+        Self {
+            inner: Box::new(error),
+        }
+    }
+
+    /// The line of the error, counting from 1.
+    pub fn line(&self) -> usize {
+        self.line_col().0
+    }
+
+    /// The column of the error, counting from 1, in characters.
+    pub fn column(&self) -> usize {
+        self.line_col().1
+    }
+
+    /// The byte offset of the error in the input.
+    pub fn offset(&self) -> usize {
+        match self.inner.location {
+            InputLocation::Pos(p) | InputLocation::Span((p, _)) => p,
+        }
+    }
+
+    /// What went wrong, in one line without the position, such as
+    /// ``expected `,` or `]`, found end of input``.
+    pub fn message(&self) -> String {
+        self.inner.variant.message().into_owned()
+    }
+
+    /// This error naming the file it occurred in, so that its `Display`
+    /// form reads `--> levels/one.ron:2:2`.
+    #[must_use]
+    pub fn with_path(self, path: &str) -> Self {
+        Self::new(self.inner.with_path(path))
+    }
+
+    fn line_col(&self) -> (usize, usize) {
+        match self.inner.line_col {
+            LineColLocation::Pos(p) | LineColLocation::Span(p, _) => p,
+        }
+    }
+}
+
+impl std::error::Error for ParseError {}
+
+/// Lines longer than this (in chars) are shown as an excerpt around the error
+/// column. pest echoes the whole offending line, padded out to the caret, so
+/// one bad byte in a multi-megabyte single-line file would print megabytes.
+const MAX_ERROR_LINE: usize = 200;
+/// Chars of context shown on each side of the error column in an excerpt.
+const EXCERPT_RADIUS: usize = 40;
+
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let e = &self.inner;
+        let line = e.line().trim_end_matches(['\n', '\r']);
+        let len = line.chars().count();
+        if len <= MAX_ERROR_LINE {
+            return write!(f, "{e}");
+        }
+        let (row, col) = self.line_col();
+        let start = col.saturating_sub(1 + EXCERPT_RADIUS);
+        let excerpt: String = line.chars().skip(start).take(2 * EXCERPT_RADIUS).collect();
+        let (lead, trail) = (
+            if start > 0 { "…" } else { "" },
+            if start + 2 * EXCERPT_RADIUS < len {
+                "…"
+            } else {
+                ""
+            },
+        );
+        let pad = " ".repeat(col - 1 - start + lead.chars().count());
+        // Same layout as pest's own rendering, gutter sized to the line
+        // number. pest puts the path, if any, before the position.
+        let gutter = " ".repeat(row.to_string().len());
+        let path = e.path().map_or(String::new(), |p| format!("{p}:"));
+        write!(
+            f,
+            "{gutter}--> {path}{row}:{col}\n{gutter} |\n{row} | {lead}{excerpt}{trail}\n\
+             {gutter} | {pad}^---\n{gutter} |\n{gutter} = {}",
+            e.variant.message()
+        )
+    }
+}
 
 /// The RON grammar with its punctuation as rules of their own. Every
 /// punctuation token then shows up in the parse tree, which would slow

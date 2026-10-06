@@ -10,10 +10,7 @@ use fmtron::{Config, FormatError, format_ron};
 use indoc::indoc;
 
 fn cfg(width: usize) -> Config {
-    Config {
-        max_width: width,
-        ..Config::default()
-    }
+    Config::default().with_max_width(width)
 }
 
 /// Deeply nested inputs exercise recursive descent in pest and in the renderer.
@@ -79,10 +76,7 @@ fn deep_nesting_is_rejected_cleanly() {
         "expected TooDeep, got {err:?}"
     );
     // Raising the budget admits the same input.
-    let bigger = Config {
-        max_nesting: 2048,
-        ..cfg(40)
-    };
+    let bigger = cfg(40).with_max_nesting(2048);
     assert!(on_large_stack(
         move || format_ron(&over_limit, &bigger).is_ok()
     ));
@@ -98,10 +92,7 @@ fn deep_nesting_is_rejected_cleanly() {
 #[test]
 fn tab_size_is_bounded_by_max_tab() {
     let input = "[1, 2, 3]";
-    let clamped = Config {
-        tab_size: usize::MAX,
-        ..cfg(10)
-    };
+    let clamped = cfg(10).with_tab_size(usize::MAX);
     assert!(
         format_ron(input, &clamped).is_ok(),
         "a huge tab_size must be clamped, not panic"
@@ -506,11 +497,7 @@ fn crlf_line_endings_are_preserved() {
 // panic; indentation beyond `MAX_INDENT` is a typed error.
 #[test]
 fn huge_indentation_is_a_typed_error() {
-    let config = Config {
-        tab_size: usize::MAX,
-        max_tab: usize::MAX,
-        ..cfg(1)
-    };
+    let config = cfg(1).with_tab_size(usize::MAX).with_max_tab(usize::MAX);
     let err = format_ron("[[1]]", &config).unwrap_err();
     assert!(
         matches!(

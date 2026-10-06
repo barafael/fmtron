@@ -5,10 +5,7 @@ use fmtron::{Config, format_ron};
 use indoc::indoc;
 
 fn fmt(input: &str, width: usize) -> String {
-    let config = Config {
-        max_width: width,
-        ..Config::default()
-    };
+    let config = Config::default().with_max_width(width);
     let out = format_ron(input, &config).expect("valid RON");
     let again = format_ron(&out, &config).expect("output is valid RON");
     assert_eq!(again, out, "not a fixed point; first output:\n{out}");

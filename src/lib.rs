@@ -1,18 +1,59 @@
+//! A formatter for [RON](https://github.com/ron-rs/ron) files.
+//!
+//! [`format_ron`] turns RON text into fmtron's layout, keeping every comment
+//! and the value's meaning. The `fmtron` binary (the crate's `cli` feature,
+//! on by default) wraps it for files, directories, `--check` and editors;
+//! this library is the same formatter for programs of your own, such as an
+//! editor plugin or a web page that formats RON. Without the `cli` feature
+//! it depends on nothing from the file system or the terminal and builds
+//! for `wasm32`.
+//!
+//! ```
+//! use fmtron::{Config, FormatError, format_ron};
+//!
+//! let config = Config::default().with_max_width(40);
+//! let formatted = format_ron("Config(name: \"demo\", retries: [1, 2, 3], verbose: true)", &config)?;
+//! assert_eq!(
+//!     formatted,
+//!     "Config(\n    name: \"demo\",\n    retries: [1, 2, 3],\n    verbose: true,\n)"
+//! );
+//!
+//! // A parse error says where and what, in RON terms.
+//! let Err(FormatError::Parse(e)) = format_ron("(a: 1 b: 2)", &config) else {
+//!     unreachable!()
+//! };
+//! assert_eq!((e.line(), e.column()), (1, 7));
+//! assert_eq!(e.message(), "expected `,` or `)`, found `b`");
+//! # Ok::<(), FormatError>(())
+//! ```
+//!
+//! The output has no trailing line break; add [`line_ending`]`(input)` to
+//! write a file. Input from an untrusted source is safe to format:
+//! [`Config::max_nesting`] bounds the recursion, and the limits are errors,
+//! never panics.
+//!
+//! The layout rules are described in the README, and what may change between
+//! releases in `STABILITY.md`.
+
 mod ast;
 mod config_file;
 mod parse_error;
-pub mod pretty;
+mod pretty;
+#[cfg(test)]
+mod reference;
 
-pub use ast::{Kind, RonFile, Value};
-pub use config_file::{CONFIG_FILE_NAMES, FileConfig, FileConfigError};
+pub use config_file::{CONFIG_FILE_NAMES, ConfigParseError, FileConfig, FileConfigError};
+pub use parse_error::ParseError;
 
-use pest_derive::Parser;
+use parser::{RonParser, Rule};
+use pest::Parser as _;
 
 /// The RON parser the formatter uses. Punctuation is silent here, so it adds
 /// nothing to the parse tree; `parse_error` has a variant that names it.
-#[derive(Parser)]
-#[grammar = "ron.pest"]
-#[grammar_inline = r#"
+mod parser {
+    #[derive(pest_derive::Parser)]
+    #[grammar = "ron.pest"]
+    #[grammar_inline = r#"
 comma = _{ "," }
 colon = _{ ":" }
 lbracket = _{ "[" }
@@ -22,10 +63,8 @@ rparen = _{ ")" }
 lbrace = _{ "{" }
 rbrace = _{ "}" }
 "#]
-pub struct RonParser;
-
-pub use pest::Parser;
-use pest::error::LineColLocation;
+    pub struct RonParser;
+}
 
 /// Default maximum container-nesting depth. Guards against the stack overflow
 /// that pest's recursive descent would otherwise hit on deeply nested input.
@@ -46,23 +85,91 @@ pub const MAX_TAB: usize = 1024;
 /// (or overflowing and panicking) when `max_tab` and `max_nesting` are raised.
 pub const MAX_INDENT: usize = 1 << 20;
 
-/// Formatting configuration. Threaded through the formatter instead of using
-/// process-wide global state.
-#[derive(Debug, Clone, Copy)]
+/// Formatting settings. Start from [`Config::default`] and set fields, or
+/// chain the `with_*` methods:
+///
+/// ```
+/// use fmtron::{BlankLines, Config};
+///
+/// let config = Config::default().with_tab_size(2).with_blank_lines(BlankLines::Remove);
+/// let mut same = Config::default();
+/// same.tab_size = 2;
+/// same.blank_lines = BlankLines::Remove;
+/// assert_eq!(config, same);
+/// ```
+///
+/// Settings may be added in minor releases, so the struct cannot be built
+/// with a literal.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub struct Config {
+    /// Indentation per nesting level, in spaces. Default 4.
     pub tab_size: usize,
+    /// The line width to stay within where the layout allows. A soft limit:
+    /// a long atom, or a deeply indented one, may overrun it. Default
+    /// [`DEFAULT_WIDTH`].
     pub max_width: usize,
     /// Maximum container-nesting depth accepted; deeper input is rejected with
-    /// [`FormatError::TooDeep`] instead of overflowing the stack.
+    /// [`FormatError::TooDeep`] instead of overflowing the stack. Default
+    /// [`MAX_NESTING`]; lower it for input you do not trust.
     pub max_nesting: usize,
-    /// Upper bound enforced on `tab_size`; larger values are clamped.
+    /// Upper bound enforced on `tab_size`; larger values are clamped. Default
+    /// [`MAX_TAB`].
     pub max_tab: usize,
-    /// Whether blank lines between elements are kept.
+    /// Whether blank lines between elements are kept. Default
+    /// [`BlankLines::Keep`].
     pub blank_lines: BlankLines,
+    /// The set of layout rules. Default [`StyleEdition::default`], the
+    /// latest.
+    pub style_edition: StyleEdition,
+}
+
+impl Config {
+    /// This configuration with [`Config::tab_size`] set.
+    #[must_use]
+    pub fn with_tab_size(mut self, tab_size: usize) -> Self {
+        self.tab_size = tab_size;
+        self
+    }
+
+    /// This configuration with [`Config::max_width`] set.
+    #[must_use]
+    pub fn with_max_width(mut self, max_width: usize) -> Self {
+        self.max_width = max_width;
+        self
+    }
+
+    /// This configuration with [`Config::max_nesting`] set.
+    #[must_use]
+    pub fn with_max_nesting(mut self, max_nesting: usize) -> Self {
+        self.max_nesting = max_nesting;
+        self
+    }
+
+    /// This configuration with [`Config::max_tab`] set.
+    #[must_use]
+    pub fn with_max_tab(mut self, max_tab: usize) -> Self {
+        self.max_tab = max_tab;
+        self
+    }
+
+    /// This configuration with [`Config::blank_lines`] set.
+    #[must_use]
+    pub fn with_blank_lines(mut self, blank_lines: BlankLines) -> Self {
+        self.blank_lines = blank_lines;
+        self
+    }
+
+    /// This configuration with [`Config::style_edition`] set.
+    #[must_use]
+    pub fn with_style_edition(mut self, style_edition: StyleEdition) -> Self {
+        self.style_edition = style_edition;
+        self
+    }
 }
 
 /// How blank lines in the input are treated.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, serde::Deserialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, serde::Deserialize)]
 pub enum BlankLines {
     /// Keep one blank line wherever the input has one or more between two
     /// elements, comments or header items. A container holding one always
@@ -74,6 +181,59 @@ pub enum BlankLines {
     Remove,
 }
 
+/// A set of layout rules, named by the year it was introduced, like
+/// rustfmt's style editions. The rules of an edition do not change once it
+/// is released, apart from bug fixes; a change of style is a new edition,
+/// which stays opt-in until the next major version of fmtron. There is one
+/// edition so far. In a `fmt.ron` or on the command line it is written as
+/// the year: `style_edition: 2026`, `--style-edition 2026`.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash, serde::Deserialize)]
+#[serde(try_from = "u16")]
+#[non_exhaustive]
+pub enum StyleEdition {
+    /// The rules of fmtron 1.0, described in the README.
+    #[default]
+    Edition2026,
+}
+
+impl StyleEdition {
+    /// The year this edition is named by.
+    pub fn year(self) -> u16 {
+        match self {
+            Self::Edition2026 => 2026,
+        }
+    }
+}
+
+impl TryFrom<u16> for StyleEdition {
+    type Error = String;
+
+    fn try_from(year: u16) -> Result<Self, String> {
+        match year {
+            2026 => Ok(Self::Edition2026),
+            _ => Err(format!(
+                "unknown style edition {year}; the editions are: 2026"
+            )),
+        }
+    }
+}
+
+impl std::str::FromStr for StyleEdition {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, String> {
+        s.parse::<u16>()
+            .map_err(|_| format!("a style edition is a year, such as 2026; found `{s}`"))?
+            .try_into()
+    }
+}
+
+impl std::fmt::Display for StyleEdition {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.year())
+    }
+}
+
 impl Default for Config {
     fn default() -> Self {
         Self {
@@ -82,12 +242,15 @@ impl Default for Config {
             max_nesting: MAX_NESTING,
             max_tab: MAX_TAB,
             blank_lines: BlankLines::Keep,
+            style_edition: StyleEdition::default(),
         }
     }
 }
 
-/// The error type returned by [`format_ron`].
+/// The error type returned by [`format_ron`]. Every variant is a property of
+/// the input; formatting never panics.
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+#[non_exhaustive]
 pub enum FormatError {
     /// The input contains no RON value: it is blank, or holds only comments
     /// and attributes.
@@ -101,13 +264,16 @@ pub enum FormatError {
     /// times the nesting depth), more than [`MAX_INDENT`].
     #[error("indentation of up to {indent} columns exceeds the limit of {max}")]
     IndentTooWide { indent: usize, max: usize },
-    /// The input is not valid RON. The inner error carries line/column
-    /// information and a rendering of the offending input position.
-    #[error("parse error: {}", render_parse_error(.0))]
-    Parse(#[from] Box<pest::error::Error<Rule>>),
+    /// The input is not valid RON. The error says where and what.
+    #[error("parse error: {0}")]
+    Parse(#[from] ParseError),
 }
 
-/// Formats a RON string using the internal formatter.
+/// Formats RON text.
+///
+/// The output keeps the input's comments, line ending (per [`line_ending`])
+/// and, with [`BlankLines::Keep`], its blank lines, and ends without a line
+/// break. Formatting it again returns it unchanged.
 ///
 /// # Errors
 /// Returns [`FormatError::Empty`] if the input contains no RON value,
@@ -115,8 +281,6 @@ pub enum FormatError {
 /// [`Config::max_nesting`], [`FormatError::IndentTooWide`] if indenting it
 /// would exceed [`MAX_INDENT`], and [`FormatError::Parse`] if the input cannot
 /// be parsed as RON.
-///
-/// The output keeps the input's line ending, per [`line_ending`].
 pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
     // Clamp `tab_size` to the configured ceiling so pathological values can
     // never emit absurd indentation, then enforce the nesting bound *before*
@@ -144,13 +308,13 @@ pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
     }
     match RonParser::parse(Rule::ron_file, input) {
         Ok(mut pairs) => match pairs.next() {
-            Some(pair) => Ok(RonFile::parse_from(pair, input, effective)
+            Some(pair) => Ok(ast::RonFile::parse_from(pair, input, effective)
                 .with_newline(line_ending(input))
                 .to_string()),
             None => Err(FormatError::Empty),
         },
         Err(_) if RonParser::parse(Rule::no_value, input).is_ok() => Err(FormatError::Empty),
-        Err(e) => Err(Box::new(parse_error::improve(input, e)).into()),
+        Err(e) => Err(ParseError::new(parse_error::improve(input, e)).into()),
     }
 }
 
@@ -225,42 +389,6 @@ pub(crate) const fn is_whitespace(c: char) -> bool {
             | '\u{200F}'
             | '\u{2028}'
             | '\u{2029}'
-    )
-}
-
-/// Lines longer than this (in chars) are shown as an excerpt around the error
-/// column. pest echoes the whole offending line, padded out to the caret, so
-/// one bad byte in a multi-megabyte single-line file would print megabytes.
-const MAX_ERROR_LINE: usize = 200;
-/// Chars of context shown on each side of the error column in an excerpt.
-const EXCERPT_RADIUS: usize = 40;
-
-fn render_parse_error(e: &pest::error::Error<Rule>) -> String {
-    let line = e.line().trim_end_matches(['\n', '\r']);
-    let len = line.chars().count();
-    if len <= MAX_ERROR_LINE {
-        return e.to_string();
-    }
-    let (row, col) = match e.line_col {
-        LineColLocation::Pos(p) | LineColLocation::Span(p, _) => p,
-    };
-    let start = col.saturating_sub(1 + EXCERPT_RADIUS);
-    let excerpt: String = line.chars().skip(start).take(2 * EXCERPT_RADIUS).collect();
-    let (lead, trail) = (
-        if start > 0 { "…" } else { "" },
-        if start + 2 * EXCERPT_RADIUS < len {
-            "…"
-        } else {
-            ""
-        },
-    );
-    let pad = " ".repeat(col - 1 - start + lead.chars().count());
-    // Same layout as pest's own rendering, gutter sized to the line number.
-    let gutter = " ".repeat(row.to_string().len());
-    format!(
-        "{gutter}--> {row}:{col}\n{gutter} |\n{row} | {lead}{excerpt}{trail}\n\
-         {gutter} | {pad}^---\n{gutter} |\n{gutter} = {}",
-        e.variant.message()
     )
 }
 
@@ -426,9 +554,10 @@ mod tests {
     }
 
     #[test]
-    fn parse_error_chains_to_the_pest_source() {
-        let err = format_ron("((( ", &Config::default()).unwrap_err();
-        let source = std::error::Error::source(&err);
-        assert!(source.is_some(), "parse errors must expose their source");
+    fn style_editions_are_years() {
+        assert_eq!("2026".parse(), Ok(StyleEdition::Edition2026));
+        assert_eq!(StyleEdition::Edition2026.to_string(), "2026");
+        assert!("2027".parse::<StyleEdition>().unwrap_err().contains("2026"));
+        assert!("latest".parse::<StyleEdition>().is_err());
     }
 }

@@ -6,6 +6,7 @@
 //!     max_width: 100,
 //!     tab_size: 4,
 //!     blank_lines: Keep, // or Remove
+//!     style_edition: 2026,
 //! )
 //! ```
 //!
@@ -21,14 +22,17 @@ use std::path::{Path, PathBuf};
 use ron::extensions::Extensions;
 use serde::Deserialize;
 
-use crate::{BlankLines, Config};
+use crate::{BlankLines, Config, StyleEdition};
 
 /// The file names looked for in each directory, in order of preference.
 pub const CONFIG_FILE_NAMES: [&str; 2] = ["fmt.ron", ".fmt.ron"];
 
-/// The settings in a `fmt.ron`. `None` means "not set here".
+/// The settings in a `fmt.ron`. `None` means "not set here". Settings may be
+/// added in minor releases, so the struct cannot be built with a literal:
+/// start from [`FileConfig::default`].
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize)]
 #[serde(deny_unknown_fields)]
+#[non_exhaustive]
 pub struct FileConfig {
     /// Soft maximum line width ([`Config::max_width`], CLI `-w`).
     pub max_width: Option<usize>,
@@ -40,10 +44,13 @@ pub struct FileConfig {
     pub max_depth: Option<usize>,
     /// Upper bound on the tab size ([`Config::max_tab`], CLI `--max-tab`).
     pub max_tab: Option<usize>,
+    /// The layout rules ([`Config::style_edition`], CLI `--style-edition`).
+    pub style_edition: Option<StyleEdition>,
 }
 
 /// A `fmt.ron` that could not be read or parsed.
 #[derive(Debug, thiserror::Error)]
+#[non_exhaustive]
 pub enum FileConfigError {
     #[error("unable to read {}: {source}", path.display())]
     Read {
@@ -53,19 +60,50 @@ pub enum FileConfigError {
     #[error("invalid {}: {source}", path.display())]
     Parse {
         path: PathBuf,
-        source: Box<ron::error::SpannedError>,
+        source: ConfigParseError,
     },
 }
 
-/// Parses the contents of a `fmt.ron`. Fails with the `ron` error, with its
-/// position, for malformed input, unknown fields and values of the wrong type.
+/// Why the text of a `fmt.ron` is not a configuration: malformed RON, an
+/// unknown field, or a value of the wrong type. Its `Display` form names the
+/// position, as `3:5: Unexpected field named `max_widht``.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ConfigParseError {
+    inner: Box<ron::error::SpannedError>,
+}
+
+impl ConfigParseError {
+    /// The line of the error, counting from 1.
+    pub fn line(&self) -> usize {
+        self.inner.span.start.line
+    }
+
+    /// The column of the error, counting from 1, in characters.
+    pub fn column(&self) -> usize {
+        self.inner.span.start.col
+    }
+}
+
+impl std::fmt::Display for ConfigParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.inner)
+    }
+}
+
+impl std::error::Error for ConfigParseError {}
+
+/// Parses the contents of a `fmt.ron`.
+///
+/// # Errors
+/// See [`ConfigParseError`].
 impl std::str::FromStr for FileConfig {
-    type Err = ron::error::SpannedError;
+    type Err = ConfigParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         ron::Options::default()
             .with_default_extension(Extensions::IMPLICIT_SOME)
             .from_str(s)
+            .map_err(|e| ConfigParseError { inner: Box::new(e) })
     }
 }
 
@@ -81,7 +119,7 @@ impl FileConfig {
         })?;
         text.parse().map_err(|source| FileConfigError::Parse {
             path: path.to_path_buf(),
-            source: Box::new(source),
+            source,
         })
     }
 
@@ -101,6 +139,7 @@ impl FileConfig {
             blank_lines,
             max_depth,
             max_tab,
+            style_edition,
         } = *self;
         if let Some(v) = max_width {
             config.max_width = v;
@@ -117,6 +156,9 @@ impl FileConfig {
         if let Some(v) = max_tab {
             config.max_tab = v;
         }
+        if let Some(v) = style_edition {
+            config.style_edition = v;
+        }
     }
 }
 
@@ -125,8 +167,13 @@ impl Config {
     pub fn to_file_config_string(&self) -> String {
         format!(
             "(\n    max_width: {},\n    tab_size: {},\n    blank_lines: {:?},\n    \
-             max_depth: {},\n    max_tab: {},\n)\n",
-            self.max_width, self.tab_size, self.blank_lines, self.max_nesting, self.max_tab
+             max_depth: {},\n    max_tab: {},\n    style_edition: {},\n)\n",
+            self.max_width,
+            self.tab_size,
+            self.blank_lines,
+            self.max_nesting,
+            self.max_tab,
+            self.style_edition
         )
     }
 }
@@ -137,17 +184,27 @@ mod tests {
 
     #[test]
     fn printed_config_parses_back() {
-        let config = Config {
-            max_width: 80,
-            blank_lines: BlankLines::Remove,
-            ..Config::default()
-        };
+        let config = Config::default()
+            .with_max_width(80)
+            .with_blank_lines(BlankLines::Remove);
         let file: FileConfig = config.to_file_config_string().parse().unwrap();
         let mut round = Config::default();
         file.apply(&mut round);
         assert_eq!(
             round.to_file_config_string(),
             config.to_file_config_string()
+        );
+    }
+
+    #[test]
+    fn an_unknown_style_edition_is_an_error_with_a_position() {
+        let err = "(\n    style_edition: 2027,\n)"
+            .parse::<FileConfig>()
+            .unwrap_err();
+        assert_eq!((err.line(), err.column()), (2, 20));
+        assert!(
+            err.to_string().contains("unknown style edition 2027"),
+            "{err}"
         );
     }
 }

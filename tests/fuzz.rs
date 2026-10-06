@@ -14,12 +14,14 @@
 //! - formatting is semantics-preserving (the `ron` crate is the oracle);
 //! - formatting is idempotent.
 
-mod support;
-
 use fmtron::{Config, format_ron};
-use support::pretty::max_line_len;
 
 const DEFAULT_SEED: u64 = 0xC0FFEE;
+
+/// The longest line of `s`, in bytes.
+fn max_line_len(s: &str) -> usize {
+    s.lines().map(str::len).max().unwrap_or(0)
+}
 /// Containers nest at most this deep; the deepest indent is `4 * MAX_DEPTH`.
 /// Kept at 3 so `4*3` columns of indent plus the widest atom map entry
 /// (`6 + ": " + 7 + ","`) stays within the smallest tested width.
@@ -188,11 +190,7 @@ fn seeded_fuzz_never_breaks_the_invariants() {
             if rng.chance(10) {
                 input = format!("// head comment\n{input}");
             }
-            let cfg = Config {
-                tab_size: 4,
-                max_width: width,
-                ..Config::default()
-            };
+            let cfg = Config::default().with_max_width(width);
             let ctx = format!("seed {s}, width {width}");
             let out = format_ron(&input, &cfg)
                 .unwrap_or_else(|e| panic!("{ctx}: format failed for {input:?}: {e}"));

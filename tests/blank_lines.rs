@@ -8,10 +8,7 @@ use fmtron::{BlankLines, Config, format_ron};
 use indoc::indoc;
 
 fn fmt(input: &str, blank_lines: BlankLines) -> String {
-    let config = Config {
-        blank_lines,
-        ..Config::default()
-    };
+    let config = Config::default().with_blank_lines(blank_lines);
     let out = format_ron(input, &config).expect("valid RON");
     assert_eq!(
         format_ron(&out, &config).unwrap(),

@@ -165,9 +165,7 @@ fn process(args: &Arguments, input: &Input, config: &Config) -> Result<Outcome, 
             name: name.clone(),
             source: e,
         },
-        FormatError::Parse(pest) => {
-            Error::Parse(FormatError::Parse(Box::new(pest.with_path(&name))))
-        }
+        FormatError::Parse(e) => Error::Parse(FormatError::Parse(e.with_path(&name))),
         e => Error::Format {
             name: name.clone(),
             source: e,
@@ -320,13 +318,13 @@ fn resolve_config(args: &Arguments, dir: &Path) -> Result<(Config, Option<PathBu
     if let Some(path) = &path {
         FileConfig::load(path)?.apply(&mut config);
     }
-    let flags = FileConfig {
-        max_width: args.width,
-        tab_size: args.tab_size,
-        blank_lines: args.blank_lines.map(Into::into),
-        max_depth: args.max_depth,
-        max_tab: args.max_tab,
-    };
+    let mut flags = FileConfig::default();
+    flags.max_width = args.width;
+    flags.tab_size = args.tab_size;
+    flags.blank_lines = args.blank_lines.map(Into::into);
+    flags.max_depth = args.max_depth;
+    flags.max_tab = args.max_tab;
+    flags.style_edition = args.style_edition;
     flags.apply(&mut config);
     Ok((config, path))
 }

@@ -11,11 +11,7 @@ use fmtron::{Config, format_ron};
 use ron::value::{Number, Value};
 
 fn cfg(width: usize) -> Config {
-    Config {
-        tab_size: 4,
-        max_width: width,
-        ..Config::default()
-    }
+    Config::default().with_max_width(width)
 }
 
 fn deep(n: usize) -> Value {
@@ -141,10 +137,7 @@ fn deep_input_is_bounded_by_a_clean_error() {
     );
     // The budget is configurable: a higher cap admits the same input. Test
     // threads have small stacks, so format deep input on a big-stack thread.
-    let wide = Config {
-        max_nesting: 1024,
-        ..cfg(40)
-    };
+    let wide = cfg(40).with_max_nesting(1024);
     let admitted = std::thread::Builder::new()
         .stack_size(64 * 1024 * 1024)
         .spawn(move || fmtron::format_ron(&deep, &wide).is_ok())

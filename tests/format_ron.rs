@@ -9,13 +9,7 @@ fn format_default(s: &str) -> Result<String, fmtron::FormatError> {
 /// The golden files in `test_data/ron_corpus_formatted/` were generated at
 /// width 40, the default before 0.9.
 fn format_golden(s: &str) -> Result<String, fmtron::FormatError> {
-    format_ron(
-        s,
-        &Config {
-            max_width: 40,
-            ..Config::default()
-        },
-    )
+    format_ron(s, &Config::default().with_max_width(40))
 }
 
 #[test]

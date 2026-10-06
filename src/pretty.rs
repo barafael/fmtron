@@ -121,6 +121,7 @@ enum Mode {
 }
 
 /// Render `doc` at width `width`, starting at column 0.
+#[cfg(test)]
 pub fn render(doc: &Doc, width: usize) -> String {
     render_with_newline(doc, width, "\n")
 }

@@ -7,14 +7,7 @@ use fmtron::{Config, FormatError, format_ron};
 /// The message of the parse error for `input`, and its 1-based line/column.
 fn error(input: &str) -> (String, (usize, usize)) {
     match format_ron(input, &Config::default()) {
-        Err(FormatError::Parse(e)) => {
-            let pos = match e.line_col {
-                pest::error::LineColLocation::Pos(p) | pest::error::LineColLocation::Span(p, _) => {
-                    p
-                }
-            };
-            (e.variant.message().into_owned(), pos)
-        }
+        Err(FormatError::Parse(e)) => (e.message(), (e.line(), e.column())),
         other => panic!("expected a parse error for {input:?}, got {other:?}"),
     }
 }

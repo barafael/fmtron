@@ -481,25 +481,11 @@ fn comment_seq(toks: &[Tok]) -> Vec<String> {
 fn corpus_formats_canonically_regardless_of_layout() {
     let s = seed();
     let mut rng = Rng(s);
+    let canonical = Config::default().with_blank_lines(BlankLines::Remove);
     let configs = [
-        Config {
-            tab_size: 4,
-            max_width: 40,
-            blank_lines: BlankLines::Remove,
-            ..Config::default()
-        },
-        Config {
-            tab_size: 2,
-            max_width: 80,
-            blank_lines: BlankLines::Remove,
-            ..Config::default()
-        },
-        Config {
-            tab_size: 4,
-            max_width: 24,
-            blank_lines: BlankLines::Remove,
-            ..Config::default()
-        },
+        canonical.with_tab_size(4).with_max_width(40),
+        canonical.with_tab_size(2).with_max_width(80),
+        canonical.with_tab_size(4).with_max_width(24),
     ];
     let mut failures: Vec<String> = Vec::new();
     let mut files = 0usize;
