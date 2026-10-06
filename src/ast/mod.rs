@@ -35,11 +35,20 @@ pub struct Value {
     /// (`key /* c */ : /* d */ value`).
     inline: Vec<String>,
     trailing: Vec<String>,
+    /// The input breaks the line before this element of a list or tuple:
+    /// after the element before it, or for the first element, after the
+    /// opening bracket. False for anything else.
+    starts_line: bool,
     kind: Kind,
 }
 
 pub enum Kind {
-    Atom(String),
+    Atom {
+        text: String,
+        /// A number, bool or char (or byte char), as opposed to a string or
+        /// an identifier.
+        scalar: bool,
+    },
     List {
         values: Vec<Value>,
         dangling: Vec<String>,
@@ -47,6 +56,8 @@ pub enum Kind {
     Map {
         entries: Vec<(Value, Value)>,
         dangling: Vec<String>,
+        /// The input breaks the line right after the opening bracket.
+        broken: bool,
     },
     TupleType {
         ident: Option<String>,
@@ -57,6 +68,8 @@ pub enum Kind {
         ident: Option<String>,
         fields: Vec<Field>,
         dangling: Vec<String>,
+        /// The input breaks the line right after the opening bracket.
+        broken: bool,
     },
 }
 
@@ -99,7 +112,7 @@ fn comment_text(p: &Pair<Rule>) -> String {
 
 /// Marks a blank line in a list of comments (leading, dangling, header): the
 /// empty string, which no real comment can be. Rendered as an empty line.
-const BLANK_LINE: &str = "";
+pub(crate) const BLANK_LINE: &str = "";
 
 /// True if `src[from..to]` (whitespace and commas between two items) holds a
 /// blank line: two line breaks with only whitespace between them.
@@ -126,6 +139,26 @@ fn comment_end(p: &Pair<Rule>) -> usize {
 fn newline_between(src: &str, from: usize, to: usize) -> bool {
     let (from, to) = (from.min(src.len()), to.min(src.len()));
     from < to && src[from..to].contains('\n')
+}
+
+/// True if the input breaks the line between a container's opening bracket
+/// and its first item (child or comment). The bracket is the first `(`, `[`
+/// or `{` outside the container's inner pairs (its ident, comments and
+/// children).
+fn opens_with_newline(pair: &Pair<Rule>, src: &str) -> bool {
+    let mut pos = pair.as_span().start();
+    let mut opener = None;
+    for p in pair.clone().into_inner() {
+        let start = p.as_span().start();
+        if opener.is_none() {
+            opener = src[pos..start].find(['(', '[', '{']).map(|i| pos + i + 1);
+        }
+        if let Some(o) = opener {
+            return newline_between(src, o, start);
+        }
+        pos = p.as_span().end();
+    }
+    false
 }
 
 fn prepend_leading(v: &mut Value, mut pending: Vec<String>) {
@@ -255,42 +288,61 @@ impl Value {
             | Rule::signed_int
             | Rule::float
             | Rule::unit_type => {
-                let a = pair.as_str().to_string();
+                let text = pair.as_str().to_string();
+                let scalar = !matches!(
+                    pair.as_rule(),
+                    Rule::string | Rule::byte_string | Rule::unit_type
+                );
                 Self {
                     leading: vec![],
                     inline: vec![],
                     trailing: vec![],
-                    kind: Kind::Atom(a),
+                    starts_line: false,
+                    kind: Kind::Atom { text, scalar },
                 }
             }
 
             Rule::list => {
-                let (values, dangling) = collect_values(pair.clone().into_inner(), src);
+                let (mut values, dangling) = collect_values(pair.clone().into_inner(), src);
+                if let Some(first) = values.first_mut() {
+                    first.starts_line = opens_with_newline(&pair, src);
+                }
                 Self {
                     leading: vec![],
                     inline: vec![],
                     trailing: vec![],
+                    starts_line: false,
                     kind: Kind::List { values, dangling },
                 }
             }
 
             Rule::map => {
+                let broken = opens_with_newline(&pair, src);
                 let (entries, dangling) = collect_entries(pair.clone().into_inner(), src);
                 Self {
                     leading: vec![],
                     inline: vec![],
                     trailing: vec![],
-                    kind: Kind::Map { entries, dangling },
+                    starts_line: false,
+                    kind: Kind::Map {
+                        entries,
+                        dangling,
+                        broken,
+                    },
                 }
             }
 
             Rule::tuple_type => {
-                let (ident, values, dangling) =
+                let (ident, mut values, dangling) =
                     collect_named_values(pair.clone().into_inner(), src);
+                if let Some(first) = values.first_mut() {
+                    first.starts_line = opens_with_newline(&pair, src);
+                }
                 Self {
                     leading: vec![],
                     inline: vec![],
                     trailing: vec![],
+                    starts_line: false,
                     kind: Kind::TupleType {
                         ident,
                         values,
@@ -300,15 +352,18 @@ impl Value {
             }
 
             Rule::fields_type => {
+                let broken = opens_with_newline(&pair, src);
                 let (ident, fields, dangling) = collect_fields(pair.clone().into_inner(), src);
                 Self {
                     leading: vec![],
                     inline: vec![],
                     trailing: vec![],
+                    starts_line: false,
                     kind: Kind::FieldsType {
                         ident,
                         fields,
                         dangling,
+                        broken,
                     },
                 }
             }
@@ -323,12 +378,14 @@ impl Value {
     fn remove_blank_lines(&mut self) {
         self.leading.retain(|c| c != BLANK_LINE);
         let (children, dangling): (Vec<&mut Value>, &mut Vec<String>) = match &mut self.kind {
-            Kind::Atom(_) => return,
+            Kind::Atom { .. } => return,
             Kind::List { values, dangling }
             | Kind::TupleType {
                 values, dangling, ..
             } => (values.iter_mut().collect(), dangling),
-            Kind::Map { entries, dangling } => (
+            Kind::Map {
+                entries, dangling, ..
+            } => (
                 entries.iter_mut().flat_map(|(k, v)| [k, v]).collect(),
                 dangling,
             ),
@@ -437,7 +494,11 @@ fn collect_children<'a>(
                 if blank {
                     pending.push(BLANK_LINE.into());
                 }
+                let starts_line = last_end.is_some_and(|e| newline_between(src, e, start));
                 let (mut child, end) = parse_child(p, src);
+                if let Child::Value(v) = &mut child {
+                    v.starts_line = starts_line;
+                }
                 prev_end = Some(end);
                 if !pending.is_empty() {
                     prepend_leading(child.leading(), std::mem::take(&mut pending));

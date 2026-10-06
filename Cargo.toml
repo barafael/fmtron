@@ -31,3 +31,4 @@ unicode-width = "0.2"
 
 [dev-dependencies]
 fs-walk = "0.2"
+indoc = "2.0.7"

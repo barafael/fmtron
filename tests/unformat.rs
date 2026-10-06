@@ -1,9 +1,11 @@
 //! Canonicality / uniformity harness ("un-format" test).
 //!
 //! A formatter is *canonical* when its output depends only on the token
-//! stream, never on the input's incidental whitespace. fmtron is canonical
-//! with `BlankLines::Remove`, which this harness uses; the default
-//! `BlankLines::Keep` deliberately preserves the author's blank lines. To verify that, every
+//! stream, never on the input's incidental whitespace. fmtron keeps a few of
+//! the author's choices on purpose: blank lines (unless `BlankLines::Remove`,
+//! which this harness uses), a line break right after an opening bracket,
+//! and the line breaks between the short elements of a list or tuple. Apart
+//! from those it is canonical. To verify that, every
 //! corpus file is deliberately re-messed ("un-formatted") into many different
 //! layouts, and each layout must format to byte-identical output as the
 //! original file. If any layout disagrees, the printer is reading something
@@ -21,10 +23,11 @@
 //!   - semantics:   ron::from_str(format(layout)) == ron::from_str(original)
 //!   - comments:    same comment texts, in the same order, survive
 //!
-//! Comment attachment is layout-sensitive: whether a comment trails or leads a
-//! value is decided from newlines. The scrambler therefore preserves the
-//! newline-ness between each comment and the preceding value exactly, while
-//! jittering everything else, so the formatter sees the same attachment.
+//! Comment attachment is layout-sensitive too: whether a comment trails or
+//! leads a value is decided from newlines. The scrambler therefore preserves
+//! the newline-ness between each comment and the preceding value exactly, and
+//! that of the gaps where fmtron keeps line breaks (after opening brackets,
+//! around commas in lists and tuples), while jittering everything else.
 //!
 //! Deterministic: default seed `0xCAFE_D00D`, override via `FMTRON_FUZZ_SEED`.
 
@@ -404,15 +407,48 @@ fn emit(src: &str, toks: &[Tok], layout: Layout, rng: &mut Rng) -> String {
         }
     }
 
+    // keep[i]: the same for the line breaks fmtron keeps from the input. One
+    // right after an opening bracket keeps a struct, a map or a grid broken,
+    // and those between the elements of a list or tuple decide which
+    // elements share a line. Pin every gap that can hold one: after an
+    // opening bracket, and around a comma in a list or tuple.
+    let mut keep: Vec<Option<bool>> = vec![None; n];
+    let mut open: Vec<&str> = Vec::new();
+    for (i, t) in toks.iter().enumerate() {
+        let pin = |keep: &mut Vec<Option<bool>>, gap: usize| {
+            if gap > 0 && gap < n {
+                keep[gap] = Some(newline_since(src, toks[gap - 1].end, toks[gap].start));
+            }
+        };
+        match t.text.as_str() {
+            "(" | "{" | "[" if t.kind == TokKind::Punct => {
+                open.push(&t.text);
+                pin(&mut keep, i + 1);
+            }
+            ")" | "}" | "]" if t.kind == TokKind::Punct => {
+                open.pop();
+            }
+            "," if t.kind == TokKind::Punct && matches!(open.last(), Some(&"[" | &"(")) => {
+                pin(&mut keep, i);
+                pin(&mut keep, i + 1);
+            }
+            _ => {}
+        }
+    }
+
     let mut out = String::new();
     let mut depth = 0usize;
     for i in 0..n {
         if i > 0 {
             let force_newline = toks[i - 1].kind == TokKind::LineComment;
-            let sep = match (force_newline, req[i]) {
-                (true, _) | (_, Some(true)) => sep_newline(layout, depth, rng),
-                (_, Some(false)) => sep_inline(layout, rng),
-                (_, None) => sep_free(layout, depth, rng),
+            let sep = match (force_newline, req[i], keep[i]) {
+                (true, _, _) | (_, Some(true), _) | (_, None, Some(true)) => {
+                    sep_newline(layout, depth, rng)
+                }
+                (_, Some(false), _) => sep_inline(layout, rng),
+                (_, None, Some(false)) if layout == Layout::Cram => String::new(),
+                (_, None, Some(false)) => sep_inline(layout, rng),
+                (_, None, None) => sep_free(layout, depth, rng),
             };
             out.push_str(&sep);
         }
@@ -605,6 +641,7 @@ fn corpus_formats_canonically_regardless_of_layout() {
 #[cfg(test)]
 mod unit {
     use super::*;
+    use indoc::indoc;
 
     fn kinds(toks: &[Tok]) -> Vec<TokKind> {
         toks.iter().map(|t| t.kind).collect()
@@ -693,13 +730,19 @@ mod unit {
         let mut rng = Rng(1);
         let crammed = emit(src, &toks, Layout::Cram, &mut rng);
         // a single space is kept before inline comments so they cannot fuse
-        // with the preceding token; everything else is glued together
-        assert_eq!(crammed, "[1,2 /* c */,3]");
+        // with the preceding token, and the line break between list elements
+        // is kept; everything else is glued together
+        assert_eq!(crammed, "[1,\n2 /* c */,3]");
     }
 
     #[test]
     fn trailing_comment_stays_on_its_value_line() {
-        let src = "[\n    a,\n    // lead b\n    b, // trail b\n]";
+        let src = indoc! {"
+            [
+                a,
+                // lead b
+                b, // trail b
+            ]"};
         let toks = lex(src).unwrap();
         let mut rng = Rng(2);
         let out = emit(src, &toks, Layout::Spread, &mut rng);

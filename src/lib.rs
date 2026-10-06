@@ -70,8 +70,7 @@ pub enum BlankLines {
     /// are dropped.
     #[default]
     Keep,
-    /// Remove all blank lines, so the output depends only on the input's
-    /// tokens and comments, never on its layout.
+    /// Remove all blank lines.
     Remove,
 }
 

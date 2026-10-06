@@ -28,20 +28,8 @@ Showcase(
   false_value: false_value,
   // Integers in every base, with separators, signs and suffixes.
   integers: [
-    0,
-    -42,
-    +7,
-    1_000_000,
-    0xDEAD_BEEF,
-    0xff,
-    0b1010_1010,
-    0o755,
-    255u8,
-    -128i8,
-    1_u64,
-    18_446_744_073_709_551_615u64,
-    0x7FFF_FFFF_FFFF_FFFFi64,
-    1__000__,
+    0, -42, +7, 1_000_000, 0xDEAD_BEEF, 0xff, 0b1010_1010, 0o755, 255u8, -128i8, 1_u64,
+    18_446_744_073_709_551_615u64, 0x7FFF_FFFF_FFFF_FFFFi64, 1__000__,
   ],
   floats: [3.14, -0.5, .5, 1., 1e10, 2.5E-3, +1e+3, 1e_3, 6.022_140_76e23, 7f32, 0.1f64, -2.0f32],
   special_floats: [inf, -inf, +inf, NaN, -NaNf32, inf64_is_an_identifier],
@@ -82,7 +70,8 @@ Showcase(
   one_element_tuple: (42),
   // Exactly 100 columns, trailing comma included: stays on one line.
   exactly_filled: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"],
-  // One column more: breaks, one element per line.
+  // One column more: breaks. Its elements are short and the input has them
+  // on one line, so they stay packed.
   one_over_limit: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten!"],
   // The key counts too.
   a_rather_long_field_name_that_eats_into_the_line: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
@@ -106,6 +95,86 @@ Showcase(
     "and a third",
   ],
   a_long_string: "a single string longer than the line width cannot be broken, so it overruns the limit",
+  // ── Line breaks kept from the input ──────────────────────────────────
+  // A struct or map broken right after its opening bracket stays broken,
+  // even if it would fit on one line.
+  window: (
+    width: 1280,
+    height: 720,
+  ),
+  origin: (x: 0, y: 0),
+  lookup: {
+    "a": 1,
+    "b": 2,
+  },
+  // Numbers, bools and chars, or short tuples of them, are packed several
+  // to a line, even when written one per line. Numbers may be any width.
+  samples: [
+    0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.125, 1.25, 1.375, 1.5, 1.625, 1.75, 1.875,
+    2.0,
+  ],
+  curve: [
+    (0.0, 1.0), (0.25, 0.9), (0.5, 0.7), (0.75, 0.4), (1.0, 0.0), (1.25, -0.4), (1.5, -0.7),
+    (1.75, -0.9),
+  ],
+  flags: [
+    true, false, true, true, false, false, true, false, true, true, false, true, false, false,
+  ],
+  ids: [
+    1, 2, 3, 18446744073709551615, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+    22, 23, 24,
+  ],
+  // Tuples are packed like lists: serde writes arrays such as [u8; 32] as
+  // tuples.
+  hash: (
+    12, 255, 3, 99, 0, 17, 42, 200, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+    19, 20, 21, 22, 23, 24,
+  ),
+  // Strings and identifiers written one per line stay one per line.
+  asset_names: [
+    "grass",
+    "water",
+    "stone",
+    "sand",
+    "lava",
+    "ice",
+    "snow",
+    "dirt",
+    "mud",
+    "clay",
+    "wood",
+    "moss",
+  ],
+  // Short elements the input puts several to a line stay packed, and every
+  // line break between them is kept: rows stay rows, and editing one row
+  // never reflows the others. Only a row that grows too long wraps. With a
+  // line break right after the opening bracket, it is a grid, which stays
+  // broken even if it would fit on one line.
+  identity: [
+    1.0, 0.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 0.0, 1.0,
+  ],
+  joins: [1, 2, 3, 4],
+  tiles: [
+    0, 0, 1, 1, 1, 1, 0, 0,
+    0, 1, 2, 2, 2, 2, 1, 0,
+    0, 1, 2, 3, 3, 2, 1, 0,
+    0, 1, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3, 3, 2, 1, 0,
+  ],
+  keywords: [
+    "if", "else", "match", "return",
+    "for", "while", "loop", "in", Break, Continue,
+    "fn", "let", "mut", "const", "static", "struct", "enum", "trait",
+  ],
+  // Strings, identifiers and tuples wider than 16 columns are never packed.
+  wide: [
+    (10.0, 20.0, 30.0),
+    (40.0, 50.0, 60.0),
+    (70.0, 80.0, 90.0),
+    (100.0, 110.0, 120.0),
+    (0.5, 0.5, 0.5),
+  ],
   maps: (
     string_keys: {"alpha": 1, "beta": 2, "gamma": 3},
     int_keys: {1: "one", -2: "minus two", 0xFF: "hex"},
@@ -136,11 +205,14 @@ Showcase(
   deep: (
     level1: (level2: (level3: (level4: (level5: (level6: [1, 2, 3], note: "six levels deep"))))),
   ),
-  // A lone container in a tuple or newtype stays with its parentheses.
+  // A lone container in a tuple or newtype stays with its parentheses:
+  // flat if it fits, otherwise hugging them.
   fits_flat: Some((x: 1, y: 2)),
-  breaks_around: Some(
-    ["this list fits on a line of its own", "but not after the key and Some(", "so it breaks"],
-  ),
+  hugs_too: Some([
+    "this list fits on a line of its own",
+    "but not after the key and Some(",
+    "so it hugs",
+  ]),
   hugs: Some([
     "this list does not even fit on a line of its own",
     "so it hugs its parentheses",
@@ -151,9 +223,11 @@ Showcase(
     description: "too long for a line of its own",
     tags: ["hugs", "its", "wrapper"],
   )),
-  hug_chain: Outer(Inner(
-    Innermost(first: "nested wrappers", second: "each one hugging the next", third: "and so on"),
-  )),
+  hug_chain: Outer(Inner(Innermost(
+    first: "nested wrappers",
+    second: "each one hugging the next",
+    third: "and so on",
+  ))),
   atoms_do_not_hug: Some(
     "a long string is an atom: it goes on a line of its own instead of hugging",
   ),

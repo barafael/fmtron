@@ -32,7 +32,7 @@ fmtron < in.ron > out.ron        # stdin to stdout (also `fmtron -`)
 - Set max line width with `-w <width>` (100 by default). This is a soft limit, so long or deeply-nested values may sometimes overrun it
 - Cap container nesting with `--max-depth <depth>` (512 by default); deeper input is rejected cleanly instead of overflowing the stack
 - Set the upper bound enforced on `-t` with `--max-tab <size>` (1024 by default); a larger `-t` is rejected
-- Choose how blank lines are treated with `--blank-lines <keep|remove>`. `keep` (the default) preserves one blank line wherever the input separates elements or comments with one or more; `remove` drops them all, so the output depends only on the input's tokens and comments
+- Choose how blank lines are treated with `--blank-lines <keep|remove>`. `keep` (the default) preserves one blank line wherever the input separates elements or comments with one or more; `remove` drops them all
 
 ### In CI and editors
 
@@ -88,6 +88,20 @@ optional:
 - Unknown fields and values of the wrong type are errors, reported with the file's path and position, so a typo like `max_widht` cannot silently do nothing
 - `--config <path>` uses a specific file instead of searching; `--no-config` ignores config files
 - `--print-config` prints the effective settings as a complete `fmt.ron`, with the file they came from; with `-i`, it resolves the config the way formatting that file would
+
+## Style
+
+fmtron lays out values by these rules:
+
+- A container goes on one line if it fits within the line width, and otherwise puts one element per line, indented, with a trailing comma
+- A struct or map whose input breaks the line right after its opening bracket stays broken, even if it would fit on one line. To have fmtron join it, remove that line break
+- A broken list or tuple whose elements are all short is packed several elements to a line, like words in a paragraph. Short means a number, bool or char, or a string, identifier or tuple of atoms at most 16 columns wide. Tuples count because serde writes arrays such as `[u8; 32]` as tuples. They are packed in two cases:
+  - If the input already puts two or more of them on one line, each line break between them is kept and only a line that grows too long is wrapped, so editing one line never reflows the others. If the input also breaks the line right after the opening bracket, the list is a grid: it stays broken even if it would fit on one line, so its rows stay rows
+  - If they are all numbers, bools or chars, or tuples of those, they are packed even when written one per line
+
+  Strings and identifiers written one per line stay that way. A blank line between elements starts a new line, after a blank one
+- A tuple or newtype variant around a single container, such as `Some((…))` or `Wrapper([…])`, hugs it: if it does not fit on one line, the container breaks inside the parentheses (`Some((` … `))`), as `ron`'s own pretty-printer writes it
+- Comments force their container to break, one element per line
 
 ## Features
 

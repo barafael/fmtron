@@ -1,9 +1,11 @@
-use super::{Attribute, Field, HeaderItem, Kind, RonFile, Value};
+use super::{Attribute, BLANK_LINE, Field, HeaderItem, Kind, RonFile, Value};
 use crate::MAX_INDENT;
 use crate::pretty::{
-    Doc, comma, concat, group, hard_line, hug, line, nest, render_with_newline, soft_line, text,
+    Doc, FillItem, comma, concat, fill, group, hard_line, hug, line, nest, render_with_newline,
+    soft_line, text,
 };
 use std::fmt::{self, Display, Formatter};
+use unicode_width::UnicodeWidthStr;
 
 impl Display for RonFile {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
@@ -53,39 +55,180 @@ impl Display for AttributeDisplay<'_> {
     }
 }
 
-/// True if `v` or anything in its subtree carries comments. A container whose
-/// subtree has comments must render every element on its own line (hard
-/// breaks), otherwise a leading/trailing comment would collide with sibling
-/// layout.
-fn subtree_has_comments(v: &Value) -> bool {
+/// True if `v` or anything in its subtree must break: it carries comments,
+/// or is a struct or map the input breaks after its opening bracket. A
+/// container whose subtree must break renders every element on its own line
+/// (hard breaks), otherwise a leading/trailing comment would collide with
+/// sibling layout.
+fn subtree_breaks(v: &Value) -> bool {
     if !v.leading.is_empty() || !v.inline.is_empty() || !v.trailing.is_empty() {
         return true;
     }
     match &v.kind {
-        Kind::Atom(_) => false,
+        Kind::Atom { .. } => false,
         Kind::List { values, dangling } => {
-            !dangling.is_empty() || values.iter().any(subtree_has_comments)
-        }
-        Kind::Map { entries, dangling } => {
             !dangling.is_empty()
-                || entries
-                    .iter()
-                    .flat_map(|(k, v)| [k, v])
-                    .any(subtree_has_comments)
+                || packing(values, dangling) == Packing::Grid
+                || values.iter().any(subtree_breaks)
+        }
+        Kind::Map {
+            entries,
+            dangling,
+            broken,
+        } => {
+            *broken
+                || !dangling.is_empty()
+                || entries.iter().flat_map(|(k, v)| [k, v]).any(subtree_breaks)
         }
         Kind::TupleType {
             values, dangling, ..
-        } => !dangling.is_empty() || values.iter().any(subtree_has_comments),
+        } => {
+            !dangling.is_empty()
+                || packing(values, dangling) == Packing::Grid
+                || values.iter().any(subtree_breaks)
+        }
         Kind::FieldsType {
-            fields, dangling, ..
-        } => !dangling.is_empty() || fields.iter().any(|f| subtree_has_comments(&f.value)),
+            fields,
+            dangling,
+            broken,
+            ..
+        } => *broken || !dangling.is_empty() || fields.iter().any(|f| subtree_breaks(&f.value)),
     }
 }
 
 /// A container element goes on its own line (hard breaks, plain commas) if
-/// the container holds dangling comments or any member subtree has comments.
+/// the container holds dangling comments or any member subtree must break.
 fn force_break<'a>(dangling: &[String], members: impl IntoIterator<Item = &'a Value>) -> bool {
-    !dangling.is_empty() || members.into_iter().any(subtree_has_comments)
+    !dangling.is_empty() || members.into_iter().any(subtree_breaks)
+}
+
+/// The widest list element, in columns, that may share a line with its
+/// siblings (see [`packing`]). Numbers, bools and chars may be any width.
+const SHORT_ITEM_WIDTH: usize = 16;
+
+/// True if `v` may share a line with its siblings in a list or tuple: a
+/// number, bool or char, or another atom or a tuple (named or not) of atoms
+/// at most [`SHORT_ITEM_WIDTH`] columns wide; without comments. A blank line
+/// before it is fine.
+fn short_item(v: &Value) -> bool {
+    let plain = |v: &Value| v.inline.is_empty() && v.trailing.is_empty();
+    // The width on one line: measured from the text, since a tuple the input
+    // writes as a grid renders on several lines.
+    let width = match &v.kind {
+        Kind::Atom { scalar: true, .. } => Some(0),
+        Kind::Atom { text, .. } => Some(text.width()),
+        Kind::TupleType {
+            ident,
+            values,
+            dangling,
+        } if dangling.is_empty()
+            && !values.is_empty()
+            && values.iter().all(|x| x.leading.is_empty() && plain(x)) =>
+        {
+            values.iter().try_fold(
+                ident.as_deref().map_or(0, str::width)
+                    + "()".len()
+                    + ", ".len() * (values.len() - 1),
+                |w, x| match &x.kind {
+                    Kind::Atom { text, .. } => Some(w + text.width()),
+                    _ => None,
+                },
+            )
+        }
+        _ => None,
+    };
+    width.is_some_and(|w| w <= SHORT_ITEM_WIDTH)
+        && plain(v)
+        && v.leading.iter().all(|c| c == BLANK_LINE)
+}
+
+/// True if `v` is a number, bool or char, or a tuple of only those.
+fn scalar_item(v: &Value) -> bool {
+    let scalar = |k: &Kind| matches!(k, Kind::Atom { scalar: true, .. });
+    match &v.kind {
+        Kind::TupleType { values, .. } => values.iter().all(|x| scalar(&x.kind)),
+        k => scalar(k),
+    }
+}
+
+/// Whether a list or tuple's elements are packed several to a line (see
+/// [`packing`]).
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Packing {
+    No,
+    /// Packed by width alone.
+    Fill,
+    /// Packed, keeping every line break the input has between elements when
+    /// broken.
+    Rows,
+    /// Like `Rows`, and always broken.
+    Grid,
+}
+
+/// How a list or tuple of short elements (see [`short_item`]) is packed:
+///
+/// - If the input already puts two or more of them on one line, they stay
+///   packed, and when the container breaks, every line break the input has
+///   between them is kept: rows stay rows, and an edit to one row never
+///   reflows the others. Only a row that grows too long is wrapped. If the
+///   input also breaks the line right after the opening bracket, it is a
+///   grid: it stays broken even if it would fit on one line.
+/// - Otherwise, numbers, bools and chars (and tuples of those) are packed
+///   by width, even when written one per line.
+/// - Anything else, such as strings written one per line, is not packed: one
+///   element per line when broken.
+///
+/// A blank line between elements is kept and starts a new line.
+fn packing(values: &[Value], dangling: &[String]) -> Packing {
+    if values.len() < 2 || !dangling.is_empty() || !values.iter().all(short_item) {
+        return Packing::No;
+    }
+    // Some input line holds two elements: one other than the first that
+    // neither starts a line nor follows a blank line.
+    let packed = values[1..]
+        .iter()
+        .any(|e| !e.starts_line && e.leading.is_empty());
+    let rows = values[1..].iter().any(|e| e.starts_line);
+    match (packed, rows) {
+        (true, true) if values[0].starts_line => Packing::Grid,
+        (true, true) => Packing::Rows,
+        (true, false) => Packing::Fill,
+        (false, _) if values.iter().all(scalar_item) => Packing::Fill,
+        (false, _) => Packing::No,
+    }
+}
+
+/// A list or tuple packed per [`packing`], or `None` if it is not packed.
+fn packed(
+    values: &[Value],
+    dangling: &[String],
+    force: bool,
+    open: &str,
+    close: &str,
+    tab: usize,
+) -> Option<Doc> {
+    let packing = packing(values, dangling);
+    if packing == Packing::No {
+        return None;
+    }
+    let items = values
+        .iter()
+        .map(|e| FillItem {
+            blank_before: !e.leading.is_empty(),
+            starts_line: matches!(packing, Packing::Rows | Packing::Grid) && e.starts_line,
+            doc: kind_doc(e, tab),
+        })
+        .collect();
+    // A grid or a blank line between elements: always broken.
+    let force = force || packing == Packing::Grid;
+    let brk = || if force { hard_line() } else { soft_line() };
+    let doc = concat(vec![
+        text(open),
+        nest(tab, concat(vec![brk(), fill(items, force)])),
+        brk(),
+        text(close),
+    ]);
+    Some(if force { doc } else { group(doc) })
 }
 
 /// Comma after an element: plain when the container is forced to break or the
@@ -198,10 +341,13 @@ fn value_doc(v: &Value, tab: usize) -> Doc {
 
 fn kind_doc(v: &Value, tab: usize) -> Doc {
     match &v.kind {
-        Kind::Atom(a) => text(a.clone()),
+        Kind::Atom { text: a, .. } => text(a.clone()),
 
         Kind::List { values, dangling } => {
             let force = force_break(dangling, values);
+            if let Some(doc) = packed(values, dangling, force, "[", "]", tab) {
+                return doc;
+            }
             let n = values.len();
             let items: Vec<Doc> = values
                 .iter()
@@ -219,8 +365,12 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             container(force, "[", "]", items, dangling, tab)
         }
 
-        Kind::Map { entries, dangling } => {
-            let force = force_break(dangling, entries.iter().flat_map(|(k, v)| [k, v]));
+        Kind::Map {
+            entries,
+            dangling,
+            broken,
+        } => {
+            let force = *broken || force_break(dangling, entries.iter().flat_map(|(k, v)| [k, v]));
             let n = entries.len();
             let items: Vec<Doc> = entries
                 .iter()
@@ -255,10 +405,13 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                     text(open_ident(ident.as_deref())),
                     kind_doc(only, tab),
                     text(")"),
-                    tab,
                 );
             }
             let force = force_break(dangling, values);
+            let open = open_ident(ident.as_deref());
+            if let Some(doc) = packed(values, dangling, force, &open, ")", tab) {
+                return doc;
+            }
             let n = values.len();
             let items: Vec<Doc> = values
                 .iter()
@@ -273,22 +426,16 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                     )
                 })
                 .collect();
-            container(
-                force,
-                &open_ident(ident.as_deref()),
-                ")",
-                items,
-                dangling,
-                tab,
-            )
+            container(force, &open, ")", items, dangling, tab)
         }
 
         Kind::FieldsType {
             ident,
             fields,
             dangling,
+            broken,
         } => {
-            let force = force_break(dangling, fields.iter().map(|f| &f.value));
+            let force = *broken || force_break(dangling, fields.iter().map(|f| &f.value));
             let n = fields.len();
             let items: Vec<Doc> = fields
                 .iter()
@@ -332,7 +479,7 @@ fn hug_target<'a>(values: &'a [Value], dangling: &[String]) -> Option<&'a Value>
             if dangling.is_empty()
                 && only.leading.is_empty()
                 && only.trailing.is_empty()
-                && !matches!(only.kind, Kind::Atom(_)) =>
+                && !matches!(only.kind, Kind::Atom { .. }) =>
         {
             Some(only)
         }

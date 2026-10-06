@@ -5,6 +5,7 @@
 //! them all.
 
 use fmtron::{BlankLines, Config, format_ron};
+use indoc::indoc;
 
 fn fmt(input: &str, blank_lines: BlankLines) -> String {
     let config = Config {
@@ -25,18 +26,68 @@ fn fmt(input: &str, blank_lines: BlankLines) -> String {
     out
 }
 
-const INPUT: &str = "// license\n\n\n#![enable(implicit_some)]\n\n// about the value\n(\n\n    \
-    a: 1,\n    b: 2,\n\n\n    // section two\n\n    c: [1,\n\n    2],\n    d: {1: 2,\n\n    \
-    3: 4},\n\n    // trailing notes\n\n)\n\n// end\n";
+const INPUT: &str = indoc! {"
+    // license
+
+
+    #![enable(implicit_some)]
+
+    // about the value
+    (
+
+        a: 1,
+        b: 2,
+
+
+        // section two
+
+        c: [1,
+
+        2],
+        d: {1: 2,
+
+        3: 4},
+
+        // trailing notes
+
+    )
+
+    // end
+"};
 
 #[test]
 fn blank_lines_are_kept_by_default() {
     assert_eq!(Config::default().blank_lines, BlankLines::Keep);
     assert_eq!(
         fmt(INPUT, BlankLines::Keep),
-        "// license\n\n#![enable(implicit_some)]\n\n// about the value\n(\n    a: 1,\n    b: 2,\n\n    \
-         // section two\n\n    c: [\n        1,\n\n        2,\n    ],\n    d: {\n        1: 2,\n\n        \
-         3: 4,\n    },\n\n    // trailing notes\n)\n\n// end\n"
+        indoc! {"
+            // license
+
+            #![enable(implicit_some)]
+
+            // about the value
+            (
+                a: 1,
+                b: 2,
+
+                // section two
+
+                c: [
+                    1,
+
+                    2,
+                ],
+                d: {
+                    1: 2,
+
+                    3: 4,
+                },
+
+                // trailing notes
+            )
+
+            // end
+        "}
     );
 }
 
@@ -44,8 +95,20 @@ fn blank_lines_are_kept_by_default() {
 fn blank_lines_can_be_removed() {
     assert_eq!(
         fmt(INPUT, BlankLines::Remove),
-        "// license\n#![enable(implicit_some)]\n// about the value\n(\n    a: 1,\n    b: 2,\n    \
-         // section two\n    c: [1, 2],\n    d: {1: 2, 3: 4},\n    // trailing notes\n)\n// end\n"
+        indoc! {"
+            // license
+            #![enable(implicit_some)]
+            // about the value
+            (
+                a: 1,
+                b: 2,
+                // section two
+                c: [1, 2],
+                d: {1: 2, 3: 4},
+                // trailing notes
+            )
+            // end
+        "}
     );
 }
 
@@ -55,8 +118,21 @@ fn blank_lines_can_be_removed() {
 fn only_empty_lines_count_as_blank() {
     assert_eq!(fmt("[1\n,\n2]", BlankLines::Keep), "[1, 2]");
     assert_eq!(
-        fmt("[\n    1, // one\n\n    2,\n]", BlankLines::Keep),
-        "[\n    1, // one\n\n    2,\n]"
+        fmt(
+            indoc! {"
+                [
+                    1, // one
+
+                    2,
+                ]"},
+            BlankLines::Keep
+        ),
+        indoc! {"
+            [
+                1, // one
+
+                2,
+            ]"}
     );
     // Whitespace on the "blank" line and CRLF line endings still count.
     assert_eq!(

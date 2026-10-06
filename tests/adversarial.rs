@@ -7,6 +7,7 @@
 //! so the validation itself cannot silently drift.
 
 use fmtron::{Config, FormatError, format_ron};
+use indoc::indoc;
 
 fn cfg(width: usize) -> Config {
     Config {
@@ -314,7 +315,13 @@ fn comments_inside_attributes_are_preserved() {
 // N9: comments before and between attributes keep their position.
 #[test]
 fn header_comments_keep_their_order() {
-    let input = "// license\n#![enable(implicit_some)]\n// mid\n#![type = \"T\"]\n// lead\n5";
+    let input = indoc! {r#"
+        // license
+        #![enable(implicit_some)]
+        // mid
+        #![type = "T"]
+        // lead
+        5"#};
     assert_valid_per_oracle(input);
     assert_eq!(format_ron(input, &cfg(40)).unwrap(), input);
 }
@@ -484,7 +491,11 @@ fn crlf_line_endings_are_preserved() {
     // LF input is unaffected.
     assert_eq!(
         format_ron("[1,\n2]", &cfg(3)).unwrap(),
-        "[\n    1,\n    2,\n]"
+        indoc! {"
+            [
+                1,
+                2,
+            ]"}
     );
     assert_eq!(fmtron::line_ending("a\r\nb\nc"), "\r\n");
     assert_eq!(fmtron::line_ending("a\nb\r\nc"), "\n");
@@ -524,21 +535,43 @@ fn comments_between_key_and_value_stay_with_the_entry() {
     let cases = [
         (
             "(delay: /* seconds */ 5, next: 1)",
-            "(\n    delay: /* seconds */ 5,\n    next: 1,\n)",
+            indoc! {"
+                (
+                    delay: /* seconds */ 5,
+                    next: 1,
+                )"},
         ),
         (
             r#"{"delay": /* seconds */ 5}"#,
-            "{\n    \"delay\": /* seconds */ 5,\n}",
+            indoc! {r#"
+                {
+                    "delay": /* seconds */ 5,
+                }"#},
         ),
         (
             "(a /* before */ : /* after */ 1)",
-            "(\n    a: /* before */ /* after */ 1,\n)",
+            indoc! {"
+                (
+                    a: /* before */ /* after */ 1,
+                )"},
         ),
         (
             "Foo(delay: // seconds\n 5, next: 1)",
-            "Foo(\n    // seconds\n    delay: 5,\n    next: 1,\n)",
+            indoc! {"
+                Foo(
+                    // seconds
+                    delay: 5,
+                    next: 1,
+                )"},
         ),
-        ("{46: // Bb2\n [1, 2]}", "{\n    // Bb2\n    46: [1, 2],\n}"),
+        (
+            "{46: // Bb2\n [1, 2]}",
+            indoc! {"
+                {
+                    // Bb2
+                    46: [1, 2],
+                }"},
+        ),
     ];
     for (input, expected) in cases {
         assert_eq!(

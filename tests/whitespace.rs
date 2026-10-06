@@ -3,6 +3,7 @@
 //! laid out.
 
 use fmtron::{Config, format_ron, line_ending};
+use indoc::indoc;
 
 fn fmt(input: &str) -> String {
     let out = format_ron(input, &Config::default()).expect("valid RON");
@@ -55,19 +56,54 @@ fn the_line_ending_is_decided_outside_literals() {
 fn block_comments_are_reindented_with_their_line() {
     // Deeper: the comment's lines keep their shape.
     assert_eq!(
-        fmt("(\nb: [\n/* one\n   two\n*/\n1],\n)"),
-        "(\n    b: [\n        /* one\n           two\n        */\n        1,\n    ],\n)"
+        fmt(indoc! {"
+            (
+            b: [
+            /* one
+               two
+            */
+            1],
+            )"}),
+        indoc! {"
+            (
+                b: [
+                    /* one
+                       two
+                    */
+                    1,
+                ],
+            )"}
     );
     // Shallower, and trailing a value.
     assert_eq!(
-        fmt("[\n            1, /* one\n              two */\n]"),
-        "[\n    1, /* one\n      two */\n]"
+        fmt(indoc! {"
+            [
+                        1, /* one
+                          two */
+            ]"}),
+        indoc! {"
+            [
+                1, /* one
+                  two */
+            ]"}
     );
     // Lines indented less than the comment's line go to its indentation;
     // blank lines stay blank.
     assert_eq!(
-        fmt("[\n        /* one\n\n  two */\n    1,\n]"),
-        "[\n    /* one\n\n    two */\n    1,\n]"
+        fmt(indoc! {"
+            [
+                    /* one
+
+              two */
+                1,
+            ]"}),
+        indoc! {"
+            [
+                /* one
+
+                two */
+                1,
+            ]"}
     );
     // Tabs count like spaces when removing the old indentation; tabs left
     // over in front of a line become `tab_size` spaces, like any indentation.

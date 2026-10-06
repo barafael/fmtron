@@ -1,4 +1,5 @@
 #![enable(unwrap_variant_newtypes)]
-TupleNewtypeStruct(
-    Struct(a: 4, b: false),
-)
+TupleNewtypeStruct(Struct(
+    a: 4,
+    b: false,
+))

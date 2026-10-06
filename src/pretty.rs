@@ -32,11 +32,24 @@ pub enum Doc {
     Nest(usize, Box<Doc>),
     Group(Box<Doc>),
     /// `[open, child, close]`, e.g. `Some(` `(…)` `)`; see [`hug`].
-    Hug {
-        tab: usize,
-        parts: Box<[Doc; 3]>,
-    },
+    Hug(Box<[Doc; 3]>),
     Concat(Vec<Doc>),
+    /// Short items packed as many to a line as fit; see [`fill`].
+    Fill {
+        items: Vec<FillItem>,
+        broken: bool,
+    },
+}
+
+/// An item of a [`fill`]: rendered flat, followed by a comma.
+#[derive(Debug, Clone)]
+pub struct FillItem {
+    /// The input has a blank line before this item: it starts a new line,
+    /// after a blank one.
+    pub blank_before: bool,
+    /// Starts a new line when broken.
+    pub starts_line: bool,
+    pub doc: Doc,
 }
 
 pub fn text(s: impl Into<String>) -> Doc {
@@ -79,16 +92,18 @@ pub fn group(d: Doc) -> Doc {
 }
 
 /// `open child close` for a wrapper around a single container, such as
-/// `Some((…))`. Renders flat if it all fits. Otherwise, if `child` fits flat
-/// on a line of its own, it breaks like a container (`Some(` / child / `)`);
-/// if even that does not fit, it "hugs": `open` and `close` stay on the
-/// child's first and last lines and the child breaks inside (`Some((` … `))`),
-/// the layout `ron`'s own pretty-printer uses.
-pub fn hug(open: Doc, child: Doc, close: Doc, tab: usize) -> Doc {
-    Doc::Hug {
-        tab,
-        parts: Box::new([open, child, close]),
-    }
+/// `Some((…))`. Renders flat if it all fits. Otherwise it "hugs": `open` and
+/// `close` stay on the child's first and last lines and the child breaks
+/// inside (`Some((` … `))`), the layout `ron`'s own pretty-printer uses.
+pub fn hug(open: Doc, child: Doc, close: Doc) -> Doc {
+    Doc::Hug(Box::new([open, child, close]))
+}
+
+/// Comma-separated items. Flat: `a, b, c`. Broken (in break mode, or
+/// always if `broken`): each item and its comma go on the current line if
+/// they fit, otherwise on a new one, so short items fill lines like text.
+pub fn fill(items: Vec<FillItem>, broken: bool) -> Doc {
+    Doc::Fill { items, broken }
 }
 
 pub fn concat(docs: Vec<Doc>) -> Doc {
@@ -188,10 +203,126 @@ fn best(out: &mut Out, doc: &Doc, width: usize, indent: usize, col: usize, mode:
         // A group or hug reached directly by `best` (not intercepted by
         // `best_seq`) has no siblings to consider: it flattens iff its own
         // flat form fits the remaining width.
-        Doc::Group(_) | Doc::Hug { .. } => {
+        Doc::Group(_) | Doc::Hug(_) => {
             best_seq(out, std::slice::from_ref(doc), width, indent, col, mode)
         }
         Doc::Concat(docs) => best_seq(out, docs, width, indent, col, mode),
+        Doc::Fill { items, broken } => {
+            if !*broken && mode == Mode::Flat {
+                let mut c = col;
+                for (i, item) in items.iter().enumerate() {
+                    if i > 0 {
+                        out.text(", ");
+                        c += 2;
+                    }
+                    c = best(out, &item.doc, width, indent, c, Mode::Flat);
+                }
+                return c;
+            }
+            let mut c = col;
+            for (item, place) in items.iter().zip(fill_plan(items, width, indent, col)) {
+                match place.line {
+                    Line::Same => {
+                        out.text(" ");
+                        c += 1;
+                    }
+                    Line::New => {
+                        out.break_line(indent);
+                        c = indent;
+                    }
+                    Line::AfterBlank => {
+                        out.break_line(indent);
+                        out.break_line(indent);
+                        c = indent;
+                    }
+                    Line::First => {}
+                }
+                c = match &item.doc {
+                    Doc::Group(inner) if place.breaks => {
+                        best(out, inner, width, indent, c, Mode::Break)
+                    }
+                    doc if place.breaks => best(out, doc, width, indent, c, Mode::Break),
+                    doc => best(out, doc, width, indent, c, Mode::Flat),
+                };
+                out.text(",");
+                c += 1;
+            }
+            c
+        }
+    }
+}
+
+/// Where an item of a broken fill goes, relative to the one before it.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Line {
+    /// The first item, right where the fill starts.
+    First,
+    /// On the same line, after a space.
+    Same,
+    New,
+    /// On a new line after a blank one.
+    AfterBlank,
+}
+
+#[derive(Clone, Copy)]
+struct Place {
+    line: Line,
+    /// The item does not fit flat on a line of its own, with its comma, or
+    /// always renders on several lines. It goes on lines of its own.
+    breaks: bool,
+}
+
+/// Lay out a broken fill starting at column `col` (its indentation), each
+/// item followed by a comma: an item goes on the current line if it fits
+/// there, and on a new line if it does not, if it starts a line
+/// ([`FillItem::starts_line`]), or if it or the item before it renders on
+/// several lines.
+///
+/// If keeping the items that start lines leaves no line holding two items,
+/// those line breaks are dropped. Otherwise formatting the output again,
+/// which then has one item per line, would pack the items differently.
+fn fill_plan(items: &[FillItem], width: usize, indent: usize, col: usize) -> Vec<Place> {
+    let plan = |keep_lines: bool| {
+        let mut c = col;
+        let mut after_break = false;
+        let mut places = Vec::with_capacity(items.len());
+        for (i, item) in items.iter().enumerate() {
+            let mut rem = usize::MAX;
+            // Renders on several lines whatever the width (e.g. a grid).
+            let multiline = fits_probe(&mut rem, Mode::Flat, &item.doc) == Fit::LineBreak;
+            let w = usize::MAX - rem;
+            // Does not fit flat on a line of its own, with its comma.
+            let breaks = multiline || (matches!(item.doc, Doc::Group(_)) && indent + w + 1 > width);
+            let line = if i == 0 {
+                Line::First
+            } else if item.blank_before {
+                Line::AfterBlank
+            } else if after_break
+                || breaks
+                || (keep_lines && item.starts_line)
+                || c + 1 + w + 1 > width
+            {
+                Line::New
+            } else {
+                Line::Same
+            };
+            c = match line {
+                Line::First => c,
+                Line::Same => c + 1,
+                Line::New | Line::AfterBlank => indent,
+            };
+            after_break = breaks;
+            c += w + 1;
+            places.push(Place { line, breaks });
+        }
+        places
+    };
+    let places = plan(true);
+    let packed = places.iter().any(|p| p.line == Line::Same);
+    if !packed && items.iter().any(|i| i.starts_line) {
+        plan(false)
+    } else {
+        places
     }
 }
 
@@ -215,34 +346,18 @@ fn best_seq(
                 let m = if fits { Mode::Flat } else { Mode::Break };
                 best(out, inner, width, indent, c, m)
             }
-            Doc::Hug { tab, parts } => {
+            Doc::Hug(parts) => {
                 let [open, child, close] = &**parts;
                 if fits_rest(width.saturating_sub(c), mode, &docs[i..]) {
                     let c = best(out, open, width, indent, c, Mode::Flat);
                     let c = best(out, child, width, indent, c, Mode::Flat);
                     best(out, close, width, indent, c, Mode::Flat)
-                } else if child_fits_alone(child, width, indent + tab) {
-                    // Break around the child like a container: it then fits
-                    // flat on its own line, followed by a comma.
-                    let inner = indent + tab;
-                    best(out, open, width, indent, c, Mode::Break);
-                    out.break_line(inner);
-                    let c = best_seq(
-                        out,
-                        std::slice::from_ref(child),
-                        width,
-                        inner,
-                        inner,
-                        Mode::Break,
-                    );
-                    out.text(",");
-                    out.break_line(indent);
-                    best(out, close, width, indent, c + 1, Mode::Break)
                 } else {
                     // Hug: the child breaks inside, sharing its first line
                     // with `open` and its last with `close`.
                     let c = best(out, open, width, indent, c, Mode::Break);
-                    best_seq(out, &parts[1..], width, indent, c, Mode::Break)
+                    let suffix: Vec<&Doc> = docs[i + 1..].iter().collect();
+                    hug_rest(out, child, close, &suffix, width, indent, c, mode)
                 }
             }
             _ => best(out, d, width, indent, c, mode),
@@ -251,11 +366,37 @@ fn best_seq(
     c
 }
 
-/// True if `child` renders flat, plus a trailing comma, on a fresh line
-/// indented by `indent`.
-fn child_fits_alone(child: &Doc, width: usize, indent: usize) -> bool {
-    let mut rem = width.saturating_sub(indent);
-    fits_probe(&mut rem, Mode::Flat, child) != Fit::Overflow && rem >= 1
+/// Render a hugged `child` and its `close` right after the opener, where
+/// `suffix` follows `close` on the same line (e.g. the comma after the
+/// wrapper). The child goes flat only if it fits together with all of that;
+/// otherwise it breaks, and a hugged grandchild is decided the same way.
+#[allow(clippy::too_many_arguments)]
+fn hug_rest(
+    out: &mut Out,
+    child: &Doc,
+    close: &Doc,
+    suffix: &[&Doc],
+    width: usize,
+    indent: usize,
+    col: usize,
+    mode: Mode,
+) -> usize {
+    let mut rest: Vec<&Doc> = vec![child, close];
+    rest.extend(suffix);
+    let flat = fits_rest(width.saturating_sub(col), mode, rest);
+    let m = if flat { Mode::Flat } else { Mode::Break };
+    let c = match child {
+        Doc::Group(inner) => best(out, inner, width, indent, col, m),
+        Doc::Hug(parts) if !flat => {
+            let [o, ch, cl] = &**parts;
+            let c = best(out, o, width, indent, col, Mode::Break);
+            let mut s: Vec<&Doc> = vec![close];
+            s.extend(suffix);
+            hug_rest(out, ch, cl, &s, width, indent, c, mode)
+        }
+        _ => best(out, child, width, indent, col, m),
+    };
+    best(out, close, width, indent, c, Mode::Break)
 }
 
 /// Result of probing how one `Doc` renders on the current line.
@@ -303,8 +444,26 @@ fn fits_probe(rem: &mut usize, mode: Mode, d: &Doc) -> Fit {
         // A nested group is assumed to flatten while measuring the current
         // line; its own break decision is made separately when rendered.
         Doc::Group(d) => fits_probe(rem, Mode::Flat, d),
-        Doc::Hug { parts, .. } => fits_seq(rem, Mode::Flat, &parts[..]),
+        Doc::Hug(parts) => fits_seq(rem, Mode::Flat, &parts[..]),
         Doc::Concat(docs) => fits_seq(rem, mode, docs),
+        Doc::Fill { items, broken } => {
+            if *broken || mode == Mode::Break {
+                return Fit::LineBreak;
+            }
+            for (i, item) in items.iter().enumerate() {
+                if i > 0 {
+                    if *rem < 2 {
+                        return Fit::Overflow;
+                    }
+                    *rem -= 2;
+                }
+                match fits_probe(rem, Mode::Flat, &item.doc) {
+                    Fit::Continue => {}
+                    other => return other,
+                }
+            }
+            Fit::Continue
+        }
     }
 }
 
@@ -329,13 +488,13 @@ fn fits_seq(rem: &mut usize, mode: Mode, docs: &[Doc]) -> Fit {
 /// (e.g. the `Foo(` of a map value) must share the current line. A large
 /// sibling therefore cannot force a small container key to break, but the
 /// key still breaks when even `key: Foo(` would overrun the width.
-fn fits_rest(rem: usize, mode: Mode, docs: &[Doc]) -> bool {
+fn fits_rest<'a>(rem: usize, mode: Mode, docs: impl IntoIterator<Item = &'a Doc>) -> bool {
     let mut rem = rem;
-    for (i, d) in docs.iter().enumerate() {
+    for (i, d) in docs.into_iter().enumerate() {
         let fit = match d {
             Doc::Group(inner) if i > 0 => fits_probe(&mut rem, Mode::Break, inner),
             // A following hug breaks right after its opener at the latest.
-            Doc::Hug { parts, .. } if i > 0 => match fits_probe(&mut rem, Mode::Break, &parts[0]) {
+            Doc::Hug(parts) if i > 0 => match fits_probe(&mut rem, Mode::Break, &parts[0]) {
                 Fit::Continue => Fit::LineBreak,
                 other => other,
             },

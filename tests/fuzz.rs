@@ -98,6 +98,36 @@ fn leaf(rng: &mut Rng) -> String {
     }
 }
 
+/// Join container items the way people write them: mostly on one line,
+/// sometimes one per line or in rows, now and then with a blank line. fmtron
+/// keeps some of these line breaks, so they must not break the properties.
+fn join(rng: &mut Rng, items: &[String]) -> String {
+    let mut out = String::new();
+    for (i, item) in items.iter().enumerate() {
+        if i > 0 {
+            out.push_str(match rng.below(20) {
+                0 => ",\n\n",
+                1..=5 => ",\n",
+                _ => ", ",
+            });
+        }
+        out.push_str(item);
+    }
+    out
+}
+
+/// What follows the opening bracket of `items`: sometimes a line break,
+/// which keeps a struct, map or grid broken. Never in an empty container:
+/// `( )` is an empty sequence to `ron::Value` and fmtron writes it `()`, a
+/// known and accepted normalization.
+fn open(rng: &mut Rng, items: &[String]) -> &'static str {
+    if !items.is_empty() && rng.chance(25) {
+        "\n"
+    } else {
+        ""
+    }
+}
+
 fn value(rng: &mut Rng, depth: usize) -> String {
     if depth >= MAX_DEPTH || rng.chance(55) {
         return leaf(rng);
@@ -105,9 +135,9 @@ fn value(rng: &mut Rng, depth: usize) -> String {
     match rng.below(6) {
         0 => format!("Some({})", value(rng, depth + 1)),
         1 => {
-            let n = rng.below(5);
+            let n = rng.below(14);
             let items: Vec<String> = (0..n).map(|_| value(rng, depth + 1)).collect();
-            format!("[{}]", items.join(", "))
+            format!("[{}{}]", open(rng, &items), join(rng, &items))
         }
         2 => {
             let n = rng.below(4);
@@ -115,15 +145,16 @@ fn value(rng: &mut Rng, depth: usize) -> String {
             for _ in 0..n {
                 items.push(format!("{}: {}", leaf(rng), value(rng, depth + 1)));
             }
-            format!("{{{}}}", items.join(", "))
+            format!("{{{}{}}}", open(rng, &items), join(rng, &items))
         }
         3 => {
-            let n = rng.below(4);
+            let n = rng.below(8);
             let items: Vec<String> = (0..n).map(|_| value(rng, depth + 1)).collect();
+            let (open, items) = (open(rng, &items), join(rng, &items));
             if rng.chance(30) {
-                format!("{}({})", rng.pick(IDENTS), items.join(", "))
+                format!("{}({open}{items})", rng.pick(IDENTS))
             } else {
-                format!("({})", items.join(", "))
+                format!("({open}{items})")
             }
         }
         _ => {
@@ -132,10 +163,11 @@ fn value(rng: &mut Rng, depth: usize) -> String {
             for _ in 0..n {
                 items.push(format!("{}: {}", rng.pick(IDENTS), value(rng, depth + 1)));
             }
+            let (open, items) = (open(rng, &items), join(rng, &items));
             if rng.chance(30) {
-                format!("{}({})", rng.pick(IDENTS), items.join(", "))
+                format!("{}({open}{items})", rng.pick(IDENTS))
             } else {
-                format!("({})", items.join(", "))
+                format!("({open}{items})")
             }
         }
     }

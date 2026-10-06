@@ -2,8 +2,12 @@ Scene(
     // class name is optional
     materials: {
         // this is a map
-        "metal": (reflectivity: 1.0),
-        "plastic": (reflectivity: 0.5),
+        "metal": (
+            reflectivity: 1.0,
+        ),
+        "plastic": (
+            reflectivity: 0.5,
+        ),
     },
     entities: [
         // this is an array

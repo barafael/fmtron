@@ -1,3 +1,4 @@
+use indoc::indoc;
 use std::io::Write;
 use std::process::Command;
 
@@ -194,16 +195,36 @@ fn closed_stdout_is_not_a_panic() {
 // S1: blank lines are kept by default; `--blank-lines remove` drops them.
 #[test]
 fn blank_lines_option() {
-    let input = "(\n    a: 1,\n\n\n    b: 2,\n)";
+    let input = indoc! {"
+        (
+            a: 1,
+
+
+            b: 2,
+        )"};
     let keep = run_cli(input, &["-d"]);
     assert!(keep.status.success());
     assert_eq!(
         String::from_utf8_lossy(&keep.stdout),
-        "(\n    a: 1,\n\n    b: 2,\n)\n"
+        indoc! {"
+            (
+                a: 1,
+
+                b: 2,
+            )
+        "}
     );
     let remove = run_cli(input, &["-d", "--blank-lines", "remove"]);
     assert!(remove.status.success());
-    assert_eq!(String::from_utf8_lossy(&remove.stdout), "(a: 1, b: 2)\n");
+    assert_eq!(
+        String::from_utf8_lossy(&remove.stdout),
+        indoc! {"
+            (
+                a: 1,
+                b: 2,
+            )
+        "}
+    );
 }
 
 /// A project tree: `<root>/fmt.ron` plus an input file two directories down.
@@ -243,11 +264,21 @@ fn fmt_ron_is_discovered_and_flags_take_precedence() {
     };
     assert_eq!(
         stdout(fmtron_on(&file, &["-d"])),
-        "(\n  a: [1, 2, 3],\n  b: (c: 1, d: 2),\n)\n"
+        indoc! {"
+            (
+              a: [1, 2, 3],
+              b: (c: 1, d: 2),
+            )
+        "}
     );
     assert_eq!(
         stdout(fmtron_on(&file, &["-d", "-t", "4"])),
-        "(\n    a: [1, 2, 3],\n    b: (c: 1, d: 2),\n)\n"
+        indoc! {"
+            (
+                a: [1, 2, 3],
+                b: (c: 1, d: 2),
+            )
+        "}
     );
     assert_eq!(
         stdout(fmtron_on(&file, &["-d", "--no-config"])),

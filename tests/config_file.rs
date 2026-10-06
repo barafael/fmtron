@@ -1,6 +1,7 @@
 //! `fmt.ron` parsing, application and discovery (`fmtron::FileConfig`).
 
 use fmtron::{BlankLines, Config, FileConfig};
+use indoc::indoc;
 use std::str::FromStr;
 
 #[test]
@@ -18,10 +19,16 @@ fn every_field_is_optional() {
 
 #[test]
 fn full_file_with_comments_parses() {
-    let file = FileConfig::from_str(
-        "// fmt.ron\n(\n    max_width: 80, // columns\n    tab_size: 2,\n    \
-         /* Keep | Remove */ blank_lines: Remove,\n    max_depth: 1000,\n    max_tab: 16,\n)\n",
-    )
+    let file = FileConfig::from_str(indoc! {"
+        // fmt.ron
+        (
+            max_width: 80, // columns
+            tab_size: 2,
+            /* Keep | Remove */ blank_lines: Remove,
+            max_depth: 1000,
+            max_tab: 16,
+        )
+    "})
     .unwrap();
     assert_eq!(
         file,
