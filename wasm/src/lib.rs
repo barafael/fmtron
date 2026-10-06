@@ -11,11 +11,42 @@ pub fn format_ron(
     max_width: u32,
     keep_blank_lines: bool,
 ) -> Result<String, JsError> {
+    format(input, tab_size, max_width, keep_blank_lines).map_err(|e| JsError::new(&e))
+}
+
+/// The formatting itself, callable on any target: exported functions refuse
+/// to run in a native test harness.
+fn format(
+    input: &str,
+    tab_size: u32,
+    max_width: u32,
+    keep_blank_lines: bool,
+) -> Result<String, String> {
     let mut config = fmtron::Config::default()
         .with_tab_size(tab_size.max(1) as usize)
         .with_max_width(max_width.max(1) as usize);
     if !keep_blank_lines {
         config = config.with_blank_lines(fmtron::BlankLines::Remove);
     }
-    fmtron::format_ron(input, &config).map_err(|e| JsError::new(&e.to_string()))
+    fmtron::format_ron(input, &config).map_err(|e| e.to_string())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn formats_and_reports_parse_errors() {
+        let out = format("(  bar :  \"baz\"  ,foo:1 )  ", 4, 100, true).unwrap();
+        assert_eq!(out, "(bar: \"baz\", foo: 1)");
+
+        // A blank line forces the container to stay broken; blank_lines =
+        // remove drops it and the one-line form fits.
+        let out = format("(a: 1,\n\nb: 2)", 4, 100, true).unwrap();
+        assert_eq!(out, "(\n    a: 1,\n\n    b: 2,\n)");
+        let out = format("(a: 1,\n\nb: 2)", 4, 100, false).unwrap();
+        assert_eq!(out, "(a: 1, b: 2)");
+
+        assert!(format("(a: 1 b: 2)", 4, 100, true).is_err());
+    }
 }

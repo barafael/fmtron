@@ -19,6 +19,7 @@ const KEYWORDS = new Set(['true', 'false', 'Some', 'None', 'inf', 'NaN']);
 
 const NUMBER = /[-+]?(?:0[xob][0-9a-fA-F_]+|[0-9][0-9_]*(?:\.[0-9_]+)?(?:[eE][-+]?[0-9]+)?)(?:[iuf](?:8|16|32|64|128|size))?/y;
 const IDENT = /[A-Za-z_][A-Za-z0-9_]*/y;
+const RAW_STRING = /(?:br|b|r)(#*)"/y;
 
 // Produces HTML with <span class="tok-*"> highlighting for RON source.
 function highlightRon(src) {
@@ -63,20 +64,16 @@ function highlightRon(src) {
       continue;
     }
 
-    // Raw or byte string: r"…"  r#"…"#  br"…"  br#"…"#
-    const rawStart = c === 'r' ? i : (c === 'b' && src[i + 1] === 'r' ? i + 1 : -1);
-    if (rawStart !== -1 && (src[rawStart + 1] === '"' || src[rawStart + 1] === '#')) {
-      let j = rawStart + 1;
-      let hashes = 0;
-      while (src[j] === '#') { hashes++; j++; }
-      if (src[j] === '"') {
-        const closer = '"' + '#'.repeat(hashes);
-        const end = src.indexOf(closer, j + 1);
-        const stop = end === -1 ? n : end + closer.length;
-        html += span('str', src.slice(i, stop));
-        i = stop;
-        continue;
-      }
+    // Byte or raw string: b"…"  r"…"  r#"…"#  br#"…"#
+    RAW_STRING.lastIndex = i;
+    const raw = RAW_STRING.exec(src);
+    if (raw) {
+      const closer = '"' + '#'.repeat(raw[1].length);
+      const end = src.indexOf(closer, i + raw[0].length);
+      const stop = end === -1 ? n : end + closer.length;
+      html += span('str', src.slice(i, stop));
+      i = stop;
+      continue;
     }
 
     // String literal.
@@ -206,6 +203,13 @@ function syncScroll() {
   highlightPre.scrollLeft = input.scrollLeft;
 }
 
+// Keep literal tab characters in the input aligned with the option, and with
+// fmtron's own indentation.
+function applyTabSize() {
+  const n = Math.min(Math.max(Number(tabSize.value) || 4, 1), 16);
+  document.documentElement.style.setProperty('--tab', n);
+}
+
 input.addEventListener('input', () => {
   refreshHighlight();
   formatSoon();
@@ -224,7 +228,11 @@ input.addEventListener('keydown', e => {
   formatSoon();
 });
 
-[tabSize, maxWidth, blankLines].forEach(el => el.addEventListener('change', formatNow));
+tabSize.addEventListener('change', () => {
+  applyTabSize();
+  formatNow();
+});
+[maxWidth, blankLines].forEach(el => el.addEventListener('change', formatNow));
 
 copyButton.addEventListener('click', async () => {
   try {
@@ -245,10 +253,17 @@ EXAMPLES.forEach((ex, idx) => {
 
 exampleSelect.addEventListener('change', () => loadExample(EXAMPLES[Number(exampleSelect.value)]));
 
-init().then(() => {
-  const initial = new URLSearchParams(location.search).get('example');
-  const index = EXAMPLES.findIndex(ex => ex.file === initial);
-  const start = index >= 0 ? index : EXAMPLES.indexOf(DEFAULT_EXAMPLE);
-  exampleSelect.value = String(start);
-  loadExample(EXAMPLES[start]);
-});
+applyTabSize();
+
+init()
+  .then(() => {
+    const initial = new URLSearchParams(location.search).get('example');
+    const index = EXAMPLES.findIndex(ex => ex.file === initial);
+    const start = index >= 0 ? index : EXAMPLES.indexOf(DEFAULT_EXAMPLE);
+    exampleSelect.value = String(start);
+    loadExample(EXAMPLES[start]);
+  })
+  .catch(e => {
+    errorBox.textContent = `Failed to load the formatter: ${e.message ?? e}`;
+    errorBox.hidden = false;
+  });

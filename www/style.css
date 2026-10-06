@@ -179,7 +179,7 @@ main {
   overflow: auto;
   font: 0.85rem/1.5 var(--mono);
   white-space: pre;
-  tab-size: 4;
+  tab-size: var(--tab, 4);
 }
 
 .editor pre {
@@ -204,6 +204,11 @@ main {
   padding: 0.75rem;
   font: 0.85rem/1.5 var(--mono);
   white-space: pre;
+  tab-size: var(--tab, 4);
+}
+
+.editor textarea::selection {
+  background: rgba(126, 200, 227, 0.25);
 }
 
 .editor.output code {
