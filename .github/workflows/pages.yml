@@ -24,8 +24,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
-          targets: wasm32-unknown-unknown
           components: clippy, rustfmt
+      # The repo's rust-toolchain.toml pins the toolchain, so the target must
+      # be added to that one; a `targets:` input on the action above would
+      # install it for the action's toolchain instead.
+      - run: rustup target add wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: wasm
