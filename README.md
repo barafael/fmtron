@@ -2,6 +2,11 @@
 
 Published as www.crates.io/crates/fmtron.
 
+**Try it online:** the [online RON formatter](https://barafael.github.io/fmtron/)
+runs this crate compiled to WebAssembly, entirely in your browser. Its source
+lives in [`wasm/`](wasm) and [`www/`](www), deployed by
+[.github/workflows/pages.yml](.github/workflows/pages.yml).
+
 # About the name
 
 This project was originally started under the name `ronfmt`. The original crate

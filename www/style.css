@@ -1,0 +1,250 @@
+:root {
+  --bg: #0f1720;
+  --bg-raised: #182a3a;
+  --bg-editor: #131f2b;
+  --border: #2a3f52;
+  --text: #d7e2ec;
+  --text-dim: #8aa0b4;
+  --accent: #7ec8e3;
+  --error: #ff7b72;
+  --com: #6a7f92;
+  --str: #a8d08d;
+  --chr: #e5c07b;
+  --num: #d19a66;
+  --kw: #c678dd;
+  --type: #e5c07b;
+  --key: #7ec8e3;
+  --attr: #56b6c2;
+  --punc: #9aa8b5;
+  --mono: "SF Mono", "Cascadia Code", "Fira Code", Consolas, Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-family: var(--mono);
+}
+
+h1 a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.tagline {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+nav {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+}
+
+nav a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.toolbar select,
+.toolbar input {
+  background: var(--bg-editor);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.25rem 0.4rem;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.toolbar input {
+  width: 4.5rem;
+}
+
+.toolbar button {
+  background: var(--bg-raised);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.8rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.toolbar button:hover {
+  border-color: var(--accent);
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  min-height: 0;
+}
+
+@media (max-width: 55rem) {
+  main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 18rem;
+  background: var(--bg);
+}
+
+.pane h2 {
+  margin: 0;
+  padding: 0.45rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.editor {
+  position: relative;
+  flex: 1;
+  margin: 0 1.25rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-editor);
+  overflow: hidden;
+}
+
+.editor pre,
+.editor textarea {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0.75rem;
+  overflow: auto;
+  font: 0.85rem/1.5 var(--mono);
+  white-space: pre;
+  tab-size: 4;
+}
+
+.editor pre {
+  pointer-events: none;
+  z-index: 0;
+}
+
+.editor textarea {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text);
+}
+
+.editor.output {
+  overflow: auto;
+  padding: 0.75rem;
+  font: 0.85rem/1.5 var(--mono);
+  white-space: pre;
+}
+
+.editor.output code {
+  font: inherit;
+}
+
+.error {
+  margin: 0 1.25rem 1rem;
+  padding: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--error) 45%, var(--border));
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--error) 10%, var(--bg-editor));
+  color: var(--error);
+  font: 0.8rem/1.5 var(--mono);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* Syntax highlighting token classes. */
+.tok-com { color: var(--com); font-style: italic; }
+.tok-str { color: var(--str); }
+.tok-chr { color: var(--chr); }
+.tok-num { color: var(--num); }
+.tok-kw  { color: var(--kw); }
+.tok-type { color: var(--type); }
+.tok-key { color: var(--key); }
+.tok-attr { color: var(--attr); }
+.tok-id  { color: var(--text); }
+.tok-punc { color: var(--punc); }
+
+footer {
+  padding: 0.7rem 1.25rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer code {
+  font-family: var(--mono);
+}

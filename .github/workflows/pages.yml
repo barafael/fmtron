@@ -1,0 +1,60 @@
+# Builds the online RON formatter (wasm/ + www/) and deploys it to GitHub
+# Pages. The repository's Pages source must be set to "GitHub Actions"
+# (Settings → Pages), once.
+name: Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  # Must match the pinned `wasm-bindgen` dependency in wasm/Cargo.toml.
+  WASM_BINDGEN_VERSION: 0.2.129
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+          components: clippy, rustfmt
+      - name: Lint the wasm crate
+        working-directory: wasm
+        run: |
+          cargo fmt --all --check
+          cargo clippy --all-targets -- -D warnings
+      - name: Build fmtron-wasm
+        working-directory: wasm
+        run: cargo build --release --target wasm32-unknown-unknown
+      - name: Install wasm-bindgen-cli
+        run: cargo install wasm-bindgen-cli --version "$WASM_BINDGEN_VERSION" --locked
+      - name: Generate wasm glue
+        working-directory: wasm
+        run: >
+          wasm-bindgen --target web --out-dir ../www/pkg
+          target/wasm32-unknown-unknown/release/fmtron_wasm.wasm
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: www
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,19 @@
+[package]
+name = "fmtron-wasm"
+version = "0.1.0"
+edition = "2024"
+description = "WebAssembly bindings to the fmtron RON formatter, for the online demo"
+license = "MIT"
+publish = false
+
+# A leaf crate of its own workspace; the fmtron library is a path dependency.
+[workspace]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+fmtron = { path = "..", default-features = false }
+# Pinned exactly: the wasm-bindgen CLI used to generate the glue (see
+# .github/workflows/pages.yml) must have the same version.
+wasm-bindgen = "=0.2.129"

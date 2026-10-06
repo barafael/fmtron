@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fmtron · online RON formatter</title>
+  <meta name="description" content="Format RON (Rust Object Notation) in your browser, powered by fmtron compiled to WebAssembly.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23182a3a'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' fill='%237ec8e3' text-anchor='middle'%3E()%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <h1><a href="https://github.com/barafael/fmtron">fmtron</a></h1>
+    <p class="tagline">online RON formatter — runs entirely in your browser</p>
+    <nav>
+      <a href="https://github.com/barafael/fmtron">GitHub</a>
+      <a href="https://crates.io/crates/fmtron">crates.io</a>
+      <a href="https://docs.rs/fmtron">docs.rs</a>
+    </nav>
+  </header>
+
+  <div class="toolbar">
+    <label>Example
+      <select id="example"></select>
+    </label>
+    <label>Tab size
+      <input id="tab-size" type="number" min="1" max="16" value="4">
+    </label>
+    <label>Max width
+      <input id="max-width" type="number" min="20" max="400" value="100">
+    </label>
+    <label>Blank lines
+      <select id="blank-lines">
+        <option value="keep">keep</option>
+        <option value="remove">remove</option>
+      </select>
+    </label>
+    <span class="spacer"></span>
+    <button id="copy" type="button" title="Copy the formatted output">Copy output</button>
+  </div>
+
+  <main>
+    <section class="pane">
+      <h2>Input</h2>
+      <div class="editor">
+        <pre id="highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  aria-label="RON input"></textarea>
+      </div>
+      <pre id="error" class="error" hidden></pre>
+    </section>
+
+    <section class="pane">
+      <h2>Output</h2>
+      <pre class="editor output"><code id="output"></code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Examples come from the fmtron test corpus (the <code>ron</code>, Bevy,
+      tree-sitter-ron and kingslayer projects, plus a few misformatted files).
+      Formatting happens locally in your browser; nothing is sent anywhere.
+    </p>
+  </footer>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

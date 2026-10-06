@@ -1,0 +1,2 @@
+// This is a comment
+(foo: 1, /* block comment */ bar: 2)
