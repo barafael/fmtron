@@ -241,6 +241,13 @@ main {
   overflow-x: auto;
 }
 
+/* Neutral variant for non-error status, e.g. while the wasm module loads. */
+.error.busy {
+  border-color: var(--border);
+  background: var(--bg-editor);
+  color: var(--text-dim);
+}
+
 /* Syntax highlighting token classes. */
 .tok-com { color: var(--com); font-style: italic; }
 .tok-str { color: var(--str); }

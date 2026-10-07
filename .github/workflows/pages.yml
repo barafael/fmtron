@@ -40,6 +40,8 @@ jobs:
           cargo test
       - name: Syntax-check the page scripts
         run: cp www/main.js /tmp/main.mjs && node --check /tmp/main.mjs
+      - name: Test the highlighter
+        run: node --test www/test/
       - name: Build fmtron-wasm
         working-directory: wasm
         run: cargo build --release --target wasm32-unknown-unknown
@@ -62,9 +64,16 @@ jobs:
           wasm-bindgen --target web --out-dir ../www/pkg
           target/wasm32-unknown-unknown/release/fmtron_wasm.wasm
       - uses: actions/configure-pages@v5
+      # The Node test suite lives under www/ for import-path reasons but is
+      # not part of the site; stage the artifact without it.
+      - name: Stage the site
+        run: |
+          rm -rf /tmp/site
+          cp -r www /tmp/site
+          rm -rf /tmp/site/test
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: www
+          path: /tmp/site
   deploy:
     needs: build
     runs-on: ubuntu-latest

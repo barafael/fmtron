@@ -17,3 +17,11 @@ fmtron = { path = "..", default-features = false }
 # Pinned exactly: the wasm-bindgen CLI used to generate the glue (see
 # .github/workflows/pages.yml) must have the same version.
 wasm-bindgen = "=0.2.129"
+
+# The demo ships to browsers; this is the size-oriented release profile.
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = "symbols"
