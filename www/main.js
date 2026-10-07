@@ -71,7 +71,10 @@ let formatTimer = null;
 function clampInt(el, fallback) {
   const v = Math.floor(el.valueAsNumber);
   if (!Number.isFinite(v)) return fallback;
-  return Math.min(Math.max(v, Number(el.min)), Number(el.max));
+  // A missing attribute means no bound, not a bound of 0.
+  const lo = el.min === '' ? -Infinity : Number(el.min);
+  const hi = el.max === '' ? Infinity : Number(el.max);
+  return Math.min(Math.max(v, lo), hi);
 }
 
 const readTabSize = () => clampInt(tabSize, 4);
@@ -103,6 +106,10 @@ function formatSoon() {
 // markup, so the manifest strings never need escaping.
 function showAttribution(example) {
   attribution.replaceChildren();
+  if (!example) {
+    attribution.textContent = 'No example loaded.';
+    return;
+  }
   if (!example.source) {
     attribution.textContent = 'This example was written for the demo to show fmtron at work.';
     return;
@@ -130,9 +137,11 @@ function loadExample(example) {
     })
     .catch(err => {
       if (load !== latestLoad) return;
-      showAttribution(example);
+      // Nothing is loaded: say so in all three places.
+      showAttribution(null);
       input.value = '';
       refreshHighlight();
+      output.textContent = '';
       showError(`Could not load example: ${err.message}`);
     });
 }
@@ -154,6 +163,8 @@ function applyTabSize() {
 }
 
 input.addEventListener('input', () => {
+  // The text is the user's now: an example still loading must not replace it.
+  latestLoad++;
   refreshHighlight();
   formatSoon();
 });

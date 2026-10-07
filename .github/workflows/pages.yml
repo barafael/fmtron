@@ -22,9 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # rust-toolchain.toml pins the toolchain and its components; rustup
-      # installs them on first use. Only the wasm target is extra.
-      - run: rustup target add wasm32-unknown-unknown
+      # rust-toolchain.toml pins the toolchain and its components. Install
+      # it explicitly rather than relying on rustup's auto-install, which
+      # some rustup versions and images turn off; the wasm target is extra.
+      - run: |
+          rustup show
+          rustup target add wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: wasm

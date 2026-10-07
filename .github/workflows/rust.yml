@@ -16,6 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    # Installs the toolchain pinned in rust-toolchain.toml explicitly rather
+    # than relying on rustup's auto-install on first use.
+    - run: rustup show
     - name: Formatting
       run: cargo fmt --check
     - name: Clippy
