@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
   <title>fmtron · online RON formatter</title>
   <meta name="description" content="Format RON (Rust Object Notation) in your browser, powered by fmtron compiled to WebAssembly.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23182a3a'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' fill='%237ec8e3' text-anchor='middle'%3E()%3C/text%3E%3C/svg%3E">
@@ -42,11 +43,14 @@
 
   <main>
     <section class="pane">
-      <h2>Input</h2>
+      <div class="pane-head">
+        <h2>Input</h2>
+        <p class="hint" id="input-hint">Tab indents · Esc, then Tab, leaves the editor</p>
+      </div>
       <div class="editor">
         <pre id="highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
         <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
-                  wrap="off" aria-label="RON input"></textarea>
+                  wrap="off" aria-label="RON input" aria-describedby="input-hint"></textarea>
       </div>
       <pre id="error" class="error" aria-live="polite" hidden></pre>
     </section>

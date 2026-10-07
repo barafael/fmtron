@@ -34,6 +34,9 @@ test('the invariant also holds for hostile and truncated input', () => {
     '-1.5e-3 0xFFu8 0b1010_1010 1_000_000.isize inf NaN',
     '<&> in a "string" and <bare>',
     '\t\ttabs and \r\n crlf',
+    'r#a.b-c: r#fn, café: 名前, 🦀: 1',
+    '#![type = "a]b"] 1',
+    '1e_3 .5 1. -NaNf32',
   ];
   for (const src of cases) {
     assert.equal(stripTags(highlightRon(src)), escapeHtml(src), `in ${JSON.stringify(src)}`);
@@ -50,6 +53,19 @@ test('tokens get the expected classes', () => {
   assert.match(html, /<span class="tok-com">\/\/ done<\/span>/);
   // `bar` is a key even with whitespace before the colon.
   assert.match(html, /<span class="tok-key">bar<\/span>/);
+});
+
+test('raw and unicode identifiers, and exponent underscores, are single tokens', () => {
+  const html = highlightRon('(r#type: r#a.b-c, café: 名前, e: 1e_3)');
+  assert.match(html, /<span class="tok-key">r#type<\/span>/);
+  assert.match(html, /<span class="tok-id">r#a\.b-c<\/span>/);
+  assert.match(html, /<span class="tok-key">café<\/span>/);
+  assert.match(html, /<span class="tok-id">名前<\/span>/);
+  assert.match(html, /<span class="tok-num">1e_3<\/span>/);
+  // Floats may omit the digits on either side of the point.
+  assert.match(highlightRon('[.5, 1., 1.e3]'), /<span class="tok-num">\.5<\/span>, <span class="tok-num">1\.<\/span>, <span class="tok-num">1\.e3<\/span>/);
+  // A `]` inside an attribute's string does not end the attribute.
+  assert.match(highlightRon('#![type = "a]b"] 1'), /<span class="tok-attr">#!\[type = "a\]b"\]<\/span>/);
 });
 
 test('byte strings are escaped strings, not raw', () => {

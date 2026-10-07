@@ -63,6 +63,12 @@ const attribution = document.getElementById('attribution');
 
 let formatTimer = null;
 
+// Above this many characters the editor shows plain text: highlighting runs
+// on every keystroke, and at this size it (and the HTML it produces) costs
+// more than a frame. The formatter itself is fine with far more.
+const HIGHLIGHT_LIMIT = 128 * 1024;
+const editor = input.closest('.editor');
+
 // A number input can hold a typed value outside its min/max, or nothing at
 // all (valueAsNumber is then NaN; `value` would be '' and read as 0). Every
 // read of a control goes through one clamp to the control's own range, so
@@ -82,16 +88,42 @@ const readMaxWidth = () => clampInt(maxWidth, 100);
 
 function showError(message) {
   errorBox.textContent = message;
-  errorBox.classList.remove('busy');
+  errorBox.classList.remove('note');
   errorBox.hidden = false;
+}
+
+// Something worth knowing that is not an error.
+function showNote(message) {
+  errorBox.textContent = message;
+  errorBox.classList.add('note');
+  errorBox.hidden = false;
+}
+
+// A lone surrogate (half of a UTF-16 pair, only ever pasted) has no UTF-8
+// form; the formatter would receive U+FFFD in its place and the output would
+// differ from the input there.
+function hasLoneSurrogate(text) {
+  return typeof text.isWellFormed === 'function' && !text.isWellFormed();
+}
+
+function showOutput(text) {
+  if (text.length > HIGHLIGHT_LIMIT) {
+    output.textContent = text + '\n';
+  } else {
+    output.innerHTML = highlightRon(text) + '\n';
+  }
 }
 
 function formatNow() {
   const keep = blankLines.value === 'keep';
+  const text = input.value;
   try {
-    const formatted = format_ron(input.value, readTabSize(), readMaxWidth(), keep);
-    output.innerHTML = highlightRon(formatted) + '\n';
-    errorBox.hidden = true;
+    showOutput(format_ron(text, readTabSize(), readMaxWidth(), keep));
+    if (hasLoneSurrogate(text)) {
+      showNote('The input holds an unpaired surrogate character, which the output shows as \u{FFFD}.');
+    } else {
+      errorBox.hidden = true;
+    }
   } catch (e) {
     showError(String(e.message ?? e));
   }
@@ -147,7 +179,10 @@ function loadExample(example) {
 }
 
 function refreshHighlight() {
-  highlightCode.innerHTML = highlightRon(input.value) + '\n';
+  const text = input.value;
+  const plain = text.length > HIGHLIGHT_LIMIT;
+  editor.classList.toggle('plain', plain);
+  highlightCode.innerHTML = plain ? '' : highlightRon(text) + '\n';
   syncScroll();
 }
 
@@ -171,9 +206,24 @@ input.addEventListener('input', () => {
 
 input.addEventListener('scroll', syncScroll);
 
-// Tab inserts indentation instead of leaving the textarea.
+// Tab inserts indentation instead of leaving the textarea. So that the
+// keyboard is not trapped in it, Escape lets the next Tab move focus on, as
+// the hint under the heading says.
+let tabLeaves = false;
+input.addEventListener('blur', () => { tabLeaves = false; });
 input.addEventListener('keydown', e => {
-  if (e.key !== 'Tab') return;
+  if (e.key === 'Escape') {
+    tabLeaves = true;
+    return;
+  }
+  if (e.key !== 'Tab') {
+    tabLeaves = false;
+    return;
+  }
+  if (tabLeaves) {
+    tabLeaves = false;
+    return;
+  }
   e.preventDefault();
   const spaces = ' '.repeat(readTabSize());
   // insertText keeps the edit on the textarea's native undo stack
@@ -213,9 +263,7 @@ exampleSelect.addEventListener('change', () => loadExample(EXAMPLES[Number(examp
 
 // The formatter module loads asynchronously; say so instead of presenting an
 // empty editor that looks broken on slow connections.
-errorBox.textContent = 'Loading the formatter…';
-errorBox.classList.add('busy');
-errorBox.hidden = false;
+showNote('Loading the formatter…');
 applyTabSize();
 
 init()

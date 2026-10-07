@@ -49,11 +49,18 @@ jobs:
       # the lockfile is the single source of truth for both.
       - name: Install wasm-bindgen-cli from the prebuilt release
         working-directory: wasm
+        env:
+          # sha256 of wasm-bindgen-0.2.129-x86_64-unknown-linux-musl.tar.gz
+          WASM_BINDGEN_SHA256: 82d12bb940e2d4e72e0d5605387fc1b8ca179044e012b620f0ce4e7440e8320e
         run: |
           version=$(awk '/^name = "wasm-bindgen"$/{getline; gsub(/[^0-9.]/, ""); print; exit}' Cargo.lock)
           echo "wasm-bindgen from the lockfile: $version"
           grep -qF "wasm-bindgen = \"=$version\"" Cargo.toml
           curl -fsSL "https://github.com/rustwasm/wasm-bindgen/releases/download/$version/wasm-bindgen-$version-x86_64-unknown-linux-musl.tar.gz" -o /tmp/wasm-bindgen.tgz
+          # The CLI writes the JavaScript every visitor runs, so the release
+          # asset is checked against a pinned digest. Update it together
+          # with the version in Cargo.toml.
+          echo "$WASM_BINDGEN_SHA256  /tmp/wasm-bindgen.tgz" | sha256sum -c -
           tar xzf /tmp/wasm-bindgen.tgz -C /tmp
           install "/tmp/wasm-bindgen-$version-x86_64-unknown-linux-musl/wasm-bindgen" "$HOME/.cargo/bin"
           wasm-bindgen --version

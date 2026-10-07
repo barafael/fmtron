@@ -19,6 +19,29 @@
   --mono: "SF Mono", "Cascadia Code", "Fira Code", Consolas, Menlo, monospace;
 }
 
+/* The same page in light, for those who asked their system for it. */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f7f9fb;
+    --bg-raised: #eef2f6;
+    --bg-editor: #ffffff;
+    --border: #d3dbe3;
+    --text: #1f2933;
+    --text-dim: #5b6b7b;
+    --accent: #0b6e99;
+    --error: #c2362f;
+    --com: #7a8794;
+    --str: #2f7d32;
+    --chr: #9a5b00;
+    --num: #b35c00;
+    --kw: #7a3fb8;
+    --type: #9a5b00;
+    --key: #0b5fa5;
+    --attr: #137a7f;
+    --punc: #6b7a89;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -150,6 +173,20 @@ main {
   background: var(--bg);
 }
 
+.pane-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-right: 1.25rem;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
 .pane h2 {
   margin: 0;
   padding: 0.45rem 1.25rem;
@@ -212,6 +249,30 @@ main {
   display: none;
 }
 
+/*
+ * Plain mode, for input too large to highlight on every keystroke (main.js
+ * decides), and for forced-colors mode, which paints the textarea's text in
+ * its own color and would show it twice: the textarea shows its own text and
+ * the overlay is dropped.
+ */
+.editor.plain textarea {
+  color: var(--text);
+}
+
+.editor.plain pre {
+  display: none;
+}
+
+@media (forced-colors: active) {
+  .editor textarea {
+    color: CanvasText;
+  }
+
+  .editor pre {
+    display: none;
+  }
+}
+
 .editor.output {
   overflow: auto;
   padding: 0.75rem;
@@ -241,8 +302,8 @@ main {
   overflow-x: auto;
 }
 
-/* Neutral variant for non-error status, e.g. while the wasm module loads. */
-.error.busy {
+/* Neutral variant for notes: while the wasm module loads, or a caveat. */
+.error.note {
   border-color: var(--border);
   background: var(--bg-editor);
   color: var(--text-dim);

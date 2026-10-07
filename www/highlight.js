@@ -5,8 +5,12 @@
 
 const KEYWORDS = new Set(['true', 'false', 'Some', 'None', 'inf', 'NaN']);
 
-const NUMBER = /[-+]?(?:0[xob][0-9a-fA-F_]+|[0-9][0-9_]*(?:\.[0-9_]+)?(?:[eE][-+]?[0-9]+)?)(?:[iuf](?:8|16|32|64|128|size))?/y;
-const IDENT = /[A-Za-z_][A-Za-z0-9_]*/y;
+// The exponent is the one place RON allows a leading underscore (`1e_3`).
+const NUMBER = /[-+]?(?:0[xob][0-9a-fA-F_]+|(?:[0-9][0-9_]*(?:\.[0-9_]*)?|\.[0-9_]+)(?:[eE][-+]?[0-9_]+)?)(?:[iuf](?:8|16|32|64|128|size))?/y;
+// Identifiers are Unicode, as in Rust; a raw one (`r#type`, `r#a.b-c`) may
+// also hold `.`, `+` and `-`.
+const IDENT = /r#[\p{ID_Continue}.+-]+|[\p{ID_Start}_]\p{ID_Continue}*/uy;
+const IDENT_START = /[\p{ID_Start}_]/u;
 const RAW_STRING = /b?r(#*)"/y;
 // Sticky, applied at the index right after an identifier: a run of
 // whitespace and then a colon marks the identifier as a struct key.
@@ -23,10 +27,17 @@ export function highlightRon(src) {
   while (i < n) {
     const c = src[i];
 
-    // Attribute: #![...]
+    // Attribute: #![...], to the `]` outside its strings.
     if (c === '#' && src[i + 1] === '!') {
-      const end = src.indexOf(']', i);
-      const stop = end === -1 ? n : end + 1;
+      let j = i + 2;
+      while (j < n && src[j] !== ']') {
+        if (src[j] === '"') {
+          j++;
+          while (j < n && src[j] !== '"') j += src[j] === '\\' ? 2 : 1;
+        }
+        j++;
+      }
+      const stop = Math.min(j + 1, n);
       html += span('attr', src.slice(i, stop));
       i = stop;
       continue;
@@ -111,7 +122,7 @@ export function highlightRon(src) {
     // Identifier or keyword.
     IDENT.lastIndex = i;
     const ident = IDENT.exec(src);
-    if (ident && (/[A-Za-z_]/).test(c)) {
+    if (ident && (IDENT_START.test(c) || (c === 'r' && src[i + 1] === '#'))) {
       const word = ident[0];
       KEY_COLON.lastIndex = IDENT.lastIndex;
       let cls;
