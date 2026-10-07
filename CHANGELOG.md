@@ -21,6 +21,20 @@ The library API for 1.0, as a program embedding fmtron needs it:
 - `rust-version = "1.88"`.
 - STABILITY.md states what may change in 1.x.
 
+**Output** changes:
+
+- An attribute with a comment in it, which fmtron keeps as written, now has
+  its line breaks rewritten to the file's line ending and the spaces before
+  them dropped; a break inside a string, char or raw literal in it is still
+  part of that literal's value. Input affected: a `#![...]` holding both a
+  comment and a line break whose ending differs from the first line break of
+  the file, or a space before such a break.
+- `format_ron` never ends its output with a line break. Before, one whose
+  input had a comment after its value did, so appending `line_ending` to it,
+  as the documentation says, gave a blank line at the end. Input affected: a
+  file whose last line is a comment. The command line is unchanged: it always
+  wrote exactly one final newline.
+
 ## 1.0.0-rc.1 — 2026-10-06
 
 The 1.0 style, released for real-world use before it is frozen. **Output**

@@ -142,6 +142,6 @@ across releases is in [STABILITY.md](STABILITY.md).
 ## Features
 
 - Preserves comments (line, block, and nested block comments) across a format round-trip. The later lines of a block comment move with it when it is re-indented, keeping their indentation relative to it
-- Keeps the input's line endings (LF or CRLF), decided by its first line break outside string literals and used inside block comments too; line breaks inside strings are part of their value and never change
+- Keeps the input's line endings (LF or CRLF), decided by its first line break outside string literals and used inside block comments and comment-bearing attributes too; line breaks inside strings are part of their value and never change
 - Supports the full RON surface: numeric suffixes, special floats, byte/raw strings, raw identifiers, Unicode identifiers, and `#![...]` attributes
 - Formatting is idempotent and semantically equivalent to the input, validated against the official `ron` crate as an oracle

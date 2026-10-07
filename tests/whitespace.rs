@@ -133,14 +133,68 @@ fn line_breaks_in_block_comments_follow_the_file() {
         fmt("[\r\n    /* one\n    two */\r\n    1,\r\n]"),
         "[\r\n    /* one\r\n    two */\r\n    1,\r\n]"
     );
-    // At the top level too.
+    // At the top level too; the output ends without a line break, dangling
+    // comments included.
     assert_eq!(
         fmt("// top\n/* a\r\n b */\n1\n/* c\r\n d */"),
-        "// top\n/* a\n b */\n1\n/* c\n d */\n"
+        "// top\n/* a\n b */\n1\n/* c\n d */"
     );
     // A lone `\r` is not a line break, as in line comments.
     assert_eq!(
         fmt("[\n    /* one\rtwo */\n    1,\n]"),
         "[\n    /* one\rtwo */\n    1,\n]"
+    );
+}
+
+/// The output ends without a line break, whether or not comments follow the
+/// value. Only the command line writes one, to the file's ending.
+#[test]
+fn output_ends_without_a_line_break() {
+    for input in [
+        "1",
+        "1 // c",
+        "1\n// d",
+        "1 // c\n// d",
+        "// h\n1\n/* t */",
+        "// h\n\n#![enable(a)]\n\n1\n\n// d",
+    ] {
+        let out = fmt(input);
+        assert!(!out.ends_with(['\r', '\n']), "{input:?} gave {out:?}");
+    }
+}
+
+/// An attribute with a comment in it is kept as written, line breaks and all.
+/// Those breaks still follow the file's line ending, and the spaces before
+/// them are dropped; a break inside its string, char or raw literals is part
+/// of the value and never changes.
+#[test]
+fn verbatim_attributes_follow_the_file_line_ending() {
+    // Its own break is the file's first, so nothing about it changes.
+    assert_eq!(
+        fmt("#![enable(a /* c */,\n b)]\n1"),
+        "#![enable(a /* c */,\n b)]\n1"
+    );
+    assert_eq!(
+        fmt("#![enable(a /* c */,\r\n b)]\r\n1"),
+        "#![enable(a /* c */,\r\n b)]\r\n1"
+    );
+    // A comment before it decides the ending instead, in both directions.
+    assert_eq!(
+        fmt("// top\n#![enable(a /* c */,\r\n b)]\n1"),
+        "// top\n#![enable(a /* c */,\n b)]\n1"
+    );
+    assert_eq!(
+        fmt("/* top */\r\n#![enable(a /* c */,\n b)]\r\n1"),
+        "/* top */\r\n#![enable(a /* c */,\r\n b)]\r\n1"
+    );
+    // Spaces before a break are not part of any comment or value.
+    assert_eq!(
+        fmt("#![enable(a /* c */, \n b)]\n1"),
+        "#![enable(a /* c */,\n b)]\n1"
+    );
+    // A newline inside a string is its value, whatever the file uses.
+    assert_eq!(
+        fmt("// top\n#![type = /* c */ \"x\r\ny\"]\n1"),
+        "// top\n#![type = /* c */ \"x\r\ny\"]\n1"
     );
 }

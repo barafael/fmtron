@@ -21,7 +21,9 @@ impl Display for RonFile {
                 HeaderItem::Comment(text) => {
                     write!(f, "{}{nl}", comment_lines(text, config.tab_size).join(nl))?;
                 }
-                HeaderItem::Attribute(attr) => write!(f, "{}{nl}", AttributeDisplay(attr))?,
+                HeaderItem::Attribute(attr) => {
+                    write!(f, "{}{nl}", AttributeDisplay(attr, nl))?;
+                }
             }
         }
         let doc = concat(vec![
@@ -29,20 +31,22 @@ impl Display for RonFile {
             trailing_doc(value, config.tab_size),
         ]);
         write!(f, "{}", render_with_newline(&doc, config.max_width, nl))?;
-        // The rendered value ends without a trailing newline. Terminate the
-        // value's line before any comments follow — inline trailing comments
-        // sit at the end of that line, dangling comments start fresh lines.
-        if !value.trailing.is_empty() || !dangling.is_empty() {
+        // The rendered value ends without a line break, and so does the whole
+        // output: the value's line needs one only when dangling comments come
+        // after it (inline trailing comments sit at its end).
+        if !dangling.is_empty() {
             write!(f, "{nl}")?;
-        }
-        for c in dangling {
-            write!(f, "{}{nl}", comment_lines(c, config.tab_size).join(nl))?;
+            let comments: Vec<String> = dangling
+                .iter()
+                .map(|c| comment_lines(c, config.tab_size).join(nl))
+                .collect();
+            write!(f, "{}", comments.join(nl))?;
         }
         Ok(())
     }
 }
 
-struct AttributeDisplay<'a>(&'a Attribute);
+struct AttributeDisplay<'a>(&'a Attribute, &'a str);
 
 impl Display for AttributeDisplay<'_> {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
@@ -50,8 +54,105 @@ impl Display for AttributeDisplay<'_> {
             Attribute::Enable(ids) => write!(f, "#![enable({})]", ids.join(", ")),
             Attribute::Type(s) => write!(f, "#![type = {s}]"),
             Attribute::Schema(s) => write!(f, "#![schema = {s}]"),
-            Attribute::Verbatim(s) => write!(f, "{s}"),
+            Attribute::Verbatim(s) => write!(f, "{}", normalized_breaks(s, self.1)),
         }
+    }
+}
+
+/// A verbatim attribute's text with its line breaks rewritten to `nl` and the
+/// spaces before them dropped, so that an attribute cannot leave a line
+/// ending, or a trailing space, of its own behind. A break inside a string,
+/// char or raw literal is part of that literal's value and is copied as it
+/// stands; one inside a comment is layout and follows the file.
+fn normalized_breaks(text: &str, nl: &str) -> String {
+    let b = text.as_bytes();
+    let mut out = String::with_capacity(text.len());
+    // The run of ordinary text not copied to `out` yet. It is flushed only at
+    // a byte that is ASCII, which is always a character boundary, so slicing
+    // `text[keep..i]` is safe however the scan got to `i`.
+    let mut keep = 0;
+    let mut i = 0;
+    while i < b.len() {
+        if b[i] == b'\n' || (b[i] == b'\r' && b.get(i + 1) == Some(&b'\n')) {
+            out.push_str(&text[keep..i]);
+            drop_spaces_before_break(&mut out);
+            out.push_str(nl);
+            i += if b[i] == b'\r' { 2 } else { 1 };
+            keep = i;
+        } else if let Some(end) = literal_end(b, i) {
+            i = end;
+        } else if b[i..].starts_with(b"//") {
+            // Stop before the break that ends the comment, so that a quote in
+            // it starts no literal; the break itself is handled above.
+            let mut stop = b[i..]
+                .iter()
+                .position(|&c| c == b'\n')
+                .map_or(b.len(), |n| i + n);
+            if stop > i && b[stop - 1] == b'\r' {
+                stop -= 1;
+            }
+            i = stop;
+        } else if b[i..].starts_with(b"/*") {
+            out.push_str(&text[keep..i]);
+            i += push_block_comment(&text[i..], nl, &mut out);
+            keep = i;
+        } else {
+            i += 1;
+        }
+    }
+    out.push_str(&text[keep..]);
+    out
+}
+
+/// The index just past the string, char or raw literal starting at `i`, or
+/// `None` when no literal starts there.
+fn literal_end(b: &[u8], i: usize) -> Option<usize> {
+    match b[i] {
+        b'"' => crate::scan_quoted(b, i),
+        b'\'' => crate::scan_char(b, i),
+        b'b' | b'r' => crate::scan_raw(b, i),
+        _ => None,
+    }
+}
+
+/// Copies the block comment that `text` starts with, with its line breaks
+/// rewritten to `nl` and the spaces before them dropped, and returns the
+/// number of bytes consumed — its whole length, or the end of `text` if it is
+/// unterminated.
+fn push_block_comment(text: &str, nl: &str, out: &mut String) -> usize {
+    let b = text.as_bytes();
+    let mut depth = 0usize;
+    let mut keep = 0;
+    let mut i = 0;
+    while i < b.len() {
+        if b[i..].starts_with(b"/*") {
+            depth += 1;
+            i += 2;
+        } else if b[i..].starts_with(b"*/") {
+            depth = depth.saturating_sub(1);
+            i += 2;
+            if depth == 0 {
+                out.push_str(&text[keep..i]);
+                return i;
+            }
+        } else if b[i] == b'\n' || (b[i] == b'\r' && b.get(i + 1) == Some(&b'\n')) {
+            out.push_str(&text[keep..i]);
+            drop_spaces_before_break(out);
+            out.push_str(nl);
+            i += if b[i] == b'\r' { 2 } else { 1 };
+            keep = i;
+        } else {
+            i += 1;
+        }
+    }
+    out.push_str(&text[keep..]);
+    i
+}
+
+/// Drops the spaces a line ends with, just before its break.
+fn drop_spaces_before_break(out: &mut String) {
+    while out.ends_with(' ') || out.ends_with('\t') {
+        out.pop();
     }
 }
 

@@ -83,8 +83,7 @@ fn blank_lines_are_kept_by_default() {
                 // trailing notes
             )
 
-            // end
-        "}
+            // end"}
     );
 }
 
@@ -104,8 +103,7 @@ fn blank_lines_can_be_removed() {
                 d: {1: 2, 3: 4},
                 // trailing notes
             )
-            // end
-        "}
+            // end"}
     );
 }
 
