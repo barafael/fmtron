@@ -1,6 +1,6 @@
 [package]
 name = "fmtron"
-version = "1.0.0-rc.1"
+version = "1.0.0-rc.2"
 authors = [
     "Anton Filippov <a.filippov@protonmail.com>",
     "Rafael Bachmann <rafael.bachmann.93@gmail.com>",
@@ -16,8 +16,9 @@ edition = "2024"
 # Checked in CI; raising it is a minor change (STABILITY.md).
 rust-version = "1.88"
 # The real-world corpus and its collection tools are only for the repo's own
-# tests.
-exclude = ["test_data/wild", "tools"]
+# tests; the online formatter (www/, built by .github/workflows/pages.yml)
+# is not part of the crate either.
+exclude = ["test_data/wild", "tools", "www", ".github"]
 
 [features]
 default = ["cli"]
