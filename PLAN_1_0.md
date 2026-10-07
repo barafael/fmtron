@@ -313,6 +313,15 @@ Keep: `format_ron`, `Config`, `BlankLines`, `FormatError`, `FileConfig` and
 - Set `rust-version` in `Cargo.toml` (MSRV) and say whether raising it counts
   as breaking (common practice: no, for a binary).
 
+## Open before 1.0.0
+
+- **Empty input.** fmtron rejects a zero-byte file, or one holding only
+  whitespace or comments, with `no RON data found` and exit status 1. An
+  empty file is not valid RON, so this is defensible; but a formatter run
+  over a directory arguably should not fail on a file with nothing to
+  format, as rustfmt does not. Changing it after 1.0 would be a behaviour
+  change of the command line, so decide now.
+
 ## Phase 7 — Release
 
 - Add `CHANGELOG.md`, starting at 1.0.0, with a summary of 0.x.
