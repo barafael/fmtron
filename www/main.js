@@ -1,12 +1,45 @@
 import init, { format_ron } from './pkg/fmtron_wasm.js';
 import { highlightRon } from './highlight.js';
 
+// Real-world files are copied unchanged from fmtron's test corpus; `source`
+// is where each one lives and `license` what its project is licensed under
+// (as recorded in test_data/corpus/manifest.ron).
 const EXAMPLES = [
-  { name: 'Game config · tree-sitter-ron', file: 'examples/game-config.ron' },
-  { name: 'Struct with maps · ron', file: 'examples/ron-example.ron' },
-  { name: 'Animation graph · Bevy', file: 'examples/bevy-animgraph.ron' },
-  { name: 'Editor config · zee', file: 'examples/zee-config.ron' },
-  { name: 'Text adventure world · kingslayer', file: 'examples/kingslayer-world.ron' },
+  {
+    name: 'Game config · tree-sitter-ron',
+    file: 'examples/game-config.ron',
+    source: 'tree-sitter-grammars/tree-sitter-ron · examples/game-config.ron',
+    url: 'https://github.com/tree-sitter-grammars/tree-sitter-ron/blob/master/examples/game-config.ron',
+    license: 'Apache-2.0',
+  },
+  {
+    name: 'Struct with maps · ron',
+    file: 'examples/ron-example.ron',
+    source: 'ron-rs/ron · examples/example.ron',
+    url: 'https://github.com/ron-rs/ron/blob/master/examples/example.ron',
+    license: 'Apache-2.0',
+  },
+  {
+    name: 'Animation graph · Bevy',
+    file: 'examples/bevy-animgraph.ron',
+    source: 'bevyengine/bevy · assets/animation_graphs/Fox.animgraph.ron',
+    url: 'https://github.com/bevyengine/bevy/blob/main/assets/animation_graphs/Fox.animgraph.ron',
+    license: 'Apache-2.0',
+  },
+  {
+    name: 'Editor config · zee',
+    file: 'examples/zee-config.ron',
+    source: 'tree-sitter-grammars/tree-sitter-ron · examples/zee-config.ron',
+    url: 'https://github.com/tree-sitter-grammars/tree-sitter-ron/blob/master/examples/zee-config.ron',
+    license: 'Apache-2.0',
+  },
+  {
+    name: 'Text adventure world · kingslayer',
+    file: 'examples/kingslayer-world.ron',
+    source: 'Zaechus/kingslayer · src/world.ron',
+    url: 'https://github.com/Zaechus/kingslayer/blob/main/src/world.ron',
+    license: 'MIT',
+  },
   { name: 'Misformatted: simple struct', file: 'examples/misformatted-simple.ron' },
   { name: 'Misformatted: comments', file: 'examples/misformatted-comments.ron' },
   { name: 'Misformatted: nested', file: 'examples/misformatted-nested.ron' },
@@ -26,6 +59,7 @@ const tabSize = document.getElementById('tab-size');
 const maxWidth = document.getElementById('max-width');
 const blankLines = document.getElementById('blank-lines');
 const copyButton = document.getElementById('copy');
+const attribution = document.getElementById('attribution');
 
 let formatTimer = null;
 
@@ -61,7 +95,22 @@ function formatSoon() {
   formatTimer = setTimeout(formatNow, 150);
 }
 
+// Says where the selected example comes from. Built from DOM nodes, not
+// markup, so the manifest strings never need escaping.
+function showAttribution(example) {
+  attribution.replaceChildren();
+  if (!example.source) {
+    attribution.textContent = 'This example was written for the demo to show fmtron at work.';
+    return;
+  }
+  const link = document.createElement('a');
+  link.href = example.url;
+  link.textContent = example.source;
+  attribution.append('Example from ', link, ` (${example.license}), unchanged from the original.`);
+}
+
 function loadExample(example) {
+  showAttribution(example);
   fetch(example.file)
     .then(r => (r.ok ? r.text() : Promise.reject(new Error(`${r.status} ${r.statusText}`))))
     .then(text => {
