@@ -157,6 +157,9 @@ fn output_ends_without_a_line_break() {
         "1 // c\n// d",
         "// h\n1\n/* t */",
         "// h\n\n#![enable(a)]\n\n1\n\n// d",
+        "1\r\n// d\r\n",
+        "#![enable(a /* c */,\n b)]\n1\n// d\n",
+        "(\n    a: 1, // c\n)\n/* d\n e */\n",
     ] {
         let out = fmt(input);
         assert!(!out.ends_with(['\r', '\n']), "{input:?} gave {out:?}");

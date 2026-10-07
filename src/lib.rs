@@ -335,13 +335,10 @@ pub fn line_ending(input: &str) -> &'static str {
             b'/' if b.get(i + 1) == Some(&b'/') => Some(line_comment_end(b, i)),
             // To its first line break or its end, whichever comes first.
             b'/' if b.get(i + 1) == Some(&b'*') => {
-                let (end, _) = block_comment(b, i);
-                Some(
-                    b[i..end]
-                        .iter()
-                        .position(|&c| c == b'\n')
-                        .map_or(end, |n| i + n),
-                )
+                // Walk the comment only up to its first line break: if it
+                // has not closed by then, that break is the answer.
+                let brk = line_comment_end(b, i);
+                Some(block_comment(&b[..brk], i).0)
             }
             _ => literal_end(b, i),
         };

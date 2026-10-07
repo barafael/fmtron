@@ -324,10 +324,10 @@ fn enclosing_literal(input: &str, pos: usize) -> Option<usize> {
     while i < b.len() && i <= pos {
         let rest = &input[i..];
         if rest.starts_with("//") {
-            i += rest.find('\n').unwrap_or(rest.len());
+            i = crate::line_comment_end(b, i);
         } else if rest.starts_with("/*") {
             i = crate::block_comment(b, i).0;
-        } else if let Some(end) = literal_end(input, i) {
+        } else if let Some(end) = literal_at(input, i) {
             match end {
                 // `pos == end` counts as inside: pest's furthest attempt
                 // on a malformed literal can land just past its close.
@@ -353,8 +353,10 @@ fn enclosing_literal(input: &str, pos: usize) -> Option<usize> {
 
 /// If a string or char literal starts at `i`: `Some(Some(end))` just past
 /// it, or `Some(None)` if it is unterminated. `None` if no literal starts
-/// here.
-fn literal_end(input: &str, i: usize) -> Option<Option<usize>> {
+/// here. Unlike [`crate::literal_end`], which only skips well-formed
+/// literals, this one recognizes byte strings and chars as a whole and
+/// reports an unterminated literal, which the messages need.
+fn literal_at(input: &str, i: usize) -> Option<Option<usize>> {
     let rest = &input[i..];
     if rest.starts_with("\'\'\'") {
         return Some(Some(i + 3));
