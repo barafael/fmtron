@@ -3,7 +3,7 @@
 Output changes are marked **output**; see [STABILITY.md](STABILITY.md) for
 what may change when.
 
-## 1.0.0-rc.2 — unreleased
+## 1.0.0-rc.2 — 2026-10-07
 
 The library API for 1.0, as a program embedding fmtron needs it:
 
