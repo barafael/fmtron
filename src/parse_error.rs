@@ -326,25 +326,7 @@ fn enclosing_literal(input: &str, pos: usize) -> Option<usize> {
         if rest.starts_with("//") {
             i += rest.find('\n').unwrap_or(rest.len());
         } else if rest.starts_with("/*") {
-            // Byte-wise: `k` steps through multi-byte characters in the
-            // comment, where slicing `input` would panic.
-            let mut depth = 0;
-            let mut k = i;
-            while k < b.len() {
-                if b[k..].starts_with(b"/*") {
-                    depth += 1;
-                    k += 2;
-                } else if b[k..].starts_with(b"*/") {
-                    depth -= 1;
-                    k += 2;
-                    if depth == 0 {
-                        break;
-                    }
-                } else {
-                    k += 1;
-                }
-            }
-            i = k;
+            i = crate::block_comment(b, i).0;
         } else if let Some(end) = literal_end(input, i) {
             match end {
                 // `pos == end` counts as inside: pest's furthest attempt

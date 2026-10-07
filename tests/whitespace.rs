@@ -187,10 +187,22 @@ fn verbatim_attributes_follow_the_file_line_ending() {
         fmt("/* top */\r\n#![enable(a /* c */,\n b)]\r\n1"),
         "/* top */\r\n#![enable(a /* c */,\r\n b)]\r\n1"
     );
-    // Spaces before a break are not part of any comment or value.
+    // Spaces before a break in the attribute's layout are not part of any
+    // comment or value; inside a block comment they are its text, kept as in
+    // every other block comment, while its breaks still follow the file.
     assert_eq!(
         fmt("#![enable(a /* c */, \n b)]\n1"),
         "#![enable(a /* c */,\n b)]\n1"
+    );
+    assert_eq!(
+        fmt("// top\n#![enable(a /* c  \r\n d */, b)]\n1"),
+        "// top\n#![enable(a /* c  \n d */, b)]\n1"
+    );
+    // A line comment ends before its break and, like every line comment,
+    // loses the spaces before it.
+    assert_eq!(
+        fmt("#![enable(a, // c  \n b)]\n1"),
+        "#![enable(a, // c\n b)]\n1"
     );
     // A newline inside a string is its value, whatever the file uses.
     assert_eq!(

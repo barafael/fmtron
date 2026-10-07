@@ -171,13 +171,9 @@ fn process(args: &Arguments, input: &Input, config: &Config) -> Result<Outcome, 
             source: e,
         },
     })?;
-    // Emit a text file: exactly one final newline, whether or not the output
-    // ends in a comment line (which the formatter already terminates).
-    let formatted = format!(
-        "{}{}",
-        formatted.trim_end_matches(['\r', '\n']),
-        fmtron::line_ending(&text)
-    );
+    // Emit a text file: the formatter's output ends without a line break;
+    // add exactly one, in the file's own line ending.
+    let formatted = format!("{formatted}{}", fmtron::line_ending(&text));
 
     if args.check {
         if formatted == text {

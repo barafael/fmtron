@@ -59,101 +59,61 @@ impl Display for AttributeDisplay<'_> {
     }
 }
 
-/// A verbatim attribute's text with its line breaks rewritten to `nl` and the
-/// spaces before them dropped, so that an attribute cannot leave a line
-/// ending, or a trailing space, of its own behind. A break inside a string,
-/// char or raw literal is part of that literal's value and is copied as it
-/// stands; one inside a comment is layout and follows the file.
+/// A verbatim attribute's text with its line breaks rewritten to `nl`, so
+/// that an attribute cannot leave a line ending of its own behind, and the
+/// spaces before a break in its layout dropped. A break inside a string, char
+/// or raw literal is part of that literal's value and is copied as it stands.
+/// A comment keeps its text, as comments do everywhere else: a line comment
+/// ends before its break and loses the spaces before it, a block comment
+/// keeps its spaces and has its breaks rewritten.
 fn normalized_breaks(text: &str, nl: &str) -> String {
     let b = text.as_bytes();
     let mut out = String::with_capacity(text.len());
-    // The run of ordinary text not copied to `out` yet. It is flushed only at
-    // a byte that is ASCII, which is always a character boundary, so slicing
+    // The run of text not copied to `out` yet. It is flushed only at a byte
+    // that is ASCII, which is always a character boundary, so slicing
     // `text[keep..i]` is safe however the scan got to `i`.
     let mut keep = 0;
     let mut i = 0;
+    // The breaks to rewrite: every one in the attribute's layout, and those
+    // inside a block comment (`in_comment` is the end of the comment, where
+    // trailing spaces are kept).
+    let mut in_comment: Option<usize> = None;
     while i < b.len() {
+        if in_comment.is_some_and(|end| i >= end) {
+            in_comment = None;
+        }
         if b[i] == b'\n' || (b[i] == b'\r' && b.get(i + 1) == Some(&b'\n')) {
             out.push_str(&text[keep..i]);
-            drop_spaces_before_break(&mut out);
+            if in_comment.is_none() {
+                while out.ends_with([' ', '\t']) {
+                    out.pop();
+                }
+            }
             out.push_str(nl);
             i += if b[i] == b'\r' { 2 } else { 1 };
             keep = i;
-        } else if let Some(end) = literal_end(b, i) {
+        } else if in_comment.is_some() {
+            i += 1;
+        } else if let Some(end) = crate::literal_end(b, i) {
             i = end;
         } else if b[i..].starts_with(b"//") {
-            // Stop before the break that ends the comment, so that a quote in
-            // it starts no literal; the break itself is handled above.
-            let mut stop = b[i..]
-                .iter()
-                .position(|&c| c == b'\n')
-                .map_or(b.len(), |n| i + n);
+            // Stop before the break that ends the comment (and the `\r` of a
+            // CRLF), so that a quote in it starts no literal; the break itself
+            // is handled above.
+            let mut stop = crate::line_comment_end(b, i);
             if stop > i && b[stop - 1] == b'\r' {
                 stop -= 1;
             }
             i = stop;
         } else if b[i..].starts_with(b"/*") {
-            out.push_str(&text[keep..i]);
-            i += push_block_comment(&text[i..], nl, &mut out);
-            keep = i;
+            in_comment = Some(crate::block_comment(b, i).0);
+            i += 2;
         } else {
             i += 1;
         }
     }
     out.push_str(&text[keep..]);
     out
-}
-
-/// The index just past the string, char or raw literal starting at `i`, or
-/// `None` when no literal starts there.
-fn literal_end(b: &[u8], i: usize) -> Option<usize> {
-    match b[i] {
-        b'"' => crate::scan_quoted(b, i),
-        b'\'' => crate::scan_char(b, i),
-        b'b' | b'r' => crate::scan_raw(b, i),
-        _ => None,
-    }
-}
-
-/// Copies the block comment that `text` starts with, with its line breaks
-/// rewritten to `nl` and the spaces before them dropped, and returns the
-/// number of bytes consumed — its whole length, or the end of `text` if it is
-/// unterminated.
-fn push_block_comment(text: &str, nl: &str, out: &mut String) -> usize {
-    let b = text.as_bytes();
-    let mut depth = 0usize;
-    let mut keep = 0;
-    let mut i = 0;
-    while i < b.len() {
-        if b[i..].starts_with(b"/*") {
-            depth += 1;
-            i += 2;
-        } else if b[i..].starts_with(b"*/") {
-            depth = depth.saturating_sub(1);
-            i += 2;
-            if depth == 0 {
-                out.push_str(&text[keep..i]);
-                return i;
-            }
-        } else if b[i] == b'\n' || (b[i] == b'\r' && b.get(i + 1) == Some(&b'\n')) {
-            out.push_str(&text[keep..i]);
-            drop_spaces_before_break(out);
-            out.push_str(nl);
-            i += if b[i] == b'\r' { 2 } else { 1 };
-            keep = i;
-        } else {
-            i += 1;
-        }
-    }
-    out.push_str(&text[keep..]);
-    i
-}
-
-/// Drops the spaces a line ends with, just before its break.
-fn drop_spaces_before_break(out: &mut String) {
-    while out.ends_with(' ') || out.ends_with('\t') {
-        out.pop();
-    }
 }
 
 /// True if `v` or anything in its subtree must break: it carries comments,

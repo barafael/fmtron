@@ -24,11 +24,13 @@ The library API for 1.0, as a program embedding fmtron needs it:
 **Output** changes:
 
 - An attribute with a comment in it, which fmtron keeps as written, now has
-  its line breaks rewritten to the file's line ending and the spaces before
-  them dropped; a break inside a string, char or raw literal in it is still
-  part of that literal's value. Input affected: a `#![...]` holding both a
-  comment and a line break whose ending differs from the first line break of
-  the file, or a space before such a break.
+  its line breaks rewritten to the file's line ending and the spaces before a
+  break in its layout dropped; a break inside a string, char or raw literal
+  in it is still part of that literal's value, and a block comment in it
+  keeps its text, spaces included, as block comments do everywhere. Input
+  affected: a `#![...]` holding both a comment and a line break whose ending
+  differs from the first line break of the file, or a space before such a
+  break.
 - `format_ron` never ends its output with a line break. Before, one whose
   input had a comment after its value did, so appending `line_ending` to it,
   as the documentation says, gave a blank line at the end. Input affected: a

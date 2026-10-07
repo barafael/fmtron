@@ -330,48 +330,71 @@ pub fn line_ending(input: &str) -> &'static str {
         let skip = match b[i] {
             b'\n' if i > 0 && b[i - 1] == b'\r' => return "\r\n",
             b'\n' => return "\n",
-            b'"' => scan_quoted(b, i),
-            b'\'' => scan_char(b, i),
-            b'b' | b'r' => scan_raw(b, i),
             // Up to the line break that ends the comment, so quotes in it
             // start no literal.
-            b'/' if b.get(i + 1) == Some(&b'/') => Some(
-                b[i..]
-                    .iter()
-                    .position(|&c| c == b'\n')
-                    .map_or(b.len(), |n| i + n),
-            ),
+            b'/' if b.get(i + 1) == Some(&b'/') => Some(line_comment_end(b, i)),
             // To its first line break or its end, whichever comes first.
-            b'/' if b.get(i + 1) == Some(&b'*') => Some(block_comment_break(b, i)),
-            _ => None,
+            b'/' if b.get(i + 1) == Some(&b'*') => {
+                let (end, _) = block_comment(b, i);
+                Some(
+                    b[i..end]
+                        .iter()
+                        .position(|&c| c == b'\n')
+                        .map_or(end, |n| i + n),
+                )
+            }
+            _ => literal_end(b, i),
         };
         i = skip.unwrap_or(i + 1);
     }
     "\n"
 }
 
-/// In the block comment starting at `i`: the index of its first `\n`, or
-/// else the index just past its end.
-fn block_comment_break(b: &[u8], i: usize) -> usize {
-    let mut depth = 0;
+/// The index just past the string, char or raw literal starting at `i`, or
+/// `None` when no literal starts there. A byte string `b"…"` or byte char
+/// `b'…'` is not recognized as a whole: its `b` is skipped as an ordinary
+/// byte and the literal after it is found on the next step, which comes to
+/// the same.
+pub(crate) fn literal_end(b: &[u8], i: usize) -> Option<usize> {
+    match b[i] {
+        b'"' => scan_quoted(b, i),
+        b'\'' => scan_char(b, i),
+        b'b' | b'r' => scan_raw(b, i),
+        _ => None,
+    }
+}
+
+/// The index of the `\n` that ends the line comment starting at `i`, or
+/// `b.len()` if none does.
+pub(crate) fn line_comment_end(b: &[u8], i: usize) -> usize {
+    b[i..]
+        .iter()
+        .position(|&c| c == b'\n')
+        .map_or(b.len(), |n| i + n)
+}
+
+/// The block comment starting at `i` (`b[i..]` starts with `/*`): the index
+/// just past its end, or `b.len()` if it is unterminated, and how deeply its
+/// `/* … */` nest, counting itself.
+pub(crate) fn block_comment(b: &[u8], i: usize) -> (usize, usize) {
+    let (mut depth, mut deepest) = (0usize, 0usize);
     let mut k = i;
     while k < b.len() {
         if b[k..].starts_with(b"/*") {
             depth += 1;
+            deepest = deepest.max(depth);
             k += 2;
         } else if b[k..].starts_with(b"*/") {
             depth -= 1;
             k += 2;
             if depth == 0 {
-                return k;
+                return (k, deepest);
             }
-        } else if b[k] == b'\n' {
-            return k;
         } else {
             k += 1;
         }
     }
-    k
+    (k, deepest)
 }
 
 /// Whitespace between tokens, as in the grammar's `WHITESPACE` and the
@@ -405,49 +428,21 @@ fn nesting_depth(input: &str) -> usize {
     let mut peak = 0usize;
     let mut i = 0;
     while i < b.len() {
+        if let Some(end) = literal_end(b, i) {
+            i = end;
+            continue;
+        }
         match b[i] {
-            b'"' => {
-                if let Some(end) = scan_quoted(b, i) {
-                    i = end;
-                    continue;
-                }
-            }
-            b'\'' => {
-                if let Some(end) = scan_char(b, i) {
-                    i = end;
-                    continue;
-                }
-            }
-            b'b' | b'r' => {
-                if let Some(end) = scan_raw(b, i) {
-                    i = end;
-                    continue;
-                }
-            }
             b'/' if b.get(i + 1) == Some(&b'/') => {
-                while i < b.len() && b[i] != b'\n' {
-                    i += 1;
-                }
+                i = line_comment_end(b, i);
                 continue;
             }
             b'/' if b.get(i + 1) == Some(&b'*') => {
                 // pest's `block_comment` recurses once per nested `/*`, so
                 // comment nesting counts toward the depth budget too.
-                let mut d = 1;
-                peak = peak.max(depth + d);
-                i += 2;
-                while i < b.len() && d > 0 {
-                    if b[i] == b'/' && b.get(i + 1) == Some(&b'*') {
-                        d += 1;
-                        peak = peak.max(depth + d);
-                        i += 2;
-                    } else if b[i] == b'*' && b.get(i + 1) == Some(&b'/') {
-                        d -= 1;
-                        i += 2;
-                    } else {
-                        i += 1;
-                    }
-                }
+                let (end, deepest) = block_comment(b, i);
+                peak = peak.max(depth + deepest);
+                i = end;
                 continue;
             }
             b'[' | b'(' | b'{' => {
