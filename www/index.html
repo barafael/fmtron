@@ -48,11 +48,12 @@
         <p class="hint" id="input-hint">Tab indents · Esc, then Tab, leaves the editor</p>
       </div>
       <div class="editor">
+        <div id="error-mark" class="error-mark" aria-hidden="true" hidden></div>
         <pre id="highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
         <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
                   wrap="off" aria-label="RON input" aria-describedby="input-hint"></textarea>
       </div>
-      <pre id="error" class="error" aria-live="polite" hidden></pre>
+      <pre id="error" class="error" aria-live="polite" title="Click to go to the error" hidden></pre>
     </section>
 
     <section class="pane">

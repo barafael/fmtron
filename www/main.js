@@ -1,4 +1,4 @@
-import init, { format_ron } from './pkg/fmtron_wasm.js';
+import init, { FormatFailure, format_ron } from './pkg/fmtron_wasm.js';
 import { highlightRon } from './highlight.js';
 
 // Real-world files are copied unchanged from fmtron's test corpus; `source`
@@ -60,6 +60,10 @@ const maxWidth = document.getElementById('max-width');
 const blankLines = document.getElementById('blank-lines');
 const copyButton = document.getElementById('copy');
 const attribution = document.getElementById('attribution');
+const errorMark = document.getElementById('error-mark');
+
+// Where the current parse error is, as 1-based line and column, or null.
+let errorAt = null;
 
 let formatTimer = null;
 
@@ -114,20 +118,78 @@ function showOutput(text) {
   }
 }
 
+// Paints the band behind the erroring line of the input, if there is one,
+// where the textarea currently scrolls it.
+function placeErrorMark() {
+  if (!errorAt) {
+    errorMark.hidden = true;
+    return;
+  }
+  const lineHeight = parseFloat(getComputedStyle(input).lineHeight);
+  const paddingTop = parseFloat(getComputedStyle(input).paddingTop);
+  errorMark.style.top = `${paddingTop + (errorAt.line - 1) * lineHeight - input.scrollTop}px`;
+  errorMark.style.height = `${lineHeight}px`;
+  errorMark.hidden = false;
+}
+
+function setErrorAt(at) {
+  errorAt = at;
+  errorBox.classList.toggle('clickable', Boolean(at));
+  placeErrorMark();
+}
+
+// The UTF-16 index of a 1-based line and column (in characters, as the
+// formatter counts them).
+function indexOf(text, line, column) {
+  let i = 0;
+  for (let l = 1; l < line; l++) {
+    const next = text.indexOf('\n', i);
+    if (next === -1) return text.length;
+    i = next + 1;
+  }
+  for (let c = 1; c < column && i < text.length; c++) {
+    i += text.codePointAt(i) >= 0x10000 ? 2 : 1;
+  }
+  return i;
+}
+
 function formatNow() {
   const keep = blankLines.value === 'keep';
   const text = input.value;
   try {
     showOutput(format_ron(text, readTabSize(), readMaxWidth(), keep));
+    setErrorAt(null);
     if (hasLoneSurrogate(text)) {
       showNote('The input holds an unpaired surrogate character, which the output shows as \u{FFFD}.');
     } else {
       errorBox.hidden = true;
     }
   } catch (e) {
-    showError(String(e.message ?? e));
+    if (e instanceof FormatFailure) {
+      showError(e.rendered);
+      setErrorAt(e.line > 0 ? { line: e.line, column: e.column } : null);
+      e.free();
+    } else {
+      showError(String(e.message ?? e));
+      setErrorAt(null);
+    }
   }
 }
+
+// A click on a parse error puts the caret where it is.
+errorBox.addEventListener('click', () => {
+  if (!errorAt) return;
+  const at = indexOf(input.value, errorAt.line, errorAt.column);
+  input.focus();
+  input.setSelectionRange(at, at);
+  // Scroll the line into view: the textarea follows its caret on input, not
+  // on selection changes, so nudge it by hand.
+  const lineHeight = parseFloat(getComputedStyle(input).lineHeight);
+  const top = (errorAt.line - 1) * lineHeight;
+  if (top < input.scrollTop || top > input.scrollTop + input.clientHeight - lineHeight) {
+    input.scrollTop = Math.max(0, top - input.clientHeight / 2);
+  }
+});
 
 function formatSoon() {
   clearTimeout(formatTimer);
@@ -189,6 +251,7 @@ function refreshHighlight() {
 function syncScroll() {
   highlightPre.scrollTop = input.scrollTop;
   highlightPre.scrollLeft = input.scrollLeft;
+  placeErrorMark();
 }
 
 // Keep literal tab characters in the input aligned with the option, and with

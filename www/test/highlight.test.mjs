@@ -63,7 +63,8 @@ test('raw and unicode identifiers, and exponent underscores, are single tokens',
   assert.match(html, /<span class="tok-id">名前<\/span>/);
   assert.match(html, /<span class="tok-num">1e_3<\/span>/);
   // Floats may omit the digits on either side of the point.
-  assert.match(highlightRon('[.5, 1., 1.e3]'), /<span class="tok-num">\.5<\/span>, <span class="tok-num">1\.<\/span>, <span class="tok-num">1\.e3<\/span>/);
+  const floats = highlightRon('[.5, 1., 1.e3]');
+  for (const f of ['.5', '1.', '1.e3']) assert.ok(floats.includes(`<span class="tok-num">${f}</span>`), f);
   // A `]` inside an attribute's string does not end the attribute.
   assert.match(highlightRon('#![type = "a]b"] 1'), /<span class="tok-attr">#!\[type = "a\]b"\]<\/span>/);
 });

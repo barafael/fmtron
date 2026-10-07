@@ -220,6 +220,24 @@ main {
   tab-size: var(--tab, 4);
 }
 
+/* The band behind the line a parse error points at; main.js places it. */
+.error-mark {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: color-mix(in srgb, var(--error) 18%, transparent);
+  border-left: 3px solid var(--error);
+  pointer-events: none;
+}
+
+.error-mark[hidden] {
+  display: none;
+}
+
+.error.clickable {
+  cursor: pointer;
+}
+
 /*
  * The textarea is the only scroller; the pre follows it via syncScroll().
  * Both layers must keep identical text metrics, so neither may ever reserve
