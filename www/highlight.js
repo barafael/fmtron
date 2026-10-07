@@ -7,7 +7,7 @@ const KEYWORDS = new Set(['true', 'false', 'Some', 'None', 'inf', 'NaN']);
 
 const NUMBER = /[-+]?(?:0[xob][0-9a-fA-F_]+|[0-9][0-9_]*(?:\.[0-9_]+)?(?:[eE][-+]?[0-9]+)?)(?:[iuf](?:8|16|32|64|128|size))?/y;
 const IDENT = /[A-Za-z_][A-Za-z0-9_]*/y;
-const RAW_STRING = /(?:br|b|r)(#*)"/y;
+const RAW_STRING = /b?r(#*)"/y;
 // Sticky, applied at the index right after an identifier: a run of
 // whitespace and then a colon marks the identifier as a struct key.
 const KEY_COLON = /[ \t\r\n]*:/y;
@@ -55,7 +55,8 @@ export function highlightRon(src) {
       continue;
     }
 
-    // Byte or raw string: b"…"  r"…"  r#"…"#  br#"…"#
+    // Raw string: r"…"  r#"…"#  br#"…"#. No escapes: it ends at the first
+    // quote followed by as many hashes as it opened with.
     RAW_STRING.lastIndex = i;
     const raw = RAW_STRING.exec(src);
     if (raw) {
@@ -67,9 +68,11 @@ export function highlightRon(src) {
       continue;
     }
 
-    // String literal.
-    if (c === '"') {
-      let j = i + 1;
+    // String or byte string: "…" b"…", with backslash escapes.
+    const byte = c === 'b' ? 1 : 0;
+    const q = src[i + byte];
+    if (q === '"') {
+      let j = i + byte + 1;
       while (j < n) {
         if (src[j] === '\\') j += 2;
         else if (src[j] === '"') { j++; break; }
@@ -80,9 +83,9 @@ export function highlightRon(src) {
       continue;
     }
 
-    // Char literal.
-    if (c === "'") {
-      let j = i + 1;
+    // Char or byte char: '…' b'…'.
+    if (q === "'") {
+      let j = i + byte + 1;
       if (src[j] === '\\') {
         j += 2;
         while (j < n && src[j] !== "'") j++;

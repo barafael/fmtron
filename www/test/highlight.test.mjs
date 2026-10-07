@@ -52,6 +52,18 @@ test('tokens get the expected classes', () => {
   assert.match(html, /<span class="tok-key">bar<\/span>/);
 });
 
+test('byte strings are escaped strings, not raw', () => {
+  // The escaped quote does not end the byte string; the rest of the line is
+  // not swallowed into it.
+  const html = highlightRon('(a: b"x\\"y", b: 1)');
+  assert.match(html, /<span class="tok-str">b"x\\"y"<\/span>/);
+  assert.match(html, /<span class="tok-num">1<\/span>/);
+  // A byte char is one token too.
+  assert.match(highlightRon("b'a' 2"), /<span class="tok-chr">b'a'<\/span>/);
+  // And raw byte strings still end at the matching hashes.
+  assert.match(highlightRon('br#"a "" b"# 3'), /<span class="tok-str">br#"a "" b"#<\/span>/);
+});
+
 test('nested block comments highlight as one comment', () => {
   const html = highlightRon('/* a /* b */ still comment */ 1');
   assert.match(html, /<span class="tok-com">\/\* a \/\* b \*\/ still comment \*\/<\/span>/);

@@ -63,15 +63,19 @@ const attribution = document.getElementById('attribution');
 
 let formatTimer = null;
 
-// Number inputs can hold typed values their min/max attributes do not cover;
-// every read of a control goes through one clamp so the formatter, the tab
-// rendering and the inserted indentation always agree.
-function clampInt(el, lo, hi, fallback) {
-  const v = Math.floor(Number(el.value));
-  return Number.isFinite(v) ? Math.min(Math.max(v, lo), hi) : fallback;
+// A number input can hold a typed value outside its min/max, or nothing at
+// all (valueAsNumber is then NaN; `value` would be '' and read as 0). Every
+// read of a control goes through one clamp to the control's own range, so
+// the formatter, the tab rendering and the inserted indentation always agree
+// with each other and with what the browser marks as valid.
+function clampInt(el, fallback) {
+  const v = Math.floor(el.valueAsNumber);
+  if (!Number.isFinite(v)) return fallback;
+  return Math.min(Math.max(v, Number(el.min)), Number(el.max));
 }
 
-const readTabSize = () => clampInt(tabSize, 1, 16, 4);
+const readTabSize = () => clampInt(tabSize, 4);
+const readMaxWidth = () => clampInt(maxWidth, 100);
 
 function showError(message) {
   errorBox.textContent = message;
@@ -82,7 +86,7 @@ function showError(message) {
 function formatNow() {
   const keep = blankLines.value === 'keep';
   try {
-    const formatted = format_ron(input.value, readTabSize(), clampInt(maxWidth, 1, 1000, 100), keep);
+    const formatted = format_ron(input.value, readTabSize(), readMaxWidth(), keep);
     output.innerHTML = highlightRon(formatted) + '\n';
     errorBox.hidden = true;
   } catch (e) {
@@ -109,17 +113,26 @@ function showAttribution(example) {
   attribution.append('Example from ', link, ` (${example.license}), unchanged from the original.`);
 }
 
+// Only the most recent selection may land: a slower earlier fetch must not
+// overwrite a later one, or what the user typed meanwhile.
+let latestLoad = 0;
+
 function loadExample(example) {
-  showAttribution(example);
+  const load = ++latestLoad;
   fetch(example.file)
     .then(r => (r.ok ? r.text() : Promise.reject(new Error(`${r.status} ${r.statusText}`))))
     .then(text => {
+      if (load !== latestLoad) return;
+      showAttribution(example);
       input.value = text;
       refreshHighlight();
       formatNow();
     })
     .catch(err => {
+      if (load !== latestLoad) return;
+      showAttribution(example);
       input.value = '';
+      refreshHighlight();
       showError(`Could not load example: ${err.message}`);
     });
 }
