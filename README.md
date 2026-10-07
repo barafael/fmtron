@@ -2,7 +2,7 @@
 
 Published as www.crates.io/crates/fmtron.
 
-**Try it online:** the [online RON formatter](https://barafael.github.io/fmtron/)
+**Try it online:** the [online RON formatter](https://barafael.github.io/fmtron/) formats in your browser and can show a file's structure as nested shapes
 runs this crate compiled to WebAssembly, entirely in your browser. Its source
 lives in [`wasm/`](wasm) and [`www/`](www), deployed by
 [.github/workflows/pages.yml](.github/workflows/pages.yml).

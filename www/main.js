@@ -1,5 +1,6 @@
 import init, { FormatFailure, format_ron } from './pkg/fmtron_wasm.js';
 import { highlightRon } from './highlight.js';
+import { parseRon, renderStructure } from './structure.js';
 
 // Real-world files are copied unchanged from fmtron's test corpus; `source`
 // is where each one lives and `license` what its project is licensed under
@@ -61,6 +62,15 @@ const blankLines = document.getElementById('blank-lines');
 const copyButton = document.getElementById('copy');
 const attribution = document.getElementById('attribution');
 const errorMark = document.getElementById('error-mark');
+const outputPane = document.getElementById('output-pane');
+const structurePane = document.getElementById('structure-pane');
+const structure = document.getElementById('structure');
+const viewButtons = [...document.querySelectorAll('.views [role="tab"]')];
+
+// 'formatted' or 'structure'. The structural view is built only while it is
+// showing; `structureStale` remembers that the text changed meanwhile.
+let view = 'formatted';
+let structureStale = true;
 
 // Where the current parse error is, as 1-based line and column, or null.
 let errorAt = null;
@@ -116,6 +126,37 @@ function showOutput(text) {
   } else {
     output.innerHTML = highlightRon(text) + '\n';
   }
+  structureStale = true;
+  if (view === 'structure') showStructure();
+}
+
+// Lays the input out as nested shapes. The input has just been formatted,
+// so it parses; should the page's own parser still disagree, it says so
+// rather than drawing a wrong tree.
+function showStructure() {
+  if (!structureStale) return;
+  structureStale = false;
+  structure.replaceChildren();
+  try {
+    structure.append(renderStructure(parseRon(input.value), document));
+  } catch (e) {
+    const note = document.createElement('p');
+    note.className = 'legend';
+    note.textContent = `No structure to show: ${e.message}`;
+    structure.append(note);
+  }
+}
+
+function selectView(name) {
+  view = name;
+  for (const b of viewButtons) b.setAttribute('aria-selected', String(b.id === `view-${name}`));
+  outputPane.hidden = name !== 'formatted';
+  structurePane.hidden = name !== 'structure';
+  if (name === 'structure') showStructure();
+}
+
+for (const b of viewButtons) {
+  b.addEventListener('click', () => selectView(b.id.replace('view-', '')));
 }
 
 // Paints the band behind the erroring line of the input, if there is one,
@@ -165,6 +206,11 @@ function formatNow() {
       errorBox.hidden = true;
     }
   } catch (e) {
+    structureStale = true;
+    if (view === 'structure') {
+      structure.replaceChildren();
+      structureStale = false;
+    }
     if (e instanceof FormatFailure) {
       showError(e.rendered);
       setErrorAt(e.line > 0 ? { line: e.line, column: e.column } : null);

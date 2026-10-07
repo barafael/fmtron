@@ -39,8 +39,10 @@ jobs:
           cargo test
       - name: Syntax-check the page scripts
         run: cp www/main.js /tmp/main.mjs && node --check /tmp/main.mjs
-      - name: Test the highlighter
-        run: node --test www/test/highlight.test.mjs
+      - name: Test the highlighter and the structural view's parser
+        run: |
+          node --test www/test/highlight.test.mjs
+          node --test www/test/structure.test.mjs
       - name: Build fmtron-wasm
         working-directory: wasm
         run: cargo build --release --target wasm32-unknown-unknown

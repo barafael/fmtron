@@ -57,8 +57,24 @@
     </section>
 
     <section class="pane">
-      <h2>Output</h2>
-      <pre class="editor output"><code id="output"></code></pre>
+      <div class="pane-head">
+        <h2>Output</h2>
+        <div class="views" role="tablist" aria-label="Output view">
+          <button type="button" role="tab" id="view-formatted" aria-selected="true" aria-controls="output-pane">Formatted</button>
+          <button type="button" role="tab" id="view-structure" aria-selected="false" aria-controls="structure-pane">Structure</button>
+        </div>
+      </div>
+      <pre id="output-pane" class="editor output" role="tabpanel" aria-labelledby="view-formatted"><code id="output"></code></pre>
+      <div id="structure-pane" class="editor structure" role="tabpanel" aria-labelledby="view-structure" hidden>
+        <div id="structure"></div>
+        <p class="legend">
+          Boxes are shapes: <span class="swatch struct">struct</span> <span class="swatch tuple">tuple</span>
+          <span class="swatch list">list</span> <span class="swatch map">map</span>.
+          Names are a reading: <span class="chip name type">Type</span> for a struct or tuple's name,
+          <span class="chip name variant">Variant</span> for a bare capitalised identifier or Option/Result;
+          RON itself does not tell them apart.
+        </p>
+      </div>
     </section>
   </main>
 
