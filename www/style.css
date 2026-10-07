@@ -178,13 +178,21 @@ main {
   padding: 0.75rem;
   overflow: auto;
   font: 0.85rem/1.5 var(--mono);
+  font-variant-ligatures: none;
   white-space: pre;
   tab-size: var(--tab, 4);
 }
 
+/*
+ * The textarea is the only scroller; the pre follows it via syncScroll().
+ * Both layers must keep identical text metrics, so neither may ever reserve
+ * a scrollbar gutter — the pre is overflow: hidden, and the textarea's bars
+ * are invisible (it still scrolls by wheel and keyboard).
+ */
 .editor pre {
   pointer-events: none;
   z-index: 0;
+  overflow: hidden;
 }
 
 .editor textarea {
@@ -197,12 +205,18 @@ main {
   background: transparent;
   color: transparent;
   caret-color: var(--text);
+  scrollbar-width: none;
+}
+
+.editor textarea::-webkit-scrollbar {
+  display: none;
 }
 
 .editor.output {
   overflow: auto;
   padding: 0.75rem;
   font: 0.85rem/1.5 var(--mono);
+  font-variant-ligatures: none;
   white-space: pre;
   tab-size: var(--tab, 4);
 }
