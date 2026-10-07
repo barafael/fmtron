@@ -120,30 +120,38 @@ fn deep_input_is_bounded_by_a_clean_error() {
     );
     let d200 = format!("{}1{}", "[".repeat(200), "]".repeat(200));
     assert!(ron::from_str::<Value>(&d200).is_err());
-    // fmtron: depth 200 is inside its default budget, so it formats fine.
-    assert!(fmtron::format_ron(&d200, &cfg(40)).is_ok());
-    // Depth beyond the default limit returns a clean error, never an abort.
+    // Test threads have small stacks (2 MiB), and fmtron's recursive descent
+    // costs roughly 10 KiB of stack per nesting level in debug builds — the
+    // 1.0 style rewrite pushed depth 200 past that budget. Run every deep
+    // fmtron call, including the one inside the default budget, on a
+    // big-stack thread like an 8 MiB main thread.
     let deep = format!("{}1{}", "[".repeat(600), "]".repeat(600));
-    let err = fmtron::format_ron(&deep, &cfg(40)).unwrap_err();
+    let wide = cfg(40).with_max_nesting(1024);
+    let (within_budget, too_deep, admitted) = std::thread::Builder::new()
+        .stack_size(64 * 1024 * 1024)
+        .spawn(move || {
+            // fmtron: depth 200 is inside its default budget, so it formats fine.
+            let within_budget = fmtron::format_ron(&d200, &cfg(40)).is_ok();
+            // Depth beyond the default limit returns a clean error, never an abort.
+            let too_deep = fmtron::format_ron(&deep, &cfg(40)).unwrap_err();
+            // The budget is configurable: a higher cap admits the same input.
+            let admitted = fmtron::format_ron(&deep, &wide).is_ok();
+            (within_budget, too_deep, admitted)
+        })
+        .unwrap()
+        .join()
+        .unwrap();
+    assert!(within_budget);
     assert!(
         matches!(
-            err,
+            too_deep,
             fmtron::FormatError::TooDeep {
                 depth: 600,
                 max: 512
             }
         ),
-        "expected a clean TooDeep error, got {err:?}"
+        "expected a clean TooDeep error, got {too_deep:?}"
     );
-    // The budget is configurable: a higher cap admits the same input. Test
-    // threads have small stacks, so format deep input on a big-stack thread.
-    let wide = cfg(40).with_max_nesting(1024);
-    let admitted = std::thread::Builder::new()
-        .stack_size(64 * 1024 * 1024)
-        .spawn(move || fmtron::format_ron(&deep, &wide).is_ok())
-        .unwrap()
-        .join()
-        .unwrap();
     assert!(admitted);
 }
 
