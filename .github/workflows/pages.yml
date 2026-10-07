@@ -22,12 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy, rustfmt
-      # The repo's rust-toolchain.toml pins the toolchain, so the target must
-      # be added to that one; a `targets:` input on the action above would
-      # install it for the action's toolchain instead.
+      # rust-toolchain.toml pins the toolchain and its components; rustup
+      # installs them on first use. Only the wasm target is extra.
       - run: rustup target add wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@v2
         with:
