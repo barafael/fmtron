@@ -36,6 +36,65 @@ fn missing_file_is_a_clean_error_not_a_panic() {
     assert!(!stderr.contains("panicked"));
 }
 
+/// A file with nothing to format is left as it is, and is not an error:
+/// a formatter has no say on whether a file ought to hold a value.
+#[test]
+fn a_file_without_a_value_is_left_alone() {
+    for input in [
+        "",
+        "\n\n",
+        "   \n",
+        "// TODO: fill in\n",
+        "#![enable(implicit_some)]\n// soon\n",
+    ] {
+        let shown = run_cli(input, &["-d"]);
+        assert!(
+            shown.status.success(),
+            "{input:?}: {}",
+            String::from_utf8_lossy(&shown.stderr)
+        );
+        assert_eq!(String::from_utf8_lossy(&shown.stdout), input, "{input:?}");
+        assert!(
+            shown.stderr.is_empty(),
+            "{input:?}: {}",
+            String::from_utf8_lossy(&shown.stderr)
+        );
+
+        let checked = run_cli(input, &["--check"]);
+        assert!(checked.status.success(), "{input:?} --check");
+        assert!(
+            checked.stdout.is_empty(),
+            "{input:?} --check printed a diff"
+        );
+
+        // In place: untouched, down to the modification time.
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("empty.ron");
+        std::fs::write(&file, input).unwrap();
+        let before = std::fs::metadata(&file).unwrap().modified().unwrap();
+        let out = Command::new(env!("CARGO_BIN_EXE_fmtron"))
+            .arg(dir.path())
+            .output()
+            .unwrap();
+        assert!(out.status.success(), "{input:?} in place");
+        assert_eq!(std::fs::read_to_string(&file).unwrap(), input);
+        assert_eq!(
+            std::fs::metadata(&file).unwrap().modified().unwrap(),
+            before
+        );
+    }
+    // Stdin too.
+    let mut child = Command::new(env!("CARGO_BIN_EXE_fmtron"))
+        .stdin(std::process::Stdio::piped())
+        .stdout(std::process::Stdio::piped())
+        .spawn()
+        .unwrap();
+    child.stdin.take().unwrap().write_all(b"").unwrap();
+    let out = child.wait_with_output().unwrap();
+    assert!(out.status.success());
+    assert!(out.stdout.is_empty());
+}
+
 #[test]
 fn valid_input_succeeds_and_writes_formatted_output() {
     let out = run_cli("(a:1,b:[1,2,3])", &["-d"]);

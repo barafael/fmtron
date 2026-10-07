@@ -9,6 +9,7 @@ use wasm_bindgen::prelude::*;
 /// and calls `free()`.
 #[wasm_bindgen]
 pub struct FormatFailure {
+    kind: &'static str,
     line: u32,
     column: u32,
     message: String,
@@ -17,6 +18,13 @@ pub struct FormatFailure {
 
 #[wasm_bindgen]
 impl FormatFailure {
+    /// `parse`, `empty` (no value in the input), `too_deep`, `indent_too_wide`
+    /// or `other`.
+    #[wasm_bindgen(getter)]
+    pub fn kind(&self) -> String {
+        self.kind.to_string()
+    }
+
     /// The line of a parse error, counting from 1; 0 for any other error.
     #[wasm_bindgen(getter)]
     pub fn line(&self) -> u32 {
@@ -46,11 +54,15 @@ impl FormatFailure {
 
 impl From<FormatError> for FormatFailure {
     fn from(e: FormatError) -> Self {
-        let (line, column, message) = match &e {
-            FormatError::Parse(p) => (p.line(), p.column(), p.message()),
-            other => (0, 0, other.to_string()),
+        let (kind, line, column, message) = match &e {
+            FormatError::Parse(p) => ("parse", p.line(), p.column(), p.message()),
+            FormatError::Empty => ("empty", 0, 0, e.to_string()),
+            FormatError::TooDeep { .. } => ("too_deep", 0, 0, e.to_string()),
+            FormatError::IndentTooWide { .. } => ("indent_too_wide", 0, 0, e.to_string()),
+            _ => ("other", 0, 0, e.to_string()),
         };
         Self {
+            kind,
             line: line.try_into().unwrap_or(u32::MAX),
             column: column.try_into().unwrap_or(u32::MAX),
             message,
@@ -104,13 +116,16 @@ mod tests {
         assert_eq!(out, "(a: 1, b: 2)");
 
         let failure: FormatFailure = format("(a: 1 b: 2)", 4, 100, true).unwrap_err().into();
+        assert_eq!(failure.kind, "parse");
         assert_eq!((failure.line, failure.column), (1, 7));
         assert_eq!(failure.message, "expected `,` or `)`, found `b`");
         assert!(failure.rendered.contains("^---"), "{}", failure.rendered);
 
         // Other errors carry no position.
         let deep: FormatFailure = format(&"[".repeat(600), 4, 100, true).unwrap_err().into();
-        assert_eq!((deep.line, deep.column), (0, 0));
+        assert_eq!((deep.kind, deep.line, deep.column), ("too_deep", 0, 0));
         assert!(deep.message.contains("nested"), "{}", deep.message);
+        let empty: FormatFailure = format("// nothing yet", 4, 100, true).unwrap_err().into();
+        assert_eq!(empty.kind, "empty");
     }
 }

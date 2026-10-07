@@ -33,6 +33,7 @@ fmtron < in.ron > out.ron        # stdin to stdout (also `fmtron -`)
 - With stdin, `--stdin-filepath <path>` says which file the input stands for: it picks the `fmt.ron` and names the input in messages. This is what editor integrations need
 - `--backup` copies each changed file to `<file>.bak` before replacing it (no backups are made by default)
 - Exit status: 0 on success; 1 if any file could not be formatted, or, with `--check`, if any file needs formatting. All files are processed and every error is reported
+- A file with nothing to format, because it is empty or holds only comments and attributes, is left exactly as it is, without a message: whether it ought to hold a value is for the program that loads it to say
 - Set tab size with `-t <size>` (4 by default)
 - Set max line width with `-w <width>` (100 by default). This is a soft limit, so long or deeply-nested values may sometimes overrun it
 - Cap container nesting with `--max-depth <depth>` (512 by default); deeper input is rejected cleanly instead of overflowing the stack

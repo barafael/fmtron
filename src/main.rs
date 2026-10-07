@@ -156,24 +156,36 @@ fn process(args: &Arguments, input: &Input, config: &Config) -> Result<Outcome, 
         })?,
     };
 
-    let formatted = format_on_sized_stack(&text, config)?.map_err(|e| match e {
-        FormatError::TooDeep { .. } => Error::TooDeep {
-            name: name.clone(),
-            source: e,
-        },
-        FormatError::IndentTooWide { .. } => Error::TooWide {
-            name: name.clone(),
-            source: e,
-        },
-        FormatError::Parse(e) => Error::Parse(FormatError::Parse(e.with_path(&name))),
-        e => Error::Format {
-            name: name.clone(),
-            source: e,
-        },
-    })?;
-    // Emit a text file: the formatter's output ends without a line break;
-    // add exactly one, in the file's own line ending.
-    let formatted = format!("{formatted}{}", fmtron::line_ending(&text));
+    let formatted = match format_on_sized_stack(&text, config)? {
+        // Emit a text file: the formatter's output ends without a line
+        // break; add exactly one, in the file's own line ending.
+        Ok(formatted) => format!("{formatted}{}", fmtron::line_ending(&text)),
+        // Nothing to format: a file that is blank, or holds only comments
+        // and attributes, is left exactly as it is. Whether it ought to hold
+        // a value is for whatever loads it to say.
+        Err(FormatError::Empty) => text.clone(),
+        Err(e @ FormatError::TooDeep { .. }) => {
+            return Err(Error::TooDeep {
+                name: name.clone(),
+                source: e,
+            });
+        }
+        Err(e @ FormatError::IndentTooWide { .. }) => {
+            return Err(Error::TooWide {
+                name: name.clone(),
+                source: e,
+            });
+        }
+        Err(FormatError::Parse(e)) => {
+            return Err(Error::Parse(FormatError::Parse(e.with_path(&name))));
+        }
+        Err(e) => {
+            return Err(Error::Format {
+                name: name.clone(),
+                source: e,
+            });
+        }
+    };
 
     if args.check {
         if formatted == text {

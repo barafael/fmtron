@@ -212,8 +212,17 @@ function formatNow() {
       structureStale = false;
     }
     if (e instanceof FormatFailure) {
-      showError(e.rendered);
-      setErrorAt(e.line > 0 ? { line: e.line, column: e.column } : null);
+      if (e.kind === 'empty') {
+        // Nothing to format is not an error: the command line leaves such a
+        // file alone. Show the input as it is, and say so unless it is blank.
+        showOutput(text);
+        setErrorAt(null);
+        if (text.trim() === '') errorBox.hidden = true;
+        else showNote('Nothing to format: the input holds comments or attributes, but no value.');
+      } else {
+        showError(e.rendered);
+        setErrorAt(e.line > 0 ? { line: e.line, column: e.column } : null);
+      }
       e.free();
     } else {
       showError(String(e.message ?? e));

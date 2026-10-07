@@ -3,6 +3,16 @@
 Output changes are marked **output**; see [STABILITY.md](STABILITY.md) for
 what may change when.
 
+## Unreleased
+
+- The command line leaves a file with nothing to format, because it is empty
+  or holds only comments and attributes, exactly as it is, with exit status 0
+  and no message; `--check` does not report it. Before, such a file failed
+  with `no RON data found`, which made format-on-save complain about every
+  new file until its first value, and `--check` fail over a placeholder.
+  The library still returns `FormatError::Empty`, so a caller can decide for
+  itself.
+
 ## 1.0.0-rc.2 — 2026-10-07
 
 The library API for 1.0, as a program embedding fmtron needs it:
