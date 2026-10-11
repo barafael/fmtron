@@ -44,4 +44,4 @@ required-features = ["cli"]
 
 [dev-dependencies]
 fs-walk = "0.2"
-indoc = "2.0.7"
+indoc = "2.0.8"
