@@ -36,7 +36,7 @@ fmtron < in.ron > out.ron        # stdin to stdout (also `fmtron -`)
 - A file with nothing to format, because it is empty or holds only comments and attributes, is left exactly as it is, without a message: whether it ought to hold a value is for the program that loads it to say
 - Set tab size with `-t <size>` (4 by default)
 - Set max line width with `-w <width>` (100 by default). This is a soft limit, so long or deeply-nested values may sometimes overrun it
-- Cap container nesting with `--max-depth <depth>` (512 by default); deeper input is rejected cleanly instead of overflowing the stack
+- Cap container nesting with `--max-depth <depth>` (512 by default, at least 1); deeper input is rejected cleanly instead of overflowing the stack
 - Set the upper bound enforced on `-t` with `--max-tab <size>` (1024 by default); a larger `-t` is rejected
 - Choose how blank lines are treated with `--blank-lines <keep|remove>`. `keep` (the default) preserves one blank line wherever the input separates elements or comments with one or more; `remove` drops them all
 - Choose the set of layout rules with `--style-edition <year>` (2026, the only one so far). A future change of style will be a new edition that stays opt-in until fmtron 2.0; see [STABILITY.md](STABILITY.md) for what may change when

@@ -140,6 +140,27 @@ fn too_deep_input_is_a_clean_error() {
     assert!(!stderr.contains("panicked"));
 }
 
+// A depth limit of 0 is rejected, from the flag and from fmt.ron, rather
+// than silently acting as 1.
+#[test]
+fn zero_max_depth_is_rejected() {
+    let out = run_cli("[1]", &["-d", "--max-depth", "0"]);
+    assert!(!out.status.success());
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(stderr.contains("--max-depth"), "stderr: {stderr}");
+    assert!(!stderr.contains("panicked"), "stderr: {stderr}");
+
+    let (_root, file) = project("(max_depth: 0)", "(a: 1)");
+    let out = fmtron_on(&file, &["-d"]);
+    assert!(!out.status.success());
+    let stderr = String::from_utf8_lossy(&out.stderr);
+    assert!(
+        stderr.contains("fmt.ron") && stderr.contains("nonzero"),
+        "stderr: {stderr}"
+    );
+    assert!(!stderr.contains("panicked"), "stderr: {stderr}");
+}
+
 #[test]
 fn max_depth_override_admits_deeper_input() {
     let deep = format!("{}1{}", "[[[[[".repeat(120), "]]]]]".repeat(120));

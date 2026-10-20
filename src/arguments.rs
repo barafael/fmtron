@@ -1,4 +1,5 @@
 use clap::{Parser, ValueEnum};
+use std::num::NonZeroUsize;
 use std::path::PathBuf;
 
 /// Formatting options left unset fall back to the nearest `fmt.ron` (or
@@ -41,11 +42,12 @@ pub struct Arguments {
     pub tab_size: Option<usize>,
 
     /// Maximum container-nesting depth accepted before the input is rejected
-    /// (guards against stack overflow on adversarial input) [default: 512]
+    /// (guards against stack overflow on adversarial input); at least 1
+    /// [default: 512]
     #[arg(long)]
-    pub max_depth: Option<usize>,
+    pub max_depth: Option<NonZeroUsize>,
 
-    /// Upper bound enforced on the indentation size; a larger --tab-size is
+    /// Upper bound enforced on the indentation size; a larger -t is
     /// rejected instead of emitting pathologically wide indentation
     /// [default: 1024]
     #[arg(long)]

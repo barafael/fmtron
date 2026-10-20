@@ -19,6 +19,7 @@
 //! [`FileConfig::find`] looks for `fmt.ron`, then `.fmt.ron`, in a directory
 //! and each of its ancestors; the nearest file wins and files are not merged.
 
+use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 
 use ron::extensions::Extensions;
@@ -43,7 +44,9 @@ pub struct FileConfig {
     /// Blank-line handling ([`Config::blank_lines`], CLI `--blank-lines`).
     pub blank_lines: Option<BlankLines>,
     /// Maximum nesting depth ([`Config::max_nesting`], CLI `--max-depth`).
-    pub max_depth: Option<usize>,
+    /// Non-zero, so that `0` is an error here rather than silently acting
+    /// as `1`.
+    pub max_depth: Option<NonZeroUsize>,
     /// Upper bound on the tab size ([`Config::max_tab`], CLI `--max-tab`).
     pub max_tab: Option<usize>,
     /// The layout rules ([`Config::style_edition`], CLI `--style-edition`).
@@ -153,7 +156,7 @@ impl FileConfig {
             config.blank_lines = v;
         }
         if let Some(v) = max_depth {
-            config.max_nesting = v;
+            config.max_nesting = v.get();
         }
         if let Some(v) = max_tab {
             config.max_tab = v;
@@ -196,6 +199,13 @@ mod tests {
             round.to_file_config_string(),
             config.to_file_config_string()
         );
+    }
+
+    #[test]
+    fn a_zero_max_depth_is_an_error_with_a_position() {
+        let err = "(\n    max_depth: 0,\n)".parse::<FileConfig>().unwrap_err();
+        assert_eq!(err.line(), 2, "{err}");
+        assert!(err.to_string().contains("nonzero"), "{err}");
     }
 
     #[test]

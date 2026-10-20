@@ -31,7 +31,7 @@ fn full_file_with_comments_parses() {
     expected.max_width = Some(80);
     expected.tab_size = Some(2);
     expected.blank_lines = Some(BlankLines::Remove);
-    expected.max_depth = Some(1000);
+    expected.max_depth = std::num::NonZeroUsize::new(1000);
     expected.max_tab = Some(16);
     expected.style_edition = Some(StyleEdition::Edition2026);
     assert_eq!(file, expected);
