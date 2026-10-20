@@ -36,6 +36,32 @@ jobs:
         rustup target add wasm32-unknown-unknown
         cargo build --lib --no-default-features --target wasm32-unknown-unknown
 
+  # The fmt.ron editor (ui/), a leaf crate of its own workspace.
+  ui:
+    name: fmt.ron.ui
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: rustup show
+    - name: Windowing headers for eframe
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxkbcommon-dev libwayland-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: ui
+    - name: Lint and test
+      working-directory: ui
+      run: |
+        cargo fmt --check
+        cargo clippy --all-targets -- -D warnings
+        cargo test
+    - name: Lint for the browser
+      working-directory: ui
+      run: |
+        rustup target add wasm32-unknown-unknown
+        cargo clippy --target wasm32-unknown-unknown -- -D warnings
+
   msrv:
     name: Minimum supported Rust version
     runs-on: ubuntu-latest
