@@ -2,9 +2,12 @@
 
 Published as www.crates.io/crates/fmtron.
 
-**Try it online:** the [online RON formatter](https://barafael.github.io/fmtron/) formats in your browser and can show a file's structure as nested shapes
-runs this crate compiled to WebAssembly, entirely in your browser. Its source
-lives in [`wasm/`](wasm) and [`www/`](www), deployed by
+**Try it online:** the [online RON formatter](https://barafael.github.io/fmtron/)
+formats in your browser and can show a file's structure as nested shapes; the
+[fmt.ron editor](https://barafael.github.io/fmtron/ui/) edits a project's
+configuration file with a live preview. Both run this crate compiled to
+WebAssembly, entirely in your browser. Their sources live in [`wasm/`](wasm),
+[`www/`](www) and [`ui/`](ui), deployed by
 [.github/workflows/pages.yml](.github/workflows/pages.yml).
 
 # About the name
@@ -77,38 +80,56 @@ parse error:  --> levels/one.ron:2:2
 
 Like `rustfmt.toml`, a `fmt.ron` (or hidden `.fmt.ron`) sets formatting
 options for a project. fmtron looks for one in the input file's directory
-and then in each parent directory; the nearest one is used. Every field is
-optional:
+and then in each parent directory; the nearest one is used, and files are
+not merged. The [fmt.ron editor](https://barafael.github.io/fmtron/ui/)
+edits one in the browser with a live preview; see
+[fmt.ron.ui](#fmtronui) below for the desktop version.
+
+The file is RON itself: one struct with these fields, every one optional:
 
 ```ron
 // fmt.ron
 (
-    max_width: 100,     // -w
-    tab_size: 4,        // -t
-    blank_lines: Keep,  // --blank-lines: Keep or Remove
-    max_depth: 512,     // --max-depth
-    max_tab: 1024,      // --max-tab
+    max_width: 100,      // -w
+    tab_size: 4,         // -t
+    blank_lines: Keep,   // --blank-lines: Keep or Remove
+    max_depth: 512,      // --max-depth
+    max_tab: 1024,       // --max-tab
     style_edition: 2026, // --style-edition
 )
 ```
 
+| Field | Type | Default | Meaning |
+|---|---|---|---|
+| `max_width` | integer | `100` | Soft maximum line width; long or deeply nested values may overrun it |
+| `tab_size` | integer | `4` | Indentation per nesting level, in spaces; at most `max_tab` |
+| `blank_lines` | `Keep` or `Remove` | `Keep` | Keep one blank line wherever the input has one or more, or drop them all |
+| `max_depth` | integer, at least 1 | `512` | Deeper input is rejected instead of overflowing the stack |
+| `max_tab` | integer | `1024` | Upper bound on `tab_size`; a larger `tab_size` is an error |
+| `style_edition` | year | `2026` | The set of layout rules; see [STABILITY.md](STABILITY.md) |
+
+- A missing field keeps its default. Since each field is an `Option`, a value may also be written as `Some(100)`, and `None` means "not set"
+- Comments (`//` and nested `/* */`), blank lines, a struct name (`FileConfig(…)`) and `#![enable(…)]` attributes are all fine: the file is parsed with the `ron` crate
 - Settings are applied in this order, later ones winning: built-in defaults, `fmt.ron`, command-line flags
 - Unknown fields and values of the wrong type are errors, reported with the file's path and position, so a typo like `max_widht` cannot silently do nothing
 - `--config <path>` uses a specific file instead of searching; `--no-config` ignores config files
 - `--print-config` prints the effective settings as a complete `fmt.ron`, with the file they came from; with `-i`, it resolves the config the way formatting that file would
+- A `fmt.ron` is a `.ron` file in the project, so `fmtron .` formats it too, with its own settings
 
 ### fmt.ron.ui
 
 A small window for editing a `fmt.ron`: the six fields as a form, a sample
 formatted live with those settings, and the file's text. It is the `ui/`
-crate, and it also runs [in the browser](https://barafael.github.io/fmtron/ui/).
+crate, and the same program runs
+[in the browser](https://barafael.github.io/fmtron/ui/), where opening uses
+the file picker and saving downloads the file.
 
 ```sh
 cargo run --release --manifest-path ui/Cargo.toml          # the fmt.ron in the current directory
 cargo run --release --manifest-path ui/Cargo.toml -- path/to/fmt.ron
 ```
 
-- Ctrl+O opens a file, Ctrl+S saves, Ctrl+Shift+S saves as; `j`/`k` move between fields, Space sets a field or unsets it to inherit the default, ←/→ step a value, Enter types it, `h` lists the keys. In the browser, opening uses the file picker and saving downloads the file
+- Ctrl+O opens a file, Ctrl+S saves, Ctrl+Shift+S saves as; `j`/`k` move between fields, Space sets a field or unsets it to inherit the default, ←/→ step a value, Enter types it, `h` lists the keys
 - Changing a field rewrites only that entry, then lays the file out as fmtron would with the file's own settings. Comments stay; a comment after an entry on the same line goes with the entry when it is unset
 - The file's text is editable directly, for anything the form does not cover
 - Without a `fmt.ron` in the current directory, saving creates one there
