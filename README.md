@@ -97,6 +97,22 @@ optional:
 - `--config <path>` uses a specific file instead of searching; `--no-config` ignores config files
 - `--print-config` prints the effective settings as a complete `fmt.ron`, with the file they came from; with `-i`, it resolves the config the way formatting that file would
 
+### fmt.ron.ui
+
+A small window for editing a `fmt.ron`: the six fields as a form, a sample
+formatted live with those settings, and the file's text. It is the `ui/`
+crate, and it also runs [in the browser](https://barafael.github.io/fmtron/ui/).
+
+```sh
+cargo run --release --manifest-path ui/Cargo.toml          # the fmt.ron in the current directory
+cargo run --release --manifest-path ui/Cargo.toml -- path/to/fmt.ron
+```
+
+- Ctrl+O opens a file, Ctrl+S saves, Ctrl+Shift+S saves as; `j`/`k` move between fields, Space sets a field or unsets it to inherit the default, ←/→ step a value, Enter types it, `h` lists the keys. In the browser, opening uses the file picker and saving downloads the file
+- Changing a field rewrites only that entry, then lays the file out as fmtron would with the file's own settings. Comments stay; a comment after an entry on the same line goes with the entry when it is unset
+- The file's text is editable directly, for anything the form does not cover
+- Without a `fmt.ron` in the current directory, saving creates one there
+
 ## Style
 
 fmtron lays out values by these rules:
