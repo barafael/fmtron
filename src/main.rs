@@ -39,9 +39,9 @@ pub enum Error {
         path: PathBuf,
         source: std::io::Error,
     },
-    #[error("{name}: {source}; raise the limit with --max-depth")]
+    #[error("{name}: {source}; raise the limit with --max-depth / max_depth")]
     TooDeep { name: String, source: FormatError },
-    #[error("{name}: {source}; use a smaller --tab-size")]
+    #[error("{name}: {source}; use a smaller -t / tab_size")]
     TooWide { name: String, source: FormatError },
     /// A parse error; the pest excerpt names the input (`--> path:line:col`).
     #[error("unable to parse RON:\n{0}")]
@@ -52,7 +52,10 @@ pub enum Error {
     Stdout(std::io::Error),
     #[error("{0}")]
     Usage(String),
-    #[error("invalid configuration: {0}")]
+    /// A settings problem. The message carries its own `invalid
+    /// configuration:` prefix, so one that is cached per directory and
+    /// re-raised for each input is not prefixed twice.
+    #[error("{0}")]
     Config(String),
     #[error(transparent)]
     ConfigFile(#[from] fmtron::FileConfigError),
@@ -280,7 +283,8 @@ fn format_on_sized_stack(
 ) -> Result<Result<String, FormatError>, Error> {
     let too_big = || {
         Error::Config(format!(
-            "--max-depth {} needs more stack than can be reserved",
+            "invalid configuration: nesting limit {} (--max-depth / max_depth) needs more stack \
+             than can be reserved",
             config.max_nesting
         ))
     };
@@ -304,7 +308,8 @@ fn checked_config(args: &Arguments, dir: &Path) -> Result<Config, Error> {
     let (config, _) = resolve_config(args, dir)?;
     if config.tab_size > config.max_tab {
         return Err(Error::Config(format!(
-            "tab size {} (-t / tab_size) exceeds the ceiling of {} (--max-tab / max_tab)",
+            "invalid configuration: tab size {} (-t / tab_size) exceeds the ceiling of {} \
+             (--max-tab / max_tab)",
             config.tab_size, config.max_tab
         )));
     }

@@ -6,6 +6,8 @@
 //!     max_width: 100,
 //!     tab_size: 4,
 //!     blank_lines: Keep, // or Remove
+//!     max_depth: 512,
+//!     max_tab: 1024,
 //!     style_edition: 2026,
 //! )
 //! ```

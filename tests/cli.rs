@@ -190,14 +190,14 @@ fn crlf_input_gets_a_crlf_final_newline() {
     );
 }
 
-// M3: a huge --max-tab/--tab-size pair is a clean error, not a panic.
+// M3: a huge --max-tab/-t pair is a clean error, not a panic.
 #[test]
 fn huge_tab_size_is_a_clean_error() {
     let max = usize::MAX.to_string();
     let out = run_cli("[[1]]", &["-d", "-w", "1", "--max-tab", &max, "-t", &max]);
     assert!(!out.status.success());
     let stderr = String::from_utf8_lossy(&out.stderr);
-    assert!(stderr.contains("--tab-size"), "stderr: {stderr}");
+    assert!(stderr.contains("-t / tab_size"), "stderr: {stderr}");
     assert!(!stderr.contains("panicked"), "stderr: {stderr}");
 }
 
