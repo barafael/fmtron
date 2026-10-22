@@ -21,9 +21,9 @@ async function loadIndex() {
 }
 
 function matches(entry, term, f) {
-  if (!term) return true;
-  const hay = (entry.id + ' ' + entry.settings + ' ' + (entry.file || '')).toLowerCase();
-  if (!hay.includes(term)) return false;
+  if (!term && f === 'all') return true;
+  const hay = (entry.id + ' ' + entry.settings + ' ' + (entry.file || '') + ' ' + (entry.configs || []).join(' ')).toLowerCase();
+  if (term && !hay.includes(term)) return false;
   if (f === 'failed') return entry.failed_count > 0;
   if (f === 'static') return !entry.id.startsWith('generated-');
   if (f === 'generated') return entry.id.startsWith('generated-');
@@ -67,13 +67,18 @@ async function loadMatrix(id) {
   const mSettings = text.match(/settings: \(([^()]*(\([^()]*\)[^()]*)*)\)/s) || text.match(/settings: \(([\s\S]*?)\)\s*,\s*results:/);
   const configs = [...text.matchAll(/configs: \[\s*([\s\S]*?)\s*\]/s)].flatMap(m => [...m[1].matchAll(/"([^"]+)"/g)].map(x => x[1]));
   const results = [];
-  const re = /input: "([^"]+)",\s*result: (Formatted\("([\s\S]*?)"\)|Failed\("([\s\S]*?)"\))/gs;
+  const re = /input: "([^"]+)",\s*result: (Formatted\(([\s\S]*?)\)|Failed\(([\s\S]*?)\))/g;
   let mm;
   while ((mm = re.exec(text)) !== null) {
     if (mm[2].startsWith('Formatted')) {
-      results.push({ input: mm[1], type: 'Formatted', value: mm[3] });
+      // extract string content inside outer parens and quotes
+      const inner = mm[3];
+      const mstr = inner.match(/^"([\s\S]*)"$/);
+      results.push({ input: mm[1], type: 'Formatted', value: mstr ? mstr[1] : inner.slice(1, -1) });
     } else {
-      results.push({ input: mm[1], type: 'Failed', value: mm[4] });
+      const inner = mm[4];
+      const mstr = inner.match(/^"([\s\S]*)"$/);
+      results.push({ input: mm[1], type: 'Failed', value: mstr ? mstr[1] : inner.slice(1, -1) });
     }
   }
   const data = { id, text, settingsText: mSettings ? mSettings[1] : '', configs, results };
@@ -133,7 +138,9 @@ function renderResults() {
     const pre = document.createElement('pre');
     const code = document.createElement('code');
     code.className = 'language-ron';
-    code.textContent = r.type === 'Failed' ? r.value : r.value.replace(/\\n/g, '\n');
+    // unescape basic ron string escapes
+    const unesc = (s) => s.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+    code.textContent = unesc(r.value);
     pre.appendChild(code);
     body.appendChild(pre);
     head.addEventListener('click', () => {
