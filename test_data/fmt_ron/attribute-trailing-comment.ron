@@ -1,0 +1,2 @@
+#![enable(implicit_some)] // bare values are Some
+(max_width: 80)

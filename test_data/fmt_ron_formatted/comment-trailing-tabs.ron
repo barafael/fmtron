@@ -1,0 +1,4 @@
+(
+    max_width: 80, // note
+    tab_size: 2, // more
+)

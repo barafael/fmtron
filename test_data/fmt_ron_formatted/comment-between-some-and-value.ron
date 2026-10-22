@@ -1,0 +1,7 @@
+(
+    max_width: Some(
+        // the value
+        80,
+    ),
+    tab_size: 2,
+)

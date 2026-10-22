@@ -1,0 +1,5 @@
+#![enable(implicit_some)]
+// Another extension.
+#![enable(unwrap_newtypes)]
+/* The value. */
+(max_width: 80)

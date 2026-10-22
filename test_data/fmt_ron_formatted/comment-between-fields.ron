@@ -1,0 +1,7 @@
+(
+    max_width: 80,
+    // now the indentation
+    tab_size: 2,
+    /* and blank-line policy */
+    blank_lines: Remove,
+)

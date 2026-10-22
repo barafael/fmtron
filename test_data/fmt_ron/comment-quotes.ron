@@ -1,0 +1,3 @@
+(max_width: 80, // don't "confuse" the lexer },]
+    tab_size: 2 /* still } , ] */
+)

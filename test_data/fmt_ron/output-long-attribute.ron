@@ -1,0 +1,2 @@
+#![enable(implicit_some, unwrap_newtypes, unwrap_variant_newtypes)]
+(max_width: 100000, tab_size: 16, blank_lines: Keep, max_depth: 1000, max_tab: 100000, style_edition: 2026)

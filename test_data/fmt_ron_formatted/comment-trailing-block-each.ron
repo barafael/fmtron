@@ -1,0 +1,4 @@
+(
+    max_width: 80, /* columns */
+    tab_size: 2, /* spaces */
+)

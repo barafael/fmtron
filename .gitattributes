@@ -1,3 +1,9 @@
 # The stability test compares formatter output byte for byte: keep these
 # files exactly as committed, line endings included.
 /test_data/stability/** -text
+# The fmt.ron corpus includes CRLF cases and byte-for-byte golden output.
+/test_data/fmt_ron/** -text
+/test_data/fmt_ron_formatted/** -text
+# The matrix compares formatter output byte for byte; keep its escaped strings
+# and line endings exactly as committed.
+/test_data/fmt_ron_matrix/** -text

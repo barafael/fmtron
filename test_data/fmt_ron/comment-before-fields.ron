@@ -1,0 +1,8 @@
+(
+    // terminal width
+    max_width: 80,
+    // spaces per level
+    tab_size: 2,
+    // keep the author's blank lines
+    blank_lines: Keep,
+)

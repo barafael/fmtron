@@ -1,0 +1,2 @@
+// 宽度：终端可以容纳的列数 — wide characters
+(max_width: 80) // 📏

@@ -1,0 +1,4 @@
+#![enable( /* implicit */ implicit_some, // more
+ unwrap_newtypes )]
+// value
+(max_width: 80)

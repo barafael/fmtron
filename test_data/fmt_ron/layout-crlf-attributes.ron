@@ -1,0 +1,4 @@
+#![enable(implicit_some)]
+(
+    max_width: 80,
+)

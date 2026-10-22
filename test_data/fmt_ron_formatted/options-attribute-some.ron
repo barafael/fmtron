@@ -1,0 +1,2 @@
+#![enable(implicit_some)]
+(max_width: Some(80), tab_size: Some(2))

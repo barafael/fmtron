@@ -1,0 +1,6 @@
+(
+    /* one /* two /* three */ two */ one */
+    max_width: 80,
+    /* plain */
+    tab_size: 2,
+)

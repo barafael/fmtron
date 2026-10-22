@@ -1,0 +1,1 @@
+(max_width: Some(80), tab_size: Some(2), blank_lines: Some(Keep), max_depth: Some(512), max_tab: Some(1024), style_edition: Some(2026))

@@ -1,0 +1,8 @@
+(
+    max_width: None,
+    tab_size: None,
+    blank_lines: None,
+    max_depth: None,
+    max_tab: None,
+    style_edition: None,
+)

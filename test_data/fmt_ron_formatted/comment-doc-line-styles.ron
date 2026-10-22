@@ -1,0 +1,4 @@
+/// outer documentation
+//! inner documentation
+//// four slashes
+(max_width: 80)

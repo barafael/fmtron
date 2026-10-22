@@ -1,0 +1,5 @@
+(
+    /* this comment
+       spans lines */
+    max_width: 80,
+)

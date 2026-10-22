@@ -1,0 +1,2 @@
+#![enable(unwrap_newtypes)]
+(tab_size: 2)

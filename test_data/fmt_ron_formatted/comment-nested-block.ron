@@ -1,0 +1,4 @@
+(
+    /* outer /* inner */ still outer */
+    max_width: 80,
+)

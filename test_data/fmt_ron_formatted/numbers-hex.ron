@@ -1,0 +1,7 @@
+(
+    max_width: 0x50,
+    tab_size: 0x4,
+    max_depth: 0x10,
+    max_tab: 0x400,
+    style_edition: 0x7EA,
+)

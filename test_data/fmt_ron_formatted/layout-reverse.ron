@@ -1,0 +1,8 @@
+(
+    style_edition: 2026,
+    max_tab: 1024,
+    max_depth: 512,
+    blank_lines: Keep,
+    tab_size: 2,
+    max_width: 80,
+)

@@ -1,0 +1,9 @@
+#![enable(implicit_some)] // CRLF
+(
+    max_width: 80, // width
+    tab_size: 2,
+    blank_lines: Keep, /* keep */
+    max_depth: 512,
+    max_tab: 1024,
+    style_edition: 2026,
+)

@@ -1,0 +1,5 @@
+// leading
+(
+    max_width: 80, // trailing
+    /* block */
+)

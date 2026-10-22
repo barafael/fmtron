@@ -1,0 +1,2 @@
+#![enable(implicit_some, unwrap_newtypes, unwrap_variant_newtypes)]
+(max_width: 80, blank_lines: Remove)

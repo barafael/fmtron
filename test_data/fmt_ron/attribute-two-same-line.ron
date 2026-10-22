@@ -1,0 +1,2 @@
+#![enable(implicit_some)] #![enable(unwrap_newtypes)]
+(max_width: 80)

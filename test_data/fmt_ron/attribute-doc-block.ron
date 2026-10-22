@@ -1,0 +1,2 @@
+/*! fmt.ron for a narrow project. */
+(max_width: 80)

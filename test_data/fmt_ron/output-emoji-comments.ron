@@ -1,0 +1,2 @@
+// 📏 the width; 🧱 the indent; 🧹 blank lines
+(max_width: 80, tab_size: 2, blank_lines: Remove) // 🚀
