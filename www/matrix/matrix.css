@@ -157,11 +157,11 @@
   max-height: 0;
   padding: 0 10px;
   background: var(--bg);
-  transition: max-height 220ms ease, padding 220ms ease;
+  transition: max-height 320ms ease, padding 220ms ease;
 }
 
 .result.open .result-body {
-  max-height: 60vh;
+  max-height: 80vh;
   overflow: auto;
   padding: 8px 10px;
 }
@@ -169,6 +169,7 @@
 .result-body pre {
   margin: 0;
   overflow: auto;
+  max-height: none;
 }
 
 .result-body code {
