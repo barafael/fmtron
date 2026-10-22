@@ -1,3 +1,5 @@
+import { highlightRon } from '../highlight.js';
+
 const list = document.getElementById('list');
 const q = document.getElementById('q');
 const filter = document.getElementById('filter');
@@ -104,11 +106,7 @@ async function select(entry) {
   current = await loadMatrix(entry.id);
   detailTitle.textContent = current.id;
   detailMeta.textContent = `${current.configs.length} config source${current.configs.length === 1 ? '' : 's'} · ${current.results.length} inputs`;
-  settingsEl.textContent = `(${current.settingsText})`;
-  if (window.hljs) {
-    delete settingsEl.dataset.highlighted;
-    window.hljs.highlightElement(settingsEl);
-  }
+  settingsEl.innerHTML = highlightRon(`(${current.settingsText})`);
   sources.replaceChildren();
   for (const c of current.configs) {
     const chip = document.createElement('span');
@@ -146,13 +144,13 @@ function renderResults() {
     code.className = 'language-ron';
     // unescape basic ron string escapes
     const unesc = (s) => s.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-    code.textContent = unesc(r.value);
     pre.appendChild(code);
     body.appendChild(pre);
     head.addEventListener('click', () => {
       item.classList.toggle('open');
-      if (item.classList.contains('open') && window.hljs && !code.dataset.highlighted) {
-        window.hljs.highlightElement(code);
+      if (item.classList.contains('open') && code.dataset.rendered !== '1') {
+        code.innerHTML = highlightRon(unesc(r.value));
+        code.dataset.rendered = '1';
       }
     });
     item.appendChild(head);
