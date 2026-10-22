@@ -96,8 +96,6 @@ async function loadMatrix(id) {
   return data;
 }
 
-let inputsCache = new Map();
-
 async function getInput(name) {
   if (inputsCache.has(name)) return inputsCache.get(name);
   const res = await fetch(`../../test_data/ron_corpus/${name}`);
@@ -178,8 +176,19 @@ function renderResults() {
     body.appendChild(fhead);
     body.appendChild(pre);
     codes.push(code);
-    // unescape basic ron string escapes
-    const unesc = (s) => s.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+    // Unescape the RON string escapes the golden matrix uses. The matrix
+    // serializes every cell as a RON string, so what is shown is the
+    // formatter's own output, not a re-encoded rendering of it.
+    const unesc = (s) => s
+      .replace(/\\u\{([0-9a-fA-F]+)\}/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+      .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
+      .replace(/\\n/g, '\n')
+      .replace(/\\r/g, '\r')
+      .replace(/\\t/g, '\t')
+      .replace(/\\0/g, '\0')
+      .replace(/\\"/g, '"')
+      .replace(/\\'/g, "'")
+      .replace(/\\\\/g, '\\');
     head.addEventListener('click', () => {
       item.classList.toggle('open');
       if (item.classList.contains('open')) {

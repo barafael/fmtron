@@ -40,11 +40,16 @@ jobs:
           cargo clippy --all-targets -- -D warnings
           cargo test
       - name: Syntax-check the page scripts
-        run: cp www/main.js /tmp/main.mjs && node --check /tmp/main.mjs
+        run: |
+          for script in www/main.js www/matrix/matrix.js; do
+            cp "$script" "/tmp/$(basename "$script" .js).mjs"
+            node --check "/tmp/$(basename "$script" .js).mjs"
+          done
       - name: Test the highlighter and the structural view's parser
         run: |
           node --test www/test/highlight.test.mjs
           node --test www/test/structure.test.mjs
+          node --test www/test/matrix.test.mjs
       - name: Build fmtron-wasm
         working-directory: wasm
         run: cargo build --release --target wasm32-unknown-unknown
@@ -84,13 +89,18 @@ jobs:
           wasm-bindgen --target web --out-name fmtron_ui --out-dir ../www/ui/pkg \
             target/wasm32-unknown-unknown/release/fmtron-ui.wasm
       - uses: actions/configure-pages@v5
+      - name: Build the matrix catalog data
+        run: python3 tools/build_matrix_site.py
       # The Node test suite lives under www/ for import-path reasons but is
-      # not part of the site; stage the artifact without it.
+      # not part of the site; stage the artifact without it. The matrix page
+      # also shows the original inputs, so bring the corpus along.
       - name: Stage the site
         run: |
           rm -rf /tmp/site
           cp -r www /tmp/site
           rm -rf /tmp/site/test
+          mkdir -p /tmp/site/test_data/ron_corpus
+          cp test_data/ron_corpus/*.ron /tmp/site/test_data/ron_corpus/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: /tmp/site
