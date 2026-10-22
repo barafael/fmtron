@@ -16,7 +16,8 @@
 }
 
 .list-pane .list {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -60,6 +61,24 @@
   gap: 14px;
   flex: 1;
   min-height: 0;
+}
+
+.results-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.results-sticky {
+  position: sticky;
+  top: -12px;
+  background: var(--bg);
+  padding: 12px 0 8px 0;
+  z-index: 2;
+}
+
+.results-sticky h3 {
+  margin: 0 0 8px 0;
 }
 
 .section h3 {
