@@ -65,7 +65,13 @@ async function loadMatrix(id) {
   const text = await res.text();
   // naive parse of our RON shape
   const mSettings = text.match(/settings: \(([^()]*(\([^()]*\)[^()]*)*)\)/s) || text.match(/settings: \(([\s\S]*?)\)\s*,\s*results:/);
-  const configs = [...text.matchAll(/configs: \[\s*([\s\S]*?)\s*\]/s)].flatMap(m => [...m[1].matchAll(/"([^"]+)"/g)].map(x => x[1]));
+  const configs = [];
+  const mcfg = text.match(/configs: \[\s*([\s\S]*?)\s*\]/);
+  if (mcfg) {
+    const re2 = /"([^"]+)"/g;
+    let m2;
+    while ((m2 = re2.exec(mcfg[1])) !== null) configs.push(m2[1]);
+  }
   const results = [];
   const re = /input: "([^"]+)",\s*result: (Formatted\(([\s\S]*?)\)|Failed\(([\s\S]*?)\))/g;
   let mm;
