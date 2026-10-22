@@ -1,5 +1,18 @@
 .matrix-main {
   grid-template-columns: minmax(260px, 420px) 1fr;
+  height: calc(100vh - 190px);
+}
+
+.list-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.detail-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .list-pane .list {
@@ -8,6 +21,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 1;
+  min-height: 0;
 }
 
 .row {
@@ -43,6 +58,8 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  flex: 1;
+  min-height: 0;
 }
 
 .section h3 {
@@ -136,19 +153,22 @@
 }
 
 .result-body {
-  display: none;
-  padding: 8px 10px;
+  overflow: hidden;
+  max-height: 0;
+  padding: 0 10px;
   background: var(--bg);
+  transition: max-height 220ms ease, padding 220ms ease;
 }
 
 .result.open .result-body {
-  display: block;
+  max-height: 60vh;
+  overflow: auto;
+  padding: 8px 10px;
 }
 
 .result-body pre {
   margin: 0;
   overflow: auto;
-  max-height: 320px;
 }
 
 .result-body code {
