@@ -10,11 +10,13 @@ const settingsEl = document.getElementById('settings');
 const sources = document.getElementById('sources');
 const rQ = document.getElementById('r-q');
 const onlyFailed = document.getElementById('only-failed');
+const showInput = document.getElementById('show-input');
 const resultsEl = document.getElementById('results');
 
 let index = null;
 let current = null;
 let cache = new Map();
+let inputsCache = new Map();
 
 async function loadIndex() {
   const res = await fetch('./data/index.json');
@@ -94,9 +96,14 @@ async function loadMatrix(id) {
   return data;
 }
 
-function unescapeRonString(s) {
-  // very rough for display; highlight will still work on raw
-  return s;
+let inputsCache = new Map();
+
+async function getInput(name) {
+  if (inputsCache.has(name)) return inputsCache.get(name);
+  const res = await fetch(`../../test_data/ron_corpus/${name}`);
+  const text = await res.text();
+  inputsCache.set(name, text);
+  return text;
 }
 
 async function select(entry) {
@@ -121,6 +128,7 @@ function renderResults() {
   if (!current) return;
   const rq = (rQ.value || '').toLowerCase().trim();
   const failedOnly = onlyFailed.checked;
+  const showOrig = showInput ? showInput.checked : false;
   resultsEl.replaceChildren();
   for (const r of current.results) {
     if (failedOnly && r.type !== 'Failed') continue;
@@ -139,18 +147,53 @@ function renderResults() {
     head.appendChild(state);
     const body = document.createElement('div');
     body.className = 'result-body';
+    const codes = [];
+    if (showOrig) {
+      const ohead = document.createElement('div');
+      ohead.className = 'row-meta';
+      ohead.textContent = 'Original';
+      const op = document.createElement('pre');
+      const ocode = document.createElement('code');
+      ocode.className = 'language-ron';
+      op.appendChild(ocode);
+      body.appendChild(ohead);
+      body.appendChild(op);
+      codes.push(ocode);
+      getInput(r.input).then(t => {
+        if (item.classList.contains('open') && ocode.dataset.rendered !== '1') {
+          ocode.innerHTML = highlightRon(t);
+          ocode.dataset.rendered = '1';
+        } else {
+          ocode.dataset.orig = t;
+        }
+      });
+    }
+    const fhead = document.createElement('div');
+    fhead.className = 'row-meta';
+    fhead.textContent = r.type === 'Failed' ? 'Error' : 'Formatted';
     const pre = document.createElement('pre');
     const code = document.createElement('code');
     code.className = 'language-ron';
+    pre.appendChild(code);
+    body.appendChild(fhead);
+    body.appendChild(pre);
+    codes.push(code);
     // unescape basic ron string escapes
     const unesc = (s) => s.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-    pre.appendChild(code);
-    body.appendChild(pre);
     head.addEventListener('click', () => {
       item.classList.toggle('open');
-      if (item.classList.contains('open') && code.dataset.rendered !== '1') {
-        code.innerHTML = highlightRon(unesc(r.value));
-        code.dataset.rendered = '1';
+      if (item.classList.contains('open')) {
+        if (showOrig && codes[0]) {
+          if (codes[0].dataset.orig && codes[0].dataset.rendered !== '1') {
+            codes[0].innerHTML = highlightRon(codes[0].dataset.orig);
+            codes[0].dataset.rendered = '1';
+          }
+        }
+        const codeEl = codes[codes.length - 1];
+        if (codeEl.dataset.rendered !== '1') {
+          codeEl.innerHTML = highlightRon(unesc(r.value));
+          codeEl.dataset.rendered = '1';
+        }
       }
     });
     item.appendChild(head);
@@ -160,6 +203,7 @@ function renderResults() {
 }
 
 rQ.addEventListener('input', renderResults);
-onlyFailed.addEventListener('change', renderResults);
+if (onlyFailed) onlyFailed.addEventListener('change', renderResults);
+if (showInput) showInput.addEventListener('change', renderResults);
 
 loadIndex();
