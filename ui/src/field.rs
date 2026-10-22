@@ -76,7 +76,9 @@ impl Field {
             Self::MaxWidth => {
                 "Soft maximum line width, at least 1. Long or deeply nested values may overrun it."
             }
-            Self::TabSize => "Indentation per nesting level, in spaces; at least 1 and at most max_tab.",
+            Self::TabSize => {
+                "Indentation per nesting level, in spaces; at least 1 and at most max_tab."
+            }
             Self::BlankLines => {
                 "Keep: one blank line wherever the input has one or more. Remove: none."
             }
