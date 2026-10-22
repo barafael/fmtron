@@ -5,16 +5,15 @@ import { fileURLToPath } from 'node:url';
 
 // matrix.js has no exports (it is a page script), so the two pure helpers it
 // relies on are mirrored here. Keep them in sync with www/matrix/matrix.js.
-const unescapeRon = (s) => s
-  .replace(/\\u\{([0-9a-fA-F]+)\}/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-  .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
-  .replace(/\\n/g, '\n')
-  .replace(/\\r/g, '\r')
-  .replace(/\\t/g, '\t')
-  .replace(/\\0/g, '\0')
-  .replace(/\\"/g, '"')
-  .replace(/\\'/g, "'")
-  .replace(/\\\\/g, '\\');
+const unescapeRon = (s) => s.replace(
+  /\\(?:u\{([0-9a-fA-F]+)\}|u([0-9a-fA-F]{4})|x([0-9a-fA-F]{2})|([nrt0"'\\]))/g,
+  (m, ubrace, u4, x, simple) => {
+    if (ubrace) return String.fromCodePoint(parseInt(ubrace, 16));
+    if (u4) return String.fromCodePoint(parseInt(u4, 16));
+    if (x) return String.fromCharCode(parseInt(x, 16));
+    return { n: '\n', r: '\r', t: '\t', '0': '\0', '"': '"', "'": "'", '\\': '\\' }[simple];
+  }
+);
 
 const CELL = /input: "([^"]+)",\s*result: (Formatted\(([\s\S]*?)\)|Failed\(([\s\S]*?)\))/g;
 
@@ -54,14 +53,19 @@ test('a formatted cell is unescaped to the formatter output', () => {
   assert.equal(unescapeRon(cell.value), '[\n 1,\n\n 2,\n\n // between elements\n\n 3,\n]');
 });
 
-test('unicode and byte escapes survive', () => {
-  // RON cells from the golden matrix, verbatim (as JS source strings).
-  assert.equal(unescapeRon('\\"\\\\u{1F980}\\"'), '"\\🦀"');
+test('literal formatter output survives decoding', () => {
+  // The golden matrix wraps the formatter output in a RON string. Literal
+  // `\u{...}` / `\x..` text the formatter emitted must stay literal; only the
+  // RON layer itself is decoded.
+  assert.equal(unescapeRon('\\"\\\\u{1F980}\\"'), '"\\u{1F980}"');
+  assert.equal(unescapeRon("\\'\\\\u{1F980}\\'"), "'\\u{1F980}'");
   // The JS source string is  b\\"{\\\\x00\\\\x00}\\"  (RON for a byte string).
-  assert.equal(unescapeRon('b\\"{\\x00\\x00}\\"'), 'b"{\x00\x00}"');
-  assert.equal(unescapeRon("\\'\\\\u{1F980}\\'"), "'\\🦀'");
-  // Invalid UTF-8 bytes in a byte string stay one character each.
-  assert.equal(unescapeRon('b\\"\\xff/not a comment\\"'), 'b"\xff/not a comment"');
+  assert.equal(unescapeRon('b\\"{\\\\x00\\\\x00}\\"'), 'b"{\\x00\\x00}"');
+  // A literal backslash-n in the output is not a newline.
+  assert.equal(unescapeRon('\\"a\\\\nb\\"'), '"a\\nb"');
+  // Real RON escapes are decoded exactly once.
+  assert.equal(unescapeRon('a\\nb'), 'a\nb');
+  assert.equal(unescapeRon('\\"\\\\\\"\\"'), '"\\""');
 });
 
 test('matrix settings and config sources parse out of a row', () => {

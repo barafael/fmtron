@@ -176,19 +176,22 @@ function renderResults() {
     body.appendChild(fhead);
     body.appendChild(pre);
     codes.push(code);
-    // Unescape the RON string escapes the golden matrix uses. The matrix
-    // serializes every cell as a RON string, so what is shown is the
-    // formatter's own output, not a re-encoded rendering of it.
-    const unesc = (s) => s
-      .replace(/\\u\{([0-9a-fA-F]+)\}/g, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-      .replace(/\\x([0-9a-fA-F]{2})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)))
-      .replace(/\\n/g, '\n')
-      .replace(/\\r/g, '\r')
-      .replace(/\\t/g, '\t')
-      .replace(/\\0/g, '\0')
-      .replace(/\\"/g, '"')
-      .replace(/\\'/g, "'")
-      .replace(/\\\\/g, '\\');
+    // Decode the RON string layer the golden matrix wraps every cell in. The
+    // matrix serializes the formatter output as a RON string, so decoding it
+    // once recovers exactly what the formatter produced, including literal
+    // `\u{...}`, `\x..` and `\n` sequences that belong to the output itself.
+    // This has to be a single pass: a chained `replace` would re-read the
+    // backslash it just decoded and turn `\\u{1F980}` into the emoji instead
+    // of the literal text the formatter emitted.
+    const unesc = (s) => s.replace(
+      /\\(?:u\{([0-9a-fA-F]+)\}|u([0-9a-fA-F]{4})|x([0-9a-fA-F]{2})|([nrt0"'\\]))/g,
+      (m, ubrace, u4, x, simple) => {
+        if (ubrace) return String.fromCodePoint(parseInt(ubrace, 16));
+        if (u4) return String.fromCodePoint(parseInt(u4, 16));
+        if (x) return String.fromCharCode(parseInt(x, 16));
+        return { n: '\n', r: '\r', t: '\t', '0': '\0', '"': '"', "'": "'", '\\': '\\' }[simple];
+      }
+    );
     head.addEventListener('click', () => {
       item.classList.toggle('open');
       if (item.classList.contains('open')) {
