@@ -101,17 +101,17 @@ The file is RON itself: one struct with these fields, every one optional:
 
 | Field | Type | Default | Meaning |
 |---|---|---|---|
-| `max_width` | integer | `100` | Soft maximum line width; long or deeply nested values may overrun it |
-| `tab_size` | integer | `4` | Indentation per nesting level, in spaces; at most `max_tab` |
+| `max_width` | integer, at least 1 | `100` | Soft maximum line width; long or deeply nested values may overrun it |
+| `tab_size` | integer, at least 1 | `4` | Indentation per nesting level, in spaces; at most `max_tab` |
 | `blank_lines` | `Keep` or `Remove` | `Keep` | Keep one blank line wherever the input has one or more, or drop them all |
 | `max_depth` | integer, at least 1 | `512` | Deeper input is rejected instead of overflowing the stack |
-| `max_tab` | integer | `1024` | Upper bound on `tab_size`; a larger `tab_size` is an error |
+| `max_tab` | integer, at least 1 | `1024` | Upper bound on `tab_size`; a larger `tab_size` is an error |
 | `style_edition` | year | `2026` | The set of layout rules; see [STABILITY.md](STABILITY.md) |
 
 - A missing field keeps its default. Since each field is an `Option`, a value may also be written as `Some(100)`, and `None` means "not set"
 - Comments (`//` and nested `/* */`), blank lines, a struct name (`FileConfig(…)`) and `#![enable(…)]` attributes are all fine: the file is parsed with the `ron` crate
 - Settings are applied in this order, later ones winning: built-in defaults, `fmt.ron`, command-line flags
-- Unknown fields and values of the wrong type are errors, reported with the file's path and position, so a typo like `max_widht` cannot silently do nothing
+- Unknown fields, values of the wrong type, and unusable sizes are errors, reported with the file's path and position, so a typo like `max_widht` cannot silently do nothing. In particular, `max_width`, `tab_size`, and `max_tab` must be at least 1, and `tab_size` may not exceed `max_tab`
 - `--config <path>` uses a specific file instead of searching; `--no-config` ignores config files
 - `--print-config` prints the effective settings as a complete `fmt.ron`, with the file they came from; with `-i`, it resolves the config the way formatting that file would
 - A `fmt.ron` is a `.ron` file in the project, so `fmtron .` formats it too, with its own settings

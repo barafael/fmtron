@@ -1,0 +1,6 @@
+(
+    one: Some(1),
+    nested: Some(Some("value")),
+    none: None,
+    list: [Some(1), None, Some(2)],
+)

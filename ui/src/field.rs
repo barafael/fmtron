@@ -74,9 +74,9 @@ impl Field {
     pub const fn help(self) -> &'static str {
         match self {
             Self::MaxWidth => {
-                "Soft maximum line width. Long or deeply nested values may overrun it."
+                "Soft maximum line width, at least 1. Long or deeply nested values may overrun it."
             }
-            Self::TabSize => "Indentation per nesting level, in spaces.",
+            Self::TabSize => "Indentation per nesting level, in spaces; at least 1 and at most max_tab.",
             Self::BlankLines => {
                 "Keep: one blank line wherever the input has one or more. Remove: none."
             }
@@ -88,8 +88,9 @@ impl Field {
 
     pub const fn kind(self) -> Kind {
         match self {
-            Self::MaxWidth | Self::TabSize | Self::MaxTab => Kind::Number { min: 0 },
-            Self::MaxDepth => Kind::Number { min: 1 },
+            Self::MaxWidth | Self::TabSize | Self::MaxTab | Self::MaxDepth => {
+                Kind::Number { min: 1 }
+            }
             Self::BlankLines => Kind::Choice(&["Keep", "Remove"]),
             Self::StyleEdition => Kind::Choice(&["2026"]),
         }

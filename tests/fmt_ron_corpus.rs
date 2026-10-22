@@ -175,6 +175,9 @@ fn every_case_parses_to_the_documented_settings() {
             case.file, case.category
         );
 
+        parsed
+            .validate()
+            .unwrap_or_else(|e| panic!("{}: invalid settings: {e}", case.file));
         // A configured tab size must fit under its ceiling, the only
         // cross-field rule the CLI enforces on a `fmt.ron`.
         let mut config = Config::default();
@@ -229,9 +232,9 @@ fn formatting_preserves_settings_comments_and_line_endings() {
             .with_tab_size(2)
             .with_blank_lines(BlankLines::Remove),
         Config::default()
-            .with_max_width(0)
-            .with_tab_size(0)
-            .with_max_tab(0)
+            .with_max_width(1)
+            .with_tab_size(1)
+            .with_max_tab(1)
             .with_blank_lines(BlankLines::Remove),
     ];
 

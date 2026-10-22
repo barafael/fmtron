@@ -1,0 +1,4 @@
+(
+    message: "a very long string value that cannot be broken by the formatter and will overrun a narrow line width",
+    short: "ok",
+)

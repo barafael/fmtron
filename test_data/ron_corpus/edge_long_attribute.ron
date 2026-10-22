@@ -1,0 +1,3 @@
+#![enable(implicit_some, unwrap_newtypes, unwrap_variant_newtypes)]
+// A long attribute followed by a value.
+Config(alpha: 1, beta: 2, gamma: [1, 2, 3])

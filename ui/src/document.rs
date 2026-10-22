@@ -76,12 +76,20 @@ impl Document {
             Err(e) => Some(e.to_string()),
             Ok(_) => {
                 let config = self.config();
-                (config.tab_size > config.max_tab).then(|| {
-                    format!(
-                        "tab_size {} exceeds max_tab {}",
-                        config.tab_size, config.max_tab
-                    )
-                })
+                if config.max_width == 0 {
+                    Some(String::from("max_width must be at least 1"))
+                } else if config.tab_size == 0 {
+                    Some(String::from("tab_size must be at least 1"))
+                } else if config.max_tab == 0 {
+                    Some(String::from("max_tab must be at least 1"))
+                } else {
+                    (config.tab_size > config.max_tab).then(|| {
+                        format!(
+                            "tab_size {} exceeds max_tab {}",
+                            config.tab_size, config.max_tab
+                        )
+                    })
+                }
             }
         }
     }

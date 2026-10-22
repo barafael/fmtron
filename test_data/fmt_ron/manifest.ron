@@ -1,7 +1,7 @@
 (
     description: "Valid fmt.ron variations: syntax, comments, attributes, numbers, options, and layout.",
     purpose: "Round-trip and config-parsing corpus for `fmt.ron`, the per-project configuration file.",
-    total_files: 164,
+    total_files: 158,
     cases: [
         (
             file: "attribute-all.ron",
@@ -196,16 +196,10 @@
             yields: (max_width: 40, tab_size: 2, blank_lines: Remove, max_depth: 64, max_tab: 16, style_edition: 2026),
         ),
         (
-            file: "combo-max-tab-0.ron",
-            category: "combo",
-            note: "A zero indentation ceiling.",
-            yields: (tab_size: 0, max_tab: 0),
-        ),
-        (
             file: "combo-max-tab-1.ron",
             category: "combo",
-            note: "An indentation ceiling of one.",
-            yields: (tab_size: 0, max_tab: 1),
+            note: "An indentation ceiling of one, with a tab size that fits.",
+            yields: (tab_size: 1, max_tab: 1),
         ),
         (
             file: "combo-max-tab-16.ron",
@@ -256,12 +250,6 @@
             yields: (style_edition: 2026),
         ),
         (
-            file: "combo-tab-0.ron",
-            category: "combo",
-            note: "No indentation.",
-            yields: (max_width: 72, tab_size: 0, max_tab: 0),
-        ),
-        (
             file: "combo-tab-1.ron",
             category: "combo",
             note: "One space per level.",
@@ -296,12 +284,6 @@
             category: "combo",
             note: "Width and indentation.",
             yields: (max_width: 40, tab_size: 2),
-        ),
-        (
-            file: "combo-width-0.ron",
-            category: "combo",
-            note: "Width 0.",
-            yields: (max_width: 0),
         ),
         (
             file: "combo-width-1.ron",
@@ -784,18 +766,6 @@
             yields: (max_width: 80, tab_size: 4, max_depth: 16, max_tab: 1024),
         ),
         (
-            file: "numbers-tab-zero-max-tab-one.ron",
-            category: "number",
-            note: "Zero indentation with a ceiling of one.",
-            yields: (tab_size: 0, max_tab: 1),
-        ),
-        (
-            file: "numbers-tab-zero.ron",
-            category: "number",
-            note: "Zero indentation.",
-            yields: (tab_size: 0, max_tab: 0),
-        ),
-        (
             file: "numbers-underscores.ron",
             category: "number",
             note: "Digit separators.",
@@ -806,12 +776,6 @@
             category: "number",
             note: "A one-column line width.",
             yields: (max_width: 1),
-        ),
-        (
-            file: "numbers-width-zero.ron",
-            category: "number",
-            note: "A zero line width.",
-            yields: (max_width: 0),
         ),
         (
             file: "numbers-zero-padded-hex.ron",
@@ -978,14 +942,14 @@
         (
             file: "output-width-tiny-comments.ron",
             category: "output",
-            note: "Zero width with comments and wide values.",
-            yields: (max_width: 0, tab_size: 0, blank_lines: Remove, max_tab: 0),
+            note: "Width one with comments and wide values.",
+            yields: (max_width: 1, tab_size: 1, blank_lines: Remove, max_tab: 1),
         ),
         (
             file: "output-width-tiny.ron",
             category: "output",
-            note: "Zero width and zero indentation: every field on its own line.",
-            yields: (max_width: 0, tab_size: 0, blank_lines: Remove, max_tab: 0),
+            note: "Width one and one space per level: every field on its own line.",
+            yields: (max_width: 1, tab_size: 1, blank_lines: Remove, max_tab: 1),
         ),
     ],
 )

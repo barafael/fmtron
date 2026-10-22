@@ -1,0 +1,6 @@
+// before
+(
+    alpha: 1,
+    // after last field
+)
+// after

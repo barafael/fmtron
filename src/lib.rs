@@ -103,17 +103,21 @@ pub const MAX_INDENT: usize = 1 << 20;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[non_exhaustive]
 pub struct Config {
-    /// Indentation per nesting level, in spaces. Default 4.
+    /// Indentation per nesting level, in spaces. Default 4. [`format_ron`]
+    /// treats 0 as 1, so a programmatic configuration cannot emit unindented
+    /// output; a `fmt.ron` rejects 0.
     pub tab_size: usize,
     /// The line width to stay within where the layout allows. A soft limit:
     /// a long atom, or a deeply indented one, may overrun it. Default
-    /// [`DEFAULT_WIDTH`].
+    /// [`DEFAULT_WIDTH`]. [`format_ron`] treats 0 as 1; a `fmt.ron` rejects
+    /// 0.
     pub max_width: usize,
     /// Maximum container-nesting depth accepted; deeper input is rejected with
     /// [`FormatError::TooDeep`] instead of overflowing the stack. Default
     /// [`MAX_NESTING`]; lower it for input you do not trust.
     pub max_nesting: usize,
-    /// Upper bound enforced on `tab_size`; larger values are clamped. Default
+    /// Upper bound enforced on `tab_size`; larger values are clamped, as is
+    /// 0. A `fmt.ron` rejects a ceiling below its tab size. Default
     /// [`MAX_TAB`].
     pub max_tab: usize,
     /// Whether blank lines between elements are kept. Default
@@ -282,13 +286,15 @@ pub enum FormatError {
 /// would exceed [`MAX_INDENT`], and [`FormatError::Parse`] if the input cannot
 /// be parsed as RON.
 pub fn format_ron(input: &str, config: &Config) -> Result<String, FormatError> {
-    // Clamp `tab_size` to the configured ceiling so pathological values can
-    // never emit absurd indentation, then enforce the nesting bound *before*
-    // parsing: the scan below is iterative, so it cannot blow the stack the
-    // way pest's recursive descent would on input like `[[[[...`.
+    // Clamp zero and oversized sizes so a programmatic configuration cannot
+    // emit zero indentation or absurd indentation. Then enforce the nesting
+    // bound *before* parsing: the scan below is iterative, so it cannot blow
+    // the stack the way pest's recursive descent would on input like
+    // `[[[[...`.
     let max_nesting = config.max_nesting.max(1);
     let effective = Config {
-        tab_size: config.tab_size.min(config.max_tab.max(1)),
+        tab_size: config.tab_size.max(1).min(config.max_tab.max(1)),
+        max_width: config.max_width.max(1),
         max_nesting,
         ..*config
     };

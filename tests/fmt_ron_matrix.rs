@@ -36,10 +36,12 @@
 //! files and can miss map-only changes; `wild_corpus` checks semantics rather
 //! than exact bytes. The matrix is the cross-product check that catches both.
 
+#[path = "support/config_cases.rs"]
+mod config_cases;
+
 use fmtron::{BlankLines, Config, FileConfig, format_ron};
-use ron::extensions::Extensions;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
 const SOURCE: &str = "test_data/ron_corpus";
@@ -54,15 +56,18 @@ struct Manifest {
     source_corpus: String,
     config_corpus: String,
     total_inputs: usize,
+    /// Every config source: corpus files plus generated settings cases.
     total_configs: usize,
+    /// Unique effective settings, one golden row each.
+    total_settings: usize,
     total_cells: usize,
     /// Sorted file names, relative to `source_corpus`.
     inputs: Vec<String>,
-    /// Sorted file names, relative to `config_corpus`.
+    /// Sorted config source names. Generated cases start with `generated-`.
     configs: Vec<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 struct Settings {
     max_width: usize,
     tab_size: usize,
@@ -72,7 +77,7 @@ struct Settings {
     style_edition: u16,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 enum GoldenBlankLines {
     Keep,
     Remove,
@@ -102,8 +107,10 @@ impl Settings {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 struct Matrix {
-    /// The `fmt.ron` file name this row belongs to.
+    /// The canonical config source this row is named after.
     config: String,
+    /// Every config source that produces these settings.
+    configs: Vec<String>,
     /// The settings after applying the config to the built-in defaults.
     settings: Settings,
     /// One entry per corpus input, sorted by input file name.
@@ -143,52 +150,102 @@ fn read(path: &Path) -> String {
 fn config_for(name: &str) -> (Config, Settings) {
     let path = Path::new(CONFIGS).join(name);
     let text = read(&path);
-    let file: FileConfig = ron::Options::default()
-        .with_default_extension(Extensions::IMPLICIT_SOME)
-        .from_str(&text)
+    let file: FileConfig = text
+        .parse()
         .unwrap_or_else(|e| panic!("{}: invalid fmt.ron: {e}", path.display()));
     let mut config = Config::default();
     file.apply(&mut config);
     (config, Settings::of(&config))
 }
 
+struct Source {
+    name: String,
+    config: Config,
+    settings: Settings,
+    /// Generated cases are not files in the config corpus, so their names are
+    /// only labels in the manifest.
+    generated: bool,
+}
+
 fn generate() -> (Manifest, Vec<Matrix>) {
     let inputs = ron_files(SOURCE, &[]);
-    let configs = ron_files(CONFIGS, &["manifest.ron"]);
+    let static_configs = ron_files(CONFIGS, &["manifest.ron"]);
     let input_texts: Vec<(String, String)> = inputs
         .iter()
         .map(|name| (name.clone(), read(&Path::new(SOURCE).join(name))))
         .collect();
 
-    let mut matrix = Vec::with_capacity(configs.len());
-    for config_name in &configs {
-        let (config, settings) = config_for(config_name);
+    let mut sources =
+        Vec::with_capacity(static_configs.len() + config_cases::matrix_subset().len());
+    for name in &static_configs {
+        let (config, settings) = config_for(name);
+        sources.push(Source {
+            name: name.clone(),
+            config,
+            settings,
+            generated: false,
+        });
+    }
+    for case in config_cases::matrix_subset() {
+        sources.push(Source {
+            name: case.name,
+            config: case.config,
+            settings: Settings::of(&case.config),
+            generated: true,
+        });
+    }
+
+    let mut groups: BTreeMap<Settings, Vec<Source>> = BTreeMap::new();
+    for source in sources {
+        groups
+            .entry(source.settings.clone())
+            .or_default()
+            .push(source);
+    }
+
+    let mut matrix = Vec::with_capacity(groups.len());
+    let mut all_configs = Vec::new();
+    for (settings, mut group) in groups {
+        group.sort_by(|a, b| {
+            // Prefer a real corpus file as the row name, then the setting
+            // label. This keeps row names stable as generated cases change.
+            a.generated
+                .cmp(&b.generated)
+                .then_with(|| a.name.cmp(&b.name))
+        });
+        let canonical = group[0].name.clone();
+        let configs: Vec<String> = group.iter().map(|source| source.name.clone()).collect();
+        all_configs.extend(configs.iter().cloned());
+        let config = &group[0].config;
         let results = input_texts
             .iter()
             .map(|(input, text)| Cell {
                 input: input.clone(),
-                result: match format_ron(text, &config) {
+                result: match format_ron(text, config) {
                     Ok(formatted) => Outcome::Formatted(formatted),
                     Err(error) => Outcome::Failed(error.to_string()),
                 },
             })
             .collect();
         matrix.push(Matrix {
-            config: config_name.clone(),
+            config: canonical,
+            configs,
             settings,
             results,
         });
     }
+    all_configs.sort();
 
     let manifest = Manifest {
         description: DESCRIPTION.to_string(),
         source_corpus: SOURCE.to_string(),
         config_corpus: CONFIGS.to_string(),
         total_inputs: inputs.len(),
-        total_configs: configs.len(),
-        total_cells: inputs.len() * configs.len(),
+        total_configs: all_configs.len(),
+        total_settings: matrix.len(),
+        total_cells: inputs.len() * matrix.len(),
         inputs,
-        configs,
+        configs: all_configs,
     };
     (manifest, matrix)
 }
@@ -234,6 +291,12 @@ fn describe_difference(current: &Matrix, golden: &Matrix) -> Option<String> {
         return Some(format!(
             "settings differ: current {:?}, golden {:?}",
             current.settings, golden.settings
+        ));
+    }
+    if current.configs != golden.configs {
+        return Some(format!(
+            "config sources differ: current {:?}, golden {:?}",
+            current.configs, golden.configs
         ));
     }
     if current.results.len() != golden.results.len() {
@@ -323,7 +386,14 @@ fn matrix_matches_golden_master() {
         } else if let Some(difference) = describe_difference(current, &golden) {
             failures.push(format!(
                 "{}\n{difference}",
-                Path::new(CONFIGS).join(&current.config).display()
+                if current.config.starts_with("generated-") {
+                    current.config.clone()
+                } else {
+                    Path::new(CONFIGS)
+                        .join(&current.config)
+                        .display()
+                        .to_string()
+                }
             ));
         }
     }

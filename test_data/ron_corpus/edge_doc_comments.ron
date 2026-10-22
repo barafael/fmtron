@@ -1,0 +1,8 @@
+//! A doc-style comment.
+/*! A block doc comment. */
+(
+    /// field doc
+    alpha: 1,
+    /** block field doc */
+    beta: 2,
+)

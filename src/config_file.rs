@@ -16,6 +16,11 @@
 //! fields are an error, so a typo cannot silently do nothing. Values may be
 //! written bare (`max_width: 100`) or as `Some(100)`.
 //!
+//! Sizes must be usable: `max_width`, `tab_size`, and `max_tab` are at least
+//! 1, and `tab_size` may not exceed `max_tab`. The library still clamps these
+//! values defensively when a [`Config`] is built programmatically, but a
+//! `fmt.ron` rejects them so a typo cannot silently change the layout.
+//!
 //! [`FileConfig::find`] looks for `fmt.ron`, then `.fmt.ron`, in a directory
 //! and each of its ancestors; the nearest file wins and files are not merged.
 
@@ -37,9 +42,10 @@ pub const CONFIG_FILE_NAMES: [&str; 2] = ["fmt.ron", ".fmt.ron"];
 #[serde(deny_unknown_fields)]
 #[non_exhaustive]
 pub struct FileConfig {
-    /// Soft maximum line width ([`Config::max_width`], CLI `-w`).
+    /// Soft maximum line width ([`Config::max_width`], CLI `-w`). At least 1.
     pub max_width: Option<usize>,
-    /// Indentation size in spaces ([`Config::tab_size`], CLI `-t`).
+    /// Indentation size in spaces ([`Config::tab_size`], CLI `-t`). At least
+    /// 1, and at most `max_tab`.
     pub tab_size: Option<usize>,
     /// Blank-line handling ([`Config::blank_lines`], CLI `--blank-lines`).
     pub blank_lines: Option<BlankLines>,
@@ -48,6 +54,7 @@ pub struct FileConfig {
     /// as `1`.
     pub max_depth: Option<NonZeroUsize>,
     /// Upper bound on the tab size ([`Config::max_tab`], CLI `--max-tab`).
+    /// At least 1, and at least `tab_size`.
     pub max_tab: Option<usize>,
     /// The layout rules ([`Config::style_edition`], CLI `--style-edition`).
     pub style_edition: Option<StyleEdition>,
@@ -70,28 +77,69 @@ pub enum FileConfigError {
 }
 
 /// Why the text of a `fmt.ron` is not a configuration: malformed RON, an
-/// unknown field, or a value of the wrong type. Its `Display` form names the
-/// position, as `3:5: Unexpected field named `max_widht``.
+/// unknown field, a value of the wrong type, or a setting the formatter
+/// cannot use. Its `Display` form names the position, as
+/// `3:5: Unexpected field named `max_widht``.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ConfigParseError {
-    inner: Box<ron::error::SpannedError>,
+    kind: ConfigParseErrorKind,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum ConfigParseErrorKind {
+    Ron(Box<ron::error::SpannedError>),
+    Invalid {
+        line: usize,
+        column: usize,
+        message: String,
+    },
 }
 
 impl ConfigParseError {
+    fn ron(error: ron::error::SpannedError) -> Self {
+        Self {
+            kind: ConfigParseErrorKind::Ron(Box::new(error)),
+        }
+    }
+
+    fn invalid(text: &str, field: &str, message: String) -> Self {
+        let (line, column) = field_position(text, field);
+        Self {
+            kind: ConfigParseErrorKind::Invalid {
+                line,
+                column,
+                message,
+            },
+        }
+    }
+
     /// The line of the error, counting from 1.
     pub fn line(&self) -> usize {
-        self.inner.span.start.line
+        match &self.kind {
+            ConfigParseErrorKind::Ron(error) => error.span.start.line,
+            ConfigParseErrorKind::Invalid { line, .. } => *line,
+        }
     }
 
     /// The column of the error, counting from 1, in characters.
     pub fn column(&self) -> usize {
-        self.inner.span.start.col
+        match &self.kind {
+            ConfigParseErrorKind::Ron(error) => error.span.start.col,
+            ConfigParseErrorKind::Invalid { column, .. } => *column,
+        }
     }
 }
 
 impl std::fmt::Display for ConfigParseError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.inner)
+        match &self.kind {
+            ConfigParseErrorKind::Ron(error) => write!(f, "{error}"),
+            ConfigParseErrorKind::Invalid {
+                line,
+                column,
+                message,
+            } => write!(f, "{line}:{column}: {message}"),
+        }
     }
 }
 
@@ -100,19 +148,87 @@ impl std::error::Error for ConfigParseError {}
 /// Parses the contents of a `fmt.ron`.
 ///
 /// # Errors
-/// See [`ConfigParseError`].
+/// See [`ConfigParseError`], and [`FileConfig::validate`] for the settings
+/// rules.
 impl std::str::FromStr for FileConfig {
     type Err = ConfigParseError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        ron::Options::default()
+        let file: Self = ron::Options::default()
             .with_default_extension(Extensions::IMPLICIT_SOME)
             .from_str(s)
-            .map_err(|e| ConfigParseError { inner: Box::new(e) })
+            .map_err(ConfigParseError::ron)?;
+        file.check()
+            .map_err(|invalid| ConfigParseError::invalid(s, invalid.field, invalid.message))?;
+        Ok(file)
     }
 }
 
+/// A setting that parses but cannot be used.
+struct InvalidSetting {
+    field: &'static str,
+    message: String,
+}
+
+/// The first occurrence of `field` in `text`, as a 1-based line and column.
+fn field_position(text: &str, field: &str) -> (usize, usize) {
+    for (line_index, line) in text.lines().enumerate() {
+        if let Some(byte) = line.find(field) {
+            return (line_index + 1, line[..byte].chars().count() + 1);
+        }
+    }
+    (1, 1)
+}
+
 impl FileConfig {
+    /// Whether this file's settings are usable.
+    ///
+    /// Every size is at least 1, and `tab_size` does not exceed `max_tab`.
+    /// `max_depth` is already non-zero by its type.
+    ///
+    /// # Errors
+    /// A message naming the setting and the rule it breaks.
+    pub fn validate(&self) -> Result<(), String> {
+        self.check().map_err(|invalid| invalid.message)
+    }
+
+    fn check(&self) -> Result<(), InvalidSetting> {
+        let defaults = Config::default();
+        let max_width = self.max_width.unwrap_or(defaults.max_width);
+        let tab_size = self.tab_size.unwrap_or(defaults.tab_size);
+        let max_tab = self.max_tab.unwrap_or(defaults.max_tab);
+        if max_width == 0 {
+            return Err(InvalidSetting {
+                field: "max_width",
+                message: "max_width must be at least 1".into(),
+            });
+        }
+        if tab_size == 0 {
+            return Err(InvalidSetting {
+                field: "tab_size",
+                message: "tab_size must be at least 1".into(),
+            });
+        }
+        if max_tab == 0 {
+            return Err(InvalidSetting {
+                field: "max_tab",
+                message: "max_tab must be at least 1".into(),
+            });
+        }
+        if tab_size > max_tab {
+            let field = if self.max_tab.is_some() {
+                "max_tab"
+            } else {
+                "tab_size"
+            };
+            return Err(InvalidSetting {
+                field,
+                message: format!("tab_size {tab_size} exceeds max_tab {max_tab}"),
+            });
+        }
+        Ok(())
+    }
+
     /// Read and parse the `fmt.ron` at `path`.
     ///
     /// # Errors
@@ -218,5 +334,44 @@ mod tests {
             err.to_string().contains("unknown style edition 2027"),
             "{err}"
         );
+    }
+
+    #[test]
+    fn zero_sizes_are_errors_with_a_position() {
+        for (field, text) in [
+            ("max_width", "(\n    max_width: 0,\n)"),
+            ("tab_size", "(\n    tab_size: 0,\n)"),
+            ("max_tab", "(\n    max_tab: 0,\n)"),
+        ] {
+            let err = text.parse::<FileConfig>().unwrap_err();
+            assert_eq!(err.line(), 2, "{field}: {err}");
+            assert_eq!(err.column(), 5, "{field}: {err}");
+            assert!(
+                err.to_string()
+                    .contains(&format!("{field} must be at least 1")),
+                "{field}: {err}"
+            );
+        }
+    }
+
+    #[test]
+    fn a_tab_size_above_its_ceiling_is_an_error_with_a_position() {
+        let err = "(\n    tab_size: 8,\n    max_tab: 4,\n)"
+            .parse::<FileConfig>()
+            .unwrap_err();
+        assert_eq!((err.line(), err.column()), (3, 5), "{err}");
+        assert!(
+            err.to_string().contains("tab_size 8 exceeds max_tab 4"),
+            "{err}"
+        );
+    }
+
+    #[test]
+    fn validate_reports_the_same_rules() {
+        let file = FileConfig {
+            max_width: Some(0),
+            ..FileConfig::default()
+        };
+        assert_eq!(file.validate().unwrap_err(), "max_width must be at least 1");
     }
 }

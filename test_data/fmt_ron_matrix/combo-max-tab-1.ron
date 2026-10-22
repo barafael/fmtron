@@ -1,14 +1,125 @@
 (
     config: "combo-max-tab-1.ron",
+    configs: [
+        "combo-max-tab-1.ron",
+    ],
     settings: (
         max_width: 100,
-        tab_size: 0,
+        tab_size: 1,
         blank_lines: Keep,
         max_depth: 512,
         max_tab: 1,
         style_edition: 2026,
     ),
     results: [
+        (
+            input: "edge_blank_lines_comments_mixed.ron",
+            result: Formatted("(\n alpha: 1,\n\n // one\n\n // two\n\n beta: 2,\n)"),
+        ),
+        (
+            input: "edge_blank_lines_fields.ron",
+            result: Formatted("(\n alpha: 1,\n\n // between fields\n\n beta: 2,\n\n gamma: 3,\n)"),
+        ),
+        (
+            input: "edge_blank_lines_list.ron",
+            result: Formatted("[\n 1,\n\n 2,\n\n // between elements\n\n 3,\n]"),
+        ),
+        (
+            input: "edge_blank_lines_map.ron",
+            result: Formatted("{\n \"a\": 1,\n\n // between entries\n\n \"b\": 2,\n\n \"c\": [3, 4],\n}"),
+        ),
+        (
+            input: "edge_block_comments_fields.ron",
+            result: Formatted("(\n /* outer /* nested */ still outer */\n alpha: 1,\n beta: /* before */ 2,\n gamma: 3, /* after */\n)"),
+        ),
+        (
+            input: "edge_comment_after_comma.ron",
+            result: Formatted("(\n alpha: 1, // after alpha\n beta: 2, /* after beta */\n gamma: 3,\n)"),
+        ),
+        (
+            input: "edge_comment_empty_list.ron",
+            result: Formatted("[\n /* nothing yet */\n]"),
+        ),
+        (
+            input: "edge_comment_empty_map.ron",
+            result: Formatted("{\n // nothing yet\n}"),
+        ),
+        (
+            input: "edge_comment_empty_struct.ron",
+            result: Formatted("(\n /* no fields */\n)"),
+        ),
+        (
+            input: "edge_comments_open_close.ron",
+            result: Formatted("(\n // after open\n alpha: 1,\n beta: 2,\n // before close\n)"),
+        ),
+        (
+            input: "edge_crlf.ron",
+            result: Formatted("(\r\n alpha: 1, // crlf\r\n\r\n beta: [1, 2, 3],\r\n)"),
+        ),
+        (
+            input: "edge_crlf_list.ron",
+            result: Formatted("[1, 2]"),
+        ),
+        (
+            input: "edge_dangling_comments.ron",
+            result: Formatted("// before\n(\n alpha: 1,\n // after last field\n)\n// after"),
+        ),
+        (
+            input: "edge_depth_boundary.ron",
+            result: Formatted("[\n [\n  [\n   [\n    {\n     \"deep\": [1, 2, 3],\n    },\n   ],\n  ],\n ],\n]"),
+        ),
+        (
+            input: "edge_doc_comments.ron",
+            result: Formatted("//! A doc-style comment.\n/*! A block doc comment. */\n(\n /// field doc\n alpha: 1,\n /** block field doc */\n beta: 2,\n)"),
+        ),
+        (
+            input: "edge_long_attribute.ron",
+            result: Formatted("#![enable(implicit_some, unwrap_newtypes, unwrap_variant_newtypes)]\n// A long attribute followed by a value.\nConfig(alpha: 1, beta: 2, gamma: [1, 2, 3])"),
+        ),
+        (
+            input: "edge_long_identifier.ron",
+            result: Formatted("(\n this_is_a_very_long_identifier_that_cannot_be_broken_at_all: 1,\n next: 2,\n)"),
+        ),
+        (
+            input: "edge_long_string.ron",
+            result: Formatted("(\n message: \"a very long string value that cannot be broken by the formatter and will overrun a narrow line width\",\n short: \"ok\",\n)"),
+        ),
+        (
+            input: "edge_map_key_comments.ron",
+            result: Formatted("{\n /* key */\n \"alpha\": /* colon */ /* value */ 1,\n \"beta\": 2, // trailing\n}"),
+        ),
+        (
+            input: "edge_mixed_line_endings.ron",
+            result: Formatted("(\n alpha: 1,\n beta: 2,\n gamma: 3,\n)"),
+        ),
+        (
+            input: "edge_nested_options.ron",
+            result: Formatted("(\n one: Some(1),\n nested: Some(Some(\"value\")),\n none: None,\n list: [Some(1), None, Some(2)],\n)"),
+        ),
+        (
+            input: "edge_packing_boundary_16.ron",
+            result: Formatted("[\n \"aa\", \"bb\", \"cc\", \"dd\",\n \"ee\", \"ff\", \"gg\", \"hh\",\n]"),
+        ),
+        (
+            input: "edge_packing_boundary_17.ron",
+            result: Formatted("[\n \"aaa\", \"bbb\", \"ccc\", \"ddd\",\n \"eee\", \"fff\", \"ggg\", \"hhh\",\n]"),
+        ),
+        (
+            input: "edge_packing_mixed.ron",
+            result: Formatted("Config(\n short: [1, 2, 3, 4, 5, 6, 7, 8],\n strings: [\"a\", \"bb\", \"ccc\", \"dddd\", \"eeeee\", \"ffffff\"],\n nested: [[1, 2], [3, 4], [5, 6]],\n)"),
+        ),
+        (
+            input: "edge_tuples.ron",
+            result: Formatted("(\n pair: (1, 2),\n triple: (\"a\", 2, true),\n nested: ((1, 2), (3, 4)),\n)"),
+        ),
+        (
+            input: "edge_unicode_comments.ron",
+            result: Formatted("// 日本語のコメント\n(\n alpha: 1, // emoji: 🦀\n beta: \"日本語\",\n gamma: \'🦀\',\n)"),
+        ),
+        (
+            input: "edge_unicode_strings.ron",
+            result: Formatted("(\n wide: \"日本語のテキスト\",\n emoji: \"🦀🦀🦀\",\n combining: \"e\\u{301}\",\n)"),
+        ),
         (
             input: "ron_000_b41a62e4bbb3.ron",
             result: Formatted("b\"{\\x00\\x00\\x00\\x00\\xd6\\xd6\\xd6\\xd6\\xd6\""),
@@ -67,35 +178,35 @@
         ),
         (
             input: "ron_030_4a56d5cf6026.ron",
-            result: Formatted("(\nkey1: \"value1\",\nkey2: \"value2\",\n)"),
+            result: Formatted("(\n key1: \"value1\",\n key2: \"value2\",\n)"),
         ),
         (
             input: "ron_031_c112a741062b.ron",
-            result: Formatted("EntityConfig(\nname: \"some name\",\ncomponents: [\n{\n\"type\": \"Component1\",\n\"value\": 22.0,\n\"value_2\": 35.0,\n},\n{\n\"type\": \"Component2\",\n\"value\": 3.14,\n},\n],\n)"),
+            result: Formatted("EntityConfig(\n name: \"some name\",\n components: [\n  {\n   \"type\": \"Component1\",\n   \"value\": 22.0,\n   \"value_2\": 35.0,\n  },\n  {\n   \"type\": \"Component2\",\n   \"value\": 3.14,\n  },\n ],\n)"),
         ),
         (
             input: "ron_033_2b23e015a778.ron",
-            result: Formatted("EntityConfig(\nname: \"some other name\",\ncomponents: [\n{\n\"type\": \"Component1\",\n\"value\": 22.0,\n\"value_2\": 35.0,\n\"something\": Test(22),\n},\n{\n\"type\": \"Component1\",\n\"value\": 12.0,\n\"value_2\": 11.0,\n\"something\": AnotherTest(11.0, 22.0),\n},\n{\n\"type\": \"Component2\",\n\"value\": 3.1,\n},\n],\n)"),
+            result: Formatted("EntityConfig(\n name: \"some other name\",\n components: [\n  {\n   \"type\": \"Component1\",\n   \"value\": 22.0,\n   \"value_2\": 35.0,\n   \"something\": Test(22),\n  },\n  {\n   \"type\": \"Component1\",\n   \"value\": 12.0,\n   \"value_2\": 11.0,\n   \"something\": AnotherTest(11.0, 22.0),\n  },\n  {\n   \"type\": \"Component2\",\n   \"value\": 3.1,\n  },\n ],\n)"),
         ),
         (
             input: "ron_035_c7053bd47919.ron",
-            result: Formatted("BuildSystem(\nversion: \"1.0.0\",\nflags: [\"--enable-thing\", \"--enable-other-thing\", (\"some-conditional\", [\"--enable-third-thing\"])],\n)"),
+            result: Formatted("BuildSystem(\n version: \"1.0.0\",\n flags: [\"--enable-thing\", \"--enable-other-thing\", (\"some-conditional\", [\"--enable-third-thing\"])],\n)"),
         ),
         (
             input: "ron_036_b5507453dd89.ron",
-            result: Formatted("(\ntasks: {\n\"debug message\": Dbg(\nmsg: \"test message. some text after it.\",\n),\n\"shell command\": Shell(\ncommand: \"ls\",\nargs: Some([\"-l\", \"-h\"]),\nch_dir: Some(\"/\"),\n),\n},\n)"),
+            result: Formatted("(\n tasks: {\n  \"debug message\": Dbg(\n   msg: \"test message. some text after it.\",\n  ),\n  \"shell command\": Shell(\n   command: \"ls\",\n   args: Some([\"-l\", \"-h\"]),\n   ch_dir: Some(\"/\"),\n  ),\n },\n)"),
         ),
         (
             input: "ron_037_fbf893774a44.ron",
-            result: Formatted("(\ntasks: {\n\"shell command\": Shell(\ncommand: \"ls\",\nargs: Some([\"-l\", \"-h\"]),\nch_dir: Some(\"/\"),\n),\n\"debug message\": Dbg(\nmsg: \"test message. some text after it.\",\n),\n},\n)"),
+            result: Formatted("(\n tasks: {\n  \"shell command\": Shell(\n   command: \"ls\",\n   args: Some([\"-l\", \"-h\"]),\n   ch_dir: Some(\"/\"),\n  ),\n  \"debug message\": Dbg(\n   msg: \"test message. some text after it.\",\n  ),\n },\n)"),
         ),
         (
             input: "ron_038_7113d33045bd.ron",
-            result: Formatted("SerializeDyn(\ntype: \"engine_utils::types::registry::tests::Player\",\n)"),
+            result: Formatted("SerializeDyn(\n type: \"engine_utils::types::registry::tests::Player\",\n)"),
         ),
         (
             input: "ron_039_02c9d8207744.ron",
-            result: Formatted("(\n(\nname: \"Walter\",\n/// 0@age (person)\n/// must be within range 0..256\nage: 43,\n/// 0@knows (person)\n/// must be list of valid person indices\nknows: [0, 1],\npet: None,\n),\n[\n(\nname: \"Alice\",\n/// 0@age (person)\n/// must be within range 0..256\nage: 29,\n/// 0@knows (person)\n/// must be list of valid person indices\nknows: [1],\npet: Some((\nname: \"Herbert\",\n/// 1@age (pet)\n/// must be valid range 0..256\nage: 7,\n/// 1@kind (pet)\n/// must be `Isopod`\nkind: Isopod,\n)),\n),\n(\nname: \"Bob\",\n/// 0@age (person)\n/// must be within range 0..256\nage: 29,\n/// 0@knows (person)\n/// must be list of valid person indices\nknows: [0],\npet: None,\n),\n],\n)"),
+            result: Formatted("(\n (\n  name: \"Walter\",\n  /// 0@age (person)\n  /// must be within range 0..256\n  age: 43,\n  /// 0@knows (person)\n  /// must be list of valid person indices\n  knows: [0, 1],\n  pet: None,\n ),\n [\n  (\n   name: \"Alice\",\n   /// 0@age (person)\n   /// must be within range 0..256\n   age: 29,\n   /// 0@knows (person)\n   /// must be list of valid person indices\n   knows: [1],\n   pet: Some((\n    name: \"Herbert\",\n    /// 1@age (pet)\n    /// must be valid range 0..256\n    age: 7,\n    /// 1@kind (pet)\n    /// must be `Isopod`\n    kind: Isopod,\n   )),\n  ),\n  (\n   name: \"Bob\",\n   /// 0@age (person)\n   /// must be within range 0..256\n   age: 29,\n   /// 0@knows (person)\n   /// must be list of valid person indices\n   knows: [0],\n   pet: None,\n  ),\n ],\n)"),
         ),
         (
             input: "ron_042_8cb67f89f9ff.ron",
@@ -283,15 +394,15 @@
         ),
         (
             input: "ron_092_1fe65b467478.ron",
-            result: Formatted("(\nid: Id(3),\nposition: Position(0.0, 8.72),\nquery: None,\n)"),
+            result: Formatted("(\n id: Id(3),\n position: Position(0.0, 8.72),\n query: None,\n)"),
         ),
         (
             input: "ron_093_8b799a19abd1.ron",
-            result: Formatted("Foo(\nid: (3),\nposition: Position(0.0, 8.72),\nquery: None,\n)"),
+            result: Formatted("Foo(\n id: (3),\n position: Position(0.0, 8.72),\n query: None,\n)"),
         ),
         (
             input: "ron_094_9726c3f414b1.ron",
-            result: Formatted("Foo(\nid: Id(3),\nposition: (0.0, 8.72),\nquery: None,\n)"),
+            result: Formatted("Foo(\n id: Id(3),\n position: (0.0, 8.72),\n query: None,\n)"),
         ),
         (
             input: "ron_100_fed7763f1f61.ron",
@@ -327,15 +438,15 @@
         ),
         (
             input: "ron_111_72cec2b914d6.ron",
-            result: Formatted("Config(\nbytes: b\"only byte strings are allowed\",\nbase64: \"b25seSBiYXNlNjQtZW5jb2RlZCBzdHJpbmdzIGFyZSBhbGxvd2Vk\",\nbytes_or_base64: b\"both byte strings and base64-encoded strings work\",\n)"),
+            result: Formatted("Config(\n bytes: b\"only byte strings are allowed\",\n base64: \"b25seSBiYXNlNjQtZW5jb2RlZCBzdHJpbmdzIGFyZSBhbGxvd2Vk\",\n bytes_or_base64: b\"both byte strings and base64-encoded strings work\",\n)"),
         ),
         (
             input: "ron_112_1e279086f3aa.ron",
-            result: Formatted("Config(\nbytes: b\"only byte strings are allowed\",\nbase64: \"b25seSBiYXNlNjQtZW5jb2RlZCBzdHJpbmdzIGFyZSBhbGxvd2Vk\",\nbytes_or_base64: \"Ym90aCBieXRlIHN0cmluZ3MgYW5kIGJhc2U2NC1lbmNvZGVkIHN0cmluZ3Mgd29yaw==\",\n)"),
+            result: Formatted("Config(\n bytes: b\"only byte strings are allowed\",\n base64: \"b25seSBiYXNlNjQtZW5jb2RlZCBzdHJpbmdzIGFyZSBhbGxvd2Vk\",\n bytes_or_base64: \"Ym90aCBieXRlIHN0cmluZ3MgYW5kIGJhc2U2NC1lbmNvZGVkIHN0cmluZ3Mgd29yaw==\",\n)"),
         ),
         (
             input: "ron_113_64fd2990fd3d.ron",
-            result: Formatted("Scene(\n// class name is optional\nmaterials: {\n// this is a map\n\"metal\": (\nreflectivity: 1.0,\n),\n\"plastic\": (\nreflectivity: 0.5,\n),\n},\nentities: [\n// this is an array\n(\nname: \"hero\",\nmaterial: \"metal\",\n),\n(\nname: \"monster\",\nmaterial: \"plastic\",\n),\n],\n)"),
+            result: Formatted("Scene(\n // class name is optional\n materials: {\n  // this is a map\n  \"metal\": (\n   reflectivity: 1.0,\n  ),\n  \"plastic\": (\n   reflectivity: 0.5,\n  ),\n },\n entities: [\n  // this is an array\n  (\n   name: \"hero\",\n   material: \"metal\",\n  ),\n  (\n   name: \"monster\",\n   material: \"plastic\",\n  ),\n ],\n)"),
         ),
     ],
 )

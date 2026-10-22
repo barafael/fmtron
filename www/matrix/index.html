@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>fmtron · matrix catalog</title>
+  <meta name="description" content="Browsable catalog of the fmtron formatting matrix: all configs × all corpus inputs.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23182a3a'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' fill='%237ec8e3' text-anchor='middle'%3E()%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./matrix.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css">
+</head>
+<body>
+  <header>
+    <h1><a href="../">fmtron</a></h1>
+    <p class="tagline">matrix catalog — 385 settings × 109 inputs</p>
+    <nav>
+      <a href="../">formatter</a>
+      <a href="../ui/">fmt.ron.ui</a>
+      <a href="https://github.com/barafael/fmtron">GitHub</a>
+    </nav>
+  </header>
+
+  <div class="toolbar">
+    <label>Search
+      <input id="q" type="search" placeholder="max_width, tab_size, Failed, edge_crlf..." autocomplete="off">
+    </label>
+    <label>Filter
+      <select id="filter">
+        <option value="all">all</option>
+        <option value="failed">has failures</option>
+        <option value="static">static config only</option>
+        <option value="generated">generated only</option>
+      </select>
+    </label>
+    <span class="spacer"></span>
+    <span id="count" class="hint">loading...</span>
+  </div>
+
+  <main class="matrix-main">
+    <section class="pane list-pane">
+      <div class="pane-head">
+        <h2>Matrix rows</h2>
+      </div>
+      <div id="list" class="list"></div>
+    </section>
+
+    <section class="pane detail-pane">
+      <div class="pane-head">
+        <h2 id="detail-title">Select a row</h2>
+        <p id="detail-meta" class="hint"></p>
+      </div>
+      <div class="detail">
+        <div class="section">
+          <h3>Settings</h3>
+          <pre><code id="settings" class="language-ron"></code></pre>
+        </div>
+        <div class="section">
+          <h3>Config sources</h3>
+          <div id="sources" class="chips"></div>
+        </div>
+        <div class="section">
+          <h3>Results (searchable)</h3>
+          <div class="result-controls">
+            <input id="r-q" type="search" placeholder="filter inputs...">
+            <label><input type="checkbox" id="only-failed"> only Failed</label>
+          </div>
+          <div id="results" class="results"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Each row is a unique effective configuration; static configs and generated settings cases may share a row.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/rust.min.js"></script>
+  <script type="module" src="./matrix.js"></script>
+</body>
+</html>

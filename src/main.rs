@@ -303,9 +303,24 @@ fn format_on_sized_stack(
     })
 }
 
-/// [`resolve_config`], rejecting a tab size above its ceiling.
+/// [`resolve_config`], rejecting sizes the formatter cannot use.
 fn checked_config(args: &Arguments, dir: &Path) -> Result<Config, Error> {
     let (config, _) = resolve_config(args, dir)?;
+    if config.max_width == 0 {
+        return Err(Error::Config(
+            "invalid configuration: line width 0 (-w / max_width) must be at least 1".into(),
+        ));
+    }
+    if config.tab_size == 0 {
+        return Err(Error::Config(
+            "invalid configuration: tab size 0 (-t / tab_size) must be at least 1".into(),
+        ));
+    }
+    if config.max_tab == 0 {
+        return Err(Error::Config(
+            "invalid configuration: tab ceiling 0 (--max-tab / max_tab) must be at least 1".into(),
+        ));
+    }
     if config.tab_size > config.max_tab {
         return Err(Error::Config(format!(
             "invalid configuration: tab size {} (-t / tab_size) exceeds the ceiling of {} \

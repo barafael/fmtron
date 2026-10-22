@@ -1,0 +1,4 @@
+(
+    this_is_a_very_long_identifier_that_cannot_be_broken_at_all: 1,
+    next: 2,
+)

@@ -1,0 +1,5 @@
+(
+    alpha: 1, // after alpha
+    beta: 2, /* after beta */
+    gamma: 3,
+)

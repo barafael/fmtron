@@ -118,6 +118,21 @@ fn tab_size_above_max_tab_is_a_clean_error() {
 }
 
 #[test]
+fn zero_sizes_are_clean_errors() {
+    for (flag, message) in [
+        ("-w", "line width 0"),
+        ("-t", "tab size 0"),
+        ("--max-tab", "tab ceiling 0"),
+    ] {
+        let out = run_cli("(a: 1)", &["-d", flag, "0"]);
+        assert!(!out.status.success(), "{flag} 0 succeeded");
+        let stderr = String::from_utf8_lossy(&out.stderr);
+        assert!(stderr.contains(message), "{flag}: {stderr}");
+        assert!(!stderr.contains("panicked"), "{flag}: {stderr}");
+    }
+}
+
+#[test]
 fn max_tab_override_allows_larger_indentation() {
     let out = run_cli("(a: 1)", &["-d", "-t", "2048", "--max-tab", "4096"]);
     assert!(

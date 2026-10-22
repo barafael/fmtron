@@ -1,0 +1,5 @@
+(
+    /* outer /* nested */ still outer */ alpha: 1,
+    beta: /* before */ 2,
+    gamma: 3, /* after */
+)

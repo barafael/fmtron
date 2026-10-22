@@ -1,0 +1,452 @@
+(
+    config: "generated-w8-t16-m16-d16-keep.ron",
+    configs: [
+        "generated-w8-t16-m16-d16-keep.ron",
+    ],
+    settings: (
+        max_width: 8,
+        tab_size: 16,
+        blank_lines: Keep,
+        max_depth: 16,
+        max_tab: 16,
+        style_edition: 2026,
+    ),
+    results: [
+        (
+            input: "edge_blank_lines_comments_mixed.ron",
+            result: Formatted("(\n                alpha: 1,\n\n                // one\n\n                // two\n\n                beta: 2,\n)"),
+        ),
+        (
+            input: "edge_blank_lines_fields.ron",
+            result: Formatted("(\n                alpha: 1,\n\n                // between fields\n\n                beta: 2,\n\n                gamma: 3,\n)"),
+        ),
+        (
+            input: "edge_blank_lines_list.ron",
+            result: Formatted("[\n                1,\n\n                2,\n\n                // between elements\n\n                3,\n]"),
+        ),
+        (
+            input: "edge_blank_lines_map.ron",
+            result: Formatted("{\n                \"a\": 1,\n\n                // between entries\n\n                \"b\": 2,\n\n                \"c\": [\n                                3,\n                                4,\n                ],\n}"),
+        ),
+        (
+            input: "edge_block_comments_fields.ron",
+            result: Formatted("(\n                /* outer /* nested */ still outer */\n                alpha: 1,\n                beta: /* before */ 2,\n                gamma: 3, /* after */\n)"),
+        ),
+        (
+            input: "edge_comment_after_comma.ron",
+            result: Formatted("(\n                alpha: 1, // after alpha\n                beta: 2, /* after beta */\n                gamma: 3,\n)"),
+        ),
+        (
+            input: "edge_comment_empty_list.ron",
+            result: Formatted("[\n                /* nothing yet */\n]"),
+        ),
+        (
+            input: "edge_comment_empty_map.ron",
+            result: Formatted("{\n                // nothing yet\n}"),
+        ),
+        (
+            input: "edge_comment_empty_struct.ron",
+            result: Formatted("(\n                /* no fields */\n)"),
+        ),
+        (
+            input: "edge_comments_open_close.ron",
+            result: Formatted("(\n                // after open\n                alpha: 1,\n                beta: 2,\n                // before close\n)"),
+        ),
+        (
+            input: "edge_crlf.ron",
+            result: Formatted("(\r\n                alpha: 1, // crlf\r\n\r\n                beta: [\r\n                                1,\r\n                                2,\r\n                                3,\r\n                ],\r\n)"),
+        ),
+        (
+            input: "edge_crlf_list.ron",
+            result: Formatted("[1, 2]"),
+        ),
+        (
+            input: "edge_dangling_comments.ron",
+            result: Formatted("// before\n(\n                alpha: 1,\n                // after last field\n)\n// after"),
+        ),
+        (
+            input: "edge_depth_boundary.ron",
+            result: Formatted("[\n                [\n                                [\n                                                [\n                                                                {\n                                                                                \"deep\": [\n                                                                                                1,\n                                                                                                2,\n                                                                                                3,\n                                                                                ],\n                                                                },\n                                                ],\n                                ],\n                ],\n]"),
+        ),
+        (
+            input: "edge_doc_comments.ron",
+            result: Formatted("//! A doc-style comment.\n/*! A block doc comment. */\n(\n                /// field doc\n                alpha: 1,\n                /** block field doc */\n                beta: 2,\n)"),
+        ),
+        (
+            input: "edge_long_attribute.ron",
+            result: Formatted("#![enable(implicit_some, unwrap_newtypes, unwrap_variant_newtypes)]\n// A long attribute followed by a value.\nConfig(\n                alpha: 1,\n                beta: 2,\n                gamma: [\n                                1,\n                                2,\n                                3,\n                ],\n)"),
+        ),
+        (
+            input: "edge_long_identifier.ron",
+            result: Formatted("(\n                this_is_a_very_long_identifier_that_cannot_be_broken_at_all: 1,\n                next: 2,\n)"),
+        ),
+        (
+            input: "edge_long_string.ron",
+            result: Formatted("(\n                message: \"a very long string value that cannot be broken by the formatter and will overrun a narrow line width\",\n                short: \"ok\",\n)"),
+        ),
+        (
+            input: "edge_map_key_comments.ron",
+            result: Formatted("{\n                /* key */\n                \"alpha\": /* colon */ /* value */ 1,\n                \"beta\": 2, // trailing\n}"),
+        ),
+        (
+            input: "edge_mixed_line_endings.ron",
+            result: Formatted("(\n                alpha: 1,\n                beta: 2,\n                gamma: 3,\n)"),
+        ),
+        (
+            input: "edge_nested_options.ron",
+            result: Formatted("(\n                one: Some(\n                                1,\n                ),\n                nested: Some(Some(\n                                \"value\",\n                )),\n                none: None,\n                list: [\n                                Some(\n                                                1,\n                                ),\n                                None,\n                                Some(\n                                                2,\n                                ),\n                ],\n)"),
+        ),
+        (
+            input: "edge_packing_boundary_16.ron",
+            result: Formatted("[\n                \"aa\",\n                \"bb\",\n                \"cc\",\n                \"dd\",\n                \"ee\",\n                \"ff\",\n                \"gg\",\n                \"hh\",\n]"),
+        ),
+        (
+            input: "edge_packing_boundary_17.ron",
+            result: Formatted("[\n                \"aaa\",\n                \"bbb\",\n                \"ccc\",\n                \"ddd\",\n                \"eee\",\n                \"fff\",\n                \"ggg\",\n                \"hhh\",\n]"),
+        ),
+        (
+            input: "edge_packing_mixed.ron",
+            result: Formatted("Config(\n                short: [\n                                1,\n                                2,\n                                3,\n                                4,\n                                5,\n                                6,\n                                7,\n                                8,\n                ],\n                strings: [\n                                \"a\",\n                                \"bb\",\n                                \"ccc\",\n                                \"dddd\",\n                                \"eeeee\",\n                                \"ffffff\",\n                ],\n                nested: [\n                                [\n                                                1,\n                                                2,\n                                ],\n                                [\n                                                3,\n                                                4,\n                                ],\n                                [\n                                                5,\n                                                6,\n                                ],\n                ],\n)"),
+        ),
+        (
+            input: "edge_tuples.ron",
+            result: Formatted("(\n                pair: (\n                                1,\n                                2,\n                ),\n                triple: (\n                                \"a\",\n                                2,\n                                true,\n                ),\n                nested: (\n                                (\n                                                1,\n                                                2,\n                                ),\n                                (\n                                                3,\n                                                4,\n                                ),\n                ),\n)"),
+        ),
+        (
+            input: "edge_unicode_comments.ron",
+            result: Formatted("// 日本語のコメント\n(\n                alpha: 1, // emoji: 🦀\n                beta: \"日本語\",\n                gamma: \'🦀\',\n)"),
+        ),
+        (
+            input: "edge_unicode_strings.ron",
+            result: Formatted("(\n                wide: \"日本語のテキスト\",\n                emoji: \"🦀🦀🦀\",\n                combining: \"e\\u{301}\",\n)"),
+        ),
+        (
+            input: "ron_000_b41a62e4bbb3.ron",
+            result: Formatted("b\"{\\x00\\x00\\x00\\x00\\xd6\\xd6\\xd6\\xd6\\xd6\""),
+        ),
+        (
+            input: "ron_001_88da26adb784.ron",
+            result: Formatted("b\"{\\x00\\x00\\x00\\x00\""),
+        ),
+        (
+            input: "ron_002_804473e020a3.ron",
+            result: Formatted("br#\"\"\"#"),
+        ),
+        (
+            input: "ron_003_67948c19c226.ron",
+            result: Formatted("{\n                \"error\": br#\"\"\"#,\n}"),
+        ),
+        (
+            input: "ron_004_7021c6da02db.ron",
+            result: Formatted("#![enable(unwrap_newtypes)]\n#![enable(unwrap_variant_newtypes)]\nSome({\n                \"error\": br#\"\"\"#,\n})"),
+        ),
+        (
+            input: "ron_006_8fd7b26b8cbf.ron",
+            result: Formatted("br\"\""),
+        ),
+        (
+            input: "ron_007_70053ea5bae9.ron",
+            result: Formatted("{\n                \"error\": br\"\",\n}"),
+        ),
+        (
+            input: "ron_008_197f5be203d9.ron",
+            result: Formatted("#![enable(unwrap_newtypes)]\n#![enable(unwrap_variant_newtypes)]\nSome({\n                \"error\": br\"\",\n})"),
+        ),
+        (
+            input: "ron_009_faab6c519982.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nSome(\n                b\"\\xff/not a comment\",\n)"),
+        ),
+        (
+            input: "ron_012_66720edc85ee.ron",
+            result: Formatted("\'\\\\\'"),
+        ),
+        (
+            input: "ron_014_4c445744f11b.ron",
+            result: Formatted("\"\\u{1F980}\""),
+        ),
+        (
+            input: "ron_015_1846c06fcb4c.ron",
+            result: Formatted("b\"\\xf0\\x9f\\xa6\\x80\""),
+        ),
+        (
+            input: "ron_016_691172c1b63b.ron",
+            result: Formatted("\"\\xf0\\x9f\\xa6\\x80\""),
+        ),
+        (
+            input: "ron_022_c07ddd90b62a.ron",
+            result: Formatted("\'\\u{1F980}\'"),
+        ),
+        (
+            input: "ron_030_4a56d5cf6026.ron",
+            result: Formatted("(\n                key1: \"value1\",\n                key2: \"value2\",\n)"),
+        ),
+        (
+            input: "ron_031_c112a741062b.ron",
+            result: Formatted("EntityConfig(\n                name: \"some name\",\n                components: [\n                                {\n                                                \"type\": \"Component1\",\n                                                \"value\": 22.0,\n                                                \"value_2\": 35.0,\n                                },\n                                {\n                                                \"type\": \"Component2\",\n                                                \"value\": 3.14,\n                                },\n                ],\n)"),
+        ),
+        (
+            input: "ron_033_2b23e015a778.ron",
+            result: Formatted("EntityConfig(\n                name: \"some other name\",\n                components: [\n                                {\n                                                \"type\": \"Component1\",\n                                                \"value\": 22.0,\n                                                \"value_2\": 35.0,\n                                                \"something\": Test(\n                                                                22,\n                                                ),\n                                },\n                                {\n                                                \"type\": \"Component1\",\n                                                \"value\": 12.0,\n                                                \"value_2\": 11.0,\n                                                \"something\": AnotherTest(\n                                                                11.0,\n                                                                22.0,\n                                                ),\n                                },\n                                {\n                                                \"type\": \"Component2\",\n                                                \"value\": 3.1,\n                                },\n                ],\n)"),
+        ),
+        (
+            input: "ron_035_c7053bd47919.ron",
+            result: Formatted("BuildSystem(\n                version: \"1.0.0\",\n                flags: [\n                                \"--enable-thing\",\n                                \"--enable-other-thing\",\n                                (\n                                                \"some-conditional\",\n                                                [\n                                                                \"--enable-third-thing\",\n                                                ],\n                                ),\n                ],\n)"),
+        ),
+        (
+            input: "ron_036_b5507453dd89.ron",
+            result: Formatted("(\n                tasks: {\n                                \"debug message\": Dbg(\n                                                msg: \"test message. some text after it.\",\n                                ),\n                                \"shell command\": Shell(\n                                                command: \"ls\",\n                                                args: Some([\n                                                                \"-l\",\n                                                                \"-h\",\n                                                ]),\n                                                ch_dir: Some(\n                                                                \"/\",\n                                                ),\n                                ),\n                },\n)"),
+        ),
+        (
+            input: "ron_037_fbf893774a44.ron",
+            result: Formatted("(\n                tasks: {\n                                \"shell command\": Shell(\n                                                command: \"ls\",\n                                                args: Some([\n                                                                \"-l\",\n                                                                \"-h\",\n                                                ]),\n                                                ch_dir: Some(\n                                                                \"/\",\n                                                ),\n                                ),\n                                \"debug message\": Dbg(\n                                                msg: \"test message. some text after it.\",\n                                ),\n                },\n)"),
+        ),
+        (
+            input: "ron_038_7113d33045bd.ron",
+            result: Formatted("SerializeDyn(\n                type: \"engine_utils::types::registry::tests::Player\",\n)"),
+        ),
+        (
+            input: "ron_039_02c9d8207744.ron",
+            result: Formatted("(\n                (\n                                name: \"Walter\",\n                                /// 0@age (person)\n                                /// must be within range 0..256\n                                age: 43,\n                                /// 0@knows (person)\n                                /// must be list of valid person indices\n                                knows: [\n                                                0,\n                                                1,\n                                ],\n                                pet: None,\n                ),\n                [\n                                (\n                                                name: \"Alice\",\n                                                /// 0@age (person)\n                                                /// must be within range 0..256\n                                                age: 29,\n                                                /// 0@knows (person)\n                                                /// must be list of valid person indices\n                                                knows: [\n                                                                1,\n                                                ],\n                                                pet: Some((\n                                                                name: \"Herbert\",\n                                                                /// 1@age (pet)\n                                                                /// must be valid range 0..256\n                                                                age: 7,\n                                                                /// 1@kind (pet)\n                                                                /// must be `Isopod`\n                                                                kind: Isopod,\n                                                )),\n                                ),\n                                (\n                                                name: \"Bob\",\n                                                /// 0@age (person)\n                                                /// must be within range 0..256\n                                                age: 29,\n                                                /// 0@knows (person)\n                                                /// must be list of valid person indices\n                                                knows: [\n                                                                0,\n                                                ],\n                                                pet: None,\n                                ),\n                ],\n)"),
+        ),
+        (
+            input: "ron_042_8cb67f89f9ff.ron",
+            result: Formatted("\"a\\nb\""),
+        ),
+        (
+            input: "ron_043_0c926fba014b.ron",
+            result: Formatted("\"\\\"\""),
+        ),
+        (
+            input: "ron_044_82daa1568d2d.ron",
+            result: Formatted("\"\\\"#\""),
+        ),
+        (
+            input: "ron_045_4df70a20c622.ron",
+            result: Formatted("\"#\\\"#\""),
+        ),
+        (
+            input: "ron_046_da9cc00b0fc5.ron",
+            result: Formatted("\"#\\\"##\""),
+        ),
+        (
+            input: "ron_047_dc3b517a1e26.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nUnit"),
+        ),
+        (
+            input: "ron_048_cda67a2c0e3e.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nPrimitiveNewtype(\n                \"hi\",\n)"),
+        ),
+        (
+            input: "ron_049_970818f9eb6d.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTuple(\n                4,\n                false,\n)"),
+        ),
+        (
+            input: "ron_050_e29d2298effc.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nStruct(\n                a: 4,\n                b: false,\n)"),
+        ),
+        (
+            input: "ron_051_addde74a69da.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeUnit(\n                Unit,\n)"),
+        ),
+        (
+            input: "ron_052_4992334b0127.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeUnit(())"),
+        ),
+        (
+            input: "ron_053_6154b55ed706.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeUnit()"),
+        ),
+        (
+            input: "ron_054_f08297a89781.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeNewtype(Newtype(\n                4,\n))"),
+        ),
+        (
+            input: "ron_055_40c34482b6d3.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeNewtype((\n                4,\n))"),
+        ),
+        (
+            input: "ron_056_cff8f476a576.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeNewtype(\n                4,\n)"),
+        ),
+        (
+            input: "ron_057_c098aae09ab9.ron",
+            result: Formatted("#![enable(unwrap_newtypes)]\nTupleNewtypeNewtype(\n                4,\n)"),
+        ),
+        (
+            input: "ron_058_5a3dba49a271.ron",
+            result: Formatted("#![enable(unwrap_newtypes)]\n#![enable(unwrap_variant_newtypes)]\nTupleNewtypeNewtype(\n                4,\n)"),
+        ),
+        (
+            input: "ron_059_5e03f199d2cb.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeTuple((\n                4,\n                false,\n))"),
+        ),
+        (
+            input: "ron_060_991c650b87e3.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeTuple(\n                4,\n                false,\n)"),
+        ),
+        (
+            input: "ron_061_a67a517da6c6.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeTupleStruct(TupleStruct(\n                4,\n                false,\n))"),
+        ),
+        (
+            input: "ron_062_64894a4199d4.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeTupleStruct((\n                4,\n                false,\n))"),
+        ),
+        (
+            input: "ron_063_d25e54d18a30.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeTupleStruct(\n                4,\n                false,\n)"),
+        ),
+        (
+            input: "ron_064_ec388d601a93.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeStruct(Struct(\n                a: 4,\n                b: false,\n))"),
+        ),
+        (
+            input: "ron_065_a4f45cf41d90.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeStruct((\n                a: 4,\n                b: false,\n))"),
+        ),
+        (
+            input: "ron_066_ad01346fa8d1.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeStruct(\n                a: 4,\n                b: false,\n)"),
+        ),
+        (
+            input: "ron_067_f128f55ee7ae.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeEnum(\n                A,\n)"),
+        ),
+        (
+            input: "ron_068_5ccdf0a33a92.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeEnum(B(\n                a: 4,\n                b: false,\n))"),
+        ),
+        (
+            input: "ron_070_a862b75db259.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeEnum(C(\n                4,\n                false,\n))"),
+        ),
+        (
+            input: "ron_072_7eb9d60ca9d8.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeEnum(D(\n                a: 4,\n                b: false,\n))"),
+        ),
+        (
+            input: "ron_073_4660e80db4ba.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeOption(\n                None,\n)"),
+        ),
+        (
+            input: "ron_074_e3545081f94b.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeOption(Some(\n                a: 4,\n                b: false,\n))"),
+        ),
+        (
+            input: "ron_075_8835ddad4336.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeOption(\n                a: 4,\n                b: false,\n)"),
+        ),
+        (
+            input: "ron_076_c0423e96e3a6.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes, implicit_some)]\nTupleNewtypeOption(\n                a: 4,\n                b: false,\n)"),
+        ),
+        (
+            input: "ron_077_c425be25a0f0.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeSeq([])"),
+        ),
+        (
+            input: "ron_078_cc3086d2f8df.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeSeq([\n                (\n                                a: 4,\n                                b: false,\n                ),\n])"),
+        ),
+        (
+            input: "ron_079_7afe442a1f82.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeSeq([\n                Struct(\n                                a: 4,\n                                b: false,\n                ),\n])"),
+        ),
+        (
+            input: "ron_080_614ec68c1005.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeMap({})"),
+        ),
+        (
+            input: "ron_081_d39fc66b8a05.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeMap({\n                2: (\n                                a: 4,\n                                b: false,\n                ),\n})"),
+        ),
+        (
+            input: "ron_082_5c2ec8e69716.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nTupleNewtypeMap({\n                8: Struct(\n                                a: 4,\n                                b: false,\n                ),\n})"),
+        ),
+        (
+            input: "ron_083_79b7eefc9469.ron",
+            result: Formatted("Some((\n                a: 4,\n                b: false,\n))"),
+        ),
+        (
+            input: "ron_085_819d886cfe47.ron",
+            result: Formatted("#![enable(unwrap_variant_newtypes)]\nSome(\n                a: 4,\n                b: false,\n)"),
+        ),
+        (
+            input: "ron_086_56174d56e6ae.ron",
+            result: Formatted("b\"test\""),
+        ),
+        (
+            input: "ron_087_999da4e52cc0.ron",
+            result: Formatted("(\n                b: b\"test\",\n)"),
+        ),
+        (
+            input: "ron_088_b1e83c2d708f.ron",
+            result: Formatted("(\n                b: b\"test\",\n)"),
+        ),
+        (
+            input: "ron_090_80af6d986bc1.ron",
+            result: Formatted("(\n                b: \"dGVzdA==\",\n)"),
+        ),
+        (
+            input: "ron_091_d11c54192de5.ron",
+            result: Formatted("(\n                b: \"dGVzdA==\",\n)"),
+        ),
+        (
+            input: "ron_092_1fe65b467478.ron",
+            result: Formatted("(\n                id: Id(\n                                3,\n                ),\n                position: Position(\n                                0.0,\n                                8.72,\n                ),\n                query: None,\n)"),
+        ),
+        (
+            input: "ron_093_8b799a19abd1.ron",
+            result: Formatted("Foo(\n                id: (\n                                3,\n                ),\n                position: Position(\n                                0.0,\n                                8.72,\n                ),\n                query: None,\n)"),
+        ),
+        (
+            input: "ron_094_9726c3f414b1.ron",
+            result: Formatted("Foo(\n                id: Id(\n                                3,\n                ),\n                position: (\n                                0.0,\n                                8.72,\n                ),\n                query: None,\n)"),
+        ),
+        (
+            input: "ron_100_fed7763f1f61.ron",
+            result: Formatted("(\n                start: \"a\",\n                end: \"z\",\n)"),
+        ),
+        (
+            input: "ron_103_ecd8adfd3134.ron",
+            result: Formatted("\"Quoted\""),
+        ),
+        (
+            input: "ron_104_ead4275510ea.ron",
+            result: Formatted("\"\\\"Quoted\\\"\""),
+        ),
+        (
+            input: "ron_106_9ddefe4435b2.ron",
+            result: Formatted("\"hello world\""),
+        ),
+        (
+            input: "ron_107_fdea21a3047e.ron",
+            result: Formatted("\"this is a Rusty 🦀 string\""),
+        ),
+        (
+            input: "ron_108_5a9dd62f3b1b.ron",
+            result: Formatted("\"this is now valid UTF-8 \\xf0\\x9f\\xa6\\x80\""),
+        ),
+        (
+            input: "ron_109_143667c991aa.ron",
+            result: Formatted("b\"hello world\""),
+        ),
+        (
+            input: "ron_110_c5807c14fb21.ron",
+            result: Formatted("b\"this is not valid UTF-8 \\xf8\\xa1\\xa1\\xa1\\xa1\""),
+        ),
+        (
+            input: "ron_111_72cec2b914d6.ron",
+            result: Formatted("Config(\n                bytes: b\"only byte strings are allowed\",\n                base64: \"b25seSBiYXNlNjQtZW5jb2RlZCBzdHJpbmdzIGFyZSBhbGxvd2Vk\",\n                bytes_or_base64: b\"both byte strings and base64-encoded strings work\",\n)"),
+        ),
+        (
+            input: "ron_112_1e279086f3aa.ron",
+            result: Formatted("Config(\n                bytes: b\"only byte strings are allowed\",\n                base64: \"b25seSBiYXNlNjQtZW5jb2RlZCBzdHJpbmdzIGFyZSBhbGxvd2Vk\",\n                bytes_or_base64: \"Ym90aCBieXRlIHN0cmluZ3MgYW5kIGJhc2U2NC1lbmNvZGVkIHN0cmluZ3Mgd29yaw==\",\n)"),
+        ),
+        (
+            input: "ron_113_64fd2990fd3d.ron",
+            result: Formatted("Scene(\n                // class name is optional\n                materials: {\n                                // this is a map\n                                \"metal\": (\n                                                reflectivity: 1.0,\n                                ),\n                                \"plastic\": (\n                                                reflectivity: 0.5,\n                                ),\n                },\n                entities: [\n                                // this is an array\n                                (\n                                                name: \"hero\",\n                                                material: \"metal\",\n                                ),\n                                (\n                                                name: \"monster\",\n                                                material: \"plastic\",\n                                ),\n                ],\n)"),
+        ),
+    ],
+)

@@ -1,0 +1,157 @@
+.matrix-main {
+  grid-template-columns: minmax(260px, 420px) 1fr;
+}
+
+.list-pane .list {
+  overflow: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--bg-elev);
+  text-align: left;
+  color: var(--fg);
+  cursor: pointer;
+}
+
+.row:hover {
+  border-color: var(--accent);
+}
+
+.row.active {
+  outline: 1px solid var(--accent);
+}
+
+.row-title {
+  font: 12px/1.4 var(--mono);
+}
+
+.row-meta {
+  color: var(--muted);
+  font: 11px/1.4 var(--sans);
+}
+
+.detail-pane .detail {
+  overflow: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section h3 {
+  margin: 0 0 8px 0;
+  font: 13px/1.4 var(--sans);
+}
+
+.section pre {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-elev);
+  overflow: auto;
+  max-height: 220px;
+}
+
+.section code {
+  font: 12px/1.6 var(--mono);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font: 11px/1.6 var(--mono);
+  color: var(--muted);
+}
+
+.result-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.result-controls input[type="search"] {
+  background: var(--bg-elev);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font: 12px var(--sans);
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.result {
+  border-bottom: 1px solid var(--border);
+}
+
+.result:last-child {
+  border-bottom: none;
+}
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--bg-elev);
+  cursor: pointer;
+}
+
+.result-name {
+  font: 12px var(--mono);
+}
+
+.result-state {
+  font: 11px var(--mono);
+}
+
+.result-state.ok {
+  color: #8bd5ca;
+}
+
+.result-state.fail {
+  color: #f38ba8;
+}
+
+.result-body {
+  display: none;
+  padding: 8px 10px;
+  background: var(--bg);
+}
+
+.result.open .result-body {
+  display: block;
+}
+
+.result-body pre {
+  margin: 0;
+  overflow: auto;
+  max-height: 320px;
+}
+
+.result-body code {
+  font: 12px/1.6 var(--mono);
+  white-space: pre;
+}
