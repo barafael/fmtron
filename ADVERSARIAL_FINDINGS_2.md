@@ -265,7 +265,7 @@ files that write `Some(code: KeyZ, …)`, which a typed `ron` target reads but
 
 ## Codeberg, local only
 
-`tools/wild-corpus/codeberg_collect.py` searched Codeberg's API with the
+`cargo xtask wild codeberg-collect` searched Codeberg's API with the
 highest-yield keywords first (Bevy/game terms, then dotfiles, gitui, COSMIC,
 config). It kept Rust repositories, plus repositories of any language for
 config-style keywords, since RON configs live in dotfiles repos. The run was

@@ -164,8 +164,7 @@ measured with what follows it on its line.
   `(` and `{`, around commas in lists); the reference printer in
   `tests/support` packs lists too. Showcase gains a "Line breaks kept from the
   input" section; snapshots re-blessed.
-- `tools/wild-corpus/compare_styles.py` reproduces the table above for any two
-  builds.
+- `cargo xtask compare-styles` reproduces the table above for any two builds.
 
 ---
 
@@ -225,8 +224,8 @@ candidate combination over `test_data/wild` and `test_data/corpus`:
 5. **Eyeball:** 20 random diffs per candidate written to the scratchpad. Read
    them; the numbers only shortlist.
 
-Put this in `tools/wild-corpus/` next to `evaluate.py`, or as an ignored test.
-Keep it after 1.0: it is how a future style edition would be evaluated.
+Add it as a `cargo xtask` subcommand next to `wild evaluate`, or as an ignored
+test. Keep it after 1.0: it is how a future style edition would be evaluated.
 
 ## Phase 2 — Implement
 
