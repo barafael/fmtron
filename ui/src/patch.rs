@@ -176,12 +176,9 @@ pub fn remove(text: &str, name: &str) -> Option<String> {
         .find('\n')
         .map_or(text.len(), |n| e.span.end + n);
     let rest = text[e.span.end..line_end].trim_start();
-    let only_comment_after = rest.is_empty()
-        || rest.starts_with("//")
-        || (rest.starts_with("/*")
-            && rest
-                .find("*/")
-                .is_some_and(|end| rest[end + 2..].trim().is_empty()));
+    // Everything after the entry on this line is trivia (whitespace or
+    // comments), possibly with nested block comments.
+    let only_comment_after = skip_trivia(rest.as_bytes(), 0) == rest.len();
     if alone_before && only_comment_after {
         let end = if line_end < text.len() {
             line_end + 1
@@ -261,6 +258,11 @@ fn skip_bracketed(b: &[u8], mut i: usize) -> Option<usize> {
     }
     let mut depth = 0usize;
     loop {
+        let j = skip_trivia(b, i);
+        if j != i {
+            i = j;
+            continue;
+        }
         match *b.get(i)? {
             b'[' => {
                 depth += 1;
@@ -274,6 +276,7 @@ fn skip_bracketed(b: &[u8], mut i: usize) -> Option<usize> {
                 }
             }
             b'"' => i = skip_string(b, i)?,
+            b'r' if is_raw_string(b, i) => i = skip_raw_string(b, i)?,
             _ => i += 1,
         }
     }
@@ -373,6 +376,19 @@ mod tests {
     }
 
     #[test]
+    fn scans_attributes_with_raw_strings_and_comments() {
+        for text in [
+            "#![type = r#\"a\" ] b\"#] (a: 1)",
+            "#![type = r###\"a\"## ] b\"###] (a: 1)",
+            "#![type /* ] */ = \"a]b\"] (a: 1)",
+            "#![type // ]\n = \"a]b\"] (a: 1)",
+        ] {
+            let s = scan(text).unwrap();
+            assert_eq!(&text[s.entries[0].value.clone()], "1", "{text}");
+        }
+    }
+
+    #[test]
     fn not_a_struct_is_none() {
         assert_eq!(scan(""), None);
         assert_eq!(scan("[1, 2]"), None);
@@ -413,6 +429,12 @@ mod tests {
         assert!(!out.contains("blank_lines"), "{out}");
         assert!(out.contains("/* Keep | Remove */ "), "{out}");
         assert_eq!(remove(FILE, "missing").unwrap(), FILE);
+    }
+
+    #[test]
+    fn removing_an_entry_takes_a_nested_block_comment_after_it() {
+        let text = "(\n    a: 1, /* outer /* inner */ still outer */\n    b: 2,\n)\n";
+        assert_eq!(remove(text, "a").unwrap(), "(\n    b: 2,\n)\n");
     }
 
     #[test]
