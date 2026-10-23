@@ -22,6 +22,51 @@ const SPECIAL = /[-+]?(?:inf|NaN)(?:f32|f64)?(?![\p{ID_Continue}])/uy;
 
 class ParseError extends Error {}
 
+// Index just past the `]` that closes the attribute starting at `i` (`#!`).
+// Strings and comments inside an attribute may contain `]`, so the closing
+// bracket is found by skipping them, not with a plain search.
+function attributeEnd(src, i) {
+  const n = src.length;
+  let j = i + 2;
+  while (j < n) {
+    const c = src[j];
+    if (c === ']') return j + 1;
+    if (c === '/' && src[j + 1] === '/') {
+      const next = src.indexOf('\n', j + 2);
+      j = next === -1 ? n : next + 1;
+      continue;
+    }
+    if (c === '/' && src[j + 1] === '*') {
+      let depth = 0;
+      while (j < n) {
+        if (src[j] === '/' && src[j + 1] === '*') { depth++; j += 2; }
+        else if (src[j] === '*' && src[j + 1] === '/') { depth--; j += 2; if (depth === 0) break; }
+        else j++;
+      }
+      continue;
+    }
+    RAW_STRING.lastIndex = j;
+    const raw = RAW_STRING.exec(src);
+    if (raw) {
+      const closer = '"' + '#'.repeat(raw[1].length);
+      const end = src.indexOf(closer, j + raw[0].length);
+      j = end === -1 ? n : end + closer.length;
+      continue;
+    }
+    if (c === '"') {
+      j++;
+      while (j < n) {
+        if (src[j] === '\\') j += 2;
+        else if (src[j] === '"') { j++; break; }
+        else j++;
+      }
+      continue;
+    }
+    j++;
+  }
+  return n;
+}
+
 // Lexes `src` into [{kind, text}] with comments and whitespace dropped.
 // `kind` is one of: num, str, chr, bool, ident, punct, attr.
 export function tokenize(src) {
@@ -48,15 +93,7 @@ export function tokenize(src) {
       continue;
     }
     if (c === '#' && src[i + 1] === '!') {
-      let j = i + 2;
-      while (j < n && src[j] !== ']') {
-        if (src[j] === '"') {
-          j++;
-          while (j < n && src[j] !== '"') j += src[j] === '\\' ? 2 : 1;
-        }
-        j++;
-      }
-      const stop = Math.min(j + 1, n);
+      const stop = attributeEnd(src, i);
       toks.push({ kind: 'attr', text: src.slice(i, stop) });
       i = stop;
       continue;

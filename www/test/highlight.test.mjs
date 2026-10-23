@@ -36,6 +36,10 @@ test('the invariant also holds for hostile and truncated input', () => {
     '\t\ttabs and \r\n crlf',
     'r#a.b-c: r#fn, café: 名前, 🦀: 1',
     '#![type = "a]b"] 1',
+    '#![type = r#"a" ] b"#] 1',
+    '#![type = r###"a"## ] b"###] 1',
+    '#![type /* ] */ = "a]b"] 1',
+    '#![type // ]\n = "a]b"] 1',
     '1e_3 .5 1. -NaNf32',
   ];
   for (const src of cases) {
@@ -67,6 +71,21 @@ test('raw and unicode identifiers, and exponent underscores, are single tokens',
   for (const f of ['.5', '1.', '1.e3']) assert.ok(floats.includes(`<span class="tok-num">${f}</span>`), f);
   // A `]` inside an attribute's string does not end the attribute.
   assert.match(highlightRon('#![type = "a]b"] 1'), /<span class="tok-attr">#!\[type = "a\]b"\]<\/span>/);
+});
+
+test('attribute scanners skip raw strings and comments', () => {
+  const cases = [
+    '#![type = r#"a" ] b"#] 1',
+    '#![type = r###"a"## ] b"###] 1',
+    '#![type /* ] */ = "a]b"] 1',
+    '#![type // ]\n = "a]b"] 1',
+  ];
+  for (const src of cases) {
+    const attr = src.slice(0, src.lastIndexOf(']') + 1);
+    const html = highlightRon(src);
+    assert.ok(html.includes(`<span class="tok-attr">${escapeHtml(attr)}</span>`), src);
+    assert.ok(html.includes('<span class="tok-num">1</span>'), src);
+  }
 });
 
 test('byte strings are escaped strings, not raw', () => {

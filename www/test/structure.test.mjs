@@ -58,6 +58,20 @@ test('the lexer knows the literals the formatter knows', () => {
   assert.equal(tokenize('inf64_is_an_identifier')[0].kind, 'ident');
 });
 
+test('attributes may contain raw strings and comments with brackets', () => {
+  const cases = [
+    '#![type = r#"a" ] b"#] 1',
+    '#![type = r###"a"## ] b"###] 1',
+    '#![type /* ] */ = "a]b"] 1',
+    '#![type // ]\n = "a]b"] 1',
+  ];
+  for (const src of cases) {
+    const { attributes, root } = parseRon(src);
+    assert.deepEqual(attributes, [src.slice(0, src.lastIndexOf(']') + 1)], src);
+    assert.deepEqual(root, { kind: 'scalar', type: 'num', text: '1' });
+  }
+});
+
 test('malformed input is an error, not a wrong tree', () => {
   for (const src of ['(a: 1 b: 2)', '[1, 2', '{1 2}', '"open', '', '(a: 1) 2', '/* open']) {
     assert.throws(() => parseRon(src), src);

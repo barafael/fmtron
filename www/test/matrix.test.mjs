@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 // matrix.js has no exports (it is a page script), so the two pure helpers it
@@ -15,17 +15,15 @@ const unescapeRon = (s) => s.replace(
   }
 );
 
-const CELL = /input: "([^"]+)",\s*result: (Formatted\(([\s\S]*?)\)|Failed\(([\s\S]*?)\))/g;
+const CELL = /input: "((?:[^"\\]|\\.)*)",\s*result: (Formatted|Failed)\("((?:[^"\\]|\\.)*)"\)/g;
 
 function parseMatrix(text) {
   const results = [];
   for (const m of text.matchAll(CELL)) {
-    const inner = m[2].startsWith('Formatted') ? m[3] : m[4];
-    const quoted = inner.match(/^"([\s\S]*)"$/);
     results.push({
       input: m[1],
-      type: m[2].startsWith('Formatted') ? 'Formatted' : 'Failed',
-      value: quoted ? quoted[1] : inner.slice(1, -1),
+      type: m[2],
+      value: m[3],
     });
   }
   // `matchAll` does not advance unless the regex is global; a missing `g`
@@ -47,10 +45,31 @@ test('the matrix parser finds every cell', () => {
   assert.ok(cells.length > 100, `only ${cells.length} cells`);
 });
 
+test('every committed matrix row parses completely', () => {
+  const dir = new URL('../matrix/data/', import.meta.url);
+  for (const file of readdirSync(dir)) {
+    if (!file.endsWith('.ron') || file === 'manifest.ron') continue;
+    const text = readFileSync(new URL(file, dir), 'utf8');
+    const expected = [...text.matchAll(/\n            result: (?:Formatted|Failed)\(/g)].length;
+    assert.equal(parseMatrix(text).length, expected, file);
+  }
+});
+
 test('a formatted cell is unescaped to the formatter output', () => {
   const text = readFileSync(findMatrixFile(), 'utf8');
   const cell = parseMatrix(text).find((c) => c.input === 'edge_blank_lines_list.ron');
   assert.equal(unescapeRon(cell.value), '[\n 1,\n\n 2,\n\n // between elements\n\n 3,\n]');
+});
+
+test('parentheses inside a formatted cell are preserved', () => {
+  // The outer result enum is `Formatted("...")`; a `)` in the formatter
+  // output must not be mistaken for the closing delimiter of that enum.
+  const text = readFileSync(findMatrixFile(), 'utf8');
+  const cell = parseMatrix(text).find((c) => c.input === 'edge_blank_lines_fields.ron');
+  assert.equal(
+    unescapeRon(cell.value),
+    '(\n alpha: 1,\n\n // between fields\n\n beta: 2,\n\n gamma: 3,\n)'
+  );
 });
 
 test('literal formatter output survives decoding', () => {

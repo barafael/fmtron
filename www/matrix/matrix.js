@@ -67,29 +67,24 @@ async function loadMatrix(id) {
   if (cache.has(id)) return cache.get(id);
   const res = await fetch(`./data/${id}.ron`);
   const text = await res.text();
-  // naive parse of our RON shape
-  const mSettings = text.match(/settings: \(([^()]*(\([^()]*\)[^()]*)*)\)/s) || text.match(/settings: \(([\s\S]*?)\)\s*,\s*results:/);
+  // Parse our RON shape by line, not by first delimiter: a `]` in a config
+  // file name or a `)` in a settings value must not end the block early.
+  const mSettings = text.match(/\n    settings: \(([\s\S]*?)\n    \),/);
   const configs = [];
-  const mcfg = text.match(/configs: \[\s*([\s\S]*?)\s*\]/);
+  const mcfg = text.match(/\n    configs: \[([\s\S]*?)\n    \],/);
   if (mcfg) {
-    const re2 = /"([^"]+)"/g;
+    const re2 = /"((?:[^"\\]|\\.)*)"/g;
     let m2;
     while ((m2 = re2.exec(mcfg[1])) !== null) configs.push(m2[1]);
   }
   const results = [];
-  const re = /input: "([^"]+)",\s*result: (Formatted\(([\s\S]*?)\)|Failed\(([\s\S]*?)\))/g;
+  // `result` is always `Formatted("...")` or `Failed("...")`. Match the RON
+  // string literal as a whole (`(?:\\.|[^"\\])*`) so that a `)` inside the
+  // formatter output cannot terminate the match early.
+  const re = /input: "((?:[^"\\]|\\.)*)",\s*result: (Formatted|Failed)\("((?:[^"\\]|\\.)*)"\)/g;
   let mm;
   while ((mm = re.exec(text)) !== null) {
-    if (mm[2].startsWith('Formatted')) {
-      // extract string content inside outer parens and quotes
-      const inner = mm[3];
-      const mstr = inner.match(/^"([\s\S]*)"$/);
-      results.push({ input: mm[1], type: 'Formatted', value: mstr ? mstr[1] : inner.slice(1, -1) });
-    } else {
-      const inner = mm[4];
-      const mstr = inner.match(/^"([\s\S]*)"$/);
-      results.push({ input: mm[1], type: 'Failed', value: mstr ? mstr[1] : inner.slice(1, -1) });
-    }
+    results.push({ input: mm[1], type: mm[2], value: mm[3] });
   }
   const data = { id, text, settingsText: mSettings ? mSettings[1] : '', configs, results };
   cache.set(id, data);

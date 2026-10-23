@@ -92,7 +92,7 @@ fn entry_for(path: &Path) -> Result<Value, String> {
         "configs": names,
         "settings": settings,
         "inputs_count": text.matches("\n            input: \"").count(),
-        "failed_count": text.matches("result: Failed(").count(),
+        "failed_count": text.matches("\n            result: Failed(").count(),
     }))
 }
 

@@ -16,6 +16,51 @@ const RAW_STRING = /b?r(#*)"/y;
 // whitespace and then a colon marks the identifier as a struct key.
 const KEY_COLON = /[ \t\r\n]*:/y;
 
+// Index just past the `]` that closes the attribute starting at `i` (`#!`).
+// Strings and comments inside an attribute may contain `]`, so the closing
+// bracket is found by skipping them, not with a plain search.
+function attributeEnd(src, i) {
+  const n = src.length;
+  let j = i + 2;
+  while (j < n) {
+    const c = src[j];
+    if (c === ']') return j + 1;
+    if (c === '/' && src[j + 1] === '/') {
+      const next = src.indexOf('\n', j + 2);
+      j = next === -1 ? n : next + 1;
+      continue;
+    }
+    if (c === '/' && src[j + 1] === '*') {
+      let depth = 0;
+      while (j < n) {
+        if (src[j] === '/' && src[j + 1] === '*') { depth++; j += 2; }
+        else if (src[j] === '*' && src[j + 1] === '/') { depth--; j += 2; if (depth === 0) break; }
+        else j++;
+      }
+      continue;
+    }
+    RAW_STRING.lastIndex = j;
+    const raw = RAW_STRING.exec(src);
+    if (raw) {
+      const closer = '"' + '#'.repeat(raw[1].length);
+      const end = src.indexOf(closer, j + raw[0].length);
+      j = end === -1 ? n : end + closer.length;
+      continue;
+    }
+    if (c === '"') {
+      j++;
+      while (j < n) {
+        if (src[j] === '\\') j += 2;
+        else if (src[j] === '"') { j++; break; }
+        else j++;
+      }
+      continue;
+    }
+    j++;
+  }
+  return n;
+}
+
 // Produces HTML with <span class="tok-*"> highlighting for RON source.
 export function highlightRon(src) {
   let html = '';
@@ -27,17 +72,9 @@ export function highlightRon(src) {
   while (i < n) {
     const c = src[i];
 
-    // Attribute: #![...], to the `]` outside its strings.
+    // Attribute: #![...], to the `]` outside its strings and comments.
     if (c === '#' && src[i + 1] === '!') {
-      let j = i + 2;
-      while (j < n && src[j] !== ']') {
-        if (src[j] === '"') {
-          j++;
-          while (j < n && src[j] !== '"') j += src[j] === '\\' ? 2 : 1;
-        }
-        j++;
-      }
-      const stop = Math.min(j + 1, n);
+      const stop = attributeEnd(src, i);
       html += span('attr', src.slice(i, stop));
       i = stop;
       continue;
