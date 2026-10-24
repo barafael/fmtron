@@ -73,6 +73,12 @@ pub fn run() -> Result<(), String> {
         order.push(record);
     }
 
+    if order.is_empty() {
+        return Err(format!(
+            "no collected files under {}; run a `cargo xtask wild ...-collect` task first",
+            work.display()
+        ));
+    }
     build_harness(&harness_dir)?;
     let mut input = String::new();
     for record in &order {

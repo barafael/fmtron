@@ -6,7 +6,7 @@
 //! Kept: unique files that the `ron` crate or fmtron accepts, from sources
 //! whose declared license is a recognized open-source license.
 
-use crate::util::{now_date, read_jsonl, repo_root, ron_string, work_dir};
+use crate::util::{ensure_dir, now_date, read_jsonl, repo_root, ron_string, work_dir};
 use serde_json::Value;
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
@@ -66,17 +66,39 @@ pub fn run() -> Result<(), String> {
     let root = repo_root();
     let work = work_dir();
     let destination = root.join("test_data").join("wild");
+    let records = read_results(&work)?;
+    rebuild(&root, &destination, &work, records)
+}
 
-    let records = {
-        let path = work.join("results.jsonl");
-        if !path.is_file() {
-            return Err(format!(
-                "{}: missing; run `cargo xtask wild evaluate` first",
-                path.display()
-            ));
-        }
-        read_jsonl(&path)?
-    };
+fn read_results(work: &Path) -> Result<Vec<Value>, String> {
+    let path = work.join("results.jsonl");
+    if !path.is_file() {
+        return Err(format!(
+            "{}: missing; run `cargo xtask wild evaluate` first",
+            path.display()
+        ));
+    }
+    read_jsonl(&path)
+}
+
+/// Refuse to touch `test_data/wild` unless there is something to rebuild it
+/// from. An empty `results.jsonl` (for example after `wild evaluate` ran
+/// before any collection) used to delete the whole corpus and then fail
+/// because the destination no longer existed.
+fn rebuild(
+    root: &Path,
+    destination: &Path,
+    work: &Path,
+    records: Vec<Value>,
+) -> Result<(), String> {
+    if records.is_empty() {
+        return Err(format!(
+            "{}: no records; run a `cargo xtask wild ...-collect` task and `wild evaluate` \
+             first (refusing to rebuild {})",
+            work.join("results.jsonl").display(),
+            destination.display()
+        ));
+    }
     let mut kept: Vec<(String, Value)> = Vec::new();
     let mut per_source: HashMap<String, usize> = HashMap::new();
     let mut skipped: BTreeMap<&str, usize> = BTreeMap::new();
@@ -122,9 +144,18 @@ pub fn run() -> Result<(), String> {
         }
     }
 
-    if destination.is_dir() {
-        fs::remove_dir_all(&destination).map_err(|e| format!("{}: {e}", destination.display()))?;
+    if kept.is_empty() {
+        return Err(format!(
+            "{}: every record was skipped:{skipped:?}; refusing to rebuild {}",
+            work.join("results.jsonl").display(),
+            destination.display()
+        ));
     }
+
+    if destination.is_dir() {
+        fs::remove_dir_all(destination).map_err(|e| format!("{}: {e}", destination.display()))?;
+    }
+    ensure_dir(destination)?;
     let mut by_source: BTreeMap<(String, String), Vec<(String, Value)>> = BTreeMap::new();
     for (source, record) in kept {
         let host = record
@@ -232,7 +263,7 @@ pub fn run() -> Result<(), String> {
     }
 
     let mut size = 0_u64;
-    collect_size(&destination, &mut size);
+    collect_size(destination, &mut size);
     let mut by_host: BTreeMap<String, usize> = BTreeMap::new();
     for ((host, _), files) in &by_source {
         *by_host.entry(host.clone()).or_default() += files.len();
@@ -314,5 +345,74 @@ fn collect_size(dir: &Path, total: &mut u64) {
         } else if let Ok(metadata) = entry.metadata() {
             *total += metadata.len();
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn scratch(label: &str) -> std::path::PathBuf {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let dir = std::env::temp_dir().join(format!(
+            "fmtron-xtask-{}-{unique}-{label}",
+            std::process::id()
+        ));
+        fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    fn destination_with_sentinel(root: &Path) -> std::path::PathBuf {
+        let destination = root.join("test_data").join("wild");
+        fs::create_dir_all(&destination).unwrap();
+        fs::write(destination.join("keep.ron"), "(sentinel)").unwrap();
+        destination
+    }
+
+    #[test]
+    fn empty_results_do_not_delete_the_existing_corpus() {
+        let root = scratch("empty");
+        let destination = destination_with_sentinel(&root);
+        let work = root.join("work");
+        fs::create_dir_all(&work).unwrap();
+        fs::write(work.join("results.jsonl"), "").unwrap();
+
+        let error = rebuild(&root, &destination, &work, Vec::new()).unwrap_err();
+        assert!(error.contains("no records"), "{error}");
+        assert!(
+            destination.join("keep.ron").exists(),
+            "an empty results file must not touch the corpus"
+        );
+        fs::remove_dir_all(&root).unwrap();
+    }
+
+    #[test]
+    fn all_skipped_records_do_not_delete_the_existing_corpus() {
+        let root = scratch("skipped");
+        let destination = destination_with_sentinel(&root);
+        let work = root.join("work");
+        fs::create_dir_all(&work).unwrap();
+        fs::write(work.join("x.ron"), "(\n    a: 1,\n)").unwrap();
+
+        // `missing` is not a valid evaluation status, so the only record is
+        // skipped and there is nothing to rebuild the corpus from.
+        let records = vec![serde_json::json!({
+            "local": "x.ron",
+            "status": "missing",
+            "path": "x.ron",
+            "host": "github.com",
+            "repo": "owner/repo",
+        })];
+        let error = rebuild(&root, &destination, &work, records).unwrap_err();
+        assert!(error.contains("every record was skipped"), "{error}");
+        assert!(
+            destination.join("keep.ron").exists(),
+            "skipping every record must not touch the corpus"
+        );
+        fs::remove_dir_all(&root).unwrap();
     }
 }
