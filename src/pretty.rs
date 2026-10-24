@@ -167,6 +167,14 @@ impl Out<'_> {
     }
 }
 
+/// The width a line indented by `indent` is laid out within: `width`, but
+/// at least half of `width` past the indentation. Splitting a container
+/// whose line is mostly indentation only adds lines that overrun anyway.
+/// Never narrower for a wider `width`, so widening never adds lines.
+fn line_limit(width: usize, indent: usize) -> usize {
+    width.max(indent.saturating_add(width / 2))
+}
+
 /// `indent` = indentation to print after a line break; `col` = the *actual*
 /// current column (advances with emitted text). Only `col` feeds the fit
 /// checks, which is what catches "key: " prefixes pushing a value past the
@@ -221,7 +229,8 @@ fn best(out: &mut Out, doc: &Doc, width: usize, indent: usize, col: usize, mode:
                 return c;
             }
             let mut c = col;
-            for (item, place) in items.iter().zip(fill_plan(items, width, indent, col)) {
+            let limit = line_limit(width, indent);
+            for (item, place) in items.iter().zip(fill_plan(items, limit, indent, col)) {
                 match place.line {
                     Line::Same => {
                         out.text(" ");
@@ -274,47 +283,75 @@ struct Place {
 }
 
 /// Lay out a broken fill starting at column `col` (its indentation), each
-/// item followed by a comma: an item goes on the current line if it fits
-/// there, and on a new line if it does not, if it starts a line
+/// item followed by a comma. An item goes on a new line if it starts a line
 /// ([`FillItem::starts_line`]), or if it or the item before it renders on
-/// several lines.
+/// several lines. Each run of items between those breaks is wrapped into as
+/// few lines as fit, as evenly as that allows: the narrowest width wrapping
+/// it into that many lines decides.
 ///
 /// If keeping the items that start lines leaves no line holding two items,
 /// those line breaks are dropped. Otherwise formatting the output again,
 /// which then has one item per line, would pack the items differently.
 fn fill_plan(items: &[FillItem], width: usize, indent: usize, col: usize) -> Vec<Place> {
-    let plan = |keep_lines: bool| {
-        let mut c = col;
-        let mut after_break = false;
-        let mut places = Vec::with_capacity(items.len());
-        for (i, item) in items.iter().enumerate() {
+    // Each item's flat width, and whether it goes on lines of its own.
+    let probes: Vec<(usize, bool)> = items
+        .iter()
+        .map(|item| {
             let mut rem = usize::MAX;
             // Renders on several lines whatever the width (e.g. a grid).
             let multiline = fits_probe(&mut rem, Mode::Flat, &item.doc) == Fit::LineBreak;
             let w = usize::MAX - rem;
             // Does not fit flat on a line of its own, with its comma.
             let breaks = multiline || (matches!(item.doc, Doc::Group(_)) && indent + w + 1 > width);
-            let line = if i == 0 {
-                Line::First
-            } else if item.blank_before {
-                Line::AfterBlank
-            } else if after_break
-                || breaks
-                || (keep_lines && item.starts_line)
-                || c + 1 + w + 1 > width
-            {
-                Line::New
+            (w, breaks)
+        })
+        .collect();
+    let plan = |keep_lines: bool| {
+        // Where each item goes if not by width.
+        let forced = |i: usize| {
+            if i == 0 {
+                Some(Line::First)
+            } else if items[i].blank_before {
+                Some(Line::AfterBlank)
+            } else if probes[i - 1].1 || probes[i].1 || (keep_lines && items[i].starts_line) {
+                Some(Line::New)
             } else {
-                Line::Same
-            };
-            c = match line {
-                Line::First => c,
-                Line::Same => c + 1,
-                Line::New | Line::AfterBlank => indent,
-            };
-            after_break = breaks;
-            c += w + 1;
-            places.push(Place { line, breaks });
+                None
+            }
+        };
+        let mut places = Vec::with_capacity(items.len());
+        let mut start = 0;
+        while start < items.len() {
+            let end = (start + 1..items.len())
+                .find(|&i| forced(i).is_some())
+                .unwrap_or(items.len());
+            let widths: Vec<usize> = probes[start..end].iter().map(|p| p.0).collect();
+            let first_col = if start == 0 { col } else { indent };
+            let breaks_at = |limit| wrap(&widths, first_col, indent, limit);
+            let lines = breaks_at(width).iter().filter(|&&b| b).count();
+            // The narrowest limit that still wraps the run into `lines` lines.
+            let (mut lo, mut hi) = (0, width);
+            while lo < hi {
+                let mid = lo + (hi - lo) / 2;
+                if breaks_at(mid).iter().filter(|&&b| b).count() == lines {
+                    hi = mid;
+                } else {
+                    lo = mid + 1;
+                }
+            }
+            for (k, new_line) in breaks_at(hi).into_iter().enumerate() {
+                let i = start + k;
+                let line = match forced(i) {
+                    Some(line) if k == 0 => line,
+                    _ if new_line => Line::New,
+                    _ => Line::Same,
+                };
+                places.push(Place {
+                    line,
+                    breaks: probes[i].1,
+                });
+            }
+            start = end;
         }
         places
     };
@@ -325,6 +362,27 @@ fn fill_plan(items: &[FillItem], width: usize, indent: usize, col: usize) -> Vec
     } else {
         places
     }
+}
+
+/// Greedily wrap items of `widths`, each followed by a comma, the first
+/// starting at column `col` and every new line at `indent`, so that lines
+/// stay within `limit` where they can: for each item, whether it starts a
+/// new line.
+fn wrap(widths: &[usize], col: usize, indent: usize, limit: usize) -> Vec<bool> {
+    let mut c = col;
+    widths
+        .iter()
+        .enumerate()
+        .map(|(k, &w)| {
+            let new_line = k > 0 && c + 1 + w + 1 > limit;
+            c = match (k, new_line) {
+                (0, _) => c + w + 1,
+                (_, true) => indent + w + 1,
+                (_, false) => c + 1 + w + 1,
+            };
+            new_line
+        })
+        .collect()
 }
 
 /// Render `docs` in sequence. Each `Group`/`Hug` is decided from its *whole*
@@ -343,13 +401,21 @@ fn best_seq(
     for (i, d) in docs.iter().enumerate() {
         c = match d {
             Doc::Group(inner) => {
-                let fits = fits_rest(width.saturating_sub(c), mode, &docs[i..]);
+                let fits = fits_rest(
+                    line_limit(width, indent).saturating_sub(c),
+                    mode,
+                    &docs[i..],
+                );
                 let m = if fits { Mode::Flat } else { Mode::Break };
                 best(out, inner, width, indent, c, m)
             }
             Doc::Hug(parts) => {
                 let [open, child, close] = &**parts;
-                if fits_rest(width.saturating_sub(c), mode, &docs[i..]) {
+                if fits_rest(
+                    line_limit(width, indent).saturating_sub(c),
+                    mode,
+                    &docs[i..],
+                ) {
                     let c = best(out, open, width, indent, c, Mode::Flat);
                     let c = best(out, child, width, indent, c, Mode::Flat);
                     best(out, close, width, indent, c, Mode::Flat)
@@ -384,7 +450,7 @@ fn hug_rest(
 ) -> usize {
     let mut rest: Vec<&Doc> = vec![child, close];
     rest.extend(suffix);
-    let flat = fits_rest(width.saturating_sub(col), mode, rest);
+    let flat = fits_rest(line_limit(width, indent).saturating_sub(col), mode, rest);
     let m = if flat { Mode::Flat } else { Mode::Break };
     let c = match child {
         Doc::Group(inner) => best(out, inner, width, indent, col, m),

@@ -86,7 +86,7 @@
         ),
         (
             input: "edge_map_key_comments.ron",
-            result: Formatted("{\n                /* key */\n                \"alpha\": /* colon */ /* value */ 1,\n                \"beta\": 2, // trailing\n}"),
+            result: Formatted("{\n                /* key */\n                \"alpha\" /* colon */: /* value */ 1,\n                \"beta\": 2, // trailing\n}"),
         ),
         (
             input: "edge_mixed_line_endings.ron",

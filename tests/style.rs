@@ -88,10 +88,10 @@ fn short_scalars_are_packed_even_when_written_one_per_line() {
         fmt(&input, 40),
         indoc! {"
             [
-                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                12, 13, 14, 15, 16, 17, 18, 19, 20,
-                21, 22, 23, 24, 25, 26, 27, 28, 29,
-                30,
+                1, 2, 3, 4, 5, 6, 7, 8, 9,
+                10, 11, 12, 13, 14, 15, 16,
+                17, 18, 19, 20, 21, 22, 23,
+                24, 25, 26, 27, 28, 29, 30,
             ]"}
     );
     // Tuples of scalars, and tuples (serde writes arrays as tuples).
@@ -107,8 +107,8 @@ fn short_scalars_are_packed_even_when_written_one_per_line() {
         fmt("(\n1,\n2,\n3,\n4,\n5,\n6,\n7,\n8,\n)", 20),
         indoc! {"
             (
-                1, 2, 3, 4, 5,
-                6, 7, 8,
+                1, 2, 3, 4,
+                5, 6, 7, 8,
             )"}
     );
     // Numbers, bools and chars of any width.
@@ -155,8 +155,22 @@ fn short_elements_written_several_to_a_line_stay_packed() {
         fmt(r#"["alpha", "beta", "gamma", "delta"]"#, 30),
         indoc! {r#"
             [
-                "alpha", "beta", "gamma",
-                "delta",
+                "alpha", "beta",
+                "gamma", "delta",
+            ]"#}
+    );
+    // A wrapped row is split into lines of even length, not filled greedily.
+    assert_eq!(
+        fmt(
+            "[\"aa\", \"bb\", \"cc\", \"dd\",\n\"ee\", \"ff\", \"gg\", \"hh\"]",
+            22
+        ),
+        indoc! {r#"
+            [
+                "aa", "bb",
+                "cc", "dd",
+                "ee", "ff",
+                "gg", "hh",
             ]"#}
     );
     // Every line break between them is kept; only a long row wraps.
@@ -330,12 +344,69 @@ fn a_wrapper_hugs_its_only_container() {
                 "a string too long for the line",
             )"#}
     );
+    // A comment ending the opener's line stays there.
     assert_eq!(
         fmt("Some( // c\n[1])", 100),
         indoc! {"
-            Some(
-                // c
+            Some( // c
                 [1],
             )"}
     );
+}
+
+#[test]
+fn a_comment_ending_the_opening_line_stays_there() {
+    assert_eq!(
+        fmt(
+            "Scene( // optional\n materials: { // a map\n \"metal\": 1 })",
+            100
+        ),
+        indoc! {r#"
+            Scene( // optional
+                materials: { // a map
+                    "metal": 1,
+                },
+            )"#}
+    );
+    // Followed by an element on the same line, it leads that element.
+    assert_eq!(
+        fmt("[ /* first */ 1,\n 2]", 100),
+        indoc! {"
+            [
+                /* first */
+                1,
+                2,
+            ]"}
+    );
+    // In an empty container, there is nothing to keep it apart from.
+    assert_eq!(fmt("[ // none yet\n]", 100), "[\n    // none yet\n]");
+}
+
+#[test]
+fn a_comment_before_a_colon_stays_before_it() {
+    assert_eq!(
+        fmt("(a /* key */ : /* value */ 1)", 100),
+        "(\n    a /* key */: /* value */ 1,\n)"
+    );
+    assert_eq!(
+        fmt("{\"k\" /* c */ : 1}", 100),
+        "{\n    \"k\" /* c */: 1,\n}"
+    );
+}
+
+#[test]
+fn a_deeply_indented_line_keeps_half_the_width() {
+    // At indent 32 of width 32, a line may run to 48: `pair` fits, and
+    // `triple` breaks but packs its elements.
+    let config = Config::default().with_max_width(32).with_tab_size(32);
+    let input = "(pair: (1, 2), triple: (\"a\", 2, true))";
+    let out = format_ron(input, &config).unwrap();
+    let indent = " ".repeat(32);
+    assert_eq!(
+        out,
+        format!(
+            "(\n{indent}pair: (1, 2),\n{indent}triple: (\n{indent}{indent}\"a\", 2, true,\n{indent}),\n)"
+        )
+    );
+    assert_eq!(format_ron(&out, &config).unwrap(), out);
 }

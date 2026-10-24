@@ -539,7 +539,7 @@ fn comments_between_key_and_value_stay_with_the_entry() {
             "(a /* before */ : /* after */ 1)",
             indoc! {"
                 (
-                    a: /* before */ /* after */ 1,
+                    a /* before */: /* after */ 1,
                 )"},
         ),
         (

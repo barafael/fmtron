@@ -138,15 +138,15 @@ cargo run --release --manifest-path ui/Cargo.toml -- path/to/fmt.ron
 
 fmtron lays out values by these rules:
 
-- A container goes on one line if it fits within the line width, and otherwise puts one element per line, indented, with a trailing comma
+- A container goes on one line if it fits within the line width, and otherwise puts one element per line, indented, with a trailing comma. A line's width is `max_width`, but at least half of `max_width` past its indentation: where indentation alone would use up the width, breaking a container only adds lines that overrun anyway, so a deeply indented line keeps its content together
 - A struct or map whose input breaks the line right after its opening bracket stays broken, even if it would fit on one line. To have fmtron join it, remove that line break
 - A broken list or tuple whose elements are all short is packed several elements to a line, like words in a paragraph. Short means a number, bool or char, or a string, identifier or tuple of atoms at most 16 columns wide. Tuples count because serde writes arrays such as `[u8; 32]` as tuples. They are packed in two cases:
-  - If the input already puts two or more of them on one line, each line break between them is kept and only a line that grows too long is wrapped, so editing one line never reflows the others. If the input also breaks the line right after the opening bracket, the list is a grid: it stays broken even if it would fit on one line, so its rows stay rows
+  - If the input already puts two or more of them on one line, each line break between them is kept and only a line that grows too long is wrapped, into lines as even in length as the fewest lines allow, so editing one line never reflows the others. If the input also breaks the line right after the opening bracket, the list is a grid: it stays broken even if it would fit on one line, so its rows stay rows
   - If they are all numbers, bools or chars, or tuples of those, they are packed even when written one per line
 
   Strings and identifiers written one per line stay that way. A blank line between elements starts a new line, after a blank one
 - A tuple or newtype variant around a single container, such as `Some((…))` or `Wrapper([…])`, hugs it: if it does not fit on one line, the container breaks inside the parentheses (`Some((` … `))`), as `ron`'s own pretty-printer writes it
-- Comments force their container to break, one element per line
+- Comments force their container to break, one element per line. A comment stays next to what it is written beside: after an opening bracket at the end of its line (`Scene( // optional`), between a key and its colon (`delay /* seconds */: 5`), or after the colon (`delay: /* seconds */ 5`). A comment on a line of its own goes before the next element
 
 ## As a library
 

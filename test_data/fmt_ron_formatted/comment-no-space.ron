@@ -1,5 +1,4 @@
-(
-    //no space after the slashes
+( //no space after the slashes
     max_width: 80, /*tight block*/
     tab_size: 2,
 )

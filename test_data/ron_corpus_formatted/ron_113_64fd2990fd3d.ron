@@ -1,7 +1,5 @@
-Scene(
-    // class name is optional
-    materials: {
-        // this is a map
+Scene( // class name is optional
+    materials: { // this is a map
         "metal": (
             reflectivity: 1.0,
         ),
@@ -9,8 +7,7 @@ Scene(
             reflectivity: 0.5,
         ),
     },
-    entities: [
-        // this is an array
+    entities: [ // this is an array
         (
             name: "hero",
             material: "metal",

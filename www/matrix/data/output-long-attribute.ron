@@ -87,7 +87,7 @@
         ),
         (
             input: "edge_map_key_comments.ron",
-            result: Formatted("{\n                /* key */\n                \"alpha\": /* colon */ /* value */ 1,\n                \"beta\": 2, // trailing\n}"),
+            result: Formatted("{\n                /* key */\n                \"alpha\" /* colon */: /* value */ 1,\n                \"beta\": 2, // trailing\n}"),
         ),
         (
             input: "edge_mixed_line_endings.ron",
@@ -447,7 +447,7 @@
         ),
         (
             input: "ron_113_64fd2990fd3d.ron",
-            result: Formatted("Scene(\n                // class name is optional\n                materials: {\n                                // this is a map\n                                \"metal\": (\n                                                reflectivity: 1.0,\n                                ),\n                                \"plastic\": (\n                                                reflectivity: 0.5,\n                                ),\n                },\n                entities: [\n                                // this is an array\n                                (\n                                                name: \"hero\",\n                                                material: \"metal\",\n                                ),\n                                (\n                                                name: \"monster\",\n                                                material: \"plastic\",\n                                ),\n                ],\n)"),
+            result: Formatted("Scene( // class name is optional\n                materials: { // this is a map\n                                \"metal\": (\n                                                reflectivity: 1.0,\n                                ),\n                                \"plastic\": (\n                                                reflectivity: 0.5,\n                                ),\n                },\n                entities: [ // this is an array\n                                (\n                                                name: \"hero\",\n                                                material: \"metal\",\n                                ),\n                                (\n                                                name: \"monster\",\n                                                material: \"plastic\",\n                                ),\n                ],\n)"),
         ),
     ],
 )

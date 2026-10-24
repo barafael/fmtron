@@ -66,7 +66,7 @@
         ),
         (
             input: "edge_depth_boundary.ron",
-            result: Formatted("[\n    [\n        [\n            [\n                {\n                    \"deep\": [\n                        1,\n                        2,\n                        3,\n                    ],\n                },\n            ],\n        ],\n    ],\n]"),
+            result: Formatted("[\n    [\n        [\n            [\n                {\n                    \"deep\": [\n                        1, 2, 3,\n                    ],\n                },\n            ],\n        ],\n    ],\n]"),
         ),
         (
             input: "edge_doc_comments.ron",
@@ -86,7 +86,7 @@
         ),
         (
             input: "edge_map_key_comments.ron",
-            result: Formatted("{\n    /* key */\n    \"alpha\": /* colon */ /* value */ 1,\n    \"beta\": 2, // trailing\n}"),
+            result: Formatted("{\n    /* key */\n    \"alpha\" /* colon */: /* value */ 1,\n    \"beta\": 2, // trailing\n}"),
         ),
         (
             input: "edge_mixed_line_endings.ron",
@@ -206,7 +206,7 @@
         ),
         (
             input: "ron_039_02c9d8207744.ron",
-            result: Formatted("(\n    (\n        name: \"Walter\",\n        /// 0@age (person)\n        /// must be within range 0..256\n        age: 43,\n        /// 0@knows (person)\n        /// must be list of valid person indices\n        knows: [\n            0,\n            1,\n        ],\n        pet: None,\n    ),\n    [\n        (\n            name: \"Alice\",\n            /// 0@age (person)\n            /// must be within range 0..256\n            age: 29,\n            /// 0@knows (person)\n            /// must be list of valid person indices\n            knows: [\n                1,\n            ],\n            pet: Some((\n                name: \"Herbert\",\n                /// 1@age (pet)\n                /// must be valid range 0..256\n                age: 7,\n                /// 1@kind (pet)\n                /// must be `Isopod`\n                kind: Isopod,\n            )),\n        ),\n        (\n            name: \"Bob\",\n            /// 0@age (person)\n            /// must be within range 0..256\n            age: 29,\n            /// 0@knows (person)\n            /// must be list of valid person indices\n            knows: [\n                0,\n            ],\n            pet: None,\n        ),\n    ],\n)"),
+            result: Formatted("(\n    (\n        name: \"Walter\",\n        /// 0@age (person)\n        /// must be within range 0..256\n        age: 43,\n        /// 0@knows (person)\n        /// must be list of valid person indices\n        knows: [\n            0, 1,\n        ],\n        pet: None,\n    ),\n    [\n        (\n            name: \"Alice\",\n            /// 0@age (person)\n            /// must be within range 0..256\n            age: 29,\n            /// 0@knows (person)\n            /// must be list of valid person indices\n            knows: [\n                1,\n            ],\n            pet: Some((\n                name: \"Herbert\",\n                /// 1@age (pet)\n                /// must be valid range 0..256\n                age: 7,\n                /// 1@kind (pet)\n                /// must be `Isopod`\n                kind: Isopod,\n            )),\n        ),\n        (\n            name: \"Bob\",\n            /// 0@age (person)\n            /// must be within range 0..256\n            age: 29,\n            /// 0@knows (person)\n            /// must be list of valid person indices\n            knows: [\n                0,\n            ],\n            pet: None,\n        ),\n    ],\n)"),
         ),
         (
             input: "ron_042_8cb67f89f9ff.ron",
@@ -446,7 +446,7 @@
         ),
         (
             input: "ron_113_64fd2990fd3d.ron",
-            result: Formatted("Scene(\n    // class name is optional\n    materials: {\n        // this is a map\n        \"metal\": (\n            reflectivity: 1.0,\n        ),\n        \"plastic\": (\n            reflectivity: 0.5,\n        ),\n    },\n    entities: [\n        // this is an array\n        (\n            name: \"hero\",\n            material: \"metal\",\n        ),\n        (\n            name: \"monster\",\n            material: \"plastic\",\n        ),\n    ],\n)"),
+            result: Formatted("Scene( // class name is optional\n    materials: { // this is a map\n        \"metal\": (\n            reflectivity: 1.0,\n        ),\n        \"plastic\": (\n            reflectivity: 0.5,\n        ),\n    },\n    entities: [ // this is an array\n        (\n            name: \"hero\",\n            material: \"metal\",\n        ),\n        (\n            name: \"monster\",\n            material: \"plastic\",\n        ),\n    ],\n)"),
         ),
     ],
 )

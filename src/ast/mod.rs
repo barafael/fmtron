@@ -31,9 +31,15 @@ pub enum Attribute {
 
 pub struct Value {
     leading: Vec<String>,
-    /// Comments between a map key or field name and this value
-    /// (`key /* c */ : /* d */ value`).
+    /// Comments between a map key or field name and the colon after it
+    /// (`/* c */` in `key /* c */ : value`).
+    before_colon: Vec<String>,
+    /// Comments between the colon after a map key or field name and this
+    /// value (`/* d */` in `key: /* d */ value`).
     inline: Vec<String>,
+    /// Comments that end the line of a container's opening bracket
+    /// (`Scene( // c`), before its first element.
+    after_open: Vec<String>,
     trailing: Vec<String>,
     /// The input breaks the line before this element of a list or tuple:
     /// after the element before it, or for the first element, after the
@@ -141,24 +147,33 @@ fn newline_between(src: &str, from: usize, to: usize) -> bool {
     from < to && src[from..to].contains('\n')
 }
 
-/// True if the input breaks the line between a container's opening bracket
-/// and its first item (child or comment). The bracket is the first `(`, `[`
-/// or `{` outside the container's inner pairs (its ident, comments and
+/// The index just past a container's opening bracket: the first `(`, `[` or
+/// `{` outside the container's inner pairs (its ident, comments and
 /// children).
-fn opens_with_newline(pair: &Pair<Rule>, src: &str) -> bool {
+fn opener_end(pair: &Pair<Rule>, src: &str) -> usize {
     let mut pos = pair.as_span().start();
-    let mut opener = None;
     for p in pair.clone().into_inner() {
         let start = p.as_span().start();
-        if opener.is_none() {
-            opener = src[pos..start].find(['(', '[', '{']).map(|i| pos + i + 1);
-        }
-        if let Some(o) = opener {
-            return newline_between(src, o, start);
+        if let Some(i) = src[pos..start].find(['(', '[', '{']) {
+            return pos + i + 1;
         }
         pos = p.as_span().end();
     }
-    false
+    let end = pair.as_span().end();
+    src[pos..end]
+        .find(['(', '[', '{'])
+        .map_or(end, |i| pos + i + 1)
+}
+
+/// True if the input breaks the line between a container's opening bracket
+/// and its first item (child or comment).
+fn opens_with_newline(pair: &Pair<Rule>, src: &str) -> bool {
+    let opener = opener_end(pair, src);
+    pair.clone()
+        .into_inner()
+        .map(|p| p.as_span().start())
+        .find(|&start| start >= opener)
+        .is_some_and(|start| newline_between(src, opener, start))
 }
 
 fn prepend_leading(v: &mut Value, mut pending: Vec<String>) {
@@ -278,6 +293,19 @@ impl RonFile {
 }
 
 impl Value {
+    /// A value of `kind` with no comments attached.
+    fn of(kind: Kind) -> Self {
+        Self {
+            leading: vec![],
+            before_colon: vec![],
+            inline: vec![],
+            after_open: vec![],
+            trailing: vec![],
+            starts_line: false,
+            kind,
+        }
+    }
+
     fn from(pair: Pair<Rule>, src: &str) -> Self {
         match pair.as_rule() {
             Rule::bool
@@ -293,85 +321,71 @@ impl Value {
                     pair.as_rule(),
                     Rule::string | Rule::byte_string | Rule::unit_type
                 );
-                Self {
-                    leading: vec![],
-                    inline: vec![],
-                    trailing: vec![],
-                    starts_line: false,
-                    kind: Kind::Atom { text, scalar },
-                }
+                Self::of(Kind::Atom { text, scalar })
             }
 
             Rule::list => {
-                let (mut values, dangling) = collect_values(pair.clone().into_inner(), src);
+                let opener = opener_end(&pair, src);
+                let (mut values, c) = collect_values(pair.clone().into_inner(), src, opener);
                 if let Some(first) = values.first_mut() {
                     first.starts_line = opens_with_newline(&pair, src);
                 }
-                Self {
-                    leading: vec![],
-                    inline: vec![],
-                    trailing: vec![],
-                    starts_line: false,
-                    kind: Kind::List { values, dangling },
-                }
+                Self::of(Kind::List {
+                    values,
+                    dangling: c.dangling,
+                })
+                .after_open(c.after_open)
             }
 
             Rule::map => {
                 let broken = opens_with_newline(&pair, src);
-                let (entries, dangling) = collect_entries(pair.clone().into_inner(), src);
-                Self {
-                    leading: vec![],
-                    inline: vec![],
-                    trailing: vec![],
-                    starts_line: false,
-                    kind: Kind::Map {
-                        entries,
-                        dangling,
-                        broken,
-                    },
-                }
+                let opener = opener_end(&pair, src);
+                let (entries, c) = collect_entries(pair.clone().into_inner(), src, opener);
+                Self::of(Kind::Map {
+                    entries,
+                    dangling: c.dangling,
+                    broken,
+                })
+                .after_open(c.after_open)
             }
 
             Rule::tuple_type => {
-                let (ident, mut values, dangling) =
-                    collect_named_values(pair.clone().into_inner(), src);
+                let opener = opener_end(&pair, src);
+                let (ident, mut values, c) =
+                    collect_named_values(pair.clone().into_inner(), src, opener);
                 if let Some(first) = values.first_mut() {
                     first.starts_line = opens_with_newline(&pair, src);
                 }
-                Self {
-                    leading: vec![],
-                    inline: vec![],
-                    trailing: vec![],
-                    starts_line: false,
-                    kind: Kind::TupleType {
-                        ident,
-                        values,
-                        dangling,
-                    },
-                }
+                Self::of(Kind::TupleType {
+                    ident,
+                    values,
+                    dangling: c.dangling,
+                })
+                .after_open(c.after_open)
             }
 
             Rule::fields_type => {
                 let broken = opens_with_newline(&pair, src);
-                let (ident, fields, dangling) = collect_fields(pair.clone().into_inner(), src);
-                Self {
-                    leading: vec![],
-                    inline: vec![],
-                    trailing: vec![],
-                    starts_line: false,
-                    kind: Kind::FieldsType {
-                        ident,
-                        fields,
-                        dangling,
-                        broken,
-                    },
-                }
+                let opener = opener_end(&pair, src);
+                let (ident, fields, c) = collect_fields(pair.clone().into_inner(), src, opener);
+                Self::of(Kind::FieldsType {
+                    ident,
+                    fields,
+                    dangling: c.dangling,
+                    broken,
+                })
+                .after_open(c.after_open)
             }
 
             Rule::value => Value::from(pair.into_inner().next().unwrap(), src),
 
             _ => unreachable!(),
         }
+    }
+
+    fn after_open(mut self, comments: Vec<String>) -> Self {
+        self.after_open = comments;
+        self
     }
 
     /// Drop every blank-line marker in this subtree.
@@ -426,21 +440,31 @@ impl Child {
     }
 }
 
-/// The `value` pair of an entry/field, plus comments appearing between its
-/// head (key/name) and the value.
+/// The `value` pair of an entry/field, plus the comments between its head
+/// (key/name, ending at `head_end`) and the value: those written before the
+/// colon, and those after it.
 fn value_and_inline<'a>(
     inner: impl Iterator<Item = Pair<'a, Rule>>,
-) -> (Pair<'a, Rule>, Vec<String>) {
-    let mut inline: Vec<String> = Vec::new();
-    let mut vp = None;
+    head_end: usize,
+    src: &str,
+) -> (Pair<'a, Rule>, Vec<String>, Vec<String>) {
+    let (mut before, mut after) = (Vec::new(), Vec::new());
+    // The gaps between the head, the comments and the value hold only
+    // whitespace and the colon.
+    let mut pos = head_end;
+    let mut colon_seen = false;
     for c in inner {
+        let start = c.as_span().start();
+        colon_seen |= src[pos.min(start)..start].contains(':');
         match c.as_rule() {
-            Rule::value => vp = Some(c),
-            Rule::COMMENT => inline.push(comment_text(&c)),
+            Rule::value => return (c, before, after),
+            Rule::COMMENT if colon_seen => after.push(comment_text(&c)),
+            Rule::COMMENT => before.push(comment_text(&c)),
             _ => {}
         }
+        pos = c.as_span().end();
     }
-    (vp.unwrap(), inline)
+    unreachable!("an entry or field has a value")
 }
 
 /// An optional leading `ident`, e.g. the `Ident` of `Ident(..)`.
@@ -454,19 +478,33 @@ fn take_ident<'a, I: Iterator<Item = Pair<'a, Rule>>>(
     }
 }
 
+/// The comments of a container that belong to no child.
+struct Loose {
+    /// After the last child (or in an empty container).
+    dangling: Vec<String>,
+    /// On the opening bracket's line, ending it, before the first child.
+    after_open: Vec<String>,
+}
+
 /// Collect the children of a container (list values, map entries, or struct
 /// fields), attaching comments: a comment on the same line as the preceding
 /// child becomes that child's trailing comment; a comment on its own line
 /// becomes the next child's leading comment; comments after the last child
-/// are dangling. A blank line between two items (children or own-line
-/// comments) is recorded as a [`BLANK_LINE`] marker in those lists; blank
-/// lines after the opening or before the closing bracket are dropped.
+/// are dangling. Comments on the line of the opening bracket (which ends at
+/// `opener`) stay with it if they end that line, and lead the first child if
+/// it follows on the same line. A blank line between two items (children or
+/// own-line comments) is recorded as a [`BLANK_LINE`] marker in those lists;
+/// blank lines after the opening or before the closing bracket are dropped.
 fn collect_children<'a>(
     inner: impl Iterator<Item = Pair<'a, Rule>>,
     src: &str,
-) -> (Vec<Child>, Vec<String>) {
+    opener: usize,
+) -> (Vec<Child>, Loose) {
     let mut children: Vec<Child> = Vec::new();
     let mut pending: Vec<String> = Vec::new();
+    let mut after_open: Vec<String> = Vec::new();
+    // Where the comments on the opening bracket's line end.
+    let mut after_open_end = opener;
     let mut last_end: Option<usize> = None;
     // End of the previous item of any kind, for blank-line detection.
     let mut prev_end: Option<usize> = None;
@@ -485,14 +523,31 @@ fn collect_children<'a>(
                     children[idx].trailing().trailing.push(txt);
                     continue;
                 }
-                if blank {
+                if last_end.is_none()
+                    && pending.is_empty()
+                    && cs >= opener
+                    && !newline_between(src, opener, cs)
+                {
+                    after_open_end = comment_end(&p);
+                    after_open.push(txt);
+                    continue;
+                }
+                if blank && !right_after_open(last_end, &pending) {
                     pending.push(BLANK_LINE.into());
                 }
                 pending.push(txt);
             }
             Rule::value | Rule::map_entry | Rule::field => {
-                if blank {
+                if blank && !right_after_open(last_end, &pending) {
                     pending.push(BLANK_LINE.into());
+                }
+                if last_end.is_none()
+                    && pending.is_empty()
+                    && !newline_between(src, after_open_end, start)
+                {
+                    // The first child shares the bracket's line: the comments
+                    // before it lead it.
+                    pending = std::mem::take(&mut after_open);
                 }
                 let starts_line = last_end.is_some_and(|e| newline_between(src, e, start));
                 let (mut child, end) = parse_child(p, src);
@@ -509,8 +564,27 @@ fn collect_children<'a>(
             _ => {}
         }
     }
-    let dangling = pending;
-    (children, dangling)
+    let dangling = if children.is_empty() {
+        // No child to keep them apart from the closing bracket.
+        after_open.append(&mut pending);
+        std::mem::take(&mut after_open)
+    } else {
+        pending
+    };
+    (
+        children,
+        Loose {
+            dangling,
+            after_open,
+        },
+    )
+}
+
+/// True if nothing but comments on the opening bracket's line came before:
+/// a blank line here follows the bracket's line, and is dropped like any
+/// blank line right after an opening bracket.
+fn right_after_open(last_end: Option<usize>, pending: &[String]) -> bool {
+    last_end.is_none() && pending.is_empty()
 }
 
 /// Parse one container child pair into a `Child`, returned with the byte
@@ -524,19 +598,22 @@ fn parse_child(p: Pair<'_, Rule>, src: &str) -> (Child, usize) {
         Rule::map_entry => {
             let mut inner = p.into_inner();
             let kp = inner.next().unwrap();
-            let (vp, inline) = value_and_inline(inner);
+            let (vp, before_colon, inline) = value_and_inline(inner, kp.as_span().end(), src);
             let end = vp.as_span().end();
             let k = Value::from(kp, src);
             let mut v = Value::from(vp, src);
+            v.before_colon = before_colon;
             v.inline = inline;
             (Child::Entry(k, v), end)
         }
         Rule::field => {
             let mut inner = p.into_inner();
-            let name = inner.next().unwrap().as_str().to_string();
-            let (vp, inline) = value_and_inline(inner);
+            let np = inner.next().unwrap();
+            let name = np.as_str().to_string();
+            let (vp, before_colon, inline) = value_and_inline(inner, np.as_span().end(), src);
             let end = vp.as_span().end();
             let mut v = Value::from(vp, src);
+            v.before_colon = before_colon;
             v.inline = inline;
             (Child::Field { name, value: v }, end)
         }
@@ -544,12 +621,13 @@ fn parse_child(p: Pair<'_, Rule>, src: &str) -> (Child, usize) {
     }
 }
 
-/// Collect `value` children (with attached comments) plus dangling comments.
+/// Collect `value` children (with attached comments) plus loose comments.
 fn collect_values<'a, I: Iterator<Item = Pair<'a, Rule>>>(
     inner: I,
     src: &str,
-) -> (Vec<Value>, Vec<String>) {
-    let (children, dangling) = collect_children(inner, src);
+    opener: usize,
+) -> (Vec<Value>, Loose) {
+    let (children, loose) = collect_children(inner, src, opener);
     let values = children
         .into_iter()
         .map(|c| match c {
@@ -557,15 +635,16 @@ fn collect_values<'a, I: Iterator<Item = Pair<'a, Rule>>>(
             _ => unreachable!("list/tuple children are `value` pairs"),
         })
         .collect();
-    (values, dangling)
+    (values, loose)
 }
 
 /// Collect map `entry` children (key, value) with attached comments.
 fn collect_entries(
     inner: pest::iterators::Pairs<Rule>,
     src: &str,
-) -> (Vec<(Value, Value)>, Vec<String>) {
-    let (children, dangling) = collect_children(inner, src);
+    opener: usize,
+) -> (Vec<(Value, Value)>, Loose) {
+    let (children, loose) = collect_children(inner, src, opener);
     let entries = children
         .into_iter()
         .map(|c| match c {
@@ -573,28 +652,30 @@ fn collect_entries(
             _ => unreachable!("map children are `map_entry` pairs"),
         })
         .collect();
-    (entries, dangling)
+    (entries, loose)
 }
 
 /// Collect an optional leading `ident` then `value` children (tuple struct/variant).
 fn collect_named_values(
     inner: pest::iterators::Pairs<Rule>,
     src: &str,
-) -> (Option<String>, Vec<Value>, Vec<String>) {
+    opener: usize,
+) -> (Option<String>, Vec<Value>, Loose) {
     let mut iter = inner.peekable();
     let ident = take_ident(&mut iter);
-    let (values, dangling) = collect_values(iter, src);
-    (ident, values, dangling)
+    let (values, loose) = collect_values(iter, src, opener);
+    (ident, values, loose)
 }
 
 /// Collect an optional leading `ident` then `field` children (named struct).
 fn collect_fields(
     inner: pest::iterators::Pairs<Rule>,
     src: &str,
-) -> (Option<String>, Vec<Field>, Vec<String>) {
+    opener: usize,
+) -> (Option<String>, Vec<Field>, Loose) {
     let mut iter = inner.peekable();
     let ident = take_ident(&mut iter);
-    let (children, dangling) = collect_children(iter, src);
+    let (children, loose) = collect_children(iter, src, opener);
     let fields = children
         .into_iter()
         .map(|c| match c {
@@ -602,5 +683,5 @@ fn collect_fields(
             _ => unreachable!("struct children are `field` pairs"),
         })
         .collect();
-    (ident, fields, dangling)
+    (ident, fields, loose)
 }

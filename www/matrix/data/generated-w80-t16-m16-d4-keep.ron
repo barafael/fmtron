@@ -86,7 +86,7 @@
         ),
         (
             input: "edge_map_key_comments.ron",
-            result: Formatted("{\n                /* key */\n                \"alpha\": /* colon */ /* value */ 1,\n                \"beta\": 2, // trailing\n}"),
+            result: Formatted("{\n                /* key */\n                \"alpha\" /* colon */: /* value */ 1,\n                \"beta\": 2, // trailing\n}"),
         ),
         (
             input: "edge_mixed_line_endings.ron",
@@ -186,7 +186,7 @@
         ),
         (
             input: "ron_033_2b23e015a778.ron",
-            result: Formatted("EntityConfig(\n                name: \"some other name\",\n                components: [\n                                {\n                                                \"type\": \"Component1\",\n                                                \"value\": 22.0,\n                                                \"value_2\": 35.0,\n                                                \"something\": Test(22),\n                                },\n                                {\n                                                \"type\": \"Component1\",\n                                                \"value\": 12.0,\n                                                \"value_2\": 11.0,\n                                                \"something\": AnotherTest(\n                                                                11.0, 22.0,\n                                                ),\n                                },\n                                {\n                                                \"type\": \"Component2\",\n                                                \"value\": 3.1,\n                                },\n                ],\n)"),
+            result: Formatted("EntityConfig(\n                name: \"some other name\",\n                components: [\n                                {\n                                                \"type\": \"Component1\",\n                                                \"value\": 22.0,\n                                                \"value_2\": 35.0,\n                                                \"something\": Test(22),\n                                },\n                                {\n                                                \"type\": \"Component1\",\n                                                \"value\": 12.0,\n                                                \"value_2\": 11.0,\n                                                \"something\": AnotherTest(11.0, 22.0),\n                                },\n                                {\n                                                \"type\": \"Component2\",\n                                                \"value\": 3.1,\n                                },\n                ],\n)"),
         ),
         (
             input: "ron_035_c7053bd47919.ron",
@@ -446,7 +446,7 @@
         ),
         (
             input: "ron_113_64fd2990fd3d.ron",
-            result: Formatted("Scene(\n                // class name is optional\n                materials: {\n                                // this is a map\n                                \"metal\": (\n                                                reflectivity: 1.0,\n                                ),\n                                \"plastic\": (\n                                                reflectivity: 0.5,\n                                ),\n                },\n                entities: [\n                                // this is an array\n                                (\n                                                name: \"hero\",\n                                                material: \"metal\",\n                                ),\n                                (\n                                                name: \"monster\",\n                                                material: \"plastic\",\n                                ),\n                ],\n)"),
+            result: Formatted("Scene( // class name is optional\n                materials: { // this is a map\n                                \"metal\": (\n                                                reflectivity: 1.0,\n                                ),\n                                \"plastic\": (\n                                                reflectivity: 0.5,\n                                ),\n                },\n                entities: [ // this is an array\n                                (\n                                                name: \"hero\",\n                                                material: \"metal\",\n                                ),\n                                (\n                                                name: \"monster\",\n                                                material: \"plastic\",\n                                ),\n                ],\n)"),
         ),
     ],
 )

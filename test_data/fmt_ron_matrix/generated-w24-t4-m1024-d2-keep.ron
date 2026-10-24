@@ -86,7 +86,7 @@
         ),
         (
             input: "edge_map_key_comments.ron",
-            result: Formatted("{\n    /* key */\n    \"alpha\": /* colon */ /* value */ 1,\n    \"beta\": 2, // trailing\n}"),
+            result: Formatted("{\n    /* key */\n    \"alpha\" /* colon */: /* value */ 1,\n    \"beta\": 2, // trailing\n}"),
         ),
         (
             input: "edge_mixed_line_endings.ron",
@@ -98,11 +98,11 @@
         ),
         (
             input: "edge_packing_boundary_16.ron",
-            result: Formatted("[\n    \"aa\", \"bb\", \"cc\",\n    \"dd\",\n    \"ee\", \"ff\", \"gg\",\n    \"hh\",\n]"),
+            result: Formatted("[\n    \"aa\", \"bb\",\n    \"cc\", \"dd\",\n    \"ee\", \"ff\",\n    \"gg\", \"hh\",\n]"),
         ),
         (
             input: "edge_packing_boundary_17.ron",
-            result: Formatted("[\n    \"aaa\", \"bbb\", \"ccc\",\n    \"ddd\",\n    \"eee\", \"fff\", \"ggg\",\n    \"hhh\",\n]"),
+            result: Formatted("[\n    \"aaa\", \"bbb\",\n    \"ccc\", \"ddd\",\n    \"eee\", \"fff\",\n    \"ggg\", \"hhh\",\n]"),
         ),
         (
             input: "edge_packing_mixed.ron",

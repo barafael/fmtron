@@ -86,7 +86,7 @@
         ),
         (
             input: "edge_map_key_comments.ron",
-            result: Formatted("{\n  /* key */\n  \"alpha\": /* colon */ /* value */ 1,\n  \"beta\": 2, // trailing\n}"),
+            result: Formatted("{\n  /* key */\n  \"alpha\" /* colon */: /* value */ 1,\n  \"beta\": 2, // trailing\n}"),
         ),
         (
             input: "edge_mixed_line_endings.ron",
@@ -98,15 +98,15 @@
         ),
         (
             input: "edge_packing_boundary_16.ron",
-            result: Formatted("[\n  \"aa\", \"bb\", \"cc\",\n  \"dd\",\n  \"ee\", \"ff\", \"gg\",\n  \"hh\",\n]"),
+            result: Formatted("[\n  \"aa\", \"bb\",\n  \"cc\", \"dd\",\n  \"ee\", \"ff\",\n  \"gg\", \"hh\",\n]"),
         ),
         (
             input: "edge_packing_boundary_17.ron",
-            result: Formatted("[\n  \"aaa\", \"bbb\", \"ccc\",\n  \"ddd\",\n  \"eee\", \"fff\", \"ggg\",\n  \"hhh\",\n]"),
+            result: Formatted("[\n  \"aaa\", \"bbb\",\n  \"ccc\", \"ddd\",\n  \"eee\", \"fff\",\n  \"ggg\", \"hhh\",\n]"),
         ),
         (
             input: "edge_packing_mixed.ron",
-            result: Formatted("Config(\n  short: [\n    1, 2, 3, 4, 5, 6, 7,\n    8,\n  ],\n  strings: [\n    \"a\", \"bb\", \"ccc\",\n    \"dddd\", \"eeeee\",\n    \"ffffff\",\n  ],\n  nested: [\n    [1, 2],\n    [3, 4],\n    [5, 6],\n  ],\n)"),
+            result: Formatted("Config(\n  short: [\n    1, 2, 3, 4,\n    5, 6, 7, 8,\n  ],\n  strings: [\n    \"a\", \"bb\", \"ccc\",\n    \"dddd\", \"eeeee\",\n    \"ffffff\",\n  ],\n  nested: [\n    [1, 2],\n    [3, 4],\n    [5, 6],\n  ],\n)"),
         ),
         (
             input: "edge_tuples.ron",
@@ -446,7 +446,7 @@
         ),
         (
             input: "ron_113_64fd2990fd3d.ron",
-            result: Formatted("Scene(\n  // class name is optional\n  materials: {\n    // this is a map\n    \"metal\": (\n      reflectivity: 1.0,\n    ),\n    \"plastic\": (\n      reflectivity: 0.5,\n    ),\n  },\n  entities: [\n    // this is an array\n    (\n      name: \"hero\",\n      material: \"metal\",\n    ),\n    (\n      name: \"monster\",\n      material: \"plastic\",\n    ),\n  ],\n)"),
+            result: Formatted("Scene( // class name is optional\n  materials: { // this is a map\n    \"metal\": (\n      reflectivity: 1.0,\n    ),\n    \"plastic\": (\n      reflectivity: 0.5,\n    ),\n  },\n  entities: [ // this is an array\n    (\n      name: \"hero\",\n      material: \"metal\",\n    ),\n    (\n      name: \"monster\",\n      material: \"plastic\",\n    ),\n  ],\n)"),
         ),
     ],
 )

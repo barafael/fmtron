@@ -2,12 +2,15 @@
 //!
 //! The matrix test pins layout; this one checks properties that must hold for
 //! every formatted cell: idempotence, no trailing whitespace, preserved line
-//! endings, and overruns only where the line contains something the formatter
-//! cannot break (a long atom, literal, comment, attribute, or indentation).
+//! endings, and overruns of the line's width (`max_width`, or half of it past
+//! the indentation, if wider) only where the line contains something the
+//! formatter cannot break (a long atom, literal, comment, attribute, or
+//! indentation). Widths are display columns, as the formatter measures them.
 
 use fmtron::{BlankLines, Config, format_ron};
 use serde::Deserialize;
 use std::collections::BTreeMap;
+use unicode_width::UnicodeWidthStr;
 
 const SOURCE: &str = "test_data/ron_corpus";
 const MATRIX: &str = "test_data/fmt_ron_matrix";
@@ -119,13 +122,11 @@ fn every_formatted_cell_obeys_the_layout_invariants() {
             }
 
             for line in output.lines() {
-                let width = line.chars().count();
-                if width > matrix.settings.max_width
-                    && !has_unbreakable_content(line, matrix.settings.max_width)
-                {
+                let width = line.width();
+                let limit = line_limit(matrix.settings.max_width, line);
+                if width > limit && !has_unbreakable_content(line, limit) {
                     failures.push(format!(
-                        "{label}: breakable line is {width} columns wide (limit {}): {line:?}",
-                        matrix.settings.max_width
+                        "{label}: breakable line is {width} columns wide (limit {limit}): {line:?}"
                     ));
                 }
             }
@@ -146,12 +147,21 @@ fn every_formatted_cell_obeys_the_layout_invariants() {
     );
 }
 
+/// The width `line` is laid out within: `max_width`, or half of it past the
+/// line's indentation, whichever is wider. A container is split only if its
+/// lines then fit that, so a line that is mostly indentation keeps its
+/// content together.
+fn line_limit(max_width: usize, line: &str) -> usize {
+    let indent = line.len() - line.trim_start_matches(' ').len();
+    max_width.max(indent.saturating_add(max_width / 2))
+}
+
 /// Whether an over-wide line has a reason to be over-wide: indentation alone,
 /// a comment or attribute the formatter keeps together, a quoted literal, or
 /// one token longer than the width.
 fn has_unbreakable_content(line: &str, width: usize) -> bool {
     let trimmed = line.trim_start();
-    let indent = line.chars().count() - trimmed.chars().count();
+    let indent = line.width() - trimmed.width();
     if indent >= width {
         return true;
     }
@@ -170,7 +180,7 @@ fn has_unbreakable_content(line: &str, width: usize) -> bool {
     }
     if trimmed
         .split_whitespace()
-        .any(|token| token.chars().count() >= width)
+        .any(|token| token.width() >= width)
     {
         return true;
     }

@@ -98,11 +98,11 @@
         ),
         (
             input: "edge_packing_boundary_16.ron",
-            result: Formatted("[\n    \"aa\", \"bb\", \"cc\",\n    \"dd\",\n    \"ee\", \"ff\", \"gg\",\n    \"hh\",\n]"),
+            result: Formatted("[\n    \"aa\", \"bb\",\n    \"cc\", \"dd\",\n    \"ee\", \"ff\",\n    \"gg\", \"hh\",\n]"),
         ),
         (
             input: "edge_packing_boundary_17.ron",
-            result: Formatted("[\n    \"aaa\", \"bbb\", \"ccc\",\n    \"ddd\",\n    \"eee\", \"fff\", \"ggg\",\n    \"hhh\",\n]"),
+            result: Formatted("[\n    \"aaa\", \"bbb\",\n    \"ccc\", \"ddd\",\n    \"eee\", \"fff\",\n    \"ggg\", \"hhh\",\n]"),
         ),
         (
             input: "edge_packing_mixed.ron",

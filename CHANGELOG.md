@@ -13,6 +13,32 @@ what may change when.
   The library still returns `FormatError::Empty`, so a caller can decide for
   itself.
 
+**Output** changes, from an audit of the golden matrix
+(MATRIX_FORMATTING_FINDINGS.md). Over the 2,959 real-world files of
+`test_data/wild/`, 60 format differently (one for two of these reasons):
+
+- A comment after an opening bracket, at the end of its line, stays there:
+  `Scene( // optional`. Before, it moved to a line of its own above the first
+  element, where it reads as a comment on that element. Input affected: a
+  container whose opening line ends in a comment (14 of the 60 files).
+- A block comment between a map key or field name and its colon stays before
+  the colon: `delay /* seconds */: 5`. Before, it moved after the colon, next
+  to any comment written there. Input affected: such a comment (2 files).
+- A packed row that is too long is wrapped into lines as even in length as
+  the fewest lines allow: `"aa", "bb",` / `"cc", "dd",` rather than
+  `"aa", "bb", "cc",` / `"dd",`. The number of lines is unchanged. Input
+  affected: a packed list or tuple that wraps (39 files).
+- A line's width is `max_width`, but at least half of `max_width` past its
+  indentation, so a container no longer breaks into lines that are nearly
+  all indentation and overrun anyway. Widening `max_width` still never adds
+  lines. Input affected: lines indented past half of `max_width` (6 files,
+  all nested over 12 levels at the default width).
+
+`cargo xtask bless` regenerates every golden output, and `cargo xtask
+matrix-audit` checks the golden matrix and a wider set of settings; CI runs
+the audit. The wild-corpus harness runs inside `cargo xtask wild evaluate`
+instead of as a separate crate under `tools/`.
+
 ## 1.0.0-rc.2 — 2026-10-07
 
 The library API for 1.0, as a program embedding fmtron needs it:

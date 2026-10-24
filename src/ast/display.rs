@@ -122,7 +122,12 @@ fn normalized_breaks(text: &str, nl: &str) -> String {
 /// (hard breaks), otherwise a leading/trailing comment would collide with
 /// sibling layout.
 fn subtree_breaks(v: &Value) -> bool {
-    if !v.leading.is_empty() || !v.inline.is_empty() || !v.trailing.is_empty() {
+    if !v.leading.is_empty()
+        || !v.before_colon.is_empty()
+        || !v.inline.is_empty()
+        || !v.after_open.is_empty()
+        || !v.trailing.is_empty()
+    {
         return true;
     }
     match &v.kind {
@@ -172,7 +177,7 @@ const SHORT_ITEM_WIDTH: usize = 16;
 /// at most [`SHORT_ITEM_WIDTH`] columns wide; without comments. A blank line
 /// before it is fine.
 fn short_item(v: &Value) -> bool {
-    let plain = |v: &Value| v.inline.is_empty() && v.trailing.is_empty();
+    let plain = |v: &Value| v.inline.is_empty() && v.after_open.is_empty() && v.trailing.is_empty();
     // The width on one line: measured from the text, since a tuple the input
     // writes as a grid renders on several lines.
     let width = match &v.kind {
@@ -265,6 +270,7 @@ fn packed(
     dangling: &[String],
     force: bool,
     open: &str,
+    after_open: &[String],
     close: &str,
     tab: usize,
 ) -> Option<Doc> {
@@ -285,6 +291,7 @@ fn packed(
     let brk = || if force { hard_line() } else { soft_line() };
     let doc = concat(vec![
         text(open),
+        comments_after(after_open, tab),
         nest(tab, concat(vec![brk(), fill(items, force)])),
         brk(),
         text(close),
@@ -362,20 +369,33 @@ fn leading_doc(v: &Value, tab: usize) -> Doc {
     concat(parts)
 }
 
-/// Line comments between a key/name and its value, hoisted onto their own
-/// lines before the entry: each must end its line, and the value belongs on
-/// the key's line.
+/// Line comments between a key/name and its value, before or after the
+/// colon, hoisted onto their own lines before the entry: each must end its
+/// line, and the value belongs on the key's line.
 fn hoisted_doc(v: &Value) -> Doc {
     let mut parts: Vec<Doc> = Vec::new();
-    for c in v.inline.iter().filter(|c| !c.starts_with("/*")) {
+    let comments = v.before_colon.iter().chain(&v.inline);
+    for c in comments.filter(|c| !c.starts_with("/*")) {
         parts.push(text(c.clone()));
         parts.push(hard_line());
     }
     concat(parts)
 }
 
-/// Block comments between a key/name and its value, kept inline after the
-/// colon: `delay: /* seconds */ 5`.
+/// Block comments between a key/name and its colon, kept there:
+/// `delay /* seconds */: 5`.
+fn before_colon_doc(v: &Value, tab: usize) -> Doc {
+    concat(
+        v.before_colon
+            .iter()
+            .filter(|c| c.starts_with("/*"))
+            .map(|c| concat(vec![text(" "), comment_doc(c, tab)]))
+            .collect(),
+    )
+}
+
+/// Block comments between a key/name's colon and its value, kept there:
+/// `delay: /* seconds */ 5`.
 fn inline_doc(v: &Value, tab: usize) -> Doc {
     concat(
         v.inline
@@ -388,8 +408,13 @@ fn inline_doc(v: &Value, tab: usize) -> Doc {
 
 /// Trailing comments, inline after the value/comma.
 fn trailing_doc(v: &Value, tab: usize) -> Doc {
+    comments_after(&v.trailing, tab)
+}
+
+/// Comments at the end of a line, each after a space.
+fn comments_after(comments: &[String], tab: usize) -> Doc {
     concat(
-        v.trailing
+        comments
             .iter()
             .map(|c| concat(vec![text(" "), comment_doc(c, tab)]))
             .collect(),
@@ -401,12 +426,14 @@ fn value_doc(v: &Value, tab: usize) -> Doc {
 }
 
 fn kind_doc(v: &Value, tab: usize) -> Doc {
+    // Comments after the opening bracket end its line.
+    let opened = !v.after_open.is_empty();
     match &v.kind {
         Kind::Atom { text: a, .. } => text(a.clone()),
 
         Kind::List { values, dangling } => {
-            let force = force_break(dangling, values);
-            if let Some(doc) = packed(values, dangling, force, "[", "]", tab) {
+            let force = opened || force_break(dangling, values);
+            if let Some(doc) = packed(values, dangling, force, "[", &v.after_open, "]", tab) {
                 return doc;
             }
             let n = values.len();
@@ -423,7 +450,7 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                     )
                 })
                 .collect();
-            container(force, "[", "]", items, dangling, tab)
+            container(force, "[", &v.after_open, "]", items, dangling, tab)
         }
 
         Kind::Map {
@@ -431,7 +458,9 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             dangling,
             broken,
         } => {
-            let force = *broken || force_break(dangling, entries.iter().flat_map(|(k, v)| [k, v]));
+            let force = opened
+                || *broken
+                || force_break(dangling, entries.iter().flat_map(|(k, v)| [k, v]));
             let n = entries.len();
             let items: Vec<Doc> = entries
                 .iter()
@@ -442,6 +471,7 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                             leading_doc(k, tab),
                             hoisted_doc(val),
                             kind_doc(k, tab),
+                            before_colon_doc(val, tab),
                             text(": "),
                             inline_doc(val, tab),
                             kind_doc(val, tab),
@@ -453,7 +483,7 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                     )
                 })
                 .collect();
-            container(force, "{", "}", items, dangling, tab)
+            container(force, "{", &v.after_open, "}", items, dangling, tab)
         }
 
         Kind::TupleType {
@@ -461,16 +491,16 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             values,
             dangling,
         } => {
-            if let Some(only) = hug_target(values, dangling) {
+            if let Some(only) = hug_target(values, dangling).filter(|_| !opened) {
                 return hug(
                     text(open_ident(ident.as_deref())),
                     kind_doc(only, tab),
                     text(")"),
                 );
             }
-            let force = force_break(dangling, values);
+            let force = opened || force_break(dangling, values);
             let open = open_ident(ident.as_deref());
-            if let Some(doc) = packed(values, dangling, force, &open, ")", tab) {
+            if let Some(doc) = packed(values, dangling, force, &open, &v.after_open, ")", tab) {
                 return doc;
             }
             let n = values.len();
@@ -487,7 +517,7 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                     )
                 })
                 .collect();
-            container(force, &open, ")", items, dangling, tab)
+            container(force, &open, &v.after_open, ")", items, dangling, tab)
         }
 
         Kind::FieldsType {
@@ -496,7 +526,7 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             dangling,
             broken,
         } => {
-            let force = *broken || force_break(dangling, fields.iter().map(|f| &f.value));
+            let force = opened || *broken || force_break(dangling, fields.iter().map(|f| &f.value));
             let n = fields.len();
             let items: Vec<Doc> = fields
                 .iter()
@@ -506,7 +536,9 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
                         vec![
                             leading_doc(value, tab),
                             hoisted_doc(value),
-                            text(format!("{name}: ")),
+                            text(name.clone()),
+                            before_colon_doc(value, tab),
+                            text(": "),
                             inline_doc(value, tab),
                             kind_doc(value, tab),
                         ],
@@ -520,6 +552,7 @@ fn kind_doc(v: &Value, tab: usize) -> Doc {
             container(
                 force,
                 &open_ident(ident.as_deref()),
+                &v.after_open,
                 ")",
                 items,
                 dangling,
@@ -554,6 +587,7 @@ fn hug_target<'a>(values: &'a [Value], dangling: &[String]) -> Option<&'a Value>
 fn container(
     force: bool,
     open: &str,
+    after_open: &[String],
     close: &str,
     items: Vec<Doc>,
     dangling: &[String],
@@ -578,6 +612,7 @@ fn container(
         }
         concat(vec![
             text(open),
+            comments_after(after_open, tab),
             nest(tab, concat(vec![hard_line(), concat(inner)])),
             hard_line(),
             text(close),
