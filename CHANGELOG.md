@@ -3,7 +3,7 @@
 Output changes are marked **output**; see [STABILITY.md](STABILITY.md) for
 what may change when.
 
-## Unreleased
+## 1.0.0-rc.3 — 2026-10-25
 
 - The command line leaves a file with nothing to format, because it is empty
   or holds only comments and attributes, exactly as it is, with exit status 0

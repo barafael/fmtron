@@ -1,6 +1,6 @@
 [package]
 name = "fmtron"
-version = "1.0.0-rc.2"
+version = "1.0.0-rc.3"
 authors = [
     "Anton Filippov <a.filippov@protonmail.com>",
     "Rafael Bachmann <rafael.bachmann.93@gmail.com>",

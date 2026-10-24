@@ -155,7 +155,7 @@ page that formats RON:
 
 ```toml
 [dependencies]
-fmtron = { version = "1.0.0-rc.2", default-features = false }
+fmtron = { version = "1.0.0-rc.3", default-features = false }
 ```
 
 Without the default `cli` feature it has no file-system or terminal
