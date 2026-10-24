@@ -1082,9 +1082,13 @@ name = "xtask"
 version = "0.0.0"
 dependencies = [
  "flate2",
+ "fmtron",
+ "ron",
+ "serde",
  "serde_json",
  "sha2",
  "tar",
+ "unicode-width",
  "ureq",
 ]
 

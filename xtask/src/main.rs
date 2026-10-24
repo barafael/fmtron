@@ -1,10 +1,13 @@
 //! Repository automation, run as `cargo xtask <task>`.
 //!
-//! The tasks used to live in `tools/` as Python scripts. They are kept here so
-//! the repository's tooling builds and lints with the rest of the workspace.
+//! All of the repository's tooling lives here, so that it builds and lints
+//! with the rest of the workspace.
 
+mod bless;
 mod build_matrix_site;
 mod compare_styles;
+mod matrix_audit;
+mod oracle;
 mod util;
 mod wild;
 
@@ -14,6 +17,11 @@ const USAGE: &str = "\
 usage: cargo xtask <task>
 
 tasks:
+  bless                              regenerate every golden output after an
+                                     intended formatting change
+  matrix-audit [--extended] [--dump <dir>]
+                                     check every golden-matrix cell and count
+                                     layouts worth a look
   build-matrix-site                  copy the golden matrix into www/ and index it
   compare-styles <out> <name>=<bin>... -- <dir>...
                                      compare fmtron builds over a corpus
@@ -27,12 +35,14 @@ tasks:
   wild build-corpus                  rebuild test_data/wild from results.jsonl
 
 The wild tasks use $FMTRON_WILD_WORK (default ./wild-work) as the work
-directory; see tools/wild-corpus/README.md.
+directory; see xtask/src/wild/README.md.
 ";
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
     let result = match args.first().map(String::as_str) {
+        Some("bless") => bless::run(&args[1..]),
+        Some("matrix-audit") => matrix_audit::run(&args[1..]),
         Some("build-matrix-site") => build_matrix_site::run(&args[1..]),
         Some("compare-styles") => compare_styles::run(&args[1..]),
         Some("wild") => wild::run(&args[1..]),

@@ -30,6 +30,10 @@ jobs:
       run: cargo test --test stability
     - name: Run tests
       run: cargo test --verbose
+    # Validity, idempotency, width monotonicity and line hygiene over every
+    # golden-matrix cell and settings the matrix does not pin.
+    - name: Matrix audit
+      run: cargo xtask matrix-audit --extended
     # The library alone, as a web page or editor plugin would embed it.
     - name: Library without the CLI, for wasm
       run: |

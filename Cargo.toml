@@ -18,7 +18,7 @@ rust-version = "1.88"
 # The real-world corpus and its collection tools are only for the repo's own
 # tests; the online formatter (www/, built by .github/workflows/pages.yml)
 # is not part of the crate either.
-exclude = ["test_data/wild", "tools", "www", ".github", "xtask", ".cargo"]
+exclude = ["test_data/wild", "www", ".github", "xtask", ".cargo"]
 
 [workspace]
 members = ["xtask"]

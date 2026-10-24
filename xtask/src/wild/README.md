@@ -6,7 +6,7 @@ reference `ron` crate on every file, and build the redistributable subset in
 `tests/wild_corpus.rs`). Findings from the first run are in
 `ADVERSARIAL_FINDINGS_2.md`, round 5.
 
-They live in the repository's [`xtask`](../../xtask) crate and run as
+They are the `wild` tasks of the repository's `xtask` crate, run as
 `cargo xtask wild <task>` from the repository root.
 
 All collected data goes to a work directory: `$FMTRON_WILD_WORK`, default
@@ -40,7 +40,9 @@ under the cap. Bisecting from 1 byte upward spends its budget on tiny files,
 so `coarse` gives a more representative sample. `gh-download` can run
 while indexing continues; run it again at the end.
 
-`evaluate` builds and runs `harness/`, which reports one status per file:
+`evaluate` formats every file at the default settings and checks the
+output against the `ron` crate (`xtask/src/oracle.rs`, shared with
+`cargo xtask matrix-audit`), recording one status per file:
 
 | Status | Meaning |
 |---|---|

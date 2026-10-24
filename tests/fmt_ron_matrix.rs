@@ -12,6 +12,10 @@
 //! FMTRON_UPDATE_MATRIX=1 cargo test --test fmt_ron_matrix
 //! ```
 //!
+//! or regenerate every golden output at once with `cargo xtask bless`.
+//! `cargo xtask matrix-audit` checks the properties the golden bytes do not
+//! pin, over every cell and a wider set of settings.
+//!
 //! ## Reading a failure
 //!
 //! A formatting change fails once per affected config row, with the first

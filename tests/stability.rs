@@ -12,7 +12,8 @@
 //! FMTRON_BLESS=1 cargo test --test stability
 //! ```
 //!
-//! and review their diff: it is exactly what users will see change.
+//! (or every golden output at once with `cargo xtask bless`) and review
+//! their diff: it is exactly what users will see change.
 
 use std::io::Write as _;
 use std::path::{Path, PathBuf};

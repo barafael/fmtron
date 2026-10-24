@@ -1,24 +1,17 @@
-//! Merge the collected indexes, dedupe by content, run fmtron's `wild`
-//! harness over everything, and summarize. Writes `results.jsonl` (one record
-//! per unique file, with provenance + status) and prints a summary.
+//! Merge the collected indexes, dedupe by content, check fmtron against the
+//! `ron` crate on everything (see [`crate::oracle`]), and summarize. Writes
+//! `results.jsonl` (one record per unique file, with provenance + status) and
+//! prints a summary. Files are formatted at the default config.
 
-use crate::util::{ensure_dir, read_jsonl, repo_root, sha256_hex, work_dir};
+use crate::oracle;
+use crate::util::{ensure_dir, read_jsonl, sha256_hex, work_dir};
 use serde_json::Value;
 use std::collections::{BTreeMap, HashMap};
 use std::fs;
-use std::io::{Read, Write};
-use std::path::Path;
-use std::process::{Command, Stdio};
 
 pub fn run() -> Result<(), String> {
     let work = work_dir();
     ensure_dir(&work)?;
-    let root = repo_root();
-    let harness_dir = root.join("tools").join("wild-corpus").join("harness");
-    let harness = harness_dir
-        .join("target")
-        .join("release")
-        .join("wild-harness");
 
     let mut records = Vec::new();
     for index in [
@@ -79,22 +72,22 @@ pub fn run() -> Result<(), String> {
             work.display()
         ));
     }
-    build_harness(&harness_dir)?;
-    let mut input = String::new();
+    let config = fmtron::Config::default();
+    std::panic::set_hook(Box::new(|_| {}));
+    let mut status: HashMap<String, (String, String)> = HashMap::new();
     for record in &order {
         let local = record.get("local").and_then(Value::as_str).unwrap_or("");
-        input.push_str(&work.join(local).to_string_lossy());
-        input.push('\n');
+        let Ok(bytes) = fs::read(work.join(local)) else {
+            continue;
+        };
+        let (state, detail) = match String::from_utf8(bytes) {
+            Err(_) => ("not-utf8", String::new()),
+            Ok(input) => oracle::check(&input, &config).status(),
+        };
+        let detail = detail.replace(['\t', '\n'], " ");
+        status.insert(local.to_owned(), (state.to_owned(), detail));
     }
-    let output = run_harness(&harness, &input)?;
-    let mut status: HashMap<String, (String, String)> = HashMap::new();
-    for line in output.lines() {
-        let mut parts = line.splitn(3, '\t');
-        let path = parts.next().unwrap_or("");
-        let state = parts.next().unwrap_or("").to_owned();
-        let detail = parts.next().unwrap_or("").to_owned();
-        status.insert(relative(&work, Path::new(path)), (state, detail));
-    }
+    let _ = std::panic::take_hook();
 
     let mut results = Vec::new();
     for record in &order {
@@ -174,47 +167,4 @@ pub fn run() -> Result<(), String> {
         println!("  {state:16} {total:6}  {counts:?}");
     }
     Ok(())
-}
-
-fn relative(work: &Path, path: &Path) -> String {
-    path.strip_prefix(work)
-        .unwrap_or(path)
-        .to_string_lossy()
-        .into_owned()
-}
-
-fn build_harness(harness_dir: &Path) -> Result<(), String> {
-    let status = Command::new("cargo")
-        .args(["build", "--release", "--manifest-path"])
-        .arg(harness_dir.join("Cargo.toml"))
-        .status()
-        .map_err(|e| format!("cargo: {e}"))?;
-    if !status.success() {
-        return Err("building tools/wild-corpus/harness failed".into());
-    }
-    Ok(())
-}
-
-fn run_harness(harness: &Path, input: &str) -> Result<String, String> {
-    let mut child = Command::new(harness)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::inherit())
-        .spawn()
-        .map_err(|e| format!("{}: {e}", harness.display()))?;
-    let mut stdin = child.stdin.take().expect("piped stdin");
-    let input = input.to_owned();
-    let writer = std::thread::spawn(move || {
-        let _ = stdin.write_all(input.as_bytes());
-    });
-    let mut stdout = Vec::new();
-    if let Some(mut pipe) = child.stdout.take() {
-        pipe.read_to_end(&mut stdout).map_err(|e| e.to_string())?;
-    }
-    let status = child.wait().map_err(|e| e.to_string())?;
-    let _ = writer.join();
-    if !status.success() {
-        return Err("wild harness failed".into());
-    }
-    Ok(String::from_utf8_lossy(&stdout).into_owned())
 }
