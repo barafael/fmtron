@@ -3,7 +3,10 @@
 Output changes are marked **output**; see [STABILITY.md](STABILITY.md) for
 what may change when.
 
-## Unreleased
+## 1.0.0 — 2026-10-25
+
+The 1.0 style and API of the release candidates, now covered by
+[STABILITY.md](STABILITY.md). No output changes since 1.0.0-rc.3.
 
 - The published crate holds only the library, the binary and their
   documentation: 57 KiB instead of 468 KiB. The tests and their data stay in

@@ -55,8 +55,3 @@ dependencies and builds for `wasm32-unknown-unknown`. That stays so.
 
 The minimum supported Rust version is `rust-version` in `Cargo.toml`, checked
 in CI. Raising it is a minor change, never a patch.
-
-## Before 1.0.0
-
-Release candidates (`1.0.0-rc.N`) carry the 1.0 style; the library API may
-still change between them.

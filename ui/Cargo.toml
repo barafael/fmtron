@@ -7,7 +7,7 @@ rust-version = "1.95"
 description = "fmt.ron.ui: an editor for fmtron's fmt.ron configuration file"
 license = "MIT"
 repository = "https://github.com/barafael/fmtron"
-# Not on crates.io while fmtron itself is a release candidate.
+# Not on crates.io.
 publish = false
 
 # A leaf crate of its own workspace, like wasm/; the fmtron library is a
