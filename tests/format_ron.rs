@@ -1,4 +1,7 @@
 use fmtron::{Config, format_ron};
+#[path = "support/test_data.rs"]
+mod test_data;
+
 use fs_walk::WalkOptions;
 use std::path::Path;
 
@@ -26,8 +29,8 @@ fn invalid_input() {
 
 #[test]
 fn formats_test_file() {
-    let content = include_str!("../test_data/test.ron");
-    let ron = format_default(content).expect("unable to format RON");
+    let content = std::fs::read_to_string(test_data::require("test_data/test.ron")).unwrap();
+    let ron = format_default(&content).expect("unable to format RON");
     // formatting is idempotent: reformatting the output must not change it
     let ron2 = format_default(&ron).expect("unable to reformat RON");
     assert_eq!(ron, ron2, "formatter output is not idempotent");
@@ -53,7 +56,7 @@ fn unofficial_improvised_ron_conformance_suite() {
         let walker = WalkOptions::new()
             .files()
             .extension("ron")
-            .walk(unformatted_dir);
+            .walk(test_data::require(unformatted_dir));
         for entry in walker.flatten() {
             count += 1;
             let filename = entry.as_path().strip_prefix(unformatted_dir).unwrap();
@@ -111,7 +114,10 @@ fn formatted_output_is_semantically_equivalent() {
     let mut checked = 0;
     let mut skipped = 0;
     for dir in dirs {
-        let walker = WalkOptions::new().files().extension("ron").walk(dir);
+        let walker = WalkOptions::new()
+            .files()
+            .extension("ron")
+            .walk(test_data::require(dir));
         for entry in walker.flatten() {
             let input = std::fs::read_to_string(entry.as_path()).unwrap();
             let before = match ron::from_str::<ron::Value>(&input) {
@@ -153,7 +159,10 @@ fn formatting_is_idempotent() {
         "test_data/synthetic",
     ];
     for dir in dirs {
-        let walker = WalkOptions::new().files().extension("ron").walk(dir);
+        let walker = WalkOptions::new()
+            .files()
+            .extension("ron")
+            .walk(test_data::require(dir));
         for entry in walker.flatten() {
             let input = std::fs::read_to_string(entry.as_path()).unwrap();
             // Gap cases may legitimately fail to parse yet; skip them here
@@ -182,7 +191,7 @@ fn synthetic_corpus_parses() {
     let walker = WalkOptions::new()
         .files()
         .extension("ron")
-        .walk("test_data/synthetic");
+        .walk(test_data::require("test_data/synthetic"));
     let mut failures: Vec<String> = Vec::new();
     let mut count = 0;
     for entry in walker.flatten() {
@@ -340,7 +349,7 @@ fn synthetic_corpus_preserves_comments() {
     let walker = WalkOptions::new()
         .files()
         .extension("ron")
-        .walk("test_data/synthetic");
+        .walk(test_data::require("test_data/synthetic"));
     let mut failures: Vec<String> = Vec::new();
     let mut count = 0;
     for entry in walker.flatten() {

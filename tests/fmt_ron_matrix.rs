@@ -43,6 +43,9 @@
 #[path = "support/config_cases.rs"]
 mod config_cases;
 
+#[path = "support/test_data.rs"]
+mod test_data;
+
 use fmtron::{BlankLines, Config, FileConfig, format_ron};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -134,7 +137,7 @@ enum Outcome {
 }
 
 fn ron_files(dir: &str, skip: &[&str]) -> Vec<String> {
-    let mut names: Vec<String> = std::fs::read_dir(dir)
+    let mut names: Vec<String> = std::fs::read_dir(test_data::require(dir))
         .unwrap_or_else(|e| panic!("cannot read {dir}: {e}"))
         .map(|entry| entry.unwrap().path())
         .filter(|path| path.extension().is_some_and(|ext| ext == "ron"))
@@ -367,7 +370,7 @@ fn matrix_matches_golden_master() {
         return;
     }
 
-    let golden_manifest: Manifest = ron::from_str(&read(Path::new(MANIFEST)))
+    let golden_manifest: Manifest = ron::from_str(&read(Path::new(test_data::require(MANIFEST))))
         .unwrap_or_else(|e| panic!("cannot parse {MANIFEST}: {e}"));
     assert_eq!(
         manifest, golden_manifest,

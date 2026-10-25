@@ -31,6 +31,9 @@
 //!
 //! Deterministic: default seed `0xCAFE_D00D`, override via `FMTRON_FUZZ_SEED`.
 
+#[path = "support/test_data.rs"]
+mod test_data;
+
 use fmtron::{BlankLines, Config, format_ron};
 
 const DEFAULT_SEED: u64 = 0xCAFE_D00D;
@@ -498,7 +501,7 @@ fn corpus_formats_canonically_regardless_of_layout() {
         "test_data/gaps/unformatted",
         "test_data/synthetic",
     ] {
-        let mut paths: Vec<std::path::PathBuf> = std::fs::read_dir(dir)
+        let mut paths: Vec<std::path::PathBuf> = std::fs::read_dir(test_data::require(dir))
             .unwrap_or_else(|e| panic!("cannot read {dir}: {e}"))
             .filter_map(|e| e.ok())
             .map(|e| e.path())

@@ -8,6 +8,9 @@
 //! must yield. The golden outputs in `test_data/fmt_ron_formatted/` are
 //! generated at the default width, like `test_data/ron_corpus_formatted/`.
 
+#[path = "support/test_data.rs"]
+mod test_data;
+
 use fmtron::{BlankLines, Config, FileConfig, StyleEdition, format_ron};
 use ron::extensions::Extensions;
 use serde::Deserialize;
@@ -36,7 +39,7 @@ struct Case {
 }
 
 fn manifest() -> Manifest {
-    let path = Path::new(ROOT).join("manifest.ron");
+    let path = Path::new(test_data::require(ROOT)).join("manifest.ron");
     let text = std::fs::read_to_string(&path)
         .unwrap_or_else(|e| panic!("cannot read {}: {e}", path.display()));
     ron::Options::default()
@@ -47,7 +50,7 @@ fn manifest() -> Manifest {
 
 /// The `.ron` files in the corpus, sorted, excluding its manifest.
 fn corpus_files() -> Vec<PathBuf> {
-    let mut files: Vec<PathBuf> = std::fs::read_dir(ROOT)
+    let mut files: Vec<PathBuf> = std::fs::read_dir(test_data::require(ROOT))
         .unwrap_or_else(|e| panic!("cannot read {ROOT}: {e}"))
         .map(|entry| entry.unwrap().path())
         .filter(|path| {

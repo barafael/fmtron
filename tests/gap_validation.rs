@@ -11,14 +11,17 @@
 //! test documents fmtron's current inability to handle them; it is expected to
 //! start failing (and should then be updated) as fmtron gains support.
 
+#[path = "support/test_data.rs"]
+mod test_data;
+
 use std::path::Path;
 
 /// Each of these inputs must be accepted by the official `ron` parser, and the
 /// `formatted` counterpart must deserialize to the same `ron::Value`.
 #[test]
 fn gap_cases_are_valid_ron() {
-    let unformatted_dir = Path::new("test_data/gaps/unformatted");
-    let formatted_dir = Path::new("test_data/gaps/formatted");
+    let unformatted_dir = Path::new(test_data::require("test_data/gaps/unformatted"));
+    let formatted_dir = Path::new(test_data::require("test_data/gaps/formatted"));
 
     for entry in std::fs::read_dir(unformatted_dir).expect("gaps/unformatted dir missing") {
         let entry = entry.unwrap();
@@ -66,7 +69,7 @@ fn gap_cases_currently_unsupported_by_fmtron() {
     ];
 
     for (filename, currently_supported) in cases {
-        let path = Path::new("test_data/gaps/unformatted").join(filename);
+        let path = Path::new(test_data::require("test_data/gaps/unformatted")).join(filename);
         let input = std::fs::read_to_string(&path).expect("gap case file missing");
         let result = fmtron::format_ron(&input, &fmtron::Config::default());
 

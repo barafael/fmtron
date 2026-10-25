@@ -15,6 +15,9 @@
 //! (or every golden output at once with `cargo xtask bless`) and review
 //! their diff: it is exactly what users will see change.
 
+#[path = "support/test_data.rs"]
+mod test_data;
+
 use std::io::Write as _;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
@@ -34,7 +37,8 @@ fn pinned(name: &str) -> PathBuf {
 }
 
 fn read(path: &Path) -> String {
-    std::fs::read_to_string(path).unwrap_or_else(|e| panic!("read {}: {e}", path.display()))
+    std::fs::read_to_string(test_data::require(path))
+        .unwrap_or_else(|e| panic!("read {}: {e}", path.display()))
 }
 
 /// What the CLI prints for `input` on stdin. Any `fmt.ron` around the test

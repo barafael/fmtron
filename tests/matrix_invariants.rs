@@ -7,6 +7,9 @@
 //! formatter cannot break (a long atom, literal, comment, attribute, or
 //! indentation). Widths are display columns, as the formatter measures them.
 
+#[path = "support/test_data.rs"]
+mod test_data;
+
 use fmtron::{BlankLines, Config, format_ron};
 use serde::Deserialize;
 use std::collections::BTreeMap;
@@ -67,7 +70,7 @@ fn config(settings: &Settings) -> Config {
 #[test]
 fn every_formatted_cell_obeys_the_layout_invariants() {
     let mut inputs: BTreeMap<String, String> = BTreeMap::new();
-    for entry in std::fs::read_dir(SOURCE).expect("read the input corpus") {
+    for entry in std::fs::read_dir(test_data::require(SOURCE)).expect("read the input corpus") {
         let path = entry.unwrap().path();
         if path.extension().is_some_and(|ext| ext == "ron") {
             let name = path.file_name().unwrap().to_string_lossy().into_owned();
@@ -75,7 +78,7 @@ fn every_formatted_cell_obeys_the_layout_invariants() {
         }
     }
 
-    let mut files: Vec<_> = std::fs::read_dir(MATRIX)
+    let mut files: Vec<_> = std::fs::read_dir(test_data::require(MATRIX))
         .expect("read the matrix")
         .map(|entry| entry.unwrap().path())
         .filter(|path| {
