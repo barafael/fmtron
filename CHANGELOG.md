@@ -3,6 +3,12 @@
 Output changes are marked **output**; see [STABILITY.md](STABILITY.md) for
 what may change when.
 
+## Unreleased
+
+- The published crate holds only the library, the binary and their
+  documentation: 57 KiB instead of 468 KiB. The tests and their data stay in
+  the repository.
+
 ## 1.0.0-rc.3 — 2026-10-25
 
 - The command line leaves a file with nothing to format, because it is empty

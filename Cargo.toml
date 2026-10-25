@@ -15,10 +15,9 @@ repository = "https://github.com/barafael/fmtron"
 edition = "2024"
 # Checked in CI; raising it is a minor change (STABILITY.md).
 rust-version = "1.88"
-# The real-world corpus and its collection tools are only for the repo's own
-# tests; the online formatter (www/, built by .github/workflows/pages.yml)
-# is not part of the crate either.
-exclude = ["test_data/wild", "www", ".github", "xtask", ".cargo"]
+# The library, the binary and their documentation. The tests and their data
+# (9 MB), the tooling and the online formatter stay in the repo.
+include = ["/src", "/README.md", "/LICENSE", "/CHANGELOG.md", "/STABILITY.md"]
 
 [workspace]
 members = ["xtask"]
