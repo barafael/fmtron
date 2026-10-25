@@ -85,7 +85,7 @@ The library API for 1.0, as a program embedding fmtron needs it:
 ## 1.0.0-rc.1 — 2026-10-06
 
 The 1.0 style, released for real-world use before it is frozen. **Output**
-changes, measured over 3,089 real-world files (details in PLAN_1_0.md):
+changes, measured over 3,089 real-world files:
 
 - A struct or map whose input breaks the line right after its opening bracket
   stays broken, even if it would fit on one line. 0.10 joined every container

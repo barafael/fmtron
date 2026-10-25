@@ -63,7 +63,7 @@ a symlink's target path instead of the file.
 `cargo xtask compare-styles` formats a corpus with several fmtron builds and
 compares them: how far each one's output is from the input, how many files it
 collapses or expands, and how many differ from the first build. It writes each
-build's output for diffing. `PLAN_1_0.md` has the numbers behind the 1.0 style.
+build's output for diffing.
 
 Over the last release:
 
