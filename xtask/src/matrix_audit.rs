@@ -18,7 +18,7 @@
 //!   indentation, if that is wider) in display columns, the formatter's
 //!   metric, unless it has a reason (as in `tests/matrix_invariants.rs`).
 //!
-//! Counts, for judging layout (see MATRIX_FORMATTING_FINDINGS.md):
+//! Counts, for judging layout:
 //!
 //! - `indent-past-width`: cells with a line indented to `max_width` or more;
 //! - `newtype-split`: `Some(` / scalar / `)` on three lines, and how many of

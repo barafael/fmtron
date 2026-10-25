@@ -13,9 +13,9 @@ what may change when.
   The library still returns `FormatError::Empty`, so a caller can decide for
   itself.
 
-**Output** changes, from an audit of the golden matrix
-(MATRIX_FORMATTING_FINDINGS.md). Over the 2,959 real-world files of
-`test_data/wild/`, 60 format differently (one for two of these reasons):
+**Output** changes, from an audit of the golden matrix. Over the 2,959
+real-world files of `test_data/wild/`, 60 format differently (one for two of
+these reasons):
 
 - A comment after an opening bracket, at the end of its line, stays there:
   `Scene( // optional`. Before, it moved to a line of its own above the first
